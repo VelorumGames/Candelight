@@ -42,6 +42,7 @@ namespace Map
 
         private void Awake()
         {
+            //Se rota el anclaje segun la direccion para poder trabajar bien en espacio local
             switch (_direction)
             {
                 case EAnchorDirection.Forward:
@@ -67,17 +68,29 @@ namespace Map
             _room = GetComponentInParent<ARoom>();
         }
 
+        //==== GENERACION DEL NIVEL ====
+        //PRIMERA FASE:
+        // Cada habitacion posee anclajes. Los anclajes tienen probabilidad de activarse al instante o ser ralentizados por un delay
+        // Los que se activan comprueban si es posible generar una habitacion y de que tipo (segun el espacio disponible frente a ellos)
+        // Se genera la habitacion y esta nueva repite el proceso. Se van registrando en el MapManager
+        // Si se alcanza el numero maximo de habitaciones, se impide a los anclajes crear mas
+        // Si todos los anclajes activados han generado ya su habitacion y no se ha alcanzado el maximo, entonces entran en juego los originalmente ralentizados por el delay
+        // Se generan habitaciones hasta alcanzar el maximo
+        #region First Stage: Room Generation
+
         private void Start()
         {
             _map = MapManager.Instance;
 
+            //Aplicamos probabilidad para que genere instantaneamente o espere
             _active = Random.value < 0.5f;
             if (_active && _map.CanCreateRoom()) SpawnRoom();
-            else StartCoroutine(CreateNewRoom());
+            else StartCoroutine(DelayedRoomCreation());
         }
 
         private void Update()
         {
+            //Debug:
             //if (_active)
             //{
             //    Debug.DrawRay(transform.position, _raycastDirection * _map.MediumThreshold, Color.red);
@@ -87,7 +100,11 @@ namespace Map
             //}
         }
 
-        IEnumerator CreateNewRoom()
+        /// <summary>
+        /// Se aplica un delay antes de que cree la habitacion. Si no puede crearla, se autodestruye
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator DelayedRoomCreation()
         {
             yield return new WaitForSeconds(0.1f);
             if (_map.CanCreateRoom()) SpawnRoom();
@@ -96,7 +113,7 @@ namespace Map
 
 
         /// <summary>
-        /// Generamos una nueva habitacion a raiz de un anclaje, si se puede
+        /// Generamos una nueva habitacion a raiz de un anclaje si el espacio lo permite
         /// </summary>
         /// <returns></returns>
         void SpawnRoom()
@@ -122,6 +139,11 @@ namespace Map
             transform.localPosition -= 0.01f * transform.up;
         }
 
+        /// <summary>
+        /// Devuelve la colocacion que debera tomar la neuva habitacion con respecto al anclaje que la genera
+        /// </summary>
+        /// <param name="size"></param>
+        /// <returns></returns>
         Vector3 OffsetChooser(ERoomSize size)
         {
             switch ((int)size)
@@ -137,6 +159,18 @@ namespace Map
             }
         }
 
+        #endregion
+
+        //SEGUNDA FASE:
+        // Tras generar la habitacion, el anclaje busca el anclaje mas cercano de esta y se conecta con el
+        // Se genera un LineRenderer que los conecta (de 4 puntos) para posteriormente ser bakeado en mesh
+        // Se ajustan las propiedades de la mesh para que se muestre correctamente (la malla esta en world space)
+        #region Second Stage: Connections Generation
+        /// <summary>
+        /// Se localiza el anclaje mas cercano de una habitacion
+        /// </summary>
+        /// <param name="room"></param>
+        /// <returns></returns>
         AnchorManager LocateObjectiveAnchor(GameObject room)
         {
             AnchorManager[] anchors = room.GetComponentsInChildren<AnchorManager>();
@@ -154,6 +188,11 @@ namespace Map
             return obj;
         }
 
+        /// <summary>
+        /// Se genera una linea que conecta con el otro anclaje y se transforma en malla
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         GameObject GenerateMesh(AnchorManager obj)
         {
             GameObject lineGO = new GameObject("Transicion");
@@ -185,6 +224,8 @@ namespace Map
             Destroy(obj.gameObject);
             Connected = true;
 
+            GetComponent<Collider>().enabled = false;
+
             //Se bakea la imagen de la linea en una mesh
             Mesh transitionMesh = new Mesh();
             line.BakeMesh(transitionMesh);
@@ -202,22 +243,19 @@ namespace Map
             return meshGO;
         }
 
+        #endregion
+
+        //TERCERA FASE:
+        // Segun las propiedades de la conexion, se decide si generar colliders simples o complejos
+        // Se crean BoxColliders. Se altera su center y size para que se adecuen a su correspondiente conexion
+        #region Third Stage: Collider Generation
+
         void GenerateSimpleColliders(GameObject con, Vector3[] positions)
         {
             BoxCollider box1 = con.AddComponent<BoxCollider>();
             BoxCollider box2 = con.AddComponent<BoxCollider>();
             box1.center += _map.ConnectionCollidersOffset * transform.right;
             box2.center -= _map.ConnectionCollidersOffset * transform.right;
-            //if (_direction == EAnchorDirection.Forward || _direction == EAnchorDirection.Backward)
-            //{
-            //    box1.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.9f);
-            //    box2.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.9f);
-            //}
-            //else
-            //{
-            //    box1.size = new Vector3(box1.size.x * 0.9f, 2f, box1.size.z);
-            //    box2.size = new Vector3(box1.size.x * 0.9f, 2f, box1.size.z);
-            //}
             box1.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
             box2.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
         }
@@ -273,36 +311,6 @@ namespace Map
 
             boxes[3].size = boxes[2].size;
         }
-
-        //Vector2 ExpandHalfSize(BoxCollider[] boxes, Vector3 start, Vector3 end)
-        //{
-        //    float halfSizeX = 0f;
-        //    float extraLimit = Mathf.Abs(start.x - end.x) * 0.1f;
-        //    float halfSizeZ = 0f;
-        //
-        //    //Expansion hasta la mitad entre los puntos y un pequeno extra para que se adecue mejor a la mesh
-        //    if (start.x < end.x) //comienza a la izquierda y termina a la derecha
-        //    {
-        //        while (boxes[2].center.x - halfSizeX > (start.x + end.x) / 2 - extraLimit)
-        //        {
-        //            halfSizeX += 0.01f;
-        //        }
-        //    }
-        //    else //comienza a la derecha y termina a la izquierda
-        //    {
-        //        while (boxes[2].center.x + halfSizeX < (start.x + end.x) / 2 + extraLimit)
-        //        {
-        //            halfSizeX += 0.01f;
-        //        }
-        //    }
-        //    //Expansion hasta la mitad de la conexion
-        //    while (boxes[2].center.z + halfSizeZ < (start.z + end.z) / 2 - Mathf.Abs(start.z - end.z) / 10)
-        //    {
-        //        halfSizeZ += 0.01f;
-        //    }
-        //
-        //    return new Vector2(halfSizeX, halfSizeZ);
-        //}
 
         void CalibrateCollidersZ(BoxCollider[] boxes, Vector3[] positions)
         {
@@ -425,5 +433,7 @@ namespace Map
 
             return halfSize;
         }
+
+        #endregion
     }
 }

@@ -423,6 +423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxRooms: 20
   m_rooms: 0
+  RuneChance: 0.75
   SmallRooms:
   - {fileID: 8668900970460633133, guid: 05de7358a7244e24a9f0d118ecc41c17, type: 3}
   MediumRooms:
@@ -434,9 +435,10 @@ MonoBehaviour:
   LargeThreshold: 6
   MediumThreshold: 5
   SmallThreshold: 4
-  Seed: 4772242
+  _seed: 0
   ConnectionMat: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
   ConnectionCollidersOffset: 0.5
+  CurrentNodeInfo: {fileID: 11400000, guid: 590e6fd0067b28f4e9bc3585d233a483, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
