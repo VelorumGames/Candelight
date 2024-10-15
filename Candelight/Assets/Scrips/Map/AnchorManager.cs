@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -234,7 +233,7 @@ namespace Map
 
             //Se bakea la imagen de la linea en una mesh
             Mesh transitionMesh = new Mesh();
-            line.BakeMesh(transitionMesh);
+            line.BakeMesh(transitionMesh, _map.ConnectionBakeCam);
             GameObject meshGO = new GameObject("TransitionMesh");
             meshGO.transform.parent = transform;
             MeshRenderer meshData = meshGO.AddComponent<MeshRenderer>();
