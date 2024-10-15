@@ -1,3 +1,4 @@
+using Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -10,6 +11,8 @@ namespace Map
     public class MapManager : MonoBehaviour
     {
         public static MapManager Instance;
+
+        GameObject _player;
 
         public int MaxRooms;
         [SerializeField] int m_rooms;
@@ -38,6 +41,8 @@ namespace Map
         public float MediumThreshold;
         public float SmallThreshold;
 
+        public float ConnectionWidth;
+
         [SerializeField] int _seed;
 
         public Material ConnectionMat;
@@ -52,11 +57,25 @@ namespace Map
 
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            _player = FindObjectOfType<PlayerController>().gameObject;
         }
 
         private void Start()
         {
-            RegisterNewRoom(-1, new Vector3(), ERoomSize.Medium);
+            switch(CurrentNodeInfo.Biome)
+            {
+                case EBiome.A:
+                    MaxRooms = 10;
+                    break;
+                case EBiome.B:
+                    MaxRooms = 20;
+                    break;
+                case EBiome.C:
+                    MaxRooms = 30;
+                    break;
+            }
+            if (MaxRooms > 0) RegisterNewRoom(-1, new Vector3(), ERoomSize.Medium);
         }
 
         /// <summary>
@@ -119,6 +138,7 @@ namespace Map
             rooms.Remove(startRoom);
             startRoom.RoomType = ERoomType.Start;
             startRoom.IdText.text += " START";
+            _player.transform.position = startRoom.transform.position + 0.8f * Vector3.up;
 
             ARoom endRoom = rooms[Random.Range(rooms.Count / 2, rooms.Count)];
             rooms.Remove(endRoom);

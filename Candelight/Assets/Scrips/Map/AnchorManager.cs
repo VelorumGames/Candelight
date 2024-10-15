@@ -35,6 +35,8 @@ namespace Map
         RaycastHit _auxLhit;
         RaycastHit _auxRhit;
 
+        LayerMask _mask;
+
         bool _active;
         public bool Connected;
 
@@ -43,29 +45,31 @@ namespace Map
         private void Awake()
         {
             //Se rota el anclaje segun la direccion para poder trabajar bien en espacio local
-            switch (_direction)
-            {
-                case EAnchorDirection.Forward:
-                    transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-                    break;
-                case EAnchorDirection.Backward:
-                    transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
-                    break;
-                case EAnchorDirection.Left:
-                    transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
-                    break;
-                case EAnchorDirection.Right:
-                    transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
-                    break;
-               
-            }
+            //switch (_direction)
+            //{
+            //    case EAnchorDirection.Forward:
+            //        transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            //        break;
+            //    case EAnchorDirection.Backward:
+            //        transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+            //        break;
+            //    case EAnchorDirection.Left:
+            //        transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
+            //        break;
+            //    case EAnchorDirection.Right:
+            //        transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
+            //        break;
+            //   
+            //}
             _raycastDirection = transform.forward;
-            _auxDirLeft = transform.forward - transform.right;
+            _auxDirLeft = transform.forward - 0.5f * transform.right;
             _auxDirLeft.Normalize();
-            _auxDirRight = transform.forward + transform.right;
+            _auxDirRight = transform.forward + 0.5f * transform.right;
             _auxDirRight.Normalize();
 
             _room = GetComponentInParent<ARoom>();
+
+            _mask = gameObject.layer;
         }
 
         //==== GENERACION DEL NIVEL ====
@@ -93,9 +97,9 @@ namespace Map
             //Debug:
             //if (_active)
             //{
-            //    Debug.DrawRay(transform.position, _raycastDirection * _map.MediumThreshold, Color.red);
-            //    Debug.DrawRay(transform.position, _auxDirLeft * _map.MediumThreshold, Color.yellow);
-            //    Debug.DrawRay(transform.position, _auxDirRight * _map.MediumThreshold, Color.yellow);
+            //    Debug.DrawRay(transform.position + 0.44f * transform.forward, _raycastDirection * _map.MediumThreshold, Color.red);
+            //    Debug.DrawRay(transform.position + 0.44f * transform.forward, _auxDirLeft * _map.MediumThreshold, Color.yellow);
+            //    Debug.DrawRay(transform.position + 0.44f * transform.forward, _auxDirRight * _map.MediumThreshold, Color.yellow);
             //    Debug.DrawRay(transform.position + (_map.MediumThreshold * transform.forward - _map.SmallThreshold * transform.right), _map.SmallThreshold * transform.right, Color.blue);
             //}
         }
@@ -119,8 +123,10 @@ namespace Map
         void SpawnRoom()
         {
             //Averiguamos el tamano maximo 
-            int maxSize = Physics.Raycast(transform.position, _raycastDirection, out _hit, _map.MediumThreshold) ? _hit.distance < _map.SmallThreshold ? _hit.distance < _map.RoomSeparation ? -1 : 0 : 1 : 2;
-            if (Physics.Raycast(transform.position, _auxDirLeft, out _auxLhit, _map.MediumThreshold) || Physics.Raycast(transform.position, _auxDirRight, out _auxRhit, _map.MediumThreshold)) maxSize = 0;
+            int maxSize = Physics.Raycast(transform.position + 0.44f * transform.forward, _raycastDirection, out _hit, _map.MediumThreshold, ~_mask) ? _hit.distance < _map.SmallThreshold ? _hit.distance < _map.RoomSeparation ? -1 : 0 : 1 : 2;
+            if (Physics.Raycast(transform.position + 0.44f * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
+                Physics.Raycast(transform.position + 0.44f * transform.forward, _auxDirRight, out _auxRhit, _map.MediumThreshold, ~_mask) && _auxRhit.transform.parent.parent != transform.parent) maxSize -= 1;
+            //Debug.Log($"Colisiona con {_hit.transform.name}");
             if (Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold)) maxSize = -1;
             if (maxSize == -1) return;
 
@@ -201,7 +207,7 @@ namespace Map
 
             //Se configura la linea que une ambos anclajes para conseguir la forma deseada
             line.positionCount = 4;
-            line.widthMultiplier = 0.5f;
+            line.widthMultiplier = _map.ConnectionWidth;
             line.numCapVertices = 1;
             line.numCornerVertices = 2;
             Vector3[] positions = new Vector3[4];
@@ -237,8 +243,13 @@ namespace Map
 
             line.enabled = false;
 
-            if (Mathf.Abs(positions[0].x - positions[3].x) < 0.1f) GenerateSimpleColliders(meshGO, positions);
-            else GenerateComplexColliders(meshGO, positions, line.endWidth);
+            //Colliders
+            BoxCollider baseCol = meshGO.AddComponent<BoxCollider>();
+            baseCol.center = new Vector3(baseCol.center.x, 0f, baseCol.center.z);
+
+            if (Mathf.Abs(positions[0].x - positions[3].x) < 0.1f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
+            else if (Mathf.Abs(positions[0].z - positions[3].z) < 0.1f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
+                    else GenerateComplexColliders(meshGO, positions, line.endWidth);
 
             return meshGO;
         }
@@ -250,14 +261,24 @@ namespace Map
         // Se crean BoxColliders. Se altera su center y size para que se adecuen a su correspondiente conexion
         #region Third Stage: Collider Generation
 
-        void GenerateSimpleColliders(GameObject con, Vector3[] positions)
+        void GenerateSimpleCollidersZ(GameObject con, Vector3[] positions)
         {
             BoxCollider box1 = con.AddComponent<BoxCollider>();
             BoxCollider box2 = con.AddComponent<BoxCollider>();
-            box1.center += _map.ConnectionCollidersOffset * transform.right;
-            box2.center -= _map.ConnectionCollidersOffset * transform.right;
+            box1.center += _map.ConnectionCollidersOffset * Vector3.right;
+            box2.center -= _map.ConnectionCollidersOffset * Vector3.right;
             box1.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
             box2.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
+        }
+
+        void GenerateSimpleCollidersX(GameObject con, Vector3[] positions)
+        {
+            BoxCollider box1 = con.AddComponent<BoxCollider>();
+            BoxCollider box2 = con.AddComponent<BoxCollider>();
+            box1.center += _map.ConnectionCollidersOffset * Vector3.forward;
+            box2.center -= _map.ConnectionCollidersOffset * Vector3.forward;
+            box1.size = new Vector3(box1.size.x * 0.8f, 2f, box1.size.z);
+            box2.size = new Vector3(box1.size.x * 0.8f, 2f, box1.size.z);
         }
 
         void GenerateComplexColliders(GameObject con, Vector3[] positions, float lineWidth)
@@ -315,8 +336,8 @@ namespace Map
         void CalibrateCollidersZ(BoxCollider[] boxes, Vector3[] positions)
         {
             //Colliders exteriores
-            boxes[0].center += new Vector3(_map.ConnectionCollidersOffset * Mathf.Abs(positions[0].x - positions[3].x) * 3.8f, 0f, 0f);
-            boxes[1].center -= new Vector3(_map.ConnectionCollidersOffset * Mathf.Abs(positions[0].x - positions[3].x) * 3.8f, 0f, 0f);
+            boxes[0].center += new Vector3(_map.ConnectionCollidersOffset * Mathf.Abs(positions[0].x - positions[3].x) * 2f, 0f, 0f);
+            boxes[1].center -= new Vector3(_map.ConnectionCollidersOffset * Mathf.Abs(positions[0].x - positions[3].x) * 2f, 0f, 0f);
             boxes[0].size = new Vector3(boxes[0].size.x, 2f, boxes[0].size.z * 0.8f);
             boxes[1].size = new Vector3(boxes[1].size.x, 2f, boxes[1].size.z * 0.8f);
 
@@ -374,8 +395,8 @@ namespace Map
         void CalibrateCollidersX(BoxCollider[] boxes, Vector3[] positions)
         {
             //Colliders exteriores
-            boxes[0].center += new Vector3(0f, 0f, _map.ConnectionCollidersOffset * Mathf.Abs(positions[0].z - positions[3].z) * 3.8f);
-            boxes[1].center -= new Vector3(0f, 0f, _map.ConnectionCollidersOffset * Mathf.Abs(positions[0].z - positions[3].z) * 3.8f);
+            boxes[0].center += new Vector3(0f, 0f, _map.ConnectionCollidersOffset * Mathf.Abs(positions[0].z - positions[3].z) * 2f);
+            boxes[1].center -= new Vector3(0f, 0f, _map.ConnectionCollidersOffset * Mathf.Abs(positions[0].z - positions[3].z) * 2f);
             boxes[0].size = new Vector3(boxes[0].size.x * 0.8f, 2f, boxes[0].size.z);
             boxes[1].size = new Vector3(boxes[1].size.x * 0.8f, 2f, boxes[1].size.z);
 

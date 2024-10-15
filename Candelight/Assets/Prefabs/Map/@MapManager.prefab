@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3307859510703695798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6906671176427799290}
+  - component: {fileID: 1267763661487660103}
+  m_Layer: 0
+  m_Name: '@MapManager'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6906671176427799290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3307859510703695798}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1267763661487660103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3307859510703695798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6033802a0b3fd94382c5893bae32dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxRooms: 0
+  m_rooms: 0
+  RuneChance: 0.75
+  SmallRooms:
+  - {fileID: 8668900970460633133, guid: 05de7358a7244e24a9f0d118ecc41c17, type: 3}
+  MediumRooms:
+  - {fileID: 3729855312333802389, guid: 750a785fff63e684bb1cad178074d1b6, type: 3}
+  LargeRooms:
+  - {fileID: 2188563618886970509, guid: 9cfbeecf93ab721478f801ec7aa2662c, type: 3}
+  _rooms: []
+  RoomSeparation: 3
+  LargeThreshold: 6
+  MediumThreshold: 5
+  SmallThreshold: 4
+  _seed: 0
+  ConnectionMat: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
+  ConnectionCollidersOffset: 0.5
+  CurrentNodeInfo: {fileID: 11400000, guid: 590e6fd0067b28f4e9bc3585d233a483, type: 2}
