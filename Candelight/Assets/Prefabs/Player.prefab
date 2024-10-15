@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7824369647889430288}
   - component: {fileID: 4135549623487435119}
   - component: {fileID: 8347758204725357575}
-  - component: {fileID: 968544777119318570}
   - component: {fileID: 7308163954821919037}
   - component: {fileID: 852674162637606924}
+  - component: {fileID: 121216876154967602}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -86,27 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &968544777119318570
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2588152376837393862}
-  m_Material: {fileID: 13400000, guid: d7a7138df9229354a8149ace2cc26f07, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &7308163954821919037
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -137,7 +116,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2588152376837393862}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: d7a7138df9229354a8149ace2cc26f07, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -153,6 +132,27 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0.35, y: 0, z: 0}
+--- !u!135 &121216876154967602
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2588152376837393862}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3867493866490079806
 GameObject:
   m_ObjectHideFlags: 0

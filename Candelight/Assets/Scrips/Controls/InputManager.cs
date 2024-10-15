@@ -8,7 +8,8 @@ namespace Controls
 {
     public enum EControlMap
     {
-        Level
+        Level,
+        Map
     }
 
     public class InputManager : MonoBehaviour
@@ -43,7 +44,8 @@ namespace Controls
             _levelMap = Input.FindActionMap("Level");
 
             _move = _levelMap.FindAction("Move");
-
+            InputAction _interact = _levelMap.FindAction("Interact");
+            _interact.performed += _cont.OnInteract;
         }
 
         public void LoadControls(EControlMap map)
@@ -53,6 +55,8 @@ namespace Controls
             {
                 case EControlMap.Level:
                     _currentMap = _levelMap;
+                    break;
+                case EControlMap.Map:
                     break;
             }
             _currentMap.Enable();
