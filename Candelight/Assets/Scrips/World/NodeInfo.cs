@@ -12,5 +12,6 @@ namespace World
         public int CurrentLevel;
         public int[] Seeds;
         public EBiome Biome;
+        public NodeManager Node;
     }
 }

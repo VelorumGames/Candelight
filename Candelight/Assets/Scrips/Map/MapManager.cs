@@ -1,3 +1,4 @@
+using Controls;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ namespace Map
         public GameObject[] SmallRooms;
         public GameObject[] MediumRooms;
         public GameObject[] LargeRooms;
+        public GameObject EndTorch;
 
         List<List<int>> _roomGraph = new List<List<int>>();
         public List<GameObject> _rooms = new List<GameObject>();
@@ -149,6 +151,7 @@ namespace Map
             rooms.Remove(endRoom);
             endRoom.RoomType = ERoomType.Exit;
             endRoom.IdText.text += " EXIT";
+            GameObject torch = Instantiate(EndTorch, endRoom.transform);
 
             //Elegimos con cierta probabilidad que una de las habitaciones tenga una runa
             if (Random.value < RuneChance)
@@ -174,6 +177,7 @@ namespace Map
             else //Si es el ultimo nivel
             {
                 //Se vuelve al mapa del mundo
+                CurrentNodeInfo.Node.RegisterCompletedNode();
                 SceneManager.LoadScene("WorldScene");
             }
         }

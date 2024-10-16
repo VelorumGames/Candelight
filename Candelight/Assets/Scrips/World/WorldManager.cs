@@ -1,3 +1,4 @@
+using Controls;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,8 @@ namespace World
 
         public List<List<int>> WorldMap = new List<List<int>>();
         List<GameObject> _nodes = new List<GameObject>();
+        public int NumNodes;
+        [SerializeField] GameObject _player;
 
         public int MaxNodes;
         public GameObject NodePrefab;
@@ -22,16 +25,25 @@ namespace World
         public Material biomeC;
 
         [SerializeField] float _biomeOffset;
+        [SerializeField] float _biomeSize;
         [SerializeField] float _biomeAThreshold;
         [SerializeField] float _biomeBThreshold;
 
         public WorldInfo World;
         public NodeInfo CurrentNodeInfo;
 
+        public bool ResetDataOnStart;
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            if (ResetDataOnStart)
+            {
+                World.World = null;
+            }
+            if (!World.World) DontDestroyOnLoad(_worldParent.gameObject);
 
             //Se fija la semilla
             Random.InitState(World.Seed);
@@ -44,10 +56,32 @@ namespace World
 
         private void Start()
         {
-            SpawnRandomNodes();
+            CurrentNodeInfo.CurrentLevel = 0;
 
-            _biomeOffset = Random.Range(0f, 100f);
-            GenerateBiomes();
+            if (!World.World) //Si no se ha generado mundo previamente
+            {
+                SpawnRandomNodes();
+
+                _biomeOffset = Random.Range(0f, 100f);
+                GenerateBiomes();
+                World.World = _worldParent.gameObject;
+
+            }
+            else
+            {
+                Debug.Log("INFO: El mundo ya se ha generado, por lo que no se vuelve a generar");
+                World.World.SetActive(true);
+            }
+            try
+            {
+                MovePlayerToLastNode(CurrentNodeInfo.Node.transform);
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log("INFO: Se ha detectado datos de un mundo previo inaccesibles. Se genera un nuevo mundo: " + e);
+                World.World = null;
+                Start();
+            }
         }
 
         /// <summary>
@@ -75,7 +109,7 @@ namespace World
 
         private void Update()
         {
-            GenerateBiomes();
+            //GenerateBiomes();
         }
 
         /// <summary>
@@ -86,7 +120,7 @@ namespace World
             foreach (var node in _nodes)
             {
                 float maxDataRange = 20f;
-                float biomeData = maxDataRange * Mathf.PerlinNoise(_biomeOffset + node.transform.position.x / 20, _biomeOffset + node.transform.position.z / 20);
+                float biomeData = maxDataRange * Mathf.PerlinNoise(_biomeOffset + node.transform.position.x / _biomeSize, _biomeOffset + node.transform.position.z / _biomeSize);
                 
                 EBiome biome = biomeData < maxDataRange * _biomeAThreshold ? EBiome.A : biomeData < maxDataRange * _biomeBThreshold ? EBiome.B : EBiome.C;
                 node.GetComponent<NodeManager>().SetBiome(biome);
@@ -103,6 +137,30 @@ namespace World
                         break;
                 }
             }
+
+            GenerateStart();
+        }
+
+        void GenerateStart()
+        {
+            foreach (var node in _nodes)
+            {
+                if (node.TryGetComponent<NodeManager>(out var nodeMan) && nodeMan.StartNodeCheck())
+                {
+                    GameObject _startNode = node;
+                    nodeMan.Text.text += " START";
+                    nodeMan.SetState(ENodeState.Explored);
+                    CurrentNodeInfo.Node = nodeMan; //Marcamos este como nodo inicial
+                    return;
+                }
+            }
+
+            Debug.LogWarning("ERROR: No se ha encontrado ningun nodo de entrada valido");
+        }
+
+        void MovePlayerToLastNode(Transform node)
+        {
+            _player.transform.position = new Vector3(node.position.x, _player.transform.position.y, node.position.z);
         }
 
         /// <summary>
@@ -131,11 +189,13 @@ namespace World
         /// <param name="levels"></param>
         /// <param name="seeds"></param>
         /// <param name="biome"></param>
-        public void SetCurrentNode(int levels, int[] seeds, EBiome biome)
+        public void SetCurrentNode(NodeManager node)
         {
-            CurrentNodeInfo.Levels = levels;
-            CurrentNodeInfo.Seeds = seeds;
-            CurrentNodeInfo.Biome = biome;
+            NodeData data = node.GetNodeData();
+            CurrentNodeInfo.Levels = data.NumLevels;
+            CurrentNodeInfo.Seeds = data.SeedExtra;
+            CurrentNodeInfo.Biome = data.Biome;
+            CurrentNodeInfo.Node = node;
         }
 
         /// <summary>
@@ -143,6 +203,7 @@ namespace World
         /// </summary>
         public void LoadNode()
         {
+            _worldParent.gameObject.SetActive(false);
             SceneManager.LoadScene("LevelScene");
         }
     }

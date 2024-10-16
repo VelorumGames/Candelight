@@ -8,5 +8,6 @@ namespace World
     public class WorldInfo : ScriptableObject
     {
         public int Seed;
+        public GameObject World;
     }
 }
