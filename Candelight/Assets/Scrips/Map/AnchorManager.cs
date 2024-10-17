@@ -236,9 +236,13 @@ namespace Map
             line.BakeMesh(transitionMesh, _map.ConnectionBakeCam);
             GameObject meshGO = new GameObject("TransitionMesh");
             meshGO.transform.parent = transform;
+            meshGO.transform.localPosition = new Vector3(meshGO.transform.localPosition.x, 0.009f, meshGO.transform.localPosition.z);
             MeshRenderer meshData = meshGO.AddComponent<MeshRenderer>();
             MeshFilter mesh = meshGO.AddComponent<MeshFilter>();
             mesh.mesh = transitionMesh;
+
+            //Recalculamos las normales para que la iluminacion funcione bien
+            mesh.mesh.RecalculateNormals();
 
             line.enabled = false;
 
@@ -446,7 +450,6 @@ namespace Map
                 Debug.Log($"Comprobacion: {boxes[2].center[axis == 0 ? 2 : 0] - halfSize[1]} > {(start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2 + Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10}");
                 while (boxes[2].center[axis == 0 ? 2 : 0] - halfSize[1] > (start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2 + Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10)
                 {
-                    Debug.Log(halfSize);
                     halfSize[1] += 0.01f;
                 }
             }
