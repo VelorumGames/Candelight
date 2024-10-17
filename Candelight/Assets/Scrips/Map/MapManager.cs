@@ -145,7 +145,7 @@ namespace Map
             rooms.Remove(startRoom);
             startRoom.RoomType = ERoomType.Start;
             startRoom.IdText.text += " START";
-            _player.transform.position = startRoom.transform.position + 0.8f * Vector3.up;
+            _player.transform.position = startRoom.transform.position + 1f * Vector3.up;
 
             ARoom endRoom = rooms[Random.Range(rooms.Count / 2, rooms.Count)];
             rooms.Remove(endRoom);

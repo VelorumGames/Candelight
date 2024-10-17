@@ -210,8 +210,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 169731459}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.11494657, y: 0, z: 0, w: 0.99337167}
-  m_LocalPosition: {x: 0, y: 0.95, z: -4.05}
+  m_LocalRotation: {x: 0.28109217, y: 0, z: 0, w: 0.9596808}
+  m_LocalPosition: {x: 0, y: 3.45, z: -5.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -359,8 +359,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 620055920}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.11494657, y: 0, z: 0, w: 0.99337167}
-  m_LocalPosition: {x: 0, y: 0.95, z: -4.05}
+  m_LocalRotation: {x: 0.28109217, y: 0, z: 0, w: 0.9596808}
+  m_LocalPosition: {x: 0, y: 3.45, z: -5.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -414,9 +414,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0.95, z: -4.05}
+  m_FollowOffset: {x: 0, y: 3.3, z: -5.15}
   m_XDamping: 1
-  m_YDamping: 1
+  m_YDamping: 6.09
   m_ZDamping: 1
   m_AngularDampingMode: 0
   m_PitchDamping: 0
@@ -788,7 +788,7 @@ PrefabInstance:
     - target: {fileID: 4229582545527436371, guid: 11f9e444f5ee42040a51ba28beefe963,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 4229582545527436371, guid: 11f9e444f5ee42040a51ba28beefe963,
         type: 3}
@@ -829,6 +829,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849966662116133155, guid: 11f9e444f5ee42040a51ba28beefe963,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 116
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -936,22 +941,22 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: LargeThreshold
-      value: 14
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: RoomSeparation
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
-        type: 3}
-      propertyPath: SmallThreshold
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: SmallThreshold
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: ConnectionWidth
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -962,7 +967,7 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: MediumThreshold
-      value: 12
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -977,7 +982,7 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: ConnectionCollidersOffset
-      value: 0.9
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 3307859510703695798, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}

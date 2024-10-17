@@ -15,6 +15,6 @@ public class Billboard : MonoBehaviour
 
     void LateUpdate()
     {
-        transform.rotation = mainCamera.transform.rotation;
+        if (mainCamera) transform.rotation = mainCamera.transform.rotation;
     }
 }

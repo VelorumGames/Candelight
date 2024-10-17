@@ -236,6 +236,7 @@ namespace Map
             line.BakeMesh(transitionMesh, _map.ConnectionBakeCam);
             GameObject meshGO = new GameObject("TransitionMesh");
             meshGO.transform.parent = transform;
+            meshGO.transform.localPosition = new Vector3(meshGO.transform.localPosition.x, 0.009f, meshGO.transform.localPosition.z);
             MeshRenderer meshData = meshGO.AddComponent<MeshRenderer>();
             MeshFilter mesh = meshGO.AddComponent<MeshFilter>();
             mesh.mesh = transitionMesh;

@@ -12,7 +12,7 @@ namespace Interactuables
         {
             if (other.CompareTag("Player"))
             {
-                Debug.Log("Se carga interaccion de " + gameObject.name);
+                
                 other.GetComponentInParent<PlayerController>().LoadInteraction(Interaction, NotificationTransform);
             }
         }
@@ -21,7 +21,7 @@ namespace Interactuables
         {
             if (other.CompareTag("Player"))
             {
-                Debug.Log("Se descarga interaccion de " + gameObject.name);
+                
                 other.GetComponentInParent<PlayerController>().UnloadInteraction();
             }
         }

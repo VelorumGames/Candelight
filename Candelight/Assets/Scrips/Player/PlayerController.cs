@@ -22,7 +22,7 @@ namespace Player
             set
             {
                 m_current = value;
-                UIManager.Instance.ActualNodeName = m_current.gameObject.name;
+                if (UIManager.Instance != null && m_current != null) UIManager.Instance.ActualNodeName = m_current.gameObject.name;
             }
         }
         Transform m_next;
@@ -34,7 +34,7 @@ namespace Player
                 if (m_next != value)
                 {
                     m_next = value;
-                    UIManager.Instance.NextNodeName = _nextNode.gameObject.name;
+                    if (UIManager.Instance != null && m_next != null) UIManager.Instance.NextNodeName = _nextNode.gameObject.name;
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace Player
 
             _oSelectionPos = _selection.transform.position;
 
-            if (!_currentNode) _currentNode = WorldManager.Instance.CurrentNodeInfo.Node;
+            if (!_currentNode && WorldManager.Instance) _currentNode = WorldManager.Instance.CurrentNodeInfo.Node;
         }
 
         public void OnMove(Vector2 direction)
@@ -101,26 +101,27 @@ namespace Player
 
         public void LoadInteraction(Action interaction, Transform obj)
         {
+            Debug.Log("Se carga interaccion de " + gameObject.name);
             _interaction = interaction;
+
+            _selection.SetActive(true);
             _selection.transform.parent = obj;
             _selection.transform.position = obj.transform.position;
         }
 
         public void UnloadInteraction()
         {
+            Debug.Log("Se descarga interaccion de " + gameObject.name);
             _interaction = null;
+
             _selection.transform.parent = transform;
             _selection.transform.position = _oSelectionPos;
+            _selection.SetActive(false);
         }
 
         private void Update()
         {
             _rb.maxLinearVelocity = _maxSpeed;
-        }
-
-        public void ShowSelection(Transform target)
-        {
-
         }
 
         IEnumerator MovePlayerTowards(Transform target)

@@ -124,7 +124,6 @@ namespace World
             bool start = true;
 
             if (_data.Biome != EBiome.A) start = false;
-            Debug.Log(ConnectedNodes.Count);
             foreach(var n in ConnectedNodes)
             {
                 Debug.Log(n.GetComponent<NodeManager>().GetNodeData().Biome);
