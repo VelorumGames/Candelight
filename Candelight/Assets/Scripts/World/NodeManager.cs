@@ -142,6 +142,7 @@ namespace World
         public void RegisterCompletedNode()
         {
             SetState(ENodeState.Completed);
+            WorldManager.Instance.World.CompletedNodes++;
             foreach(var node in ConnectedNodes)
             {
                 node.GetComponent<NodeManager>().SetState(ENodeState.Explored);

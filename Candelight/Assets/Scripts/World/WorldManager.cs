@@ -43,7 +43,13 @@ namespace World
             {
                 World.World = null;
             }
-            if (!World.World) DontDestroyOnLoad(_worldParent.gameObject);
+
+            //Si es la primera vez que se visita esta escena
+            if (!World.World)
+            {
+                World.CompletedNodes = 0;
+                DontDestroyOnLoad(_worldParent.gameObject);
+            }
 
             //Se fija la semilla
             Random.InitState(World.Seed);

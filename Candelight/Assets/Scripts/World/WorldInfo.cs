@@ -9,5 +9,6 @@ namespace World
     {
         public int Seed;
         public GameObject World;
+        public int CompletedNodes;
     }
 }
