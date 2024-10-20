@@ -6,7 +6,7 @@ namespace Hechizos.DeForma
 {
     public class ProjectileRune : AShapeRune
     {
-        public ProjectileRune()
+        public ProjectileRune() : base()
         {
             Name = "Proyectil";
         }

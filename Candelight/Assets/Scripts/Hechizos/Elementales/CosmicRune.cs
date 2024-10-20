@@ -6,7 +6,7 @@ namespace Hechizos.Elementales
 {
     public class CosmicRune : AElementalRune
     {
-        public CosmicRune()
+        public CosmicRune() : base()
         {
             Name = "Cósmico";
         }

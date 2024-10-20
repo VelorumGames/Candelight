@@ -6,7 +6,7 @@ namespace Hechizos.DeForma
 {
     public class MeleeRune : AShapeRune
     {
-        public MeleeRune()
+        public MeleeRune() : base()
         {
             Name = "Cuerpo a Cuerpo";
         }

@@ -1,3 +1,6 @@
+using Controls;
+using Hechizos;
+using Hechizos.Elementales;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,10 +11,8 @@ using World;
 
 namespace Player
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : AController
     {
-        Rigidbody _rb;
-        [SerializeField] float _speed;
         [SerializeField] float _maxSpeed;
 
         [SerializeField] GameObject _pathChooser;
@@ -41,12 +42,9 @@ namespace Player
         [SerializeField] GameObject _selection;
         Vector3 _oSelectionPos;
 
-        Action _interaction;
+        List<ESpellInstruction> _instructions = new List<ESpellInstruction>();
 
-        private void Awake()
-        {
-            _rb = GetComponent<Rigidbody>();
-        }
+        Action _interaction;
 
         private void Start()
         {
@@ -56,18 +54,44 @@ namespace Player
             _oSelectionPos = _selection.transform.position;
 
             if (!_currentNode && WorldManager.Instance) _currentNode = WorldManager.Instance.CurrentNodeInfo.Node;
-        }
 
-        public void OnMove(Vector2 direction)
-        {
-            Vector3 force = Time.deltaTime * 100f * _speed * new Vector3(direction.x, 0f, direction.y);
-            _rb.AddForce(force, ForceMode.Force);
+            new CosmicRune();
         }
 
         public void OnInteract(InputAction.CallbackContext _)
         {
             if (_interaction != null) _interaction();
         }
+
+        public void OnSpellInstruction(ESpellInstruction instr)
+        {
+            Debug.Log("Se ha registrado la instruccion " + instr);
+            _instructions.Add(instr);
+        }
+
+        public void OnSpellLaunch()
+        {
+            string str = "";
+            foreach (ESpellInstruction i in _instructions) str += i.ToString();
+            Debug.Log("Se lanza hechizo: " + str);
+            foreach(var k in ARune.Spells.Keys)
+            {
+                str = "";
+                foreach (var i in k)
+                {
+                    str += i.ToString();
+                }
+                Debug.Log("Hechizo guardado: " + str);
+            }
+            if(ARune.FindSpell(_instructions.ToArray(), out var spell))
+            {
+                Debug.Log("Lo contiene!!");
+                spell.ApplyEffect();
+            }
+            ResetInstructions();
+        }
+
+        public void ResetInstructions() => _instructions.Clear();
 
         public void OnChoosePath(Vector2 direction)
         {
@@ -96,7 +120,7 @@ namespace Player
 
         public void OnConfirmPath(InputAction.CallbackContext _)
         {
-            if (_rb.velocity.magnitude < 0.1f) StartCoroutine(MovePlayerTowards(_nextNode));
+            if (_rb.velocity.magnitude < 0.1f) StartCoroutine(MovePlayerTowardsNode(_nextNode));
         }
 
         public void LoadInteraction(Action interaction, Transform obj)
@@ -124,7 +148,7 @@ namespace Player
             _rb.maxLinearVelocity = _maxSpeed;
         }
 
-        IEnumerator MovePlayerTowards(Transform target)
+        IEnumerator MovePlayerTowardsNode(Transform target)
         {
             Vector3 direction = new Vector3((_nextNode.position - transform.position).x, 0f, (_nextNode.position - transform.position).z).normalized;
             while (Vector3.Distance(transform.position, target.position) > 1.5f)

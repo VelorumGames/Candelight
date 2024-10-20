@@ -14,6 +14,11 @@ namespace Controls
         Dialogue
     }
 
+    public enum ESpellInstruction
+    {
+        Up, Down, Right, Left
+    }
+
     public class InputManager : MonoBehaviour
     {
         public static InputManager Instance;
@@ -32,6 +37,7 @@ namespace Controls
 
         InputAction _move;
         InputAction _choosePath;
+        InputAction _spell;
 
         private void Awake()
         {
@@ -57,6 +63,21 @@ namespace Controls
             _move = _levelMap.FindAction("Move");
             InputAction interact = _levelMap.FindAction("Interact");
             interact.performed += _cont.OnInteract;
+            _spell = _levelMap.FindAction("Spell");
+            _spell.performed += StartSpellMode;
+            _spell.canceled += StopSpellMode;
+            InputAction spellUp = _levelMap.FindAction("SpellUp");
+            spellUp.performed += RegisterSpellUp;
+            //spellUp.Disable();
+            InputAction spellDown = _levelMap.FindAction("SpellDown");
+            spellDown.performed += RegisterSpellDown;
+            //spellDown.Disable();
+            InputAction spellRight = _levelMap.FindAction("SpellRight");
+            spellRight.performed += RegisterSpellRight;
+            //spellRight.Disable();
+            InputAction spellLeft = _levelMap.FindAction("SpellLeft");
+            spellLeft.performed += RegisterSpellLeft;
+            //spellLeft.Disable();
 
             //World
             _worldMap = Input.FindActionMap("World");
@@ -107,6 +128,17 @@ namespace Controls
         {
             InputAction interact = _levelMap.FindAction("Interact");
             interact.performed -= _cont.OnInteract;
+            _spell = _levelMap.FindAction("Spell");
+            _spell.performed -= StartSpellMode;
+            _spell.canceled -= StopSpellMode;
+            InputAction spellUp = _levelMap.FindAction("SpellUp");
+            spellUp.performed -= RegisterSpellUp;
+            InputAction spellDown = _levelMap.FindAction("SpellDown");
+            spellDown.performed -= RegisterSpellDown;
+            InputAction spellRight = _levelMap.FindAction("SpellRight");
+            spellRight.performed -= RegisterSpellRight;
+            InputAction spellLeft = _levelMap.FindAction("SpellLeft");
+            spellLeft.performed -= RegisterSpellLeft;
             _move.Disable();
             
             InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
@@ -126,5 +158,34 @@ namespace Controls
         }
 
         void NextDialogueBlock(InputAction.CallbackContext _) => _dialogue.Next();
+
+        void StartSpellMode(InputAction.CallbackContext _)
+        {
+            _move.Disable();
+            _cont.ResetInstructions();
+        }
+
+        void StopSpellMode(InputAction.CallbackContext _)
+        {
+            _move.Enable();
+            _cont.OnSpellLaunch();
+        }
+
+        void RegisterSpellUp(InputAction.CallbackContext ctx)
+        {
+            if (_spell.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Up);
+        }
+        void RegisterSpellDown(InputAction.CallbackContext ctx)
+        {
+            if (_spell.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Down);
+        }
+        void RegisterSpellRight(InputAction.CallbackContext ctx)
+        {
+            if (_spell.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Right);
+        }
+        void RegisterSpellLeft(InputAction.CallbackContext ctx)
+        {
+            if (_spell.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Left);
+        }
     }
 }

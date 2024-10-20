@@ -8,6 +8,9 @@ namespace Hechizos.DeForma
 {
     public abstract class AShapeRune : ARune
     {
+
+        public AShapeRune() : base(3, 0.5f) { }
+
         public override void ApplyEffect()
         {
 

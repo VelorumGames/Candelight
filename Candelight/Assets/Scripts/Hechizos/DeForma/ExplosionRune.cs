@@ -6,7 +6,7 @@ namespace Hechizos.DeForma
 {
     public class ExplosionRune : AShapeRune
     {
-        public ExplosionRune()
+        public ExplosionRune() : base()
         {
             Name = "Explosión";
         }

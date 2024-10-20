@@ -7,7 +7,7 @@ namespace Hechizos.Elementales
 {
     public class ElectricRune : AElementalRune
     {
-        public ElectricRune()
+        public ElectricRune() : base()
         {
             Name = "Electricidad";
         }
