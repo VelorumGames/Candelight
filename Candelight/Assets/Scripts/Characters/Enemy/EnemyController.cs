@@ -28,7 +28,7 @@ namespace Enemy
             while (true)
             {
                 Vector3 target = transform.position + new Vector3(Random.Range(-2f, 2f), transform.position.y, Random.Range(-2f, 2f));
-                Debug.Log("Se encuentra nuevo target: " + target);
+                //Debug.Log("Se encuentra nuevo target: " + target);
                 yield return StartCoroutine(MoveTowards(target, 5f));
             }
         }

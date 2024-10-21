@@ -1,4 +1,5 @@
 using Controls;
+using Hechizos.Elementales;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,9 +15,11 @@ namespace Hechizos
         protected ESpellInstruction[] Instructions;
 
         public static Dictionary<ESpellInstruction[], ARune> Spells = new Dictionary<ESpellInstruction[], ARune>();
+        protected Mage MageManager;
 
-        public ARune(int Complexity, float Difficulty)
+        public ARune(Mage m, int Complexity, float Difficulty)
         {
+            MageManager = m;
             Instructions = CreateInstructionChain(Complexity, Difficulty);
             Spells.Add(Instructions, this);
 
@@ -34,7 +37,7 @@ namespace Hechizos
             for (int i = 0; i < compl; i++)
             {
                 float v = Random.value;
-                Debug.Log(v + " > " + dif);
+                //Debug.Log(v + " > " + dif);
                 if (i > 0 && v > dif) chain[i] = chain[i - 1];
                 else chain[i] = (ESpellInstruction)Random.Range(0, 4);
             }
@@ -43,6 +46,12 @@ namespace Hechizos
             else return chain;
         }
 
+        /// <summary>
+        /// Encuentra un hechizo en base a una cadena de instrucciones
+        /// </summary>
+        /// <param name="chain"></param>
+        /// <param name="spell"></param>
+        /// <returns></returns>
         public static bool FindSpell(ESpellInstruction[] chain, out ARune spell)
         {
             int found = 0;
@@ -69,11 +78,18 @@ namespace Hechizos
             return false;
         }
 
-        public static bool FindElements(ESpellInstruction[] chain, out ARune[] elements)
+        /// <summary>
+        /// Encuentra los elementos en una cadena de instrucciones, asumiendo que los elementos tienen una complejidad de 2
+        /// </summary>
+        /// <param name="chain"></param>
+        /// <param name="elements"></param>
+        /// <returns></returns>
+        public static bool FindElements(ESpellInstruction[] chain, out AElementalRune[] elements)
         {
             int found = 0;
             int num = chain.Length / 2;  //2 Es la complejidad de cada elemento
-            elements = new ARune[num];
+            Debug.Log($"Deberia haber {num} elementos en esta cadena");
+            elements = new AElementalRune[num];
 
             for (int i = 0; i < num; i++)
             {
@@ -82,7 +98,8 @@ namespace Hechizos
                 subChain[1] = chain[i * num + 1];
                if (FindSpell(subChain, out ARune element))
                 {
-                    elements[i] = element;
+                    elements[i] = element as AElementalRune;
+                    Debug.Log(elements[i].Name);
                     found++;
                 }
             }
@@ -91,7 +108,7 @@ namespace Hechizos
         }
 
         // Método abstracto para aplicar efectos a los glifos, que será implementado en las clases derivadas
-        public abstract void ApplyEffect();
+        //public abstract void ApplyEffect();
 
     }
 

@@ -44,8 +44,15 @@ namespace Player
         Vector3 _oSelectionPos;
 
         List<ESpellInstruction> _instructions = new List<ESpellInstruction>();
+        Mage _mage;
 
         Action _interaction;
+
+        private new void Awake()
+        {
+            base.Awake();
+            _mage = GetComponent<Mage>();
+        }
 
         private void Start()
         {
@@ -55,8 +62,6 @@ namespace Player
             _oSelectionPos = _selection.transform.position;
 
             if (!_currentNode && WorldManager.Instance) _currentNode = WorldManager.Instance.CurrentNodeInfo.Node;
-
-            new CosmicRune();
         }
 
         public void OnInteract(InputAction.CallbackContext _)
@@ -64,30 +69,17 @@ namespace Player
             if (_interaction != null) _interaction();
         }
 
-       
-
         public void OnSpellInstruction(ESpellInstruction instr)
         {
             Debug.Log("Se ha registrado la instruccion " + instr);
             _instructions.Add(instr);
         }
-        public void OnChooseElement()
+        public void OnChooseElements()
         {
             if (ARune.FindElements(_instructions.ToArray(),out var elements))
             {
-                Debug.Log("Se ha seleccionado hechizo.");
-                foreach ( var rune in ARune.Spells.Values)
-                {
-                    if (rune.GetType().IsSubclassOf(typeof(AShapeRune)))
-                    {
-                        AShapeRune shapeRune = (AShapeRune)rune;
-
-                        foreach (AElementalRune element in elements)
-                        {
-                            shapeRune.LoadElements(element.GetActions());
-                        }
-                    }
-                }
+                Debug.Log("Se encuentran elementos que aplicar: " + elements);
+                _mage.SetActiveElements(elements);
             }
         }
         public void OnSpellLaunch()
@@ -95,19 +87,11 @@ namespace Player
             string str = "";
             foreach (ESpellInstruction i in _instructions) str += i.ToString();
             Debug.Log("Se lanza hechizo: " + str);
-            foreach(var k in ARune.Spells.Keys)
-            {
-                str = "";
-                foreach (var i in k)
-                {
-                    str += i.ToString();
-                }
-                Debug.Log("Hechizo guardado: " + str);
-            }
             if(ARune.FindSpell(_instructions.ToArray(), out var spell))
             {
-                Debug.Log("Lo contiene!!");
-                spell.ApplyEffect();
+                Debug.Log("Hechizo encontrado!!: " + spell.Name);
+                AShapeRune shapeSpell = spell as AShapeRune;
+                shapeSpell.ThrowSpell();
             }
             ResetInstructions();
         }
