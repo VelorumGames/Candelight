@@ -37,6 +37,7 @@ namespace Controls
 
         InputAction _move;
         InputAction _choosePath;
+        InputAction _element;
         InputAction _spell;
 
         private void Awake()
@@ -63,6 +64,9 @@ namespace Controls
             _move = _levelMap.FindAction("Move");
             InputAction interact = _levelMap.FindAction("Interact");
             interact.performed += _cont.OnInteract;
+            _element = _levelMap.FindAction("Element");
+            _element.performed += StartElementMode;
+            _element.canceled += StopElementMode;
             _spell = _levelMap.FindAction("Spell");
             _spell.performed += StartSpellMode;
             _spell.canceled += StopSpellMode;
@@ -128,7 +132,10 @@ namespace Controls
         {
             InputAction interact = _levelMap.FindAction("Interact");
             interact.performed -= _cont.OnInteract;
-            _spell = _levelMap.FindAction("Spell");
+            //_element = _levelMap.FindAction("Element");
+            _element.performed -= StartElementMode;
+            _element.canceled -= StopElementMode;
+            //_spell = _levelMap.FindAction("Spell");
             _spell.performed -= StartSpellMode;
             _spell.canceled -= StopSpellMode;
             InputAction spellUp = _levelMap.FindAction("SpellUp");
@@ -159,15 +166,31 @@ namespace Controls
 
         void NextDialogueBlock(InputAction.CallbackContext _) => _dialogue.Next();
 
+        void StartElementMode(InputAction.CallbackContext _)
+        {
+            _move.Disable();
+            Time.timeScale = 0.75f;
+            _cont.ResetInstructions();
+        }
+
+        void StopElementMode(InputAction.CallbackContext _)
+        {
+            _move.Enable();
+            Time.timeScale = 1f;
+            _cont.OnChooseElement();
+        }
+
         void StartSpellMode(InputAction.CallbackContext _)
         {
             _move.Disable();
+            Time.timeScale = 0.75f;
             _cont.ResetInstructions();
         }
 
         void StopSpellMode(InputAction.CallbackContext _)
         {
             _move.Enable();
+            Time.timeScale = 1f;
             _cont.OnSpellLaunch();
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Hechizos;
 using Hechizos.Elementales;
+using System;
 
 namespace Hechizos.DeForma
 {
@@ -10,6 +11,8 @@ namespace Hechizos.DeForma
     {
 
         public AShapeRune() : base(3, 0.5f) { }
+
+        public abstract void LoadElements(Action[] actions);
 
         public override void ApplyEffect()
         {

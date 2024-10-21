@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Element",
+                    "type": "Button",
+                    "id": "164c8081-93bb-44c2-9a96-1e2579ed5b17",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Spell",
                     "type": "Button",
                     "id": "deba469a-f475-407a-af17-4f438cab9cbb",
@@ -188,6 +197,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SpellLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "28885616-454e-4c6c-8418-39012098c0de",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Element",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

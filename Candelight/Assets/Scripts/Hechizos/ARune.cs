@@ -51,6 +51,7 @@ namespace Hechizos
             {
                 if (chain.Length == instrs.Length)
                 {
+                    found = 0;
                     for (int i = 0; i < chain.Length; i++)
                     {
                         if (chain[i] == instrs[i]) found++;
@@ -66,6 +67,27 @@ namespace Hechizos
             }
 
             return false;
+        }
+
+        public static bool FindElements(ESpellInstruction[] chain, out ARune[] elements)
+        {
+            int found = 0;
+            int num = chain.Length / 2;  //2 Es la complejidad de cada elemento
+            elements = new ARune[num];
+
+            for (int i = 0; i < num; i++)
+            {
+                ESpellInstruction[] subChain = new ESpellInstruction[2];
+                subChain[0] = chain[i * num];
+                subChain[1] = chain[i * num + 1];
+               if (FindSpell(subChain, out ARune element))
+                {
+                    elements[i] = element;
+                    found++;
+                }
+            }
+
+            return found == num;
         }
 
         // Método abstracto para aplicar efectos a los glifos, que será implementado en las clases derivadas

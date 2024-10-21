@@ -1,5 +1,6 @@
 using Controls;
 using Hechizos;
+using Hechizos.DeForma;
 using Hechizos.Elementales;
 using System;
 using System.Collections;
@@ -63,12 +64,32 @@ namespace Player
             if (_interaction != null) _interaction();
         }
 
+       
+
         public void OnSpellInstruction(ESpellInstruction instr)
         {
             Debug.Log("Se ha registrado la instruccion " + instr);
             _instructions.Add(instr);
         }
+        public void OnChooseElement()
+        {
+            if (ARune.FindElements(_instructions.ToArray(),out var elements))
+            {
+                Debug.Log("Se ha seleccionado hechizo.");
+                foreach ( var rune in ARune.Spells.Values)
+                {
+                    if (rune.GetType().IsSubclassOf(typeof(AShapeRune)))
+                    {
+                        AShapeRune shapeRune = (AShapeRune)rune;
 
+                        foreach (AElementalRune element in elements)
+                        {
+                            shapeRune.LoadElements(element.GetActions());
+                        }
+                    }
+                }
+            }
+        }
         public void OnSpellLaunch()
         {
             string str = "";
