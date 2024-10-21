@@ -26,6 +26,10 @@ namespace Items
             }
         }
 
+        public void AddItem(GameObject item)
+        {
+            ItemsList.Add(item.GetComponent<AItem>());
+        }
 
         
     }

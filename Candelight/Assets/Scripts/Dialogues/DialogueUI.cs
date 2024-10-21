@@ -6,6 +6,7 @@ using Auxiliar;
 using UnityEngine.UI;
 using Controls;
 using Player;
+using Items;
 
 namespace Dialogues
 {
@@ -26,6 +27,8 @@ namespace Dialogues
 
         Image _spriteRend;
 
+        Inventory _inventory;
+
         private void Awake()
         {
             _text = _textGameObject.GetComponent<TextMeshProUGUI>();
@@ -34,6 +37,8 @@ namespace Dialogues
             _spriteRend = _iconGameObject.GetComponent<Image>();
 
             _cont = FindObjectOfType<PlayerController>();
+
+            _inventory = FindObjectOfType<Inventory>();
         }
 
         private void LoadBlockInfo(DialogueBlock block)
@@ -42,6 +47,10 @@ namespace Dialogues
 
             _showUIText.ShowText(_currentBlock.text);
             _spriteRend.sprite = _currentBlock.icon;
+            if (_currentBlock.item != null)
+            {
+                _inventory.AddItem(_currentBlock.item);
+            }
         }
 
         private void NextBlock()

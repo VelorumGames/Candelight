@@ -1,3 +1,4 @@
+using Items;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace Dialogues
     {
         public Sprite icon;
         public string text;
+        public GameObject item;
         public DialogueBlock nextBlock;
     }
 }
