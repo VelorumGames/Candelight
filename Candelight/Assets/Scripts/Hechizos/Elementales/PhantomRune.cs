@@ -6,7 +6,7 @@ namespace Hechizos.Elementales
 {
     public class PhantomRune : AElementalRune
     {
-        public PhantomRune() : base()
+        public PhantomRune(Mage m) : base(m)
         {
             Name = "Fantasmal";
         }

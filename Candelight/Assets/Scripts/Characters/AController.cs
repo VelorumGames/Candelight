@@ -21,15 +21,18 @@ public abstract class AController : MonoBehaviour
         }
     }
 
+    public Vector3 Orientation;
+
     protected void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-    }
 
-    
+        Orientation = transform.forward;
+    }
 
     public void OnMove(Vector2 direction)
     {
+        Orientation = new Vector3(direction.x, 0f, direction.y);
         Vector3 force = Time.deltaTime * 100f * _speed * new Vector3(direction.x, 0f, direction.y);
         _rb.AddForce(force, ForceMode.Force);
     }

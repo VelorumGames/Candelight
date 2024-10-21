@@ -9,22 +9,15 @@ namespace Hechizos.DeForma
 {
     public abstract class AShapeRune : ARune
     {
+        protected Action[] ElementActions;
 
-        public AShapeRune() : base(3, 0.5f) { }
+        public AShapeRune(Mage m) : base(m, 3, 0.5f) { }
 
         public abstract void LoadElements(Action[] actions);
-
-        public override void ApplyEffect()
-        {
-
-        }
+        public abstract void ResetElements();
 
         // Este método lanzará el hechizo basado en los elementos activos
-        public void ThrowSorcery(AElementalRune[] currentElements)
-        {
-            Debug.Log("Lanzando hechizo: " + Name);
-            // Aquí se define el efecto específico en función del elemento activo.
-        }
+        public abstract void ThrowSpell();
 
     }
 }

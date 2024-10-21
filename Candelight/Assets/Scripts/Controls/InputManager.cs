@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Player;
 using Dialogues;
+using Hechizos;
 
 namespace Controls
 {
@@ -102,7 +103,7 @@ namespace Controls
 
         public void LoadControls(EControlMap map)
         {
-            Debug.Log("Mapa previo: " + _currentMap);
+            //Debug.Log("Mapa previo: " + _currentMap);
             _prevControls = _currentMap;
             if (_currentMap != null) _currentMap.Disable();
             switch(map)
@@ -117,7 +118,7 @@ namespace Controls
                     _currentMap = _dialogueMap;
                     break;
             }
-            Debug.Log("Mapa colocado: " + _currentMap);
+            //Debug.Log("Mapa colocado: " + _currentMap);
             _currentMap.Enable();
         }
 
@@ -177,7 +178,7 @@ namespace Controls
         {
             _move.Enable();
             Time.timeScale = 1f;
-            _cont.OnChooseElement();
+            _cont.OnChooseElements();
         }
 
         void StartSpellMode(InputAction.CallbackContext _)
@@ -196,19 +197,19 @@ namespace Controls
 
         void RegisterSpellUp(InputAction.CallbackContext ctx)
         {
-            if (_spell.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Up);
+            if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Up);
         }
         void RegisterSpellDown(InputAction.CallbackContext ctx)
         {
-            if (_spell.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Down);
+            if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Down);
         }
         void RegisterSpellRight(InputAction.CallbackContext ctx)
         {
-            if (_spell.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Right);
+            if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Right);
         }
         void RegisterSpellLeft(InputAction.CallbackContext ctx)
         {
-            if (_spell.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Left);
+            if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Left);
         }
     }
 }

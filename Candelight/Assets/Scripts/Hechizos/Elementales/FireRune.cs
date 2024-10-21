@@ -6,7 +6,7 @@ namespace Hechizos.Elementales
 {
     public class FireRune : AElementalRune
     {
-        public FireRune() : base()
+        public FireRune(Mage m) : base(m)
         {
             Name = "Fuego";
         }
