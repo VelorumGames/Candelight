@@ -6,7 +6,7 @@ public class ExplosionGlifo : GlifoDeForma
 {
     public ExplosionGlifo(string elementoActivo) : base(elementoActivo)
     {
-        Nombre = "Explosión";
+        Nombre = "Explosion";
     }
 
     public override void AplicarEfecto()
@@ -17,19 +17,19 @@ public class ExplosionGlifo : GlifoDeForma
         switch (elementoActivo)
         {
             case "Fuego":
-                Debug.Log("Lanzando un Proyectil de Fuego");
+                Debug.Log("Explosion de Fuego");
                 // Aquí implementas la lógica del proyectil de fuego
                 break;
             case "Electricidad":
-                Debug.Log("Lanzando un Proyectil Eléctrico");
+                Debug.Log("Explosion Eléctrico");
                 // Aquí implementas la lógica del proyectil eléctrico
                 break;
             case "Cósmico":
-                Debug.Log("Lanzando un Proyectil Cósmico");
+                Debug.Log("Explosion Cósmico");
                 // Aquí implementas la lógica del proyectil cósmico
                 break;
             case "Fantasmal":
-                Debug.Log("Lanzando un Proyectil Fantasmal");
+                Debug.Log("Explosion Fantasmal");
                 // Aquí implementas la lógica del proyectil cósmico
                 break;
             default:

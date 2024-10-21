@@ -14,7 +14,7 @@ public class GlifoDeForma : Glifo
     // Este método lanzará el hechizo basado en el elemento activo
     public override void AplicarEfecto()
     {
-        Debug.Log("Lanzando hechizo: " + Nombre + " con elemento: " + elementoActivo);
+        //Debug.Log("Lanzando hechizo: " + Nombre + " con elemento: " + elementoActivo);
         // Aquí se define el efecto específico en función del elemento activo.
     }
 

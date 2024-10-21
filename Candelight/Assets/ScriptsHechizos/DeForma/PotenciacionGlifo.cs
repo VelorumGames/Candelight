@@ -6,7 +6,7 @@ public class PotenciacionGlifo : GlifoDeForma
 {
     public PotenciacionGlifo(string elementoActivo) : base(elementoActivo)
     {
-        Nombre = "Potenciación";
+        Nombre = "Potenciacion";
     }
 
     public override void AplicarEfecto()
@@ -17,19 +17,19 @@ public class PotenciacionGlifo : GlifoDeForma
         switch (elementoActivo)
         {
             case "Fuego":
-                Debug.Log("Lanzando un Proyectil de Fuego");
+                Debug.Log("Potenciacion de Fuego");
                 // Aquí implementas la lógica del proyectil de fuego
                 break;
             case "Electricidad":
-                Debug.Log("Lanzando un Proyectil Eléctrico");
+                Debug.Log("Potenciacion Eléctrico");
                 // Aquí implementas la lógica del proyectil eléctrico
                 break;
             case "Cósmico":
-                Debug.Log("Lanzando un Proyectil Cósmico");
+                Debug.Log("Potenciacion Cósmico");
                 // Aquí implementas la lógica del proyectil cósmico
                 break;
             case "Fantasmal":
-                Debug.Log("Lanzando un Proyectil Fantasmal");
+                Debug.Log("Potenciacion Fantasmal");
                 // Aquí implementas la lógica del proyectil cósmico
                 break;
             default:

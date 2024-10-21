@@ -6,6 +6,6 @@ public class CosmicoGlifo : GlifoElemental
 {
     public CosmicoGlifo()
     {
-        Nombre = "Cósmico";
+        Nombre = "Cosmico";
     }
 }

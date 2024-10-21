@@ -17,19 +17,19 @@ public class CuerpoACuerpoGlifo : GlifoDeForma
         switch (elementoActivo)
         {
             case "Fuego":
-                Debug.Log("Lanzando un Proyectil de Fuego");
+                Debug.Log("Cuerpo a Cuerpo de Fuego");
                 // Aquí implementas la lógica del proyectil de fuego
                 break;
             case "Electricidad":
-                Debug.Log("Lanzando un Proyectil Eléctrico");
+                Debug.Log("Cuerpo a Cuerpo Eléctrico");
                 // Aquí implementas la lógica del proyectil eléctrico
                 break;
             case "Cósmico":
-                Debug.Log("Lanzando un Proyectil Cósmico");
+                Debug.Log("Cuerpo a Cuerpo Cósmico");
                 // Aquí implementas la lógica del proyectil cósmico
                 break;
             case "Fantasmal":
-                Debug.Log("Lanzando un Proyectil Fantasmal");
+                Debug.Log("Cuerpo a Cuerpo Fantasmal");
                 // Aquí implementas la lógica del proyectil cósmico
                 break;
             default:
