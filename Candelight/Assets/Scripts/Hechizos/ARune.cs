@@ -1,4 +1,5 @@
 using Controls;
+using Hechizos.DeForma;
 using Hechizos.Elementales;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Hechizos
         protected int Complexity; //Numero de instrucciones que requerira el glifo
         protected float Difficulty; //Valor entre 0 y 1 que dictara la dificultad de la cadena de instrucciones
         protected ESpellInstruction[] Instructions;
+        protected bool Activated = false;
 
         public static Dictionary<ESpellInstruction[], ARune> Spells = new Dictionary<ESpellInstruction[], ARune>();
         protected Mage MageManager;
@@ -23,11 +25,12 @@ namespace Hechizos
             Instructions = CreateInstructionChain(Complexity, Difficulty);
             Spells.Add(Instructions, this);
 
+            //Para debuggear:
+            Activate();
+
             string instrs = "";
 
             foreach (ESpellInstruction i in Instructions) instrs += i.ToString();
-
-            Debug.Log($"Se genera la cadena {instrs} para {Name}");
         }
 
         ESpellInstruction[] CreateInstructionChain(int compl, float dif)
@@ -67,7 +70,7 @@ namespace Hechizos
                     }
 
                     //Si todas han coincidido
-                    if (found == chain.Length)
+                    if (found == chain.Length && Spells[instrs].Activated)
                     {
                         spell = Spells[instrs];
                         return true;
@@ -107,9 +110,38 @@ namespace Hechizos
             return found == num;
         }
 
-        // Método abstracto para aplicar efectos a los glifos, que será implementado en las clases derivadas
-        //public abstract void ApplyEffect();
+        public static void CreateAllRunes(Mage m)
+        {
+            new CosmicRune(m);
+            new ElectricRune(m);
+            new FireRune(m);
+            new PhantomRune(m);
 
+            new MeleeRune(m);
+            new ProjectileRune(m);
+            new ExplosionRune(m);
+            new BuffRune(m);
+        }
+
+        public static string InstructionsToString(ESpellInstruction[] chain)
+        {
+            string str = "{ ";
+            foreach (var i in chain)
+            {
+                str += i.ToString();
+                str += " ";
+            }
+            str += "}";
+            return str;
+        }
+
+        public void Activate() => Activated = true;
+        public static void Activate(ESpellInstruction[] chain)
+        {
+            if (Spells.TryGetValue(chain, out var rune))
+            {
+                rune.Activate();
+            }
+        }
     }
-
 }

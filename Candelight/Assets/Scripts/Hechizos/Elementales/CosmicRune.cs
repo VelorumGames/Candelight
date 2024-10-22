@@ -9,43 +9,45 @@ namespace Hechizos.Elementales
         public CosmicRune(Mage m) : base(m)
         {
             Name = "Cósmico";
+            Damage = 20f;
+            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
 
         //Proyectil cosmico
-        public override void ProjectileStart() 
+        public override void ProjectileStart(Transform target) 
         {
         }
-        public override void ProjectileUpdate()
-        {
-
-        }
-        public override void ProjectileImpact()
+        public override void ProjectileUpdate(Transform target)
         {
 
         }
-        public override void ProjectileEnd()
+        public override void ProjectileImpact(Transform target)
+        {
+
+        }
+        public override void ProjectileEnd(Transform target)
         {
 
         }
 
         //Cuerpo a cuerpo cosmico
-        public override void MeleeActivation()
+        public override void MeleeActivation(Transform target)
         {
 
         }
 
         //Explosion cosmica
-        public override void ExplosionActivation()
+        public override void ExplosionActivation(Transform target)
         {
 
         }
-        public override void ExplosionImpact()
+        public override void ExplosionImpact(Transform target)
         {
 
         }
 
         //Potenciador cosmico
-        public override void BuffActivation()
+        public override void BuffActivation(Transform target)
         {
 
         }

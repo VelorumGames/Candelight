@@ -7,13 +7,14 @@ namespace Hechizos.DeForma
 {
     public class ExplosionRune : AShapeRune
     {
-        public event Action OnExplosionActivation;
-        public event Action OnExplosionImpact;
+        public event Action<Transform> OnExplosionActivation;
+        public event Action<Transform> OnExplosionImpact;
         public ExplosionRune(Mage m) : base(m)
         {
             Name = "Explosión";
+            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
-        public override void LoadElements(Action[] actions)
+        public override void LoadElements(Action<Transform>[] actions)
         {
             OnExplosionActivation += actions[5];
             OnExplosionImpact += actions[6];
@@ -27,8 +28,16 @@ namespace Hechizos.DeForma
 
         public override void ThrowSpell()
         {
-            GameObject expl = MageManager.SpawnExplosion();
-            if (OnExplosionActivation != null) OnExplosionActivation();
+            GameObject explGO = MageManager.SpawnExplosion();
+            if (OnExplosionActivation != null) OnExplosionActivation(MageManager.transform);
+
+            Explosion expl = explGO.GetComponent<Explosion>();
+            expl.OnImpact += OnExplosionImpact;
+
+            float avDam = 0;
+            foreach (var el in MageManager.GetActiveElements()) avDam += el.Damage;
+            avDam /= MageManager.GetMaxElements();
+            expl.Damage = avDam;
         }
     }
 }

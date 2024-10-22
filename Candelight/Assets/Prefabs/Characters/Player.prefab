@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 8347758204725357575}
   - component: {fileID: 7308163954821919037}
   - component: {fileID: 852674162637606924}
-  - component: {fileID: 121216876154967602}
   m_Layer: 0
   m_Name: Body
   m_TagString: Player
@@ -250,27 +249,6 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0.35, y: 0, z: 0}
---- !u!135 &121216876154967602
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2588152376837393862}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3867493866490079806
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,6 +261,7 @@ GameObject:
   - component: {fileID: 2788586297716780750}
   - component: {fileID: 1885508855093970416}
   - component: {fileID: 8849966662116133155}
+  - component: {fileID: 6799022327845597084}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -322,7 +301,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 1500
-  MaxHP: 0
+  MaxHP: 100
+  Orientation: {x: 0, y: 0, z: 0}
   _maxSpeed: 5
   _pathChooser: {fileID: 8314554660879750160}
   _selection: {fileID: 9146836588861706532}
@@ -341,7 +321,10 @@ MonoBehaviour:
   _maxElements: 2
   Projectile: {fileID: 4452364287660289382, guid: 44f32b3dfdc55db4bad94e3662a6180f,
     type: 3}
-  Explosion: {fileID: 0}
+  _projectileSpeed: 100
+  Explosion: {fileID: 7940444416197324668, guid: 3c45ed14351fa5147a8923d87a0178c1,
+    type: 3}
+  Melee: {fileID: 3761205981959278303, guid: facee2a7935f83944b4b36f2102ad864, type: 3}
 --- !u!54 &8849966662116133155
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -369,6 +352,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!135 &6799022327845597084
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3867493866490079806}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8314554660879750160
 GameObject:
   m_ObjectHideFlags: 0

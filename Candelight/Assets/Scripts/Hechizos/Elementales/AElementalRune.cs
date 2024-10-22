@@ -7,7 +7,8 @@ namespace Hechizos.Elementales
 {
     public abstract class AElementalRune : ARune
     {
-        Action[] _actions = new Action[8]; //Porque son 8 funciones
+        public float Damage;
+        Action<Transform>[] _actions = new Action<Transform>[8]; //Porque son 8 funciones
         public AElementalRune(Mage m) : base(m, 2, 1f)
         {
             _actions[0] = ProjectileStart;
@@ -20,26 +21,26 @@ namespace Hechizos.Elementales
             _actions[7] = BuffActivation;
         }
 
-        public Action[] GetActions()
+        public Action<Transform>[] GetActions()
         {
             return _actions;
         }
 
         //Proyectil
-        public abstract void ProjectileStart();
-        public abstract void ProjectileUpdate();
-        public abstract void ProjectileImpact();
-        public abstract void ProjectileEnd();
+        public abstract void ProjectileStart(Transform target);
+        public abstract void ProjectileUpdate(Transform target);
+        public abstract void ProjectileImpact(Transform target);
+        public abstract void ProjectileEnd(Transform target);
 
         //Cuerpo a cuerpo
-        public abstract void MeleeActivation();
+        public abstract void MeleeActivation(Transform target);
 
         //Explosion
-        public abstract void ExplosionActivation();
-        public abstract void ExplosionImpact();
+        public abstract void ExplosionActivation(Transform target);
+        public abstract void ExplosionImpact(Transform target);
 
         //Potenciador
-        public abstract void BuffActivation();
+        public abstract void BuffActivation(Transform target);
 
 
 

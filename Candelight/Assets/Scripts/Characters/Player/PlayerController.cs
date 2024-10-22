@@ -14,6 +14,10 @@ namespace Player
 {
     public class PlayerController : AController
     {
+        #region Variables
+
+        public static PlayerController Instance;
+
         [SerializeField] float _maxSpeed;
 
         [SerializeField] GameObject _pathChooser;
@@ -48,10 +52,17 @@ namespace Player
 
         Action _interaction;
 
+        #endregion
+
         private new void Awake()
         {
+            if (Instance != null) Destroy(gameObject);
+            else Instance = this;
+
             base.Awake();
             _mage = GetComponent<Mage>();
+
+            DontDestroyOnLoad(gameObject);
         }
 
         private void Start()
@@ -63,6 +74,15 @@ namespace Player
 
             if (!_currentNode && WorldManager.Instance) _currentNode = WorldManager.Instance.CurrentNodeInfo.Node;
         }
+
+        public override void RecieveDamage(float damage)
+        {
+            Debug.Log($"Jugador recibe {damage} de dano");
+
+            CurrentHP -= damage;
+        }
+
+        #region Actions
 
         public void OnInteract(InputAction.CallbackContext _)
         {
@@ -84,16 +104,19 @@ namespace Player
         }
         public void OnSpellLaunch()
         {
-            string str = "";
-            foreach (ESpellInstruction i in _instructions) str += i.ToString();
-            Debug.Log("Se lanza hechizo: " + str);
-            if(ARune.FindSpell(_instructions.ToArray(), out var spell))
+            if (_mage.GetActiveElements().Count > 0)
             {
-                Debug.Log("Hechizo encontrado!!: " + spell.Name);
-                AShapeRune shapeSpell = spell as AShapeRune;
-                shapeSpell.ThrowSpell();
+                string str = "";
+                foreach (ESpellInstruction i in _instructions) str += i.ToString();
+                Debug.Log("Se lanza hechizo: " + str);
+                if (ARune.FindSpell(_instructions.ToArray(), out var spell))
+                {
+                    Debug.Log("Hechizo encontrado!!: " + spell.Name);
+                    AShapeRune shapeSpell = spell as AShapeRune;
+                    shapeSpell.ThrowSpell();
+                }
+                ResetInstructions();
             }
-            ResetInstructions();
         }
 
         public void ResetInstructions() => _instructions.Clear();
@@ -147,6 +170,8 @@ namespace Player
             _selection.transform.position = _oSelectionPos;
             _selection.SetActive(false);
         }
+
+        #endregion
 
         private void Update()
         {

@@ -9,43 +9,45 @@ namespace Hechizos.Elementales
         public PhantomRune(Mage m) : base(m)
         {
             Name = "Fantasmal";
+            Damage = 8f;
+            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
 
         //Proyectil fantasmal
-        public override void ProjectileStart()
+        public override void ProjectileStart(Transform target)
         {
         }
-        public override void ProjectileUpdate()
-        {
-
-        }
-        public override void ProjectileImpact()
+        public override void ProjectileUpdate(Transform target)
         {
 
         }
-        public override void ProjectileEnd()
+        public override void ProjectileImpact(Transform target)
+        {
+
+        }
+        public override void ProjectileEnd(Transform target)
         {
 
         }
 
         //Cuerpo a cuerpo fantasmal
-        public override void MeleeActivation()
+        public override void MeleeActivation(Transform target)
         {
 
         }
 
         //Explosion fantasmal
-        public override void ExplosionActivation()
+        public override void ExplosionActivation(Transform target)
         {
 
         }
-        public override void ExplosionImpact()
+        public override void ExplosionImpact(Transform target)
         {
 
         }
 
         //Potenciador fantasmal
-        public override void BuffActivation()
+        public override void BuffActivation(Transform target)
         {
 
         }

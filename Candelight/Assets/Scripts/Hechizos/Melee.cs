@@ -6,34 +6,20 @@ using UnityEngine;
 
 namespace Hechizos
 {
-    public class Projectile : MonoBehaviour
+    public class Melee : MonoBehaviour
     {
-        public event Action<Transform> OnUpdate;
-        public event Action<Transform> OnImpact;
-        public event Action<Transform> OnEnd;
-        public float Damage;
         public Transform Target;
-
-        private void Update()
-        {
-            if (OnUpdate != null) OnUpdate(Target);
-        }
+        public float Damage;
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Enemy"))
             {
-                if (OnImpact != null) OnImpact(Target);
                 if (other.TryGetComponent<EnemyController>(out var enemy))
                 {
                     enemy.RecieveDamage(Damage);
                 }
             }
-        }
-
-        private void OnDestroy()
-        {
-            if (OnEnd != null) OnEnd(Target);
         }
     }
 }

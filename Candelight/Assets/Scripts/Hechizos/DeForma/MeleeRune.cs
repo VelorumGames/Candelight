@@ -7,12 +7,13 @@ namespace Hechizos.DeForma
 {
     public class MeleeRune : AShapeRune
     {
-        public event Action OnMeleeActivation;
+        public event Action<Transform> OnMeleeActivation;
         public MeleeRune(Mage m) : base(m)
         {
             Name = "Cuerpo a Cuerpo";
+            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
-        public override void LoadElements(Action[] actions)
+        public override void LoadElements(Action<Transform>[] actions)
         {
             OnMeleeActivation += actions[4];
         }
@@ -24,7 +25,8 @@ namespace Hechizos.DeForma
 
         public override void ThrowSpell()
         {
-            if (OnMeleeActivation != null) OnMeleeActivation();
+            GameObject meleeGO = MageManager.SpawnMelee();
+            if (OnMeleeActivation != null) OnMeleeActivation(null);
         }
     }
 }

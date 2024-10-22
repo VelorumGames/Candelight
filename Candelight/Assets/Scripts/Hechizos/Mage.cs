@@ -5,6 +5,7 @@ using Hechizos.Elementales;
 using Hechizos.DeForma;
 using System.Data;
 using Player;
+using UI;
 
 namespace Hechizos
 {
@@ -18,6 +19,7 @@ namespace Hechizos
         public GameObject Projectile;
         [SerializeField] float _projectileSpeed;
         public GameObject Explosion;
+        public GameObject Melee;
 
         private void Awake()
         {
@@ -25,12 +27,7 @@ namespace Hechizos
             _cont = GetComponent<PlayerController>();
         }
 
-        private void Start()
-        {
-            new CosmicRune(this);
-            new MeleeRune(this);
-            new ProjectileRune(this);
-        }
+        #region Active Elements
 
         // Método para cambiar el elemento activo cuando se usa un glifo elemental
         public void SetActiveElements(AElementalRune[] runes)
@@ -88,12 +85,11 @@ namespace Hechizos
             return ActiveElements;
         }
 
-        // Método para lanzar un hechizo con un glifo de forma
-        public void ThrowSpell(AShapeRune currentShape)
-        {
-            currentShape.ThrowSpell(); // Llama al método que aplica el efecto del glifo de forma
-        }
+        public int GetMaxElements() => _maxElements;
 
+        #endregion
+
+        #region Spell Functions
         public GameObject SpawnProjectile()
         {
             GameObject proj = Instantiate(Projectile);
@@ -106,6 +102,23 @@ namespace Hechizos
         {
             GameObject proj = Instantiate(Explosion);
             return proj;
+        }
+
+        public GameObject SpawnMelee()
+        {
+            GameObject proj = Instantiate(Melee);
+            return proj;
+        }
+
+        public GameObject SpawnBuff()
+        {
+            return null;
+        }
+        #endregion
+
+        public void ShowSpellChains(string str)
+        {
+            UIManager.Instance.Chains += str;
         }
     }
 }

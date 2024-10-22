@@ -9,43 +9,45 @@ namespace Hechizos.Elementales
         public FireRune(Mage m) : base(m)
         {
             Name = "Fuego";
+            Damage = 10f;
+            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
 
         //Proyectil de fuego
-        public override void ProjectileStart()
+        public override void ProjectileStart(Transform target)
         {
         }
-        public override void ProjectileUpdate()
-        {
-
-        }
-        public override void ProjectileImpact()
+        public override void ProjectileUpdate(Transform target)
         {
 
         }
-        public override void ProjectileEnd()
+        public override void ProjectileImpact(Transform target)
+        {
+
+        }
+        public override void ProjectileEnd(Transform target)
         {
 
         }
 
         //Cuerpo a cuerpo de fuego
-        public override void MeleeActivation()
+        public override void MeleeActivation(Transform target)
         {
 
         }
 
         //Explosion de fuego
-        public override void ExplosionActivation()
+        public override void ExplosionActivation(Transform target)
         {
 
         }
-        public override void ExplosionImpact()
+        public override void ExplosionImpact(Transform target)
         {
 
         }
 
         //Potenciador de fuego
-        public override void BuffActivation()
+        public override void BuffActivation(Transform target)
         {
 
         }

@@ -30,6 +30,8 @@ public abstract class AController : MonoBehaviour
         Orientation = transform.forward;
     }
 
+    public abstract void RecieveDamage(float damage);
+
     public void OnMove(Vector2 direction)
     {
         Orientation = new Vector3(direction.x, 0f, direction.y);

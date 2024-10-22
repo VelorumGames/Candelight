@@ -8,16 +8,17 @@ namespace Hechizos.DeForma
     public class ProjectileRune : AShapeRune
     {
 
-        public event Action OnStartProjectile;
-        public event Action OnUpdateProjectile;
-        public event Action OnImpactProjectile;
-        public event Action OnEndProjectile;
+        public event Action<Transform> OnStartProjectile;
+        public event Action<Transform> OnUpdateProjectile;
+        public event Action<Transform> OnImpactProjectile;
+        public event Action<Transform> OnEndProjectile;
 
         public ProjectileRune(Mage m) : base(m)
         {
             Name = "Proyectil";
+            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
-        public override void LoadElements(Action[] actions)
+        public override void LoadElements(Action<Transform>[] actions)
         {
             OnStartProjectile += actions[0];
             OnUpdateProjectile += actions[1];
@@ -35,20 +36,33 @@ namespace Hechizos.DeForma
 
         public override void ThrowSpell()
         {
-            GameObject proj = MageManager.SpawnProjectile();
-            if (OnStartProjectile != null) OnStartProjectile();
-            proj.GetComponent<Projectile>().OnUpdate += ProjectileUpdate;
-            proj.GetComponent<Projectile>().OnImpact += ProjectileImpact;
+            GameObject projGO = MageManager.SpawnProjectile();
+            if (OnStartProjectile != null) OnStartProjectile(MageManager.transform);
+
+            Projectile proj = projGO.GetComponent<Projectile>();
+            proj.OnUpdate += ProjectileUpdate;
+            proj.OnImpact += ProjectileImpact;
+            proj.OnEnd += ProjectileEnd;
+
+            float avDam = 0;
+            foreach (var el in MageManager.GetActiveElements()) avDam += el.Damage;
+            avDam /= MageManager.GetMaxElements();
+            proj.Damage = avDam;
         }
 
-        void ProjectileUpdate()
+        void ProjectileUpdate(Transform target)
         {
-            if (OnUpdateProjectile != null) OnUpdateProjectile();
+            if (OnUpdateProjectile != null) OnUpdateProjectile(target);
         }
 
-        void ProjectileImpact()
+        void ProjectileImpact(Transform target)
         {
-            if (OnImpactProjectile != null) OnImpactProjectile();
+            if (OnImpactProjectile != null) OnImpactProjectile(target);
+        }
+
+        void ProjectileEnd(Transform target)
+        {
+            if (OnEndProjectile != null) OnEndProjectile(target);
         }
     }
 

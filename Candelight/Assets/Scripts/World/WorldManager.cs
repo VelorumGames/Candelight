@@ -1,4 +1,5 @@
 using Controls;
+using Player;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,7 @@ namespace World
         public List<List<int>> WorldMap = new List<List<int>>();
         List<GameObject> _nodes = new List<GameObject>();
         public int NumNodes;
-        [SerializeField] GameObject _player;
+        GameObject _player;
 
         public int MaxNodes;
         public GameObject NodePrefab;
@@ -32,17 +33,12 @@ namespace World
         public WorldInfo World;
         public NodeInfo CurrentNodeInfo;
 
-        public bool ResetDataOnStart;
-
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
-            if (ResetDataOnStart)
-            {
-                World.World = null;
-            }
+            _player = FindObjectOfType<PlayerController>().gameObject;
 
             //Si es la primera vez que se visita esta escena
             if (!World.World)
