@@ -30,7 +30,7 @@ namespace Items
 
         protected abstract void ApplyProperty();
 
-        public void Activation()
+        public void ApplyItem()
         {
             if (IsActivated)
                 ApplyProperty();
