@@ -1,6 +1,11 @@
+using Controls;
 using Hechizos;
+using Hechizos.DeForma;
+using Hechizos.Elementales;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,10 +18,14 @@ namespace UI
         public string ActualNodeName;
         public string Chains;
 
+        ShowInstructions _showInstr;
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            _showInstr = FindObjectOfType<ShowInstructions>();
         }
 
         private void OnGUI()
@@ -36,6 +45,24 @@ namespace UI
             {
                 Chains += $"{ARune.Spells[rune].Name}: {ARune.InstructionsToString(rune)}\n";
             }
+        }
+
+        public void ShowNewInstruction(ESpellInstruction instr)
+        {
+            _showInstr.ShowInstruction(instr);
+        }
+
+        public void ShowValidSpell(AShapeRune spell)
+        {
+            Debug.Log("Se mostrara: " + spell);
+            if (spell != null) StartCoroutine(_showInstr.ShowValidInstructions());
+            else _showInstr.ResetSprites();
+        }
+        public void ShowValidElements(AElementalRune[] elements)
+        {
+            Debug.Log("Se mostrara: " + elements);
+            if (elements != null) StartCoroutine(_showInstr.ShowValidInstructions());
+            else _showInstr.ResetSprites();
         }
     }
 }

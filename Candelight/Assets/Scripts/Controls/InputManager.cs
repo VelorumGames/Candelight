@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using Player;
 using Dialogues;
 using Hechizos;
+using UI;
 
 namespace Controls
 {
@@ -73,16 +74,14 @@ namespace Controls
             _spell.canceled += StopSpellMode;
             InputAction spellUp = _levelMap.FindAction("SpellUp");
             spellUp.performed += RegisterSpellUp;
-            //spellUp.Disable();
             InputAction spellDown = _levelMap.FindAction("SpellDown");
             spellDown.performed += RegisterSpellDown;
-            //spellDown.Disable();
             InputAction spellRight = _levelMap.FindAction("SpellRight");
             spellRight.performed += RegisterSpellRight;
-            //spellRight.Disable();
             InputAction spellLeft = _levelMap.FindAction("SpellLeft");
             spellLeft.performed += RegisterSpellLeft;
-            //spellLeft.Disable();
+            InputAction book = _levelMap.FindAction("Book");
+            book.performed += _cont.OnBook;
 
             //World
             _worldMap = Input.FindActionMap("World");
@@ -147,6 +146,8 @@ namespace Controls
             spellRight.performed -= RegisterSpellRight;
             InputAction spellLeft = _levelMap.FindAction("SpellLeft");
             spellLeft.performed -= RegisterSpellLeft;
+            InputAction book = _levelMap.FindAction("Book");
+            book.performed -= _cont.OnBook;
             _move.Disable();
             
             InputAction confirmPath = _worldMap.FindAction("ConfirmPath");

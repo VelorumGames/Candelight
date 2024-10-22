@@ -10,7 +10,7 @@ namespace Cameras
     {
         public static CameraManager Instance;
 
-        public CinemachineVirtualCamera[] Cameras;
+        public List<CinemachineVirtualCamera> Cameras = new List<CinemachineVirtualCamera>();
         public CinemachineVirtualCamera InitialCam;
         CinemachineVirtualCamera _activeCam;
 
@@ -56,13 +56,15 @@ namespace Cameras
         public CinemachineVirtualCamera GetActiveCam() => _activeCam;
         public int GetActiveCamIndex()
         {
-            for (int i = 0; i < Cameras.Length; i++)
+            for (int i = 0; i < Cameras.Count; i++)
             {
                 if (Cameras[i] != _activeCam) i++;
                 else return i;
             }
             return -1;
         }
+
+        public void AddCamera(CinemachineVirtualCamera cam) => Cameras.Add(cam);
 
         /// <summary>
         /// Agitacion temporal de la camara

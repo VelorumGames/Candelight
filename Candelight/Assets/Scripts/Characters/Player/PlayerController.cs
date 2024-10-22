@@ -52,6 +52,13 @@ namespace Player
 
         Action _interaction;
 
+        bool _bookIsOpen;
+        [SerializeField] BookManager _book;
+
+        public event Action<ESpellInstruction> OnNewInstruction;
+        public event Action<AShapeRune> OnSpell;
+        public event Action<AElementalRune[]> OnElements;
+
         #endregion
 
         private void Awake()
@@ -69,13 +76,19 @@ namespace Player
 
         private void Start()
         {
-            Debug.Log("RIGIDBODY: " + _rb);
             _rb.maxLinearVelocity = _maxSpeed;
             _interaction = null;
 
             _oSelectionPos = _selection.transform.position;
 
             if (!_currentNode && WorldManager.Instance) _currentNode = WorldManager.Instance.CurrentNodeInfo.Node;
+        }
+
+        private void OnEnable()
+        {
+            OnNewInstruction += UIManager.Instance.ShowNewInstruction;
+            OnSpell += UIManager.Instance.ShowValidSpell;
+            OnElements += UIManager.Instance.ShowValidElements;
         }
 
         public override void RecieveDamage(float damage)
@@ -86,6 +99,15 @@ namespace Player
         }
 
         #region Actions
+
+        public new void OnMove(Vector2 direction)
+        {
+            //Debug.Log("RIGIDBODY: " + _rb);
+            if (!_rb) _rb = GetComponent<Rigidbody>();
+            Orientation = new Vector3(direction.x, 0f, direction.y);
+            Vector3 force = (_bookIsOpen ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * new Vector3(direction.x, 0f, direction.y);
+            _rb.AddForce(force, ForceMode.Force);
+        }
 
         public void OnInteract(InputAction.CallbackContext _)
         {
@@ -101,29 +123,58 @@ namespace Player
         {
             Debug.Log("Se ha registrado la instruccion " + instr);
             _instructions.Add(instr);
+
+            if (_bookIsOpen)
+            {
+                _book.AddNewString(instr.ToString() + " ");
+            }
+            else
+            {
+                OnNewInstruction(instr);
+            }
         }
         public void OnChooseElements()
         {
-            if (ARune.FindElements(_instructions.ToArray(),out var elements))
+            if (_bookIsOpen) //Se registra un nuevo elemento
             {
-                Debug.Log("Se encuentran elementos que aplicar: " + elements);
-                _mage.SetActiveElements(elements);
+                ARune.Activate(_instructions.ToArray());
+                _book.ResetText();
+            }
+            else //Se activa un elemento(s)
+            {
+                if (ARune.FindElements(_instructions.ToArray(), out var elements))
+                {
+                    Debug.Log("Se encuentran elementos que aplicar: " + elements);
+                    _mage.SetActiveElements(elements);
+                    OnElements(elements);
+                }
+                else OnElements(null); //Si no encuentra elemento valido
             }
         }
         public void OnSpellLaunch()
         {
-            if (_mage.GetActiveElements().Count > 0)
+            if (_bookIsOpen) //Se registra una nueva forma
             {
-                string str = "";
-                foreach (ESpellInstruction i in _instructions) str += i.ToString();
-                Debug.Log("Se lanza hechizo: " + str);
-                if (ARune.FindSpell(_instructions.ToArray(), out var spell))
+                ARune.Activate(_instructions.ToArray());
+                _book.ResetText();
+            }
+            else //Se lanza un hechizo
+            {
+                if (_mage.GetActiveElements().Count > 0)
                 {
-                    Debug.Log("Hechizo encontrado!!: " + spell.Name);
-                    AShapeRune shapeSpell = spell as AShapeRune;
-                    shapeSpell.ThrowSpell();
+                    string str = "";
+                    foreach (ESpellInstruction i in _instructions) str += i.ToString();
+                    Debug.Log("Se lanza hechizo: " + str);
+                    if (ARune.FindSpell(_instructions.ToArray(), out var spell))
+                    {
+                        Debug.Log("Hechizo encontrado!!: " + spell.Name);
+                        AShapeRune shapeSpell = spell as AShapeRune;
+                        shapeSpell.ThrowSpell();
+                        OnSpell(shapeSpell);
+                    }
+                    else OnSpell(null); //Si no encuentra hechizo valido
+                    ResetInstructions();
                 }
-                ResetInstructions();
             }
         }
 
@@ -157,6 +208,20 @@ namespace Player
         public void OnConfirmPath(InputAction.CallbackContext _)
         {
             if (_rb.velocity.magnitude < 0.1f) StartCoroutine(MovePlayerTowardsNode(_nextNode));
+        }
+
+        public void OnBook(InputAction.CallbackContext _)
+        {
+            if (_bookIsOpen)
+            {
+                _book.gameObject.SetActive(false);
+                _bookIsOpen = false;
+            }
+            else
+            {
+                _book.gameObject.SetActive(true);
+                _bookIsOpen = true;
+            }
         }
 
         public void LoadInteraction(Action interaction, Transform obj)
@@ -196,6 +261,13 @@ namespace Player
             }
             _currentNode = target.GetComponent<NodeManager>();
             yield return null;
+        }
+
+        private void OnDisable()
+        {
+            OnNewInstruction -= UIManager.Instance.ShowNewInstruction;
+            OnSpell -= UIManager.Instance.ShowValidSpell;
+            OnElements -= UIManager.Instance.ShowValidElements;
         }
     }
 }

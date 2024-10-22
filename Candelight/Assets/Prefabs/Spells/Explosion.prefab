@@ -93,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3539564370898859412}
   - component: {fileID: 9184889125643663039}
+  - component: {fileID: 7733266819545119310}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -137,3 +138,17 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7733266819545119310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7940444416197324668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb7845ddb3f687b44a34e3fb6ecdec9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+  Damage: 0

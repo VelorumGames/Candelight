@@ -10,6 +10,7 @@ namespace Hechizos.Elementales
         {
             Name = "Fuego";
             Damage = 10f;
+            m.SetInitialElement(this);
         }
 
         //Proyectil de fuego

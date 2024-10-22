@@ -160,6 +160,8 @@ namespace Map
                 rooms.Remove(runeRoom);
                 runeRoom.RoomType = ERoomType.Rune;
                 runeRoom.IdText.text += " RUNE";
+
+                runeRoom.ActivateRuneRoom();
             }
         }
 
@@ -177,8 +179,9 @@ namespace Map
             else //Si es el ultimo nivel
             {
                 //Se vuelve al mapa del mundo
-                CurrentNodeInfo.Node.RegisterCompletedNode();
-                SceneManager.LoadScene("WorldScene");
+                SceneManager.LoadScene("NodeEndScene");
+                //CurrentNodeInfo.Node.RegisterCompletedNode();
+                //SceneManager.LoadScene("WorldScene");
             }
         }
     }

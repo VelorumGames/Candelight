@@ -13,10 +13,8 @@ namespace Hechizos
     {
         public static Mage Instance;
 
-        public MageInfo Info;
-
         [SerializeField] int _maxElements;
-        public List<AElementalRune> ActiveElements; // Propiedad que mantiene el elemento activo (o plural) del mago
+        static List<AElementalRune> _activeElements = new List<AElementalRune>(); // Propiedad que mantiene el elemento activo (o plural) del mago
 
         PlayerController _cont;
 
@@ -30,7 +28,6 @@ namespace Hechizos
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
-            ActiveElements = new List<AElementalRune>();
             ARune.RegisterMage(this);
         }
 
@@ -44,12 +41,13 @@ namespace Hechizos
         // Método para cambiar el elemento activo cuando se usa un glifo elemental
         public void SetActiveElements(AElementalRune[] runes)
         {
+            Debug.Log("Se registran nuevos elementos");
             ResetActiveElements();
-            ActiveElements.Clear();
+            _activeElements.Clear();
 
-            foreach(var r in runes)
+            foreach (var r in runes)
             {
-                ActiveElements.Add(r);
+                _activeElements.Add(r);
             }
 
             foreach (var rune in ARune.Spells.Values)
@@ -67,11 +65,18 @@ namespace Hechizos
             }
         }
 
+        public void SetInitialElement(AElementalRune element)
+        {
+            AElementalRune[] initial = new AElementalRune[1];
+            initial[0] = element;
+            SetActiveElements(initial);
+        }
+
         public void AddActiveElement(AElementalRune rune)
         {
-            if (ActiveElements.Count < _maxElements)
+            if (_activeElements.Count < _maxElements)
             {
-                ActiveElements.Add(rune);
+                _activeElements.Add(rune);
             }
             else Debug.Log("ERROR: No se pueden almacenar mas elementos");
         }
@@ -88,13 +93,13 @@ namespace Hechizos
                 }
             }
 
-            ActiveElements.Clear();
+            _activeElements.Clear();
         }
 
         // Método para obtener el elemento activo actual
         public List<AElementalRune> GetActiveElements()
         {
-            return ActiveElements;
+            return _activeElements;
         }
 
         public int GetMaxElements() => _maxElements;

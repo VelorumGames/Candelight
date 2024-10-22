@@ -17,6 +17,7 @@ namespace Hechizos
         protected bool Activated = false;
 
         public static Dictionary<ESpellInstruction[], ARune> Spells = new Dictionary<ESpellInstruction[], ARune>();
+        public static AElementalRune[] ActiveElements;
         protected static Mage MageManager;
 
         public ARune(Mage m, int Complexity, float Difficulty)
@@ -81,6 +82,32 @@ namespace Hechizos
             return false;
         }
 
+        static bool FindUnactiveSpell(ESpellInstruction[] chain, out ARune spell)
+        {
+            int found = 0;
+            spell = null;
+            foreach (var instrs in Spells.Keys)
+            {
+                if (chain.Length == instrs.Length)
+                {
+                    found = 0;
+                    for (int i = 0; i < chain.Length; i++)
+                    {
+                        if (chain[i] == instrs[i]) found++;
+                    }
+
+                    //Si todas han coincidido
+                    if (found == chain.Length && !Spells[instrs].Activated)
+                    {
+                        spell = Spells[instrs];
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Encuentra los elementos en una cadena de instrucciones, asumiendo que los elementos tienen una complejidad de 2
         /// </summary>
@@ -91,15 +118,24 @@ namespace Hechizos
         {
             int found = 0;
             int num = chain.Length / 2;  //2 Es la complejidad de cada elemento
-            Debug.Log($"Deberia haber {num} elementos en esta cadena");
+            Debug.Log($"Deberia haber {num} elementos en esta cadena: " + InstructionsToString(chain));
             elements = new AElementalRune[num];
 
             for (int i = 0; i < num; i++)
             {
                 ESpellInstruction[] subChain = new ESpellInstruction[2];
-                subChain[0] = chain[i * num];
-                subChain[1] = chain[i * num + 1];
-               if (FindSpell(subChain, out ARune element))
+                try
+                {
+                    subChain[0] = chain[i * num];
+                    subChain[1] = chain[i * num + 1];
+                }
+                catch (System.IndexOutOfRangeException e)
+                {
+                    Debug.Log("ERROR: Fallo al dividir subcadenas: " + e);
+                    return false;
+                }
+
+                if (FindSpell(subChain, out ARune element))
                 {
                     elements[i] = element as AElementalRune;
                     Debug.Log(elements[i].Name);
@@ -114,13 +150,14 @@ namespace Hechizos
         {
             new CosmicRune(m);
             new ElectricRune(m);
-            new FireRune(m);
             new PhantomRune(m);
 
             new MeleeRune(m);
             new ProjectileRune(m);
             new ExplosionRune(m);
             new BuffRune(m);
+
+            new FireRune(m);
         }
 
         public static string InstructionsToString(ESpellInstruction[] chain)
@@ -136,10 +173,13 @@ namespace Hechizos
         }
 
         public void Activate() => Activated = true;
+        public bool IsActivated() => Activated;
         public static void Activate(ESpellInstruction[] chain)
         {
-            if (Spells.TryGetValue(chain, out var rune))
+            Debug.Log("Se busca el hechizo con cadena: " + InstructionsToString(chain) + $"({Spells.Keys.Count})");
+            if (FindUnactiveSpell(chain, out var rune))
             {
+                Debug.Log("Se activa el hechizo: " + rune.Name);
                 rune.Activate();
             }
         }
