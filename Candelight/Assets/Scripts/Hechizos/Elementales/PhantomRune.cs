@@ -10,7 +10,6 @@ namespace Hechizos.Elementales
         {
             Name = "Fantasmal";
             Damage = 8f;
-            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
 
         //Proyectil fantasmal

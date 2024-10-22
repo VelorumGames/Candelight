@@ -17,7 +17,7 @@ namespace Hechizos
         protected bool Activated = false;
 
         public static Dictionary<ESpellInstruction[], ARune> Spells = new Dictionary<ESpellInstruction[], ARune>();
-        protected Mage MageManager;
+        protected static Mage MageManager;
 
         public ARune(Mage m, int Complexity, float Difficulty)
         {
@@ -142,6 +142,11 @@ namespace Hechizos
             {
                 rune.Activate();
             }
+        }
+
+        public static void RegisterMage(Mage m)
+        {
+            MageManager = m;
         }
     }
 }

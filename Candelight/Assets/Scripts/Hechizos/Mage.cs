@@ -11,6 +11,10 @@ namespace Hechizos
 {
     public class Mage : MonoBehaviour
     {
+        public static Mage Instance;
+
+        public MageInfo Info;
+
         [SerializeField] int _maxElements;
         public List<AElementalRune> ActiveElements; // Propiedad que mantiene el elemento activo (o plural) del mago
 
@@ -23,8 +27,16 @@ namespace Hechizos
 
         private void Awake()
         {
+            if (Instance != null) Destroy(gameObject);
+            else Instance = this;
+
             ActiveElements = new List<AElementalRune>();
-            _cont = GetComponent<PlayerController>();
+            ARune.RegisterMage(this);
+        }
+
+        private void OnEnable()
+        {
+            _cont = FindObjectOfType<PlayerController>();
         }
 
         #region Active Elements
@@ -93,7 +105,7 @@ namespace Hechizos
         public GameObject SpawnProjectile()
         {
             GameObject proj = Instantiate(Projectile);
-            proj.transform.position = transform.position;
+            proj.transform.position = _cont.transform.position;
             proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _cont.Orientation, ForceMode.Impulse);
             return proj;
         }
@@ -115,10 +127,5 @@ namespace Hechizos
             return null;
         }
         #endregion
-
-        public void ShowSpellChains(string str)
-        {
-            UIManager.Instance.Chains += str;
-        }
     }
 }

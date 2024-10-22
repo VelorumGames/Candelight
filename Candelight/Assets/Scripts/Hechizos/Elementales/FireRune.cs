@@ -10,7 +10,6 @@ namespace Hechizos.Elementales
         {
             Name = "Fuego";
             Damage = 10f;
-            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
 
         //Proyectil de fuego

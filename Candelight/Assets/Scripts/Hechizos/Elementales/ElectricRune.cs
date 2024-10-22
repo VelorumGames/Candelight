@@ -11,7 +11,6 @@ namespace Hechizos.Elementales
         {
             Name = "Electricidad";
             Damage = 15f;
-            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
 
         //Proyectil electrico

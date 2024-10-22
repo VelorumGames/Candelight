@@ -11,7 +11,6 @@ namespace Hechizos.DeForma
         public BuffRune(Mage m) : base(m)
         {
             Name = "Potenciación";
-            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
         public override void LoadElements(Action<Transform>[] actions)
         {

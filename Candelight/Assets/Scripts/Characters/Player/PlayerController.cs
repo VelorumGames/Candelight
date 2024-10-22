@@ -16,7 +16,7 @@ namespace Player
     {
         #region Variables
 
-        public static PlayerController Instance;
+        //public static PlayerController Instance;
 
         [SerializeField] float _maxSpeed;
 
@@ -54,19 +54,22 @@ namespace Player
 
         #endregion
 
-        private new void Awake()
+        private void Awake()
         {
-            if (Instance != null) Destroy(gameObject);
-            else Instance = this;
+            //if (Instance != null) Destroy(gameObject);
+            //else Instance = this;
 
-            base.Awake();
-            _mage = GetComponent<Mage>();
+            _rb = GetComponent<Rigidbody>();
+            Orientation = transform.forward;
 
-            DontDestroyOnLoad(gameObject);
+            _mage = FindObjectOfType<Mage>();
+
+            //DontDestroyOnLoad(gameObject);
         }
 
         private void Start()
         {
+            Debug.Log("RIGIDBODY: " + _rb);
             _rb.maxLinearVelocity = _maxSpeed;
             _interaction = null;
 
@@ -86,7 +89,12 @@ namespace Player
 
         public void OnInteract(InputAction.CallbackContext _)
         {
-            if (_interaction != null) _interaction();
+            if (_interaction != null)
+            {
+                _selection.transform.parent = transform;
+                _selection.transform.position = _oSelectionPos;
+                _interaction();
+            }
         }
 
         public void OnSpellInstruction(ESpellInstruction instr)
