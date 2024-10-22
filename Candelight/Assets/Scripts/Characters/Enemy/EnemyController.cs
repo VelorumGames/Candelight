@@ -11,14 +11,16 @@ namespace Enemy
         public EnemyInfo Info;
         PlayerController _player;
 
-        private new void Awake()
+        private void Awake()
         {
-            base.Awake();
-            _player = FindObjectOfType<PlayerController>();
+            _rb = GetComponent<Rigidbody>();
+            Orientation = transform.forward;
         }
 
         private void Start()
         {
+            _player = FindObjectOfType<PlayerController>();
+
             MaxHP = Info.BaseHP;
             CurrentHP = MaxHP;
 
@@ -38,7 +40,7 @@ namespace Enemy
             Collider[] objs = Physics.OverlapSphere(transform.position, 2f);
             foreach (var col in objs)
             {
-                Debug.Log("Controlador encontrado: " + col.gameObject.name);
+                //Debug.Log("Controlador encontrado: " + col.gameObject.name);
                 if (col.TryGetComponent<AController>(out var cont) && cont != this)
                 {
                     cont.RecieveDamage(Info.BaseDamage);

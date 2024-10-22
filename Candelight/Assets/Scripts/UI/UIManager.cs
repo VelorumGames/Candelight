@@ -28,5 +28,14 @@ namespace UI
             if (GUI.Button(new Rect(10, 60, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
             GUI.Label(new Rect(10, 80, 200, 500), Chains);
         }
+
+        private void Update()
+        {
+            Chains = "";
+            foreach(var rune in ARune.Spells.Keys)
+            {
+                Chains += $"{ARune.Spells[rune].Name}: {ARune.InstructionsToString(rune)}\n";
+            }
+        }
     }
 }

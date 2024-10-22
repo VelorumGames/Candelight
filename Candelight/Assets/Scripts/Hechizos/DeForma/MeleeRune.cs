@@ -11,7 +11,6 @@ namespace Hechizos.DeForma
         public MeleeRune(Mage m) : base(m)
         {
             Name = "Cuerpo a Cuerpo";
-            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
         public override void LoadElements(Action<Transform>[] actions)
         {

@@ -10,7 +10,6 @@ namespace Hechizos.Elementales
         {
             Name = "Cósmico";
             Damage = 20f;
-            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
 
         //Proyectil cosmico

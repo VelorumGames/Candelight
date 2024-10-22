@@ -16,7 +16,6 @@ namespace Hechizos.DeForma
         public ProjectileRune(Mage m) : base(m)
         {
             Name = "Proyectil";
-            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
         public override void LoadElements(Action<Transform>[] actions)
         {

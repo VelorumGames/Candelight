@@ -11,7 +11,7 @@ namespace Cameras
         CinemachineVirtualCamera _cam;
         Transform _player;
 
-        private void Awake()
+        private void Start()
         {
             _cam = GetComponent<CinemachineVirtualCamera>();
             _player = FindObjectOfType<PlayerController>().transform;

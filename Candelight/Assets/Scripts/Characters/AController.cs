@@ -23,17 +23,12 @@ public abstract class AController : MonoBehaviour
 
     public Vector3 Orientation;
 
-    protected void Awake()
-    {
-        _rb = GetComponent<Rigidbody>();
-
-        Orientation = transform.forward;
-    }
-
     public abstract void RecieveDamage(float damage);
 
     public void OnMove(Vector2 direction)
     {
+        //Debug.Log("RIGIDBODY: " + _rb);
+        if (!_rb) _rb = GetComponent<Rigidbody>();
         Orientation = new Vector3(direction.x, 0f, direction.y);
         Vector3 force = Time.deltaTime * 100f * _speed * new Vector3(direction.x, 0f, direction.y);
         _rb.AddForce(force, ForceMode.Force);

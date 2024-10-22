@@ -12,7 +12,6 @@ namespace Hechizos.DeForma
         public ExplosionRune(Mage m) : base(m)
         {
             Name = "Explosión";
-            m.ShowSpellChains($"{Name}: {InstructionsToString(Instructions)}\n");
         }
         public override void LoadElements(Action<Transform>[] actions)
         {

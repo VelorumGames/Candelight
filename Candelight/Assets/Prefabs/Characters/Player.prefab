@@ -259,7 +259,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4229582545527436371}
   - component: {fileID: 2788586297716780750}
-  - component: {fileID: 1885508855093970416}
   - component: {fileID: 8849966662116133155}
   - component: {fileID: 6799022327845597084}
   m_Layer: 0
@@ -306,25 +305,6 @@ MonoBehaviour:
   _maxSpeed: 5
   _pathChooser: {fileID: 8314554660879750160}
   _selection: {fileID: 9146836588861706532}
---- !u!114 &1885508855093970416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3867493866490079806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94277d9ff7bbab74d9aa9818bf40f1f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxElements: 2
-  Projectile: {fileID: 4452364287660289382, guid: 44f32b3dfdc55db4bad94e3662a6180f,
-    type: 3}
-  _projectileSpeed: 100
-  Explosion: {fileID: 7940444416197324668, guid: 3c45ed14351fa5147a8923d87a0178c1,
-    type: 3}
-  Melee: {fileID: 3761205981959278303, guid: facee2a7935f83944b4b36f2102ad864, type: 3}
 --- !u!54 &8849966662116133155
 Rigidbody:
   m_ObjectHideFlags: 0

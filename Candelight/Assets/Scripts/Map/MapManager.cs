@@ -26,9 +26,9 @@ namespace Map
             {
                 m_rooms = value;
                 if (m_rooms >= MaxRooms) RegisterRoomTypes();
-                Camera.main.transform.parent = _player.transform;
-                Camera.main.transform.localPosition = new Vector3(0, 2.5f, -4.6f);
-                Camera.main.transform.localRotation = Quaternion.Euler(32f, 0f, 0f);
+                //Camera.main.transform.parent = _player.transform;
+                //Camera.main.transform.localPosition = new Vector3(0, 2.5f, -4.6f);
+                //Camera.main.transform.localRotation = Quaternion.Euler(32f, 0f, 0f);
             }
         }
 
@@ -64,13 +64,13 @@ namespace Map
 
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
-
-            _player = FindObjectOfType<PlayerController>().gameObject;
         }
 
         private void Start()
         {
-            switch(CurrentNodeInfo.Biome)
+            _player = FindObjectOfType<PlayerController>().gameObject;
+
+            switch (CurrentNodeInfo.Biome)
             {
                 case EBiome.A:
                     MaxRooms = 10;
