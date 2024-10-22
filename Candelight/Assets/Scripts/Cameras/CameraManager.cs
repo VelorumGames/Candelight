@@ -102,6 +102,11 @@ namespace Cameras
             else Debug.Log("ERROR: Se intenta hacer Shake pero no se ha encontrado ningun noise en la camara: " + _activeCam.gameObject.name);
         }
 
+        public void Impulse()
+        {
+
+        }
+
         IEnumerator ManageShake(float amp, float frec, float time)
         {
             float iAmp = _noise.m_AmplitudeGain;

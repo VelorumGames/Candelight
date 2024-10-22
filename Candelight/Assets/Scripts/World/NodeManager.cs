@@ -9,7 +9,12 @@ namespace World
     {
         Undefined, A, B, C
     }
-
+    public enum ELevel
+    {
+        Exploration,
+        Calm,
+        Challenge
+    }
     public enum ENodeState
     {
         Undiscovered,
@@ -22,6 +27,7 @@ namespace World
     {
         public int NumLevels; //Numero de niveles en cada nodo
         public int[] SeedExtra; //Para cada nivel se genera una seed extra (basada en la seed actual). Esta sera la seed en la que se base el nivel concreto para su generacion
+        public ELevel[] LevelTypes;
         public EBiome Biome;
         public ENodeState State;
     }
@@ -51,8 +57,10 @@ namespace World
             _data.SeedExtra = new int[_data.NumLevels];
             for(int i = 0; i < _data.NumLevels; i++)
             {
-               _data.SeedExtra[i] = Random.Range(0, 999999);
+                _data.SeedExtra[i] = Random.Range(0, 999999);
+                _data.LevelTypes[i] = (ELevel) Random.Range(0, 3);
             }
+            _data.LevelTypes[0] = 0; //El primer nodo siempre sera de exploracion
 
             yield return new WaitForSeconds(Random.Range(0.01f, 0.2f));
             ConnectNode();

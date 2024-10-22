@@ -24,7 +24,8 @@ namespace Hechizos
             if (other.CompareTag("Enemy"))
             {
                 if (OnImpact != null) OnImpact(Target);
-                if (other.TryGetComponent<EnemyController>(out var enemy))
+                EnemyController enemy = other.GetComponentInParent<EnemyController>();
+                if (enemy)
                 {
                     enemy.RecieveDamage(Damage);
                 }

@@ -9,6 +9,7 @@ using World;
 
 namespace Map
 {
+    
     public class MapManager : MonoBehaviour
     {
         public static MapManager Instance;
@@ -70,18 +71,23 @@ namespace Map
         {
             _player = FindObjectOfType<PlayerController>().gameObject;
 
-            switch (CurrentNodeInfo.Biome)
+            if (CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration)
             {
-                case EBiome.A:
-                    MaxRooms = 10;
-                    break;
-                case EBiome.B:
-                    MaxRooms = 20;
-                    break;
-                case EBiome.C:
-                    MaxRooms = 30;
-                    break;
+                switch (CurrentNodeInfo.Biome)
+                {
+                    case EBiome.A:
+                        MaxRooms = 10;
+                        break;
+                    case EBiome.B:
+                        MaxRooms = 20;
+                        break;
+                    case EBiome.C:
+                        MaxRooms = 30;
+                        break;
+                }
             }
+            else MaxRooms = 5;
+
             if (MaxRooms > 0) RegisterNewRoom(-1, new Vector3(), ERoomSize.Medium);
         }
 
@@ -172,16 +178,24 @@ namespace Map
         {
             if (CurrentNodeInfo.CurrentLevel < CurrentNodeInfo.Levels - 1) //Si no es el ultimo nivel todavia
             {
-                //Se apunta a la siguiente seed
-                CurrentNodeInfo.CurrentLevel++;
-                SceneManager.LoadScene("LevelScene");
+                //Se apunta a la siguiente seed y se elije un tipo de nivel al que ir
+                switch (CurrentNodeInfo.LevelTypes[++CurrentNodeInfo.CurrentLevel])
+                {
+                    case ELevel.Exploration:
+                        SceneManager.LoadScene("LevelScene");
+                        break;
+                    case ELevel.Calm:
+                        SceneManager.LoadScene("CalmScene");
+                        break;
+                    case ELevel.Challenge:
+                        SceneManager.LoadScene("ChallengeScene");
+                        break;
+                }
             }
             else //Si es el ultimo nivel
             {
                 //Se vuelve al mapa del mundo
                 SceneManager.LoadScene("NodeEndScene");
-                //CurrentNodeInfo.Node.RegisterCompletedNode();
-                //SceneManager.LoadScene("WorldScene");
             }
         }
     }

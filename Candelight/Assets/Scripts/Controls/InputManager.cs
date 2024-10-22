@@ -6,6 +6,8 @@ using Player;
 using Dialogues;
 using Hechizos;
 using UI;
+using Cameras;
+using DG.Tweening;
 
 namespace Controls
 {
@@ -13,7 +15,8 @@ namespace Controls
     {
         Level,
         World,
-        Dialogue
+        Dialogue,
+        UI
     }
 
     public enum ESpellInstruction
@@ -34,6 +37,7 @@ namespace Controls
         InputActionMap _worldMap;
         InputActionMap _levelMap;
         InputActionMap _dialogueMap;
+        InputActionMap _uiMap;
 
         DialogueUI _dialogue;
 
@@ -48,6 +52,8 @@ namespace Controls
             else Instance = this;
 
             InitializeControls();
+
+            DOTween.Init();
         }
 
         private void Start()
@@ -82,6 +88,8 @@ namespace Controls
             spellLeft.performed += RegisterSpellLeft;
             InputAction book = _levelMap.FindAction("Book");
             book.performed += _cont.OnBook;
+            InputAction levelPause = _levelMap.FindAction("Pause");
+            levelPause.performed += _cont.OnPause;
 
             //World
             _worldMap = Input.FindActionMap("World");
@@ -91,6 +99,8 @@ namespace Controls
             confirmPath.performed += _cont.OnConfirmPath;
             InputAction worldInteract = _worldMap.FindAction("Interact");
             worldInteract.performed += _cont.OnInteract;
+            InputAction worldPause = _worldMap.FindAction("Pause");
+            worldPause.performed += _cont.OnPause;
 
             //Dialogue
             _dialogueMap = Input.FindActionMap("Dialogue");
@@ -98,6 +108,15 @@ namespace Controls
 
             InputAction next = _dialogueMap.FindAction("Next");
             next.performed += NextDialogueBlock;
+            InputAction dialoguePause = _dialogueMap.FindAction("Pause");
+            dialoguePause.performed += _cont.OnPause;
+
+            //UI
+            _uiMap = Input.FindActionMap("UI");
+
+            InputAction back = _uiMap.FindAction("Back");
+            back.performed += UIManager.Instance.OnUIBack;
+            
         }
 
         public void LoadControls(EControlMap map)
@@ -115,6 +134,9 @@ namespace Controls
                     break;
                 case EControlMap.Dialogue:
                     _currentMap = _dialogueMap;
+                    break;
+                case EControlMap.UI:
+                    _currentMap = _uiMap;
                     break;
             }
             //Debug.Log("Mapa colocado: " + _currentMap);
@@ -148,6 +170,8 @@ namespace Controls
             spellLeft.performed -= RegisterSpellLeft;
             InputAction book = _levelMap.FindAction("Book");
             book.performed -= _cont.OnBook;
+            InputAction levelPause = _levelMap.FindAction("Pause");
+            levelPause.performed -= _cont.OnPause;
             _move.Disable();
             
             InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
@@ -155,9 +179,16 @@ namespace Controls
             InputAction worldInteract = _worldMap.FindAction("Interact");
             worldInteract.performed -= _cont.OnInteract;
             _choosePath.Disable();
+            InputAction worldPause = _worldMap.FindAction("Pause");
+            worldPause.performed -= _cont.OnPause;
 
             InputAction next = _dialogueMap.FindAction("Next");
             next.performed -= NextDialogueBlock;
+            InputAction dialoguePause = _dialogueMap.FindAction("Pause");
+            dialoguePause.performed -= _cont.OnPause;
+
+            InputAction back = _uiMap.FindAction("Back");
+            back.performed -= UIManager.Instance.OnUIBack;
         }
 
         private void FixedUpdate()
@@ -173,6 +204,8 @@ namespace Controls
             _move.Disable();
             Time.timeScale = 0.75f;
             _cont.ResetInstructions();
+
+            DOTween.To(() => 60, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 55, 1f);
         }
 
         void StopElementMode(InputAction.CallbackContext _)
@@ -180,6 +213,8 @@ namespace Controls
             _move.Enable();
             Time.timeScale = 1f;
             _cont.OnChooseElements();
+
+            DOTween.To(() => 50, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 60, 0.1f);
         }
 
         void StartSpellMode(InputAction.CallbackContext _)
@@ -187,6 +222,8 @@ namespace Controls
             _move.Disable();
             Time.timeScale = 0.75f;
             _cont.ResetInstructions();
+
+            DOTween.To(() => 60, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 55, 1f);
         }
 
         void StopSpellMode(InputAction.CallbackContext _)
@@ -194,6 +231,8 @@ namespace Controls
             _move.Enable();
             Time.timeScale = 1f;
             _cont.OnSpellLaunch();
+
+            DOTween.To(() => 50, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 60, 0.1f);
         }
 
         void RegisterSpellUp(InputAction.CallbackContext ctx)

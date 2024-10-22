@@ -63,15 +63,10 @@ namespace Player
 
         private void Awake()
         {
-            //if (Instance != null) Destroy(gameObject);
-            //else Instance = this;
-
             _rb = GetComponent<Rigidbody>();
             Orientation = transform.forward;
 
             _mage = FindObjectOfType<Mage>();
-
-            //DontDestroyOnLoad(gameObject);
         }
 
         private void Start()
@@ -242,6 +237,11 @@ namespace Player
             _selection.transform.parent = transform;
             _selection.transform.position = _oSelectionPos;
             _selection.SetActive(false);
+        }
+
+        public void OnPause(InputAction.CallbackContext _)
+        {
+            UIManager.Instance.LoadUIWindow(UIManager.Instance.PauseMenu);
         }
 
         #endregion

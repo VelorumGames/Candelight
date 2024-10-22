@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1923940452591612647}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7014c8c6b1b71c34c9e9b511163ad18f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rb: {fileID: 1923940452591612647}
   _speed: 100
   MaxHP: 0
   Orientation: {x: 0, y: 0, z: 0}
@@ -93,7 +92,7 @@ GameObject:
   - component: {fileID: 468615264003349258}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

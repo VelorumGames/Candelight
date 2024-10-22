@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public abstract class AController : MonoBehaviour
     [SerializeField] protected float _speed;
 
     public float MaxHP;
-    float m_HP;
+    [SerializeField] float m_HP;
     public float CurrentHP
     {
         get => m_HP;
@@ -17,11 +18,18 @@ public abstract class AController : MonoBehaviour
             if (m_HP != value)
             {
                 m_HP = Mathf.Clamp(value, 0, MaxHP);
+                if (m_HP == 0 && OnDeath != null)
+                {
+                    if (OnDeath != null) OnDeath(this);
+                    Destroy(gameObject);
+                }
             }
         }
     }
 
     public Vector3 Orientation;
+
+    public event Action<AController> OnDeath;
 
     public abstract void RecieveDamage(float damage);
 
@@ -54,5 +62,10 @@ public abstract class AController : MonoBehaviour
             outTime += Time.deltaTime;
             yield return null;
         }
+    }
+
+    private void OnDisable()
+    {
+        OnDeath = null;
     }
 }

@@ -195,6 +195,7 @@ namespace World
         {
             NodeData data = node.GetNodeData();
             CurrentNodeInfo.Levels = data.NumLevels;
+            CurrentNodeInfo.LevelTypes = data.LevelTypes;
             CurrentNodeInfo.Seeds = data.SeedExtra;
             CurrentNodeInfo.Biome = data.Biome;
             CurrentNodeInfo.Node = node;
@@ -206,7 +207,18 @@ namespace World
         public void LoadNode()
         {
             _worldParent.gameObject.SetActive(false);
-            SceneManager.LoadScene("LevelScene");
+            switch(CurrentNodeInfo.LevelTypes[0])
+            {
+                case ELevel.Exploration:
+                    SceneManager.LoadScene("LevelScene");
+                    break;
+                case ELevel.Calm:
+                    SceneManager.LoadScene("CalmScene");
+                    break;
+                case ELevel.Challenge:
+                    SceneManager.LoadScene("ChallengeScene");
+                    break;
+            }
         }
     }
 }

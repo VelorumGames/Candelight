@@ -2,11 +2,13 @@ using Controls;
 using Hechizos;
 using Hechizos.DeForma;
 using Hechizos.Elementales;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace UI
@@ -18,7 +20,11 @@ namespace UI
         public string ActualNodeName;
         public string Chains;
 
+        public GameObject PauseMenu;
+
         ShowInstructions _showInstr;
+
+        Stack<GameObject> _windows = new Stack<GameObject>();
 
         private void Awake()
         {
@@ -64,5 +70,23 @@ namespace UI
             if (elements != null) StartCoroutine(_showInstr.ShowValidInstructions());
             else _showInstr.ResetSprites();
         }
+
+        public void OnUIBack(InputAction.CallbackContext ctx)
+        {
+            GameObject window = _windows.Pop();
+            window.SetActive(false);
+
+            if (_windows.Count == 0) InputManager.Instance.LoadPreviousControls();
+        }
+
+        public void LoadUIWindow(GameObject window)
+        {
+            window.SetActive(true);
+            _windows.Push(window);
+
+            if (_windows.Count == 1) InputManager.Instance.LoadControls(EControlMap.UI);
+        }
+
+        public void Back() => OnUIBack(new InputAction.CallbackContext());
     }
 }
