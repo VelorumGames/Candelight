@@ -144,7 +144,7 @@ namespace Hechizos
             }
 
             //Comprobar si se trata del mismo elemento. En ese caso, simplemente se toma uno de ellos y no los dos
-            if (elements[0].Name == elements[1].Name)
+            if (elements.Length > 1 && elements[0].Name == elements[1].Name)
             {
                 AElementalRune el = elements[0];
                 elements = new AElementalRune[1];

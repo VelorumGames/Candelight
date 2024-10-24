@@ -252,7 +252,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 50
+  field of view: 60
   orthographic: 0
   orthographic size: 1.01
   m_Depth: 0
@@ -470,7 +470,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 50
+    FieldOfView: 60
     OrthographicSize: 1.01
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -1617,8 +1617,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3307859510703695798, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8798732836475467872}
   m_SourcePrefab: {fileID: 100100000, guid: a3efef8749460fc45b9a2651827ed758, type: 3}
+--- !u!1 &8798732836475467871 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3307859510703695798, guid: a3efef8749460fc45b9a2651827ed758,
+    type: 3}
+  m_PrefabInstance: {fileID: 8798732836475467870}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8798732836475467872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8798732836475467871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc3c151d8dcb31841b480abdf987ddfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eventEndings: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

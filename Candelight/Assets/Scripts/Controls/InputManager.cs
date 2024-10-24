@@ -220,7 +220,7 @@ namespace Controls
             Time.timeScale = 0.75f;
             _cont.ResetInstructions();
 
-            DOTween.To(() => 60, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 55, 1f);
+            DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f);
         }
 
         void StopElementMode(InputAction.CallbackContext _)
@@ -229,7 +229,7 @@ namespace Controls
             Time.timeScale = 1f;
             _cont.OnChooseElements();
 
-            DOTween.To(() => 50, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 60, 0.1f);
+            DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 60f, 0.1f);
         }
 
         void StartSpellMode(InputAction.CallbackContext _)
@@ -238,7 +238,7 @@ namespace Controls
             Time.timeScale = 0.75f;
             _cont.ResetInstructions();
 
-            DOTween.To(() => 60, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 55, 1f);
+            DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f);
         }
 
         void StopSpellMode(InputAction.CallbackContext _)
@@ -247,7 +247,7 @@ namespace Controls
             Time.timeScale = 1f;
             _cont.OnSpellLaunch();
 
-            DOTween.To(() => 50, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 60, 0.1f);
+            DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 60f, 0.1f);
         }
 
         #endregion

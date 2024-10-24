@@ -32,6 +32,7 @@ namespace Events
                     room.IdText.text += " EVENT";
 
                     _currentEvent = Instantiate(_eventEndings[0], room.transform);
+                    _currentEvent.transform.position = room.GetRandomSpawnPoint().position;
                     break;
                 default:
                     Debug.Log("No se generara ningun evento para este nodo");

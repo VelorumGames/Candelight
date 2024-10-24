@@ -252,7 +252,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 50
+  field of view: 60
   orthographic: 0
   orthographic size: 1.01
   m_Depth: 0
@@ -519,7 +519,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 50
+    FieldOfView: 60
     OrthographicSize: 1.01
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -1179,16 +1179,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4870556320599610303, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: PauseMenu
-      value: 
-      objectReference: {fileID: 3523103089918366147}
-    - target: {fileID: 4870556320599610303, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: _instrText
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4935394929591358164, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_Name
@@ -1202,12 +1192,6 @@ PrefabInstance:
 --- !u!4 &3523103089918366146 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3486557483265283610, guid: c46c020e6f24e1a43b957187b5e7e93a,
-    type: 3}
-  m_PrefabInstance: {fileID: 3523103089918366145}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3523103089918366147 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7505899579408112214, guid: c46c020e6f24e1a43b957187b5e7e93a,
     type: 3}
   m_PrefabInstance: {fileID: 3523103089918366145}
   m_PrefabAsset: {fileID: 0}

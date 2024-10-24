@@ -1,4 +1,6 @@
 using Controls;
+using DG.Tweening;
+using DG;
 using Hechizos;
 using Hechizos.DeForma;
 using Hechizos.Elementales;
@@ -10,6 +12,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -22,6 +25,7 @@ namespace UI
 
         public GameObject PauseMenu;
         public GameObject Options;
+        public Image FadeImage;
 
         ShowInstructions _showInstr;
 
@@ -73,6 +77,16 @@ namespace UI
         }
 
         public void ShowElements() => _showInstr.ShowElements();
+
+        public void FadeToBlack(float duration)
+        {
+            FadeImage.DOColor(Color.black, duration);
+        }
+
+        public void FadeToWhite(float duration)
+        {
+            FadeImage.DOColor(Color.white, duration);
+        }
 
         #region UI Menus
 

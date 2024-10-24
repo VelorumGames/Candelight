@@ -169,7 +169,9 @@ namespace Map
             rooms.Remove(endRoom);
             endRoom.RoomType = ERoomType.Exit;
             endRoom.IdText.text += " EXIT";
+            endRoom.RemoveEntities(); //Eliminamos los enemigos o npcs que pueda haber en la sala de salida
             GameObject torch = Instantiate(EndTorch, endRoom.transform);
+            torch.transform.position = endRoom.GetRandomSpawnPoint().position;
 
             //Elegimos con cierta probabilidad que una de las habitaciones tenga una runa
             if (Random.value < RuneChance)

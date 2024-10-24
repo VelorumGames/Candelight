@@ -1,3 +1,5 @@
+using Cameras;
+using DG.Tweening;
 using Map;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ namespace Interactuables
         public override void Interaction()
         {
             Debug.Log("Se pasa a la siguiente zona");
-            MapManager.Instance.EndLevel();
+            DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 20f, 2f).OnComplete(MapManager.Instance.EndLevel);
         }
     }
 }
