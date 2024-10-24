@@ -121,6 +121,9 @@ namespace Hechizos
             Debug.Log($"Deberia haber {num} elementos en esta cadena: " + InstructionsToString(chain));
             elements = new AElementalRune[num];
 
+            if (chain.Length < 2) return false;
+            if (chain.Length % 2 != 0) return false;
+
             for (int i = 0; i < num; i++)
             {
                 ESpellInstruction[] subChain = new ESpellInstruction[2];
@@ -144,11 +147,19 @@ namespace Hechizos
             }
 
             //Comprobar si se trata del mismo elemento. En ese caso, simplemente se toma uno de ellos y no los dos
-            if (elements.Length > 1 && elements[0].Name == elements[1].Name)
+            try
             {
-                AElementalRune el = elements[0];
-                elements = new AElementalRune[1];
-                elements[0] = el;
+                if (num > 1 && elements[0].Name == elements[1].Name)
+                {
+                    AElementalRune el = elements[0];
+                    elements = new AElementalRune[1];
+                    elements[0] = el;
+                }
+            }
+            catch (System.NullReferenceException e)
+            {
+                Debug.Log("ERROR: Problema a la hora de encontrar elementos. Se ignora la cadena. " + e);
+                return false;
             }
 
             return found == num;
