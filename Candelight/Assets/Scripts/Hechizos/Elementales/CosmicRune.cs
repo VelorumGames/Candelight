@@ -1,3 +1,4 @@
+using Enemy;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Hechizos.Elementales
     {
         public CosmicRune(Mage m) : base(m)
         {
-            Name = "Cósmico";
+            Name = "Cosmic";
             Damage = 20f;
         }
 
@@ -22,7 +23,11 @@ namespace Hechizos.Elementales
         }
         public override void ProjectileImpact(Transform target)
         {
-
+            //Atrae al enemigo
+            if (target.TryGetComponent<EnemyController>(out var cont))
+            {
+                cont.Push(200f, - (target.position - MageManager.GetPlayerTarget().position));
+            }
         }
         public override void ProjectileEnd(Transform target)
         {
@@ -34,6 +39,14 @@ namespace Hechizos.Elementales
         {
 
         }
+        public override void MeleeImpact(Transform target)
+        {
+            //Repele al enemigo
+            if (target.TryGetComponent<EnemyController>(out var cont))
+            {
+                cont.Push(100f, target.position - MageManager.GetPlayerTarget().position);
+            }
+        }
 
         //Explosion cosmica
         public override void ExplosionActivation(Transform target)
@@ -42,7 +55,11 @@ namespace Hechizos.Elementales
         }
         public override void ExplosionImpact(Transform target)
         {
-
+            //Repele al enemigo
+            if (target.TryGetComponent<EnemyController>(out var cont))
+            {
+                cont.Push(300f, target.position - MageManager.GetPlayerTarget().position);
+            }
         }
 
         //Potenciador cosmico

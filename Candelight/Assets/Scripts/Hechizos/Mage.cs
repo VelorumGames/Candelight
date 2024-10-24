@@ -18,7 +18,8 @@ namespace Hechizos
 
         PlayerController _cont;
 
-        public GameObject Projectile;
+        public GameObject[] Projectiles;
+        GameObject _lastProjectile;
         [SerializeField] float _projectileSpeed;
         public GameObject Explosion;
         public GameObject Melee;
@@ -63,6 +64,8 @@ namespace Hechizos
                     }
                 }
             }
+
+            UIManager.Instance.ShowElements();
         }
 
         public void SetInitialElement(AElementalRune element)
@@ -109,28 +112,92 @@ namespace Hechizos
         #region Spell Functions
         public GameObject SpawnProjectile()
         {
-            GameObject proj = Instantiate(Projectile);
-            proj.transform.position = _cont.transform.position;
-            proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _cont.Orientation, ForceMode.Impulse);
-            return proj;
+            _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
+            _lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
+            while (_lastProjectile.activeInHierarchy)
+            {
+                _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
+            }
+
+            _lastProjectile.SetActive(true);
+            _lastProjectile.transform.position = _cont.transform.position;
+            _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _cont.Orientation, ForceMode.Impulse);
+
+            return _lastProjectile;
+        }
+
+        public GameObject SpawnProjectileWithRandomDirection()
+        {
+            _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
+            _lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
+            while (_lastProjectile.activeInHierarchy)
+            {
+                _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
+            }
+
+            _lastProjectile.SetActive(true);
+            _lastProjectile.transform.position = _cont.transform.position;
+            _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)), ForceMode.Impulse);
+
+            return _lastProjectile;
         }
 
         public GameObject SpawnExplosion()
         {
-            GameObject proj = Instantiate(Explosion);
-            return proj;
+            GameObject expl = Instantiate(Explosion);
+            expl.transform.position = _cont.transform.position;
+            return expl;
         }
 
         public GameObject SpawnMelee()
         {
-            GameObject proj = Instantiate(Melee);
-            return proj;
+            GameObject mel = Instantiate(Melee);
+            mel.transform.position = _cont.transform.position;
+            return mel;
         }
 
         public GameObject SpawnBuff()
         {
             return null;
         }
+
+        public bool TryFindClosestEnemy(out Transform closest)
+        {
+            bool found = false;
+
+            Collider[] cols = Physics.OverlapSphere(_cont.transform.position, 10f);
+
+            float minDist = 9999;
+            closest = null;
+            foreach (var c in cols)
+            {
+                if (c.CompareTag("Enemy"))
+                {
+                    float dist = Vector3.Distance(c.transform.position, _cont.transform.position);
+                    if (dist < minDist)
+                    {
+                        closest = c.transform;
+                        minDist = dist;
+                        found = true;
+                    }
+                }
+            }
+
+            return found;
+        }
+
+        public void SetProjectileDrag(float d) => _lastProjectile.GetComponent<Rigidbody>().drag = d;
+        public void SetProjectileTarget(Transform target, float speed)
+        {
+            Projectile proj = _lastProjectile.GetComponent<Projectile>();
+
+            proj.Target = target;
+            proj.SetFollowSpeed(speed);
+            proj.OnUpdate += proj.FollowTarget;
+        }
+
         #endregion
+
+        public Transform GetPlayerTarget() => _cont.transform;
     }
 }

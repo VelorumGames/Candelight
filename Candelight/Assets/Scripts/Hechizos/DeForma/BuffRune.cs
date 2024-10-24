@@ -14,7 +14,7 @@ namespace Hechizos.DeForma
         }
         public override void LoadElements(Action<Transform>[] actions)
         {
-            OnBuffActivation += actions[7];
+            OnBuffActivation += actions[8];
         }
 
         public override void ResetElements()
@@ -25,7 +25,7 @@ namespace Hechizos.DeForma
         public override void ThrowSpell()
         {
             GameObject buffGO = MageManager.SpawnBuff();
-            if (OnBuffActivation != null) OnBuffActivation(MageManager.transform);
+            if (OnBuffActivation != null) OnBuffActivation(MageManager.GetPlayerTarget());
         }
     }
 }

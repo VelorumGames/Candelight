@@ -22,6 +22,14 @@ namespace World
         Incompleted,
         Completed
     }
+    public enum EEventSolution
+    {
+        None,
+        Ignored,
+        Failed,
+        AltCompleted,
+        Completed
+    }
 
     public struct NodeData
     {
@@ -30,6 +38,8 @@ namespace World
         public ELevel[] LevelTypes;
         public EBiome Biome;
         public ENodeState State;
+        public int EventID;
+        public EEventSolution EventSolution;
     }
 
     public class NodeManager : MonoBehaviour
@@ -55,12 +65,16 @@ namespace World
 
             _data.NumLevels = Random.Range(1, 5);
             _data.SeedExtra = new int[_data.NumLevels];
+            _data.LevelTypes = new ELevel[_data.NumLevels];
             for(int i = 0; i < _data.NumLevels; i++)
             {
                 _data.SeedExtra[i] = Random.Range(0, 999999);
                 _data.LevelTypes[i] = (ELevel) Random.Range(0, 3);
             }
             _data.LevelTypes[0] = 0; //El primer nodo siempre sera de exploracion
+
+            if (EventCheck()) _data.EventID = Random.Range(0, 5);
+            _data.EventSolution = EEventSolution.None;
 
             yield return new WaitForSeconds(Random.Range(0.01f, 0.2f));
             ConnectNode();
@@ -156,5 +170,7 @@ namespace World
                 node.GetComponent<NodeManager>().SetState(ENodeState.Explored);
             }
         }
+
+        bool EventCheck() => _data.NumLevels > 1 && _data.LevelTypes[_data.LevelTypes.Length - 1] == ELevel.Calm && _data.LevelTypes[_data.LevelTypes.Length - 2] == ELevel.Exploration;
     }
 }

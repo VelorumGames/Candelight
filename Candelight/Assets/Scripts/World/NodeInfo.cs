@@ -14,5 +14,7 @@ namespace World
         public ELevel[] LevelTypes;
         public EBiome Biome;
         public NodeManager Node;
+        public int EventID;
+        public EEventSolution EventSolution;
     }
 }

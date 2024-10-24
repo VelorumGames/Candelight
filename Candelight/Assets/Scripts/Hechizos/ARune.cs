@@ -46,7 +46,7 @@ namespace Hechizos
                 else chain[i] = (ESpellInstruction)Random.Range(0, 4);
             }
 
-            if (Spells.ContainsKey(chain)) return CreateInstructionChain(compl, dif);
+            if (CheckRegisteredChain(chain)) return CreateInstructionChain(compl, dif);
             else return chain;
         }
 
@@ -143,6 +143,14 @@ namespace Hechizos
                 }
             }
 
+            //Comprobar si se trata del mismo elemento. En ese caso, simplemente se toma uno de ellos y no los dos
+            if (elements[0].Name == elements[1].Name)
+            {
+                AElementalRune el = elements[0];
+                elements = new AElementalRune[1];
+                elements[0] = el;
+            }
+
             return found == num;
         }
 
@@ -187,6 +195,27 @@ namespace Hechizos
         public static void RegisterMage(Mage m)
         {
             MageManager = m;
+        }
+
+        public static bool CompareInstructions(ESpellInstruction[] chainA, ESpellInstruction[] chainB)
+        {
+            if (chainA.Length != chainB.Length) return false;
+
+            for (int i = 0; i < chainA.Length; i++)
+            {
+                if (chainA[i] != chainB[i]) return false;
+            }
+
+            return true;
+        }
+
+        public static bool CheckRegisteredChain(ESpellInstruction[] chain)
+        {
+            foreach (var k in Spells.Keys)
+            {
+                if (CompareInstructions(chain, k)) return true;
+            }
+            return false;
         }
     }
 }

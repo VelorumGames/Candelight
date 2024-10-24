@@ -15,8 +15,8 @@ namespace Hechizos.DeForma
         }
         public override void LoadElements(Action<Transform>[] actions)
         {
-            OnExplosionActivation += actions[5];
-            OnExplosionImpact += actions[6];
+            OnExplosionActivation += actions[6];
+            OnExplosionImpact += actions[7];
         }
 
         public override void ResetElements()
@@ -28,7 +28,10 @@ namespace Hechizos.DeForma
         public override void ThrowSpell()
         {
             GameObject explGO = MageManager.SpawnExplosion();
-            if (OnExplosionActivation != null) OnExplosionActivation(MageManager.transform);
+            if (OnExplosionActivation != null)
+            {
+                OnExplosionActivation(MageManager.GetPlayerTarget());
+            }
 
             Explosion expl = explGO.GetComponent<Explosion>();
             expl.OnImpact += OnExplosionImpact;

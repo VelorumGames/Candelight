@@ -10,10 +10,15 @@ namespace Dialogues
 
         public Dialogue GetDialogue()
         {
-            Dialogue d = Dialogues[Random.Range(0, Dialogues.Count)];
-            Dialogues.Remove(d);
+            if (Dialogues.Count > 0)
+            {
+                Dialogue d = Dialogues[Random.Range(0, Dialogues.Count)];
+                Dialogues.Remove(d);
 
-            return d;
+                return d;
+            }
+
+            return null;
         }
     }
 }

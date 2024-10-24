@@ -11,20 +11,40 @@ namespace Enemy
         public EnemyInfo Info;
         PlayerController _player;
 
+        public GameObject Fragment;
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
             Orientation = transform.forward;
         }
 
-        private void Start()
+        private new void Start()
         {
             _player = FindObjectOfType<PlayerController>();
 
             MaxHP = Info.BaseHP;
-            CurrentHP = MaxHP;
+            gameObject.name = $"Enemigo {Info.name}";
+
+            base.Start();
 
             StartCoroutine(DebugAI());
+        }
+
+        private void OnEnable()
+        {
+            OnDeath += SpawnFragments;
+        }
+
+        public void SpawnFragments(AController _)
+        {
+            int num = Random.Range(Info.MinFragments, Info.MaxFragments);
+            Debug.Log($"{gameObject.name} suelta {num} fragmentos");
+            for(int i = 0; i < num; i++)
+            {
+                GameObject fragment = Instantiate(Fragment);
+                fragment.transform.position = transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+            }
         }
 
         public override void RecieveDamage(float damage)
@@ -36,14 +56,17 @@ namespace Enemy
 
         public void OnAttack()
         {
-            Debug.Log($"Enemigo {gameObject.name} ataca con {Info.BaseDamage} de ataque");
-            Collider[] objs = Physics.OverlapSphere(transform.position, 2f);
-            foreach (var col in objs)
+            if (CanMove)
             {
-                //Debug.Log("Controlador encontrado: " + col.gameObject.name);
-                if (col.TryGetComponent<AController>(out var cont) && cont != this)
+                Debug.Log($"Enemigo {gameObject.name} ataca con {Info.BaseDamage} de ataque");
+                Collider[] objs = Physics.OverlapSphere(transform.position, 2f);
+                foreach (var col in objs)
                 {
-                    cont.RecieveDamage(Info.BaseDamage);
+                    //Debug.Log("Controlador encontrado: " + col.gameObject.name);
+                    if (col.TryGetComponent<AController>(out var cont) && cont != this)
+                    {
+                        cont.RecieveDamage(Info.BaseDamage);
+                    }
                 }
             }
         }
@@ -67,6 +90,11 @@ namespace Enemy
                     }
                 }
             }
+        }
+
+        private void OnDisable()
+        {
+            OnDeath -= SpawnFragments;
         }
     }
 }

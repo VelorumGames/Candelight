@@ -36,7 +36,7 @@ namespace Hechizos.DeForma
         public override void ThrowSpell()
         {
             GameObject projGO = MageManager.SpawnProjectile();
-            if (OnStartProjectile != null) OnStartProjectile(MageManager.transform);
+            if (OnStartProjectile != null) OnStartProjectile(MageManager.GetPlayerTarget());
 
             Projectile proj = projGO.GetComponent<Projectile>();
             proj.OnUpdate += ProjectileUpdate;

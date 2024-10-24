@@ -8,6 +8,8 @@ namespace Hechizos
 {
     public class Melee : MonoBehaviour
     {
+        public event Action<Transform> OnImpact;
+
         public Transform Target;
         public float Damage;
 
@@ -15,7 +17,10 @@ namespace Hechizos
         {
             if (other.CompareTag("Enemy"))
             {
-                if (other.TryGetComponent<EnemyController>(out var enemy))
+                Target = other.transform.parent;
+                if (OnImpact != null) OnImpact(Target);
+
+                if (Target.TryGetComponent<EnemyController>(out var enemy))
                 {
                     enemy.RecieveDamage(Damage);
                 }

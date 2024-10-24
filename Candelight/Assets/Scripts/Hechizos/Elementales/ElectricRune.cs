@@ -1,3 +1,4 @@
+using Enemy;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace Hechizos.Elementales
     {
         public ElectricRune(Mage m) : base(m)
         {
-            Name = "Electricidad";
+            Name = "Electric";
             Damage = 15f;
         }
 
@@ -23,7 +24,11 @@ namespace Hechizos.Elementales
         }
         public override void ProjectileImpact(Transform target)
         {
-
+            //Queda paralizado durante cierto tiempo
+            if (target.TryGetComponent<EnemyController>(out var cont))
+            {
+                cont.Paralize(3f);
+            }
         }
         public override void ProjectileEnd(Transform target)
         {
@@ -35,6 +40,14 @@ namespace Hechizos.Elementales
         {
 
         }
+        public override void MeleeImpact(Transform target)
+        {
+            //Queda paralizado durante cierto tiempo
+            if (target.TryGetComponent<EnemyController>(out var cont))
+            {
+                cont.Paralize(1.5f);
+            }
+        }
 
         //Explosion electrica
         public override void ExplosionActivation(Transform target)
@@ -43,7 +56,11 @@ namespace Hechizos.Elementales
         }
         public override void ExplosionImpact(Transform target)
         {
-
+            //Queda paralizado durante cierto tiempo
+            if (target.TryGetComponent<EnemyController>(out var cont))
+            {
+                cont.Paralize(5f);
+            }
         }
 
         //Potenciador electrico

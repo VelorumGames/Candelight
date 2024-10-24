@@ -199,6 +199,7 @@ namespace World
             CurrentNodeInfo.Seeds = data.SeedExtra;
             CurrentNodeInfo.Biome = data.Biome;
             CurrentNodeInfo.Node = node;
+            CurrentNodeInfo.EventID = data.EventID;
         }
 
         /// <summary>

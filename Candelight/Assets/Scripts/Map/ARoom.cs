@@ -10,7 +10,8 @@ namespace Map
         Start,
         Exit,
         Normal,
-        Rune
+        Rune,
+        Event
     }
     public abstract class ARoom : MonoBehaviour
     {

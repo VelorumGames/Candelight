@@ -21,6 +21,7 @@ namespace UI
         public string Chains;
 
         public GameObject PauseMenu;
+        public GameObject Options;
 
         ShowInstructions _showInstr;
 
@@ -71,12 +72,18 @@ namespace UI
             else _showInstr.ResetSprites();
         }
 
+        public void ShowElements() => _showInstr.ShowElements();
+
+        #region UI Menus
+
         public void OnUIBack(InputAction.CallbackContext ctx)
         {
-            GameObject window = _windows.Pop();
-            window.SetActive(false);
+            if (_windows.TryPop(out var window))
+            {
+                window.SetActive(false);
 
-            if (_windows.Count == 0) InputManager.Instance.LoadPreviousControls();
+                if (_windows.Count == 0) InputManager.Instance.LoadPreviousControls();
+            }
         }
 
         public void LoadUIWindow(GameObject window)
@@ -88,5 +95,12 @@ namespace UI
         }
 
         public void Back() => OnUIBack(new InputAction.CallbackContext());
+
+        public void OnOpenOptions()
+        {
+            LoadUIWindow(Options);
+        }
+
+        #endregion
     }
 }

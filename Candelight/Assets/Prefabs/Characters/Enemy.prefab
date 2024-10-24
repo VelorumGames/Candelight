@@ -48,8 +48,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 100
   MaxHP: 0
+  m_HP: 0
   Orientation: {x: 0, y: 0, z: 0}
   Info: {fileID: 11400000, guid: bcb90758927b9584baaccbd6261faf98, type: 2}
+  Fragment: {fileID: 3511583418104216482, guid: f4b15eff24eade8458c13b8996bbdd04,
+    type: 3}
 --- !u!54 &1923940452591612647
 Rigidbody:
   m_ObjectHideFlags: 0

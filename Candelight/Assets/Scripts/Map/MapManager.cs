@@ -1,4 +1,5 @@
 using Controls;
+using Events;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,10 +27,21 @@ namespace Map
             set
             {
                 m_rooms = value;
-                if (m_rooms >= MaxRooms) RegisterRoomTypes();
-                //Camera.main.transform.parent = _player.transform;
-                //Camera.main.transform.localPosition = new Vector3(0, 2.5f, -4.6f);
-                //Camera.main.transform.localRotation = Quaternion.Euler(32f, 0f, 0f);
+                if (m_rooms >= MaxRooms) //Si se ha terminado la generacion de habitaciones
+                {
+                    RegisterRoomTypes();
+
+                    //Si el penultimo nivel es de exploracion, generamos el evento que corresponda
+                    if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 2 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration && TryGetComponent<ExploreEventManager>(out var eventMan))
+                    {
+                        eventMan.GenerateEvent(this);
+                    }
+                    //Si es el ultimo nivel y es de calma, generamos el evento que corresponda
+                    else if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 1 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Calm && TryGetComponent<CalmEventManager>(out var calmEventMan))
+                    {
+                        calmEventMan.GenerateEvent(this);
+                    }
+                }
             }
         }
 
@@ -197,6 +209,13 @@ namespace Map
                 //Se vuelve al mapa del mundo
                 SceneManager.LoadScene("NodeEndScene");
             }
+        }
+
+        public GameObject GetRandomAvailableRoom(bool remove)
+        {
+            GameObject r = _rooms[Random.Range(0, _rooms.Count)];
+            if (remove) _rooms.Remove(r);
+            return r;
         }
     }
 }

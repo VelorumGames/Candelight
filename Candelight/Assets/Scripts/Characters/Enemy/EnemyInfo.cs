@@ -11,6 +11,8 @@ namespace Enemy
         public string Description;
         public float BaseHP;
         public float BaseDamage;
+        public int MinFragments;
+        public int MaxFragments;
     }
 
 }

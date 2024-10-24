@@ -64,13 +64,14 @@ namespace Player
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
-            Orientation = transform.forward;
 
             _mage = FindObjectOfType<Mage>();
         }
 
-        private void Start()
+        private new void Start()
         {
+            base.Start();
+
             _rb.maxLinearVelocity = _maxSpeed;
             _interaction = null;
 
@@ -95,13 +96,16 @@ namespace Player
 
         #region Actions
 
+        #region General
+
         public new void OnMove(Vector2 direction)
         {
-            //Debug.Log("RIGIDBODY: " + _rb);
-            if (!_rb) _rb = GetComponent<Rigidbody>();
-            Orientation = new Vector3(direction.x, 0f, direction.y);
-            Vector3 force = (_bookIsOpen ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * new Vector3(direction.x, 0f, direction.y);
-            _rb.AddForce(force, ForceMode.Force);
+            if (CanMove)
+            {
+                if (!_rb) _rb = GetComponent<Rigidbody>();
+                Vector3 force = (_bookIsOpen ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * new Vector3(direction.x, 0f, direction.y);
+                _rb.AddForce(force, ForceMode.Force);
+            }
         }
 
         public void OnInteract(InputAction.CallbackContext _)
@@ -114,20 +118,71 @@ namespace Player
             }
         }
 
-        public void OnSpellInstruction(ESpellInstruction instr)
+        public void LoadInteraction(Action interaction, Transform obj)
         {
-            Debug.Log("Se ha registrado la instruccion " + instr);
-            _instructions.Add(instr);
+            Debug.Log("Se carga interaccion de " + gameObject.name);
+            _interaction = interaction;
 
-            if (_bookIsOpen)
+            _selection.SetActive(true);
+            _selection.transform.parent = obj;
+            _selection.transform.position = obj.transform.position;
+        }
+
+        public void UnloadInteraction()
+        {
+            Debug.Log("Se descarga interaccion de " + gameObject.name);
+            _interaction = null;
+
+            _selection.transform.parent = transform;
+            _selection.transform.position = _oSelectionPos;
+            _selection.SetActive(false);
+        }
+
+        public void OnLook(Vector2 mousePos)
+        {
+            if (CanMove)
             {
-                _book.AddNewString(instr.ToString() + " ");
-            }
-            else
-            {
-                OnNewInstruction(instr);
+                Orientation = new Vector3(mousePos.x / Screen.width - 0.5f, 0f, mousePos.y / Screen.height - 0.5f);
+                Debug.DrawRay(transform.position, 10f * Orientation, Color.red);
             }
         }
+
+        #endregion
+
+        #region Spells
+
+        public void OnSpellInstruction(ESpellInstruction instr)
+        {
+            if (CanMove)
+            {
+                Debug.Log("Se ha registrado la instruccion " + instr);
+                _instructions.Add(instr);
+
+                if (_bookIsOpen)
+                {
+                    switch (instr)
+                    {
+                        case ESpellInstruction.Up:
+                            _book.AddNewString("W");
+                            break;
+                        case ESpellInstruction.Down:
+                            _book.AddNewString("S");
+                            break;
+                        case ESpellInstruction.Right:
+                            _book.AddNewString("D");
+                            break;
+                        case ESpellInstruction.Left:
+                            _book.AddNewString("A");
+                            break;
+                    }
+                }
+                else
+                {
+                    OnNewInstruction(instr);
+                }
+            }
+        }
+
         public void OnChooseElements()
         {
             if (_bookIsOpen) //Se registra un nuevo elemento
@@ -164,8 +219,11 @@ namespace Player
                     {
                         Debug.Log("Hechizo encontrado!!: " + spell.Name);
                         AShapeRune shapeSpell = spell as AShapeRune;
-                        shapeSpell.ThrowSpell();
-                        OnSpell(shapeSpell);
+                        if (shapeSpell != null)
+                        {
+                            shapeSpell.ThrowSpell();
+                            OnSpell(shapeSpell);
+                        }
                     }
                     else OnSpell(null); //Si no encuentra hechizo valido
                     ResetInstructions();
@@ -174,6 +232,22 @@ namespace Player
         }
 
         public void ResetInstructions() => _instructions.Clear();
+
+        public void OnBook(InputAction.CallbackContext _)
+        {
+            if (_bookIsOpen)
+            {
+                _book.gameObject.SetActive(false);
+                _bookIsOpen = false;
+            }
+            else
+            {
+                _book.gameObject.SetActive(true);
+                _bookIsOpen = true;
+            }
+        }
+
+        #endregion
 
         public void OnChoosePath(Vector2 direction)
         {
@@ -205,51 +279,12 @@ namespace Player
             if (_rb.velocity.magnitude < 0.1f) StartCoroutine(MovePlayerTowardsNode(_nextNode));
         }
 
-        public void OnBook(InputAction.CallbackContext _)
-        {
-            if (_bookIsOpen)
-            {
-                _book.gameObject.SetActive(false);
-                _bookIsOpen = false;
-            }
-            else
-            {
-                _book.gameObject.SetActive(true);
-                _bookIsOpen = true;
-            }
-        }
-
-        public void LoadInteraction(Action interaction, Transform obj)
-        {
-            Debug.Log("Se carga interaccion de " + gameObject.name);
-            _interaction = interaction;
-
-            _selection.SetActive(true);
-            _selection.transform.parent = obj;
-            _selection.transform.position = obj.transform.position;
-        }
-
-        public void UnloadInteraction()
-        {
-            Debug.Log("Se descarga interaccion de " + gameObject.name);
-            _interaction = null;
-
-            _selection.transform.parent = transform;
-            _selection.transform.position = _oSelectionPos;
-            _selection.SetActive(false);
-        }
-
         public void OnPause(InputAction.CallbackContext _)
         {
             UIManager.Instance.LoadUIWindow(UIManager.Instance.PauseMenu);
         }
 
         #endregion
-
-        private void Update()
-        {
-            _rb.maxLinearVelocity = _maxSpeed;
-        }
 
         IEnumerator MovePlayerTowardsNode(Transform target)
         {
@@ -261,6 +296,11 @@ namespace Player
             }
             _currentNode = target.GetComponent<NodeManager>();
             yield return null;
+        }
+
+        private void FixedUpdate()
+        {
+            _rb.maxLinearVelocity = _maxSpeed;
         }
 
         private void OnDisable()

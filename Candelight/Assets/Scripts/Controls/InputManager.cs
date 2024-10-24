@@ -45,6 +45,7 @@ namespace Controls
         InputAction _choosePath;
         InputAction _element;
         InputAction _spell;
+        InputAction _look;
 
         private void Awake()
         {
@@ -66,50 +67,54 @@ namespace Controls
             Debug.Log("Se inicializan los controles");
             _cont = FindObjectOfType<PlayerController>();
 
-            //Level
-            _levelMap = Input.FindActionMap("Level");
+            if (_cont)
+            {
+                //Level
+                _levelMap = Input.FindActionMap("Level");
 
-            _move = _levelMap.FindAction("Move");
-            InputAction interact = _levelMap.FindAction("Interact");
-            interact.performed += _cont.OnInteract;
-            _element = _levelMap.FindAction("Element");
-            _element.performed += StartElementMode;
-            _element.canceled += StopElementMode;
-            _spell = _levelMap.FindAction("Spell");
-            _spell.performed += StartSpellMode;
-            _spell.canceled += StopSpellMode;
-            InputAction spellUp = _levelMap.FindAction("SpellUp");
-            spellUp.performed += RegisterSpellUp;
-            InputAction spellDown = _levelMap.FindAction("SpellDown");
-            spellDown.performed += RegisterSpellDown;
-            InputAction spellRight = _levelMap.FindAction("SpellRight");
-            spellRight.performed += RegisterSpellRight;
-            InputAction spellLeft = _levelMap.FindAction("SpellLeft");
-            spellLeft.performed += RegisterSpellLeft;
-            InputAction book = _levelMap.FindAction("Book");
-            book.performed += _cont.OnBook;
-            InputAction levelPause = _levelMap.FindAction("Pause");
-            levelPause.performed += _cont.OnPause;
+                _move = _levelMap.FindAction("Move");
+                InputAction interact = _levelMap.FindAction("Interact");
+                interact.performed += _cont.OnInteract;
+                _element = _levelMap.FindAction("Element");
+                _element.performed += StartElementMode;
+                _element.canceled += StopElementMode;
+                _spell = _levelMap.FindAction("Spell");
+                _spell.performed += StartSpellMode;
+                _spell.canceled += StopSpellMode;
+                InputAction spellUp = _levelMap.FindAction("SpellUp");
+                spellUp.performed += RegisterSpellUp;
+                InputAction spellDown = _levelMap.FindAction("SpellDown");
+                spellDown.performed += RegisterSpellDown;
+                InputAction spellRight = _levelMap.FindAction("SpellRight");
+                spellRight.performed += RegisterSpellRight;
+                InputAction spellLeft = _levelMap.FindAction("SpellLeft");
+                spellLeft.performed += RegisterSpellLeft;
+                InputAction book = _levelMap.FindAction("Book");
+                book.performed += _cont.OnBook;
+                InputAction levelPause = _levelMap.FindAction("Pause");
+                levelPause.performed += _cont.OnPause;
+                _look = _levelMap.FindAction("Look");
 
-            //World
-            _worldMap = Input.FindActionMap("World");
+                //World
+                _worldMap = Input.FindActionMap("World");
 
-            _choosePath = _worldMap.FindAction("ChoosePath");
-            InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
-            confirmPath.performed += _cont.OnConfirmPath;
-            InputAction worldInteract = _worldMap.FindAction("Interact");
-            worldInteract.performed += _cont.OnInteract;
-            InputAction worldPause = _worldMap.FindAction("Pause");
-            worldPause.performed += _cont.OnPause;
+                _choosePath = _worldMap.FindAction("ChoosePath");
+                InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
+                confirmPath.performed += _cont.OnConfirmPath;
+                InputAction worldInteract = _worldMap.FindAction("Interact");
+                worldInteract.performed += _cont.OnInteract;
+                InputAction worldPause = _worldMap.FindAction("Pause");
+                worldPause.performed += _cont.OnPause;
 
-            //Dialogue
-            _dialogueMap = Input.FindActionMap("Dialogue");
-            _dialogue = FindObjectOfType<DialogueUI>();
+                //Dialogue
+                _dialogueMap = Input.FindActionMap("Dialogue");
+                _dialogue = FindObjectOfType<DialogueUI>();
 
-            InputAction next = _dialogueMap.FindAction("Next");
-            next.performed += NextDialogueBlock;
-            InputAction dialoguePause = _dialogueMap.FindAction("Pause");
-            dialoguePause.performed += _cont.OnPause;
+                InputAction next = _dialogueMap.FindAction("Next");
+                next.performed += NextDialogueBlock;
+                InputAction dialoguePause = _dialogueMap.FindAction("Pause");
+                dialoguePause.performed += _cont.OnPause;
+            }
 
             //UI
             _uiMap = Input.FindActionMap("UI");
@@ -152,40 +157,43 @@ namespace Controls
 
         private void OnDisable()
         {
-            InputAction interact = _levelMap.FindAction("Interact");
-            interact.performed -= _cont.OnInteract;
-            //_element = _levelMap.FindAction("Element");
-            _element.performed -= StartElementMode;
-            _element.canceled -= StopElementMode;
-            //_spell = _levelMap.FindAction("Spell");
-            _spell.performed -= StartSpellMode;
-            _spell.canceled -= StopSpellMode;
-            InputAction spellUp = _levelMap.FindAction("SpellUp");
-            spellUp.performed -= RegisterSpellUp;
-            InputAction spellDown = _levelMap.FindAction("SpellDown");
-            spellDown.performed -= RegisterSpellDown;
-            InputAction spellRight = _levelMap.FindAction("SpellRight");
-            spellRight.performed -= RegisterSpellRight;
-            InputAction spellLeft = _levelMap.FindAction("SpellLeft");
-            spellLeft.performed -= RegisterSpellLeft;
-            InputAction book = _levelMap.FindAction("Book");
-            book.performed -= _cont.OnBook;
-            InputAction levelPause = _levelMap.FindAction("Pause");
-            levelPause.performed -= _cont.OnPause;
-            _move.Disable();
-            
-            InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
-            confirmPath.performed -= _cont.OnConfirmPath;
-            InputAction worldInteract = _worldMap.FindAction("Interact");
-            worldInteract.performed -= _cont.OnInteract;
-            _choosePath.Disable();
-            InputAction worldPause = _worldMap.FindAction("Pause");
-            worldPause.performed -= _cont.OnPause;
+            if (_cont)
+            {
+                InputAction interact = _levelMap.FindAction("Interact");
+                interact.performed -= _cont.OnInteract;
+                //_element = _levelMap.FindAction("Element");
+                _element.performed -= StartElementMode;
+                _element.canceled -= StopElementMode;
+                //_spell = _levelMap.FindAction("Spell");
+                _spell.performed -= StartSpellMode;
+                _spell.canceled -= StopSpellMode;
+                InputAction spellUp = _levelMap.FindAction("SpellUp");
+                spellUp.performed -= RegisterSpellUp;
+                InputAction spellDown = _levelMap.FindAction("SpellDown");
+                spellDown.performed -= RegisterSpellDown;
+                InputAction spellRight = _levelMap.FindAction("SpellRight");
+                spellRight.performed -= RegisterSpellRight;
+                InputAction spellLeft = _levelMap.FindAction("SpellLeft");
+                spellLeft.performed -= RegisterSpellLeft;
+                InputAction book = _levelMap.FindAction("Book");
+                book.performed -= _cont.OnBook;
+                InputAction levelPause = _levelMap.FindAction("Pause");
+                levelPause.performed -= _cont.OnPause;
+                _move.Disable();
 
-            InputAction next = _dialogueMap.FindAction("Next");
-            next.performed -= NextDialogueBlock;
-            InputAction dialoguePause = _dialogueMap.FindAction("Pause");
-            dialoguePause.performed -= _cont.OnPause;
+                InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
+                confirmPath.performed -= _cont.OnConfirmPath;
+                InputAction worldInteract = _worldMap.FindAction("Interact");
+                worldInteract.performed -= _cont.OnInteract;
+                _choosePath.Disable();
+                InputAction worldPause = _worldMap.FindAction("Pause");
+                worldPause.performed -= _cont.OnPause;
+
+                InputAction next = _dialogueMap.FindAction("Next");
+                next.performed -= NextDialogueBlock;
+                InputAction dialoguePause = _dialogueMap.FindAction("Pause");
+                dialoguePause.performed -= _cont.OnPause;
+            }
 
             InputAction back = _uiMap.FindAction("Back");
             back.performed -= UIManager.Instance.OnUIBack;
@@ -193,11 +201,18 @@ namespace Controls
 
         private void FixedUpdate()
         {
-            if (_move.IsPressed()) _cont.OnMove(_move.ReadValue<Vector2>());
-            if (_choosePath.IsPressed()) _cont.OnChoosePath(_choosePath.ReadValue<Vector2>());
+            if (_cont)
+            {
+                if (_move.IsPressed()) _cont.OnMove(_move.ReadValue<Vector2>());
+                if (_choosePath.IsPressed()) _cont.OnChoosePath(_choosePath.ReadValue<Vector2>());
+
+                if (_look.enabled) _cont.OnLook(_look.ReadValue<Vector2>());
+            }
         }
 
         void NextDialogueBlock(InputAction.CallbackContext _) => _dialogue.Next();
+
+        #region Spell Modes
 
         void StartElementMode(InputAction.CallbackContext _)
         {
@@ -235,6 +250,10 @@ namespace Controls
             DOTween.To(() => 50, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 60, 0.1f);
         }
 
+        #endregion
+
+        #region Spells
+
         void RegisterSpellUp(InputAction.CallbackContext ctx)
         {
             if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Up);
@@ -251,5 +270,7 @@ namespace Controls
         {
             if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Left);
         }
+
+        #endregion
     }
 }
