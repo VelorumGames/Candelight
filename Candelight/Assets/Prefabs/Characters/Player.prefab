@@ -396,8 +396,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2af59612e96eb844a07a067098bedbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  World: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
   _speed: 1500
   MaxHP: 100
+  m_HP: 0
   Orientation: {x: 0, y: 0, z: 0}
   _maxSpeed: 5
   _pathChooser: {fileID: 8314554660879750160}

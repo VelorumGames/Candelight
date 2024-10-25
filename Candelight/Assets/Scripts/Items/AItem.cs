@@ -1,3 +1,4 @@
+using Items.ConcreteItems;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,26 +10,17 @@ namespace Items
 
     public abstract class AItem : MonoBehaviour
     {
-
-        public EItemCategory Category;
+        public ItemInfo Data;
 
         protected bool IsActivated = false;
-
-        public Inventory MyInventory;
-
-        public string Name;
-
-        protected void Awake()
-        {
-            MyInventory = FindObjectOfType<Inventory>();
-        }
-
+             
         private void Start()
         {
-            GetComponentInChildren<TextMeshProUGUI>().text = Name;
+            GetComponentInChildren<TextMeshProUGUI>().text = Data.Name;
         }
 
         protected abstract void ApplyProperty();
+        protected abstract void ResetProperty();
 
         public void ApplyItem()
         {
@@ -41,13 +33,14 @@ namespace Items
             if (IsActivated)
             {
                 IsActivated = false;
-                MyInventory.AddFragments((int)Category);
+                ResetProperty();
+                Inventory.Instance.AddFragments((int)Data.Category);
             }
-            else if (MyInventory.TotalNumFragments >= (int)Category)
+            else if (Inventory.Instance.GetFragments() >= (int)Data.Category)
             {
                 IsActivated = true;
                 ApplyProperty();
-                MyInventory.AddFragments(-(int)Category);
+                Inventory.Instance.AddFragments(-(int)Data.Category);
             } 
             else
             {               

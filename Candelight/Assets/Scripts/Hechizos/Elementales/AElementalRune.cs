@@ -7,7 +7,8 @@ namespace Hechizos.Elementales
 {
     public abstract class AElementalRune : ARune
     {
-        public float Damage;
+        protected float Damage;
+        protected float DamageFactor = 1f;
         Action<Transform>[] _actions = new Action<Transform>[9]; //Porque son 9 funciones
 
         public AElementalRune(Mage m) : base(m, 2, 1f)
@@ -45,7 +46,8 @@ namespace Hechizos.Elementales
         //Potenciador
         public abstract void BuffActivation(Transform target);
 
-
+        public float GetDamage() => Damage * DamageFactor;
+        public float SetDamageFactor(float factor) => DamageFactor = factor;
 
     }
 

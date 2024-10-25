@@ -16,9 +16,8 @@ namespace Player
     {
         #region Variables
 
-        //public static PlayerController Instance;
-
         [SerializeField] float _maxSpeed;
+        float _speedFactor;
 
         [SerializeField] GameObject _pathChooser;
         NodeManager m_current;
@@ -49,6 +48,8 @@ namespace Player
 
         List<ESpellInstruction> _instructions = new List<ESpellInstruction>();
         Mage _mage;
+
+        float _candleFactor;
 
         Action _interaction;
 
@@ -85,13 +86,16 @@ namespace Player
             OnNewInstruction += UIManager.Instance.ShowNewInstruction;
             OnSpell += UIManager.Instance.ShowValidSpell;
             OnElements += UIManager.Instance.ShowValidElements;
+            World.OnCandleChanged += UIManager.Instance.RegisterCandle;
         }
 
         public override void RecieveDamage(float damage)
         {
-            Debug.Log($"Jugador recibe {damage} de dano");
+            Debug.Log($"Jugador recibe {damage} de dano -> Se restan {damage * _candleFactor} puntos a la vela");
 
-            CurrentHP -= damage;
+            World.Candle -= (int)(damage * _candleFactor);
+
+            //CurrentHP -= damage;
         }
 
         #region Actions
@@ -103,7 +107,7 @@ namespace Player
             if (CanMove)
             {
                 if (!_rb) _rb = GetComponent<Rigidbody>();
-                Vector3 force = (_bookIsOpen ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * new Vector3(direction.x, 0f, direction.y);
+                Vector3 force = (_bookIsOpen ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * _speedFactor * new Vector3(direction.x, 0f, direction.y);
                 _rb.AddForce(force, ForceMode.Force);
             }
         }
@@ -284,6 +288,11 @@ namespace Player
             UIManager.Instance.LoadUIWindow(UIManager.Instance.PauseMenu);
         }
 
+        public void OnInventory(InputAction.CallbackContext _)
+        {
+            UIManager.Instance.LoadUIWindow(UIManager.Instance.InventoryUI);
+        }
+
         #endregion
 
         IEnumerator MovePlayerTowardsNode(Transform target)
@@ -298,6 +307,12 @@ namespace Player
             yield return null;
         }
 
+        public void SetCandleFactor(float f) => _candleFactor = f;
+        public float GetCandleFactor() => _candleFactor;
+
+        public void SetSpeedFactor(float s) => _speedFactor = s;
+        public float GetSpeedFactor() => _speedFactor;
+
         private void FixedUpdate()
         {
             _rb.maxLinearVelocity = _maxSpeed;
@@ -308,6 +323,7 @@ namespace Player
             OnNewInstruction -= UIManager.Instance.ShowNewInstruction;
             OnSpell -= UIManager.Instance.ShowValidSpell;
             OnElements -= UIManager.Instance.ShowValidElements;
+            World.OnCandleChanged -= UIManager.Instance.RegisterCandle;
         }
     }
 }

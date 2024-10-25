@@ -47,6 +47,8 @@ namespace Controls
         InputAction _spell;
         InputAction _look;
 
+        float _spellTimeScale = 0.75f;
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
@@ -217,7 +219,7 @@ namespace Controls
         void StartElementMode(InputAction.CallbackContext _)
         {
             _move.Disable();
-            Time.timeScale = 0.75f;
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, _spellTimeScale, 0.2f);
             _cont.ResetInstructions();
 
             DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f);
@@ -226,7 +228,7 @@ namespace Controls
         void StopElementMode(InputAction.CallbackContext _)
         {
             _move.Enable();
-            Time.timeScale = 1f;
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.1f);
             _cont.OnChooseElements();
 
             DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 60f, 0.1f);
@@ -235,7 +237,7 @@ namespace Controls
         void StartSpellMode(InputAction.CallbackContext _)
         {
             _move.Disable();
-            Time.timeScale = 0.75f;
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, _spellTimeScale, 0.2f);
             _cont.ResetInstructions();
 
             DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f);
@@ -244,7 +246,7 @@ namespace Controls
         void StopSpellMode(InputAction.CallbackContext _)
         {
             _move.Enable();
-            Time.timeScale = 1f;
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.1f);
             _cont.OnSpellLaunch();
 
             DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 60f, 0.1f);
@@ -272,5 +274,8 @@ namespace Controls
         }
 
         #endregion
+
+        public void SetSpellTimeScale(float t) => _spellTimeScale = t;
+        public float GetSpellTimeScale() => _spellTimeScale;
     }
 }

@@ -9,9 +9,12 @@ namespace Enemy
     public class EnemyController : AController
     {
         public EnemyInfo Info;
+        [SerializeField] EnemyModifiers _modifier;
         PlayerController _player;
 
         public GameObject Fragment;
+
+        float _fragDropRate;
 
         private void Awake()
         {
@@ -42,8 +45,11 @@ namespace Enemy
             Debug.Log($"{gameObject.name} suelta {num} fragmentos");
             for(int i = 0; i < num; i++)
             {
-                GameObject fragment = Instantiate(Fragment);
-                fragment.transform.position = transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+                if (Random.value < _fragDropRate * _modifier.FragDropMod)
+                {
+                    GameObject fragment = Instantiate(Fragment);
+                    fragment.transform.position = transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+                }
             }
         }
 
@@ -54,18 +60,28 @@ namespace Enemy
             CurrentHP -= damage;
         }
 
+        public new void OnMove(Vector2 direction)
+        {
+            if (CanMove)
+            {
+                if (!_rb) _rb = GetComponent<Rigidbody>();
+                Vector3 force = Time.deltaTime * 100f * _speed * _modifier.SpeedMod * new Vector3(direction.x, 0f, direction.y);
+                _rb.AddForce(force, ForceMode.Force);
+            }
+        }
+
         public void OnAttack()
         {
             if (CanMove)
             {
-                Debug.Log($"Enemigo {gameObject.name} ataca con {Info.BaseDamage} de ataque");
+                Debug.Log($"Enemigo {gameObject.name} ataca con {Info.BaseDamage} (+ {Info.BaseDamage * (_modifier.DamageMod - 1)}) de ataque");
                 Collider[] objs = Physics.OverlapSphere(transform.position, 2f);
                 foreach (var col in objs)
                 {
                     //Debug.Log("Controlador encontrado: " + col.gameObject.name);
                     if (col.TryGetComponent<AController>(out var cont) && cont != this)
                     {
-                        cont.RecieveDamage(Info.BaseDamage);
+                        cont.RecieveDamage(Info.BaseDamage * _modifier.DamageMod);
                     }
                 }
             }

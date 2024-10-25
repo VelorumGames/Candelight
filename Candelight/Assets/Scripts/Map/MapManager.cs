@@ -29,18 +29,7 @@ namespace Map
                 m_rooms = value;
                 if (m_rooms >= MaxRooms) //Si se ha terminado la generacion de habitaciones
                 {
-                    RegisterRoomTypes();
-
-                    //Si el penultimo nivel es de exploracion, generamos el evento que corresponda
-                    if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 2 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration && TryGetComponent<ExploreEventManager>(out var eventMan))
-                    {
-                        eventMan.GenerateEvent(this);
-                    }
-                    //Si es el ultimo nivel y es de calma, generamos el evento que corresponda
-                    else if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 1 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Calm && TryGetComponent<CalmEventManager>(out var calmEventMan))
-                    {
-                        calmEventMan.GenerateEvent(this);
-                    }
+                    if (OnRoomGenerationEnd != null) OnRoomGenerationEnd();
                 }
             }
         }
@@ -69,6 +58,9 @@ namespace Map
         public float ConnectionCollidersOffset;
 
         public NodeInfo CurrentNodeInfo;
+
+        public event System.Action OnRoomGenerationEnd;
+
 
         private void Awake()
         {
@@ -101,6 +93,26 @@ namespace Map
             else MaxRooms = 5;
 
             if (MaxRooms > 0) RegisterNewRoom(-1, new Vector3(), ERoomSize.Medium);
+        }
+
+        private void OnEnable()
+        {
+            OnRoomGenerationEnd += RegisterRoomTypes;
+            OnRoomGenerationEnd += EventCheck;
+        }
+
+        void EventCheck()
+        {
+            //Si el penultimo nivel es de exploracion, generamos el evento que corresponda
+            if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 2 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration && TryGetComponent<ExploreEventManager>(out var eventMan))
+            {
+                eventMan.GenerateEvent(this);
+            }
+            //Si es el ultimo nivel y es de calma, generamos el evento que corresponda
+            else if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 1 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Calm && TryGetComponent<CalmEventManager>(out var calmEventMan))
+            {
+                calmEventMan.GenerateEvent(this);
+            }
         }
 
         /// <summary>
@@ -218,6 +230,12 @@ namespace Map
             GameObject r = _rooms[Random.Range(0, _rooms.Count)];
             if (remove) _rooms.Remove(r);
             return r;
+        }
+
+        private void OnDisable()
+        {
+            OnRoomGenerationEnd -= RegisterRoomTypes;
+            OnRoomGenerationEnd -= EventCheck;
         }
     }
 }

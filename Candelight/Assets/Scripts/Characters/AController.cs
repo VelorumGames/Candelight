@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using World;
 
 public abstract class AController : MonoBehaviour
 {
+    public WorldInfo World;
+
     protected Rigidbody _rb;
     [SerializeField] protected float _speed;
 
@@ -27,7 +30,7 @@ public abstract class AController : MonoBehaviour
         }
     }
 
-    public Vector3 Orientation;
+    protected Vector3 Orientation;
 
     Coroutine _tempDamage;
     Coroutine _paralize;
@@ -129,6 +132,8 @@ public abstract class AController : MonoBehaviour
             yield return null;
         }
     }
+
+    public Vector3 GetOrientation() => Orientation;
 
     private void OnDisable()
     {

@@ -1,5 +1,6 @@
 using Enemy;
 using Hechizos.Elementales;
+using SpellInteractuable;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ namespace Hechizos
 
         [SerializeField] float _lifeSpan;
         [SerializeField] TextMeshPro _name;
+
+        [SerializeField] TrailRenderer[] _trails;
 
         private void Awake()
         {
@@ -69,6 +72,8 @@ namespace Hechizos
             if (OnEnd != null) OnEnd(Target);
             OnUpdate = null;
             Target = null;
+
+            ResetTrail();
             ResetType();
             StopAllCoroutines();
         }
@@ -90,6 +95,19 @@ namespace Hechizos
         void ResetType()
         {
             _name.text = "";
+        }
+
+        public void ShowTrail(EElements element)
+        {
+            _trails[(int)element].gameObject.SetActive(true);
+        }
+
+        public void ResetTrail()
+        {
+            foreach (var t in _trails)
+            {
+                t.gameObject.SetActive(false);
+            }
         }
     }
 }

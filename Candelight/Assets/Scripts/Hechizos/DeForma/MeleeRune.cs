@@ -11,7 +11,7 @@ namespace Hechizos.DeForma
         public event Action<Transform> OnMeleeImpact;
         public MeleeRune(Mage m) : base(m)
         {
-            Name = "Cuerpo a Cuerpo";
+            Name = "Melee";
         }
         public override void LoadElements(Action<Transform>[] actions)
         {
@@ -32,6 +32,11 @@ namespace Hechizos.DeForma
 
             Melee melee = meleeGO.GetComponent<Melee>();
             melee.OnImpact += OnMeleeImpact;
+
+            float avDam = 0;
+            foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
+            avDam /= MageManager.GetMaxElements();
+            melee.Damage = avDam;
         }
     }
 }

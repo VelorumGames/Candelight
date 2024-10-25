@@ -6,6 +6,8 @@ namespace Dialogues
 {
     public class DialogueAgent : MonoBehaviour
     {
+        public bool Reward;
+
         public Dialogue Dialogue;
         DialogueUI _dialogueUI;
 
@@ -16,7 +18,7 @@ namespace Dialogues
 
         private void Start()
         {
-            if (!Dialogue) Dialogue = FindObjectOfType<RandomDialogues>().GetDialogue();
+            if (!Dialogue) Dialogue = Reward ? FindObjectOfType<RandomDialogues>().GetRewardDialogue() : FindObjectOfType<RandomDialogues>().GetLoreDialogue();
         }
 
         public void StartDialogue()

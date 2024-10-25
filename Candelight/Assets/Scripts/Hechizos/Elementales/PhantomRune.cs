@@ -70,7 +70,7 @@ namespace Hechizos.Elementales
                 proj.OnEnd += ProjectileEnd;
 
                 float avDam = 0;
-                foreach (var el in MageManager.GetActiveElements()) avDam += el.Damage;
+                foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
                 avDam /= MageManager.GetActiveElements().Count;
                 proj.Damage = avDam;
             }

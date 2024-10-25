@@ -7,7 +7,6 @@ namespace Hechizos.DeForma
 {
     public class ProjectileRune : AShapeRune
     {
-
         public event Action<Transform> OnStartProjectile;
         public event Action<Transform> OnUpdateProjectile;
         public event Action<Transform> OnImpactProjectile;
@@ -15,7 +14,7 @@ namespace Hechizos.DeForma
 
         public ProjectileRune(Mage m) : base(m)
         {
-            Name = "Proyectil";
+            Name = "Projectile";
         }
         public override void LoadElements(Action<Transform>[] actions)
         {
@@ -35,18 +34,21 @@ namespace Hechizos.DeForma
 
         public override void ThrowSpell()
         {
-            GameObject projGO = MageManager.SpawnProjectile();
-            if (OnStartProjectile != null) OnStartProjectile(MageManager.GetPlayerTarget());
+            for (int n = 0; n < MageManager.GetNumSpells(); n++)
+            {
+                GameObject projGO = MageManager.SpawnProjectile(n);
+                if (OnStartProjectile != null) OnStartProjectile(MageManager.GetPlayerTarget());
 
-            Projectile proj = projGO.GetComponent<Projectile>();
-            proj.OnUpdate += ProjectileUpdate;
-            proj.OnImpact += ProjectileImpact;
-            proj.OnEnd += ProjectileEnd;
+                Projectile proj = projGO.GetComponent<Projectile>();
+                proj.OnUpdate += ProjectileUpdate;
+                proj.OnImpact += ProjectileImpact;
+                proj.OnEnd += ProjectileEnd;
 
-            float avDam = 0;
-            foreach (var el in MageManager.GetActiveElements()) avDam += el.Damage;
-            avDam /= MageManager.GetActiveElements().Count;
-            proj.Damage = avDam;
+                float avDam = 0;
+                foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
+                avDam /= MageManager.GetActiveElements().Count;
+                proj.Damage = avDam;
+            }
         }
 
         void ProjectileUpdate(Transform target)

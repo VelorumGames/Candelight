@@ -6,14 +6,28 @@ namespace Dialogues
 {
     public class RandomDialogues : MonoBehaviour
     {
-        public List<Dialogue> Dialogues;
+        public List<Dialogue> LoreDialogues;
+        public List<Dialogue> ItemDialogues;
 
-        public Dialogue GetDialogue()
+        public Dialogue GetLoreDialogue()
         {
-            if (Dialogues.Count > 0)
+            if (LoreDialogues.Count > 0)
             {
-                Dialogue d = Dialogues[Random.Range(0, Dialogues.Count)];
-                Dialogues.Remove(d);
+                Dialogue d = LoreDialogues[Random.Range(0, LoreDialogues.Count)];
+                LoreDialogues.Remove(d);
+
+                return d;
+            }
+
+            return null;
+        }
+
+        public Dialogue GetRewardDialogue()
+        {
+            if (ItemDialogues.Count > 0)
+            {
+                Dialogue d = ItemDialogues[Random.Range(0, ItemDialogues.Count)];
+                ItemDialogues.Remove(d);
 
                 return d;
             }

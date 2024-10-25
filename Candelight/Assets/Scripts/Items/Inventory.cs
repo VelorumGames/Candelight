@@ -5,34 +5,31 @@ using UnityEngine;
 
 namespace Items
 {
-
-
-
     public class Inventory : MonoBehaviour
     {
-        public int TotalNumFragments;
+        public static Inventory Instance;
+
+        [SerializeField] int _totalNumFragments;
 
         public List<AItem> ItemsList = new List<AItem>();
 
-        public GameObject TestItem;
+        [SerializeField] RectTransform _itemContainer;
 
         public Vector3 Position; //(-210f, 100f, 0f);
+        public Vector3 Offset;
 
-        public Vector3 Offset; 
-
-
-        private void Start()
+        private void Awake()
         {
-            for(int i = 0; i < 3; i++)
-            {
-                AddItem(TestItem);
-
-            }
+            if (Instance != null) Destroy(gameObject);
+            else Instance = this;
         }
+
         public void AddFragments(int numFragments)
         {
-            TotalNumFragments += numFragments;
+            _totalNumFragments += numFragments;
         }
+
+        public int GetFragments() => _totalNumFragments;
         
         public void ApplyAllItems()
         {
@@ -44,14 +41,24 @@ namespace Items
 
         public void AddItem(GameObject item)
         {
-            ItemsList.Add(item.GetComponent<AItem>());
+            if(MaxCheck(item.GetComponent<AItem>()))
+            {
+                ItemsList.Add(item.GetComponent<AItem>());
 
-           GameObject itemButton = Instantiate(item, transform);
-
-           itemButton.GetComponent<RectTransform>().localPosition = Position + (ItemsList.Count-1) * Offset; //Los vectores siempre a la derecha de la multiplicacion
+                GameObject itemButton = Instantiate(item, _itemContainer);
+                itemButton.GetComponent<RectTransform>().localPosition = Position + (ItemsList.Count - 1) * Offset; //Los vectores siempre a la derecha de la multiplicacion
+            }
         }
 
-        
+        bool MaxCheck(AItem item)
+        {
+            int num = 0;
+            foreach(var i in ItemsList)
+            {
+                if (i.Data.Name == item.Data.Name) num++;
+            }
+            return num < item.Data.Max;
+        }
     }
 
 }

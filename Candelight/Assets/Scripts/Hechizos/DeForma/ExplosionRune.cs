@@ -11,7 +11,7 @@ namespace Hechizos.DeForma
         public event Action<Transform> OnExplosionImpact;
         public ExplosionRune(Mage m) : base(m)
         {
-            Name = "Explosión";
+            Name = "Explosion";
         }
         public override void LoadElements(Action<Transform>[] actions)
         {
@@ -37,7 +37,7 @@ namespace Hechizos.DeForma
             expl.OnImpact += OnExplosionImpact;
 
             float avDam = 0;
-            foreach (var el in MageManager.GetActiveElements()) avDam += el.Damage;
+            foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
             avDam /= MageManager.GetMaxElements();
             expl.Damage = avDam;
         }

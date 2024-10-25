@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 207284968060932098}
   - component: {fileID: 5621550760470342233}
   - component: {fileID: 7290270702380183283}
-  - component: {fileID: 6595578699852833131}
+  - component: {fileID: 5918798557386369293}
   m_Layer: 5
-  m_Name: ItemExample
+  m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6595578699852833131}
+      - m_Target: {fileID: 5918798557386369293}
         m_TargetAssemblyTypeName: Items.AItem, Assembly-CSharp
         m_MethodName: SetActivation
         m_Mode: 1
@@ -134,7 +134,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &6595578699852833131
+--- !u!114 &5918798557386369293
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,12 +143,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2845574984086248080}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cb890c93317c7e46a374eb984280a7b, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f41d40b4d9ce054cb13ec0d0eb45dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Category: 6
-  MyInventory: {fileID: 0}
-  Name: 
+  Data: {fileID: 11400000, guid: 1130af6f7b2a48d4fa515e1c4615c97f, type: 2}
+  _speedFactor: 1.05
 --- !u!1 &8106543075377412207
 GameObject:
   m_ObjectHideFlags: 0

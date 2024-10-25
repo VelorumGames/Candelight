@@ -1,3 +1,4 @@
+using Dialogues;
 using Map;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,10 +15,17 @@ namespace Events
         [SerializeField] GameObject[] _eventEndings;
         GameObject _currentEvent;
 
+        [SerializeField] GameObject[] _rewardEvents;
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
+        }
+
+        private void OnEnable()
+        {
+            MapManager.Instance.OnRoomGenerationEnd += SpawnRewardNPC;
         }
 
         public void GenerateEvent(MapManager map)
@@ -41,5 +49,18 @@ namespace Events
         }
 
         public EEventSolution GetEventSolution() => _map.CurrentNodeInfo.EventSolution;
+
+        void SpawnRewardNPC()
+        {
+            ARoom rewardRoom = MapManager.Instance.GetRandomAvailableRoom(true).GetComponent<ARoom>();
+            rewardRoom.IdText.text += " REWARD";
+
+            GameObject rewardNPC = Instantiate(_rewardEvents[Random.Range(0, _rewardEvents.Length)], rewardRoom.GetRandomSpawnPoint());
+        }
+
+        private void OnDisable()
+        {
+            MapManager.Instance.OnRoomGenerationEnd -= SpawnRewardNPC;
+        }
     }
 }

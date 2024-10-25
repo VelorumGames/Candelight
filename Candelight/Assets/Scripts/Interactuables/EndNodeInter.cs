@@ -8,6 +8,7 @@ using DG.Tweening;
 using Cameras;
 using UI;
 using UnityEditor.PackageManager;
+using Player;
 
 namespace Interactuables
 {
@@ -30,7 +31,8 @@ namespace Interactuables
             {
                 Debug.Log("ERROR: Asegurate de que el mundo esta presente en esta escena para que el nodo pueda ser registrado. " + e);
             }
-            
+
+            FindObjectOfType<PlayerController>().World.Candle -= 1;
             SceneManager.LoadScene("WorldScene");
         }
     }

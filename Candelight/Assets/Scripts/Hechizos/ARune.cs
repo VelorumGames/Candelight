@@ -18,7 +18,7 @@ namespace Hechizos
 
         public static Dictionary<ESpellInstruction[], ARune> Spells = new Dictionary<ESpellInstruction[], ARune>();
         public static AElementalRune[] ActiveElements;
-        protected static Mage MageManager;
+        public static Mage MageManager;
 
         public ARune(Mage m, int Complexity, float Difficulty)
         {
@@ -48,6 +48,21 @@ namespace Hechizos
 
             if (CheckRegisteredChain(chain)) return CreateInstructionChain(compl, dif);
             else return chain;
+        }
+
+        public static bool FindSpell(string name, out ARune spell)
+        {
+            spell = null;
+            foreach (var rune in Spells.Values)
+            {
+                if (rune.Name == name)
+                {
+                    spell = rune;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

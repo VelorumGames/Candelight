@@ -6,6 +6,7 @@ using Hechizos.DeForma;
 using System.Data;
 using Player;
 using UI;
+using SpellInteractuable;
 
 namespace Hechizos
 {
@@ -23,6 +24,11 @@ namespace Hechizos
         [SerializeField] float _projectileSpeed;
         public GameObject Explosion;
         public GameObject Melee;
+
+        int _numProjectiles;
+        int _extraParallelProjectiles;
+
+        List<EElements> _trailElements = new List<EElements>();
 
         private void Awake()
         {
@@ -110,10 +116,19 @@ namespace Hechizos
 
         public int GetMaxElements() => _maxElements;
 
+        public bool IsElementActive(string name)
+        {
+            foreach(var el in _activeElements)
+            {
+                if (el.Name == name) return true;
+            }
+            return false;
+        }
+
         #endregion
 
         #region Spell Functions
-        public GameObject SpawnProjectile()
+        public GameObject SpawnProjectile(int numProj)
         {
             _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
             _lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
@@ -122,11 +137,26 @@ namespace Hechizos
                 _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
             }
 
-            _lastProjectile.SetActive(true);
-            _lastProjectile.transform.position = _cont.transform.position;
-            _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _cont.Orientation, ForceMode.Impulse);
+            StartCoroutine(DelayedProjectile(numProj * 0.5f)); //NumProj es el numero del proyectil
 
             return _lastProjectile;
+        }
+
+        IEnumerator DelayedProjectile(float time)
+        {
+            yield return new WaitForSeconds(time);
+
+            _lastProjectile.SetActive(true);
+            
+            foreach(var trailEl in _trailElements)
+            {
+                if (IsElementActive(trailEl)) _lastProjectile.GetComponent<Projectile>().ShowTrail(trailEl);
+            }
+
+            _lastProjectile.transform.position = _cont.transform.position;
+            _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _cont.GetOrientation(), ForceMode.Impulse);
+
+            yield return null;
         }
 
         public GameObject SpawnProjectileWithRandomDirection()
@@ -144,6 +174,8 @@ namespace Hechizos
 
             return _lastProjectile;
         }
+
+        
 
         public GameObject SpawnExplosion()
         {
@@ -202,5 +234,48 @@ namespace Hechizos
         #endregion
 
         public Transform GetPlayerTarget() => _cont.transform;
+
+        public void AddExtraSpellThrow(int num) => _numProjectiles += num;
+        public void ResetExtraSpellThrows() => _numProjectiles = 0;
+
+        public int GetNumSpells() => _numProjectiles;
+
+        public void AddExtraParallelSpellThrow(int num) => _extraParallelProjectiles += num;
+        public void ResetExtraParallelSpellThrows() => _extraParallelProjectiles = 0;
+
+        public void ShowTrail(EElements elem)
+        {
+            _trailElements.Add(elem);
+        }
+        public void HideTrail(EElements elem)
+        {
+            _trailElements.Remove(elem);
+        }
+
+
+        public bool IsElementActive(AElementalRune rune) => _activeElements.Contains(rune);
+        public bool IsElementActive(EElements element)
+        {
+            foreach(var e in _activeElements)
+            {
+                if (e.Name == element.ToString()) return true;
+            }
+
+            return false;
+        }
+        public bool IsElementActive(EElements element, out AElementalRune rune)
+        {
+            rune = null;
+            foreach (var e in _activeElements)
+            {
+                if (e.Name == element.ToString())
+                {
+                    rune = e;
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
