@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Hechizos
 {
-    public class Projectile : MonoBehaviour
+    public class Projectile : ASpell
     {
         public event Action<Transform> OnUpdate;
         public event Action<Transform> OnImpact;
@@ -28,8 +28,9 @@ namespace Hechizos
             _rb = GetComponent<Rigidbody>();
         }
 
-        private void OnEnable()
+        private new void OnEnable()
         {
+            base.OnEnable();
             StartCoroutine(TimedReset());
         }
 

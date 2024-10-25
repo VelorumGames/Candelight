@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Hechizos
 {
-    public class Explosion : MonoBehaviour
+    public class Explosion : ASpell
     {
         public event Action<Transform> OnImpact;
         public Transform Target;

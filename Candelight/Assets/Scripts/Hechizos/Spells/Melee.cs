@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Hechizos
 {
-    public class Melee : MonoBehaviour
+    public class Melee : ASpell
     {
         public event Action<Transform> OnImpact;
 
