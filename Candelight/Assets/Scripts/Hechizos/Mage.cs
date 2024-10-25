@@ -42,30 +42,33 @@ namespace Hechizos
         // Método para cambiar el elemento activo cuando se usa un glifo elemental
         public void SetActiveElements(AElementalRune[] runes)
         {
-            Debug.Log("Se registran nuevos elementos");
-            ResetActiveElements();
-            _activeElements.Clear();
-
-            foreach (var r in runes)
+            if (runes.Length > 0)
             {
-                _activeElements.Add(r);
-            }
+                Debug.Log($"Se registran {runes.Length} nuevos elementos");
+                ResetActiveElements();
+                _activeElements.Clear();
 
-            foreach (var rune in ARune.Spells.Values)
-            {
-                if (rune.GetType().IsSubclassOf(typeof(AShapeRune)))
+                foreach (var r in runes)
                 {
-                    AShapeRune shapeRune = (AShapeRune)rune;
-                    Debug.Log("Se encuentra una runa de forma a la que aplicar: " + shapeRune.Name);
-                    foreach (var element in runes)
+                    _activeElements.Add(r);
+                }
+
+                foreach (var rune in ARune.Spells.Values)
+                {
+                    if (rune.GetType().IsSubclassOf(typeof(AShapeRune)))
                     {
-                        Debug.Log("Se aplica elemento: " + element.Name);
-                        shapeRune.LoadElements(element.GetActions());
+                        AShapeRune shapeRune = (AShapeRune)rune;
+                        Debug.Log("Se encuentra una runa de forma a la que aplicar: " + shapeRune.Name);
+                        foreach (var element in runes)
+                        {
+                            Debug.Log("Se aplica elemento: " + element.Name);
+                            shapeRune.LoadElements(element.GetActions());
+                        }
                     }
                 }
-            }
 
-            UIManager.Instance.ShowElements();
+                UIManager.Instance.ShowElements();
+            }
         }
 
         public void SetInitialElement(AElementalRune element)
