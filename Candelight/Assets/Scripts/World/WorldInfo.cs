@@ -11,9 +11,10 @@ namespace World
         public int Seed;
         public GameObject World;
         public int CompletedNodes;
+        public float NodeCandleFactor = 1f;
 
-        int m_candle;
-        public int Candle
+        float m_candle;
+        public float Candle
         {
             get => m_candle;
             set
@@ -26,6 +27,6 @@ namespace World
             }
         }
 
-        public event Action<int> OnCandleChanged;
+        public event Action<float> OnCandleChanged;
     }
 }

@@ -93,7 +93,7 @@ namespace Player
         {
             Debug.Log($"Jugador recibe {damage} de dano -> Se restan {damage * _candleFactor} puntos a la vela");
 
-            World.Candle -= (int)(damage * _candleFactor);
+            World.Candle -= damage * _candleFactor;
 
             //CurrentHP -= damage;
         }

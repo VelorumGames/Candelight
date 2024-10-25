@@ -18,7 +18,7 @@ namespace UI
         public string NextNodeName;
         public string ActualNodeName;
         public string Chains;
-        int _candle;
+        float _candle;
 
         public GameObject PauseMenu;
         public GameObject Options;
@@ -79,7 +79,7 @@ namespace UI
             if (_showInstr != null) _showInstr.ShowElements();
         }
 
-        public void RegisterCandle(int candle)
+        public void RegisterCandle(float candle)
         {
             _candle = candle;
         }

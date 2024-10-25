@@ -32,7 +32,7 @@ namespace Interactuables
                 Debug.Log("ERROR: Asegurate de que el mundo esta presente en esta escena para que el nodo pueda ser registrado. " + e);
             }
 
-            FindObjectOfType<PlayerController>().World.Candle -= 1;
+            FindObjectOfType<PlayerController>().World.Candle -= 1f * FindObjectOfType<PlayerController>().World.NodeCandleFactor;
             SceneManager.LoadScene("WorldScene");
         }
     }
