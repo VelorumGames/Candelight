@@ -1448,7 +1448,7 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: RuneChance
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -1491,6 +1491,11 @@ PrefabInstance:
       propertyPath: ConnectionBakeCam
       value: 
       objectReference: {fileID: 1855283125}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: ConnectionMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: ConnectionCollidersOffset

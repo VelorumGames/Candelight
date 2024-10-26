@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Controls;
 using Player;
 using Items;
+using World;
 
 namespace Dialogues
 {
@@ -14,6 +15,8 @@ namespace Dialogues
     {
         [SerializeField] GameObject _textGameObject;
         [SerializeField] GameObject _iconGameObject;
+
+        [SerializeField] NodeInfo _currentNodeInfo;
 
         bool _active = false;
 
@@ -37,8 +40,11 @@ namespace Dialogues
             _spriteRend = _iconGameObject.GetComponent<Image>();
 
             _cont = FindObjectOfType<PlayerController>();
+        }
 
-            _inventory = FindObjectOfType<Inventory>();
+        private void Start()
+        {
+            _inventory = Inventory.Instance;
         }
 
         private void LoadBlockInfo(DialogueBlock block)
@@ -47,6 +53,27 @@ namespace Dialogues
 
             _showUIText.ShowText(_currentBlock.text);
             _spriteRend.sprite = _currentBlock.icon;
+
+            if (_currentBlock.RandomItem)
+            {
+                switch(_currentNodeInfo.Biome)
+                {
+                    case EBiome.A:
+                        _currentBlock.item = Inventory.Instance.GetRandomItem(EItemCategory.Common);
+                        break;
+                    case EBiome.B:
+                        _currentBlock.item = Inventory.Instance.GetRandomItem(EItemCategory.Rare);
+                        break;
+                    case EBiome.C:
+                        _currentBlock.item = Inventory.Instance.GetRandomItem(EItemCategory.Epic);
+                        break;
+                    default:
+                        Debug.Log("ERROR: Bioma no detectado correctamente. Se defaultea item a common.");
+                        _currentBlock.item = Inventory.Instance.GetRandomItem(EItemCategory.Common);
+                        break;
+                }
+            }
+
             if (_currentBlock.item != null)
             {
                 _inventory.AddItem(_currentBlock.item);
@@ -83,19 +110,6 @@ namespace Dialogues
 
             _dialogueCanvas.SetActive(false);
         }
-
-        //private void Update()
-        //{
-        //    //Debug
-        //    if(_active)
-        //    {
-        //        if(Input.GetKeyDown(KeyCode.G))
-        //        {
-        //            if (_showUIText.IsShowingText()) _showUIText.Interrupt();
-        //            else NextBlock();
-        //        }
-        //    }
-        //}
 
         public bool IsActive() => _active;
     }

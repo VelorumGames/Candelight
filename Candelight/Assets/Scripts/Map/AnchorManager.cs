@@ -140,7 +140,7 @@ namespace Map
             //Suponiendo que existe el anclaje (en caso contrario, llevaria una referencia a si mismo para evitar errores), generamos la malla para la transicion entre ambos
             _connectionMesh = GenerateMesh(obj);
             SetUVToWorld uvScript = _connectionMesh.AddComponent<SetUVToWorld>();
-            uvScript.MaterialToUse = _map.ConnectionMat;
+            uvScript.MaterialToUse = _map.ConnectionMaterial;
             transform.localPosition -= 0.01f * transform.up;
         }
 

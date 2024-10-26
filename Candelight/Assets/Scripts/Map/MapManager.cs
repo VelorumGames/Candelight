@@ -17,17 +17,18 @@ namespace Map
 
         GameObject _player;
 
-        public Camera ConnectionBakeCam;
-
-        public int MaxRooms;
-        [SerializeField] int m_rooms;
-        public int CurrentRooms
+        [Header("===ROOM GENERATION===")]
+        [Space(10)]
+        [SerializeField] int _seed;
+        [SerializeField] int _maxRooms;
+        int m_rooms;
+        int _currentRooms
         {
             get => m_rooms;
             set
             {
                 m_rooms = value;
-                if (m_rooms >= MaxRooms) //Si se ha terminado la generacion de habitaciones
+                if (m_rooms >= _maxRooms) //Si se ha terminado la generacion de habitaciones
                 {
                     if (OnRoomGenerationEnd != null) OnRoomGenerationEnd();
                 }
@@ -36,31 +37,39 @@ namespace Map
 
         public float RuneChance;
 
+        [Space(10)]
         public GameObject[] SmallRooms;
         public GameObject[] MediumRooms;
         public GameObject[] LargeRooms;
         public GameObject EndTorch;
 
         List<List<int>> _roomGraph = new List<List<int>>();
-        public List<GameObject> _rooms = new List<GameObject>();
+        List<GameObject> _rooms = new List<GameObject>();
 
+        [Space(10)]
         //Generacion de la habitacion
         public float RoomSeparation;
         public float LargeThreshold;
         public float MediumThreshold;
         public float SmallThreshold;
 
+        [Space(20)]
+        [Header("===CONNECTION GENERATION===")]
+        [Space(10)]
         public float ConnectionWidth;
-
-        [SerializeField] int _seed;
-
-        public Material ConnectionMat;
         public float ConnectionCollidersOffset;
+        [Space(10)]
+        public Material ConnectionMaterial;
+        public Camera ConnectionBakeCam;
+        
 
+        [Space(20)]
+        [Header("===WORLD & NODE INFO===")]
+        [Space(10)]
+        public WorldInfo World;
         public NodeInfo CurrentNodeInfo;
 
         public event System.Action OnRoomGenerationEnd;
-
 
         private void Awake()
         {
@@ -80,19 +89,19 @@ namespace Map
                 switch (CurrentNodeInfo.Biome)
                 {
                     case EBiome.A:
-                        MaxRooms = 10;
+                        _maxRooms = 10;
                         break;
                     case EBiome.B:
-                        MaxRooms = 20;
+                        _maxRooms = 20;
                         break;
                     case EBiome.C:
-                        MaxRooms = 30;
+                        _maxRooms = 30;
                         break;
                 }
             }
-            else MaxRooms = 5;
+            else _maxRooms = 5;
 
-            if (MaxRooms > 0) RegisterNewRoom(-1, new Vector3(), ERoomSize.Medium);
+            if (_maxRooms > 0) RegisterNewRoom(-1, new Vector3(), ERoomSize.Medium);
         }
 
         private void OnEnable()
@@ -119,7 +128,7 @@ namespace Map
         /// Comprueba si se ha alcanzado el maximo de habitaciones que permite el nivel
         /// </summary>
         /// <returns></returns>
-        public bool CanCreateRoom() => CurrentRooms < MaxRooms;
+        public bool CanCreateRoom() => _currentRooms < _maxRooms;
 
         /// <summary>
         /// Se crea una nueva habitacion y se registra en los datos del mapa
@@ -154,9 +163,9 @@ namespace Map
                     break;
             }
 
-            _rooms[_rooms.Count - 1].GetComponent<ARoom>().SetID(CurrentRooms);
+            _rooms[_rooms.Count - 1].GetComponent<ARoom>().SetID(_currentRooms);
 
-            CurrentRooms++;
+            _currentRooms++;
 
             return _rooms[_rooms.Count - 1];
         }

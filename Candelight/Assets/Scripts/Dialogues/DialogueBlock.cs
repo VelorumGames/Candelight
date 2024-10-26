@@ -11,6 +11,7 @@ namespace Dialogues
         public Sprite icon;
         public string text;
         public GameObject item;
+        public bool RandomItem;
         public DialogueBlock nextBlock;
     }
 }

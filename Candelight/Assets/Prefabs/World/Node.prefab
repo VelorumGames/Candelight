@@ -444,10 +444,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1898437834993837434}
   - component: {fileID: -4047434597934410484}
+  - component: {fileID: 6858005120537608570}
   - component: {fileID: 4790043178633458201}
   - component: {fileID: 3991840437688724953}
   - component: {fileID: 8590663245166851184}
-  - component: {fileID: 6858005120537608570}
   m_Layer: 0
   m_Name: Node
   m_TagString: Node
@@ -487,9 +487,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectedNodes: []
   _connectRadius: 17
-  LineMat: {fileID: 2100000, guid: b6b96888792051a408b67c444e314d90, type: 2}
+  UnexploredLineMat: {fileID: 2100000, guid: b6b96888792051a408b67c444e314d90, type: 2}
+  ExploredLineMat: {fileID: 2100000, guid: ce5de31e4dc8853419be521a55710f86, type: 2}
   Text: {fileID: 9101126189603190898}
   Fog: {fileID: 4085977621567159361}
+--- !u!114 &6858005120537608570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4733775303896732694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d93abf30155b89c4e80e91cfc5c7de9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NotificationTransform: {fileID: 1458530065762755930}
 --- !u!33 &4790043178633458201
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -561,19 +575,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6858005120537608570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4733775303896732694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d93abf30155b89c4e80e91cfc5c7de9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NotificationTransform: {fileID: 1458530065762755930}
 --- !u!1 &5858865162557597198
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,11 @@ namespace Items
     {
         public static Inventory Instance;
 
+        public GameObject[] CommonItemPool;
+        public GameObject[] RareItemPool;
+        public GameObject[] EpicItemPool;
+        public GameObject[] LegendaryItemPool;
+
         [SerializeField] int _totalNumFragments;
 
         public List<AItem> ItemsList = new List<AItem>();
@@ -22,6 +27,8 @@ namespace Items
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            DontDestroyOnLoad(gameObject);
         }
 
         public void AddFragments(int numFragments)
@@ -58,6 +65,27 @@ namespace Items
                 if (i.Data.Name == item.Data.Name) num++;
             }
             return num < item.Data.Max;
+        }
+
+        public GameObject GetRandomItem(EItemCategory cat)
+        {
+            GameObject item = null;
+            switch(cat)
+            {
+                case EItemCategory.Common:
+                    item = CommonItemPool[Random.Range(0, CommonItemPool.Length)];
+                    break;
+                case EItemCategory.Rare:
+                    item = RareItemPool[Random.Range(0, RareItemPool.Length)];
+                    break;
+                case EItemCategory.Epic:
+                    item = EpicItemPool[Random.Range(0, EpicItemPool.Length)];
+                    break;
+                case EItemCategory.Legendary:
+                    item = LegendaryItemPool[Random.Range(0, LegendaryItemPool.Length)];
+                    break;
+            }
+            return item;
         }
     }
 

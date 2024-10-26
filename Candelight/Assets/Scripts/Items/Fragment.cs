@@ -10,7 +10,7 @@ namespace Items
         {
             if (other.CompareTag("Player"))
             {
-                FindObjectOfType<Inventory>().AddFragments(1);
+                Inventory.Instance.AddFragments(1);
                 Destroy(gameObject);
             }
         }

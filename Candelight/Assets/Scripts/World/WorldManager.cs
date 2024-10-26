@@ -12,24 +12,34 @@ namespace World
 
         public List<List<int>> WorldMap = new List<List<int>>();
         List<GameObject> _nodes = new List<GameObject>();
-        public int NumNodes;
         GameObject _player;
 
+        [Header("===NODE GENERATION===")]
+        [Space(10)]
         public int MaxNodes;
+        public int NumNodes;
+
         public GameObject NodePrefab;
+        [Space(10)]
+        [SerializeField] Transform _worldParent;
         [SerializeField] Vector2 _spawnRange;
         [SerializeField] float _minDistBetweenNodes;
-        [SerializeField] Transform _worldParent;
 
+        [Space(20)]
+        [Header("===BIOME GENERATION===")]
+        [Space(10)]
         public Material biomeA;
         public Material biomeB;
         public Material biomeC;
-
+        [Space(10)]
         [SerializeField] float _biomeOffset;
         [SerializeField] float _biomeSize;
         [SerializeField] float _biomeAThreshold;
         [SerializeField] float _biomeBThreshold;
 
+        [Space(20)]
+        [Header("===WORLD & NODE INFO===")]
+        [Space(10)]
         public WorldInfo World;
         public NodeInfo CurrentNodeInfo;
 
@@ -109,11 +119,6 @@ namespace World
             }
         }
 
-        private void Update()
-        {
-            //GenerateBiomes();
-        }
-
         /// <summary>
         /// Se generan los biomas a raiz de ruido perlin
         /// </summary>
@@ -143,7 +148,7 @@ namespace World
             GenerateStart();
         }
 
-        void GenerateStart()
+        public void GenerateStart()
         {
             foreach (var node in _nodes)
             {

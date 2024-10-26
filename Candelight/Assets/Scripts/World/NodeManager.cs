@@ -49,10 +49,13 @@ namespace World
         [SerializeField] float _connectRadius;
 
         NodeData _data;
-        public Material LineMat;
+        public Material UnexploredLineMat;
+        public Material ExploredLineMat;
 
         public TextMeshPro Text;
         public GameObject Fog;
+
+        bool _completedConnection;
 
         private void Awake()
         {
@@ -71,7 +74,7 @@ namespace World
                 _data.SeedExtra[i] = Random.Range(0, 999999);
                 _data.LevelTypes[i] = (ELevel) Random.Range(0, 3);
             }
-            _data.LevelTypes[0] = 0; //El primer nodo siempre sera de exploracion
+            _data.LevelTypes[0] = 0; //El primer nivel siempre sera de exploracion
 
             if (EventCheck()) _data.EventID = Random.Range(0, 5);
             _data.EventSolution = EEventSolution.None;
@@ -86,10 +89,11 @@ namespace World
             if (_closeNodes.Length == 1) Destroy(gameObject);
 
             int connection = 0;
+                       
             foreach (var n in _closeNodes)
             {
                 //Si encontramos un nodo valido que no este conectado a este todavia
-                if (n.CompareTag("Node") && !n.GetComponent<NodeManager>().ConnectedNodes.Contains(gameObject) && connection < 4 && n.GetComponent<NodeManager>().ConnectedNodes.Count < 4)
+                if (n.CompareTag("Node") && !ConnectedNodes.Contains(n.gameObject) && !n.GetComponent<NodeManager>().ConnectedNodes.Contains(gameObject) && connection < 4 && n.GetComponent<NodeManager>().ConnectedNodes.Count < 4)
                 {
                     //Registramos la conexion en ambos nodos
                     ConnectedNodes.Add(n.gameObject);
@@ -98,9 +102,10 @@ namespace World
                     connection++;
                 }
             }
+            _completedConnection = true;
         }
 
-        void SpawnLine(Vector3 start, Vector3 end)
+        void SpawnLine(Vector3 start, Vector3 end, Material lineMat)
         {
             GameObject lineGO = new GameObject("Connection");
             lineGO.transform.parent = transform;
@@ -110,7 +115,7 @@ namespace World
             positions[0] = start;
             positions[1] = end;
             line.widthMultiplier = 0.1f;
-            line.material = LineMat;
+            line.material = lineMat;
 
             line.SetPositions(positions);
         }
@@ -126,15 +131,48 @@ namespace World
             Debug.Log($"Se registra nodo {gameObject.name} como: {s}");
             _data.State = s;
             Text.text += _data.State.ToString(); //Simplemente una guia para saber si se registra bien el estado
-            if (s == ENodeState.Completed)
+            if (s == ENodeState.Explored)
+            {
+                Debug.Log("Connected nodes: " + ConnectedNodes.Count);
+                if (_completedConnection)
+                {
+                    foreach (var n in ConnectedNodes)
+                    {
+                        //Dibujamos la linea de conexion
+                        SpawnLine(transform.position, n.transform.position, UnexploredLineMat);
+                        Fog.SetActive(false);
+                    }
+                }
+                else
+                {
+                    StartCoroutine(DelayedConnection());
+                }
+            }
+            else if (s == ENodeState.Completed)
             {
                 foreach (var n in ConnectedNodes)
                 {
                     //Dibujamos la linea de conexion
-                    SpawnLine(transform.position, n.transform.position);
+                    if (n.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completed) SpawnLine(transform.position, n.transform.position, ExploredLineMat);
                     Fog.SetActive(false);
                 }
             }
+        }
+
+        IEnumerator DelayedConnection()
+        {
+            Debug.Log("Se espera hasta que se complete el proceso de conexion");
+
+            yield return new WaitUntil(() => _completedConnection);
+
+            Debug.Log("Nuevo numero de nodos conectados: " + ConnectedNodes.Count);
+            foreach (var n in ConnectedNodes)
+            {
+                //Dibujamos la linea de conexion
+                SpawnLine(transform.position, n.transform.position, UnexploredLineMat);
+                Fog.SetActive(false);
+            }
+            yield return null;
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 using Controls;
+using DG.Tweening;
 using Hechizos;
 using Hechizos.DeForma;
 using Hechizos.Elementales;
@@ -17,8 +18,10 @@ namespace Player
         #region Variables
 
         [SerializeField] float _maxSpeed;
-        float _speedFactor;
+        float _speedFactor = 1f;
 
+        [SerializeField] GameObject _pathShower;
+        Coroutine _pathShowRotation;
         [SerializeField] GameObject _pathChooser;
         NodeManager m_current;
         NodeManager _currentNode
@@ -40,6 +43,10 @@ namespace Player
                 {
                     m_next = value;
                     if (UIManager.Instance != null && m_next != null) UIManager.Instance.NextNodeName = _nextNode.gameObject.name;
+
+                    Debug.Log("Nuevo nodo");
+                    if (_pathShowRotation != null) StopCoroutine(_pathShowRotation);
+                    _pathShowRotation = StartCoroutine(RotatePathShower());
                 }
             }
         }
@@ -49,7 +56,7 @@ namespace Player
         List<ESpellInstruction> _instructions = new List<ESpellInstruction>();
         Mage _mage;
 
-        float _candleFactor;
+        float _candleFactor = 1f;
 
         Action _interaction;
 
@@ -262,6 +269,7 @@ namespace Player
             //Comparamos con que nodo conectado al actual esta mas cerca y consideramos ese como la decision del jugador
             float minDist = 9999f;
             GameObject closest = null;
+            //Debug.Log($"Para el current node hay {_currentNode.ConnectedNodes.Count} nodos conectados");
             foreach (var node in _currentNode.ConnectedNodes)
             {
                 if (node != _currentNode.gameObject /*&& node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered*/) //Se queda comentado mientras queramos debuggear
@@ -275,12 +283,15 @@ namespace Player
                 }
             }
             _nextNode = closest.transform;
-
         }
 
         public void OnConfirmPath(InputAction.CallbackContext _)
         {
-            if (_rb.velocity.magnitude < 0.1f) StartCoroutine(MovePlayerTowardsNode(_nextNode));
+            if (_rb.velocity.magnitude < 0.1f)
+            {
+                _pathShower.SetActive(false);
+                StartCoroutine(MovePlayerTowardsNode(_nextNode));
+            }
         }
 
         public void OnPause(InputAction.CallbackContext _)
@@ -307,11 +318,34 @@ namespace Player
             yield return null;
         }
 
+        IEnumerator RotatePathShower()
+        {
+            _pathShower.SetActive(true);
+
+            Vector3 dir = _nextNode.transform.position - transform.position;
+
+            int rotWise = Vector3.SignedAngle(_pathShower.transform.forward, dir, Vector3.up) < 0 ? -1 : 1; //Para saber en que direccion debe rotar
+
+            Quaternion endRot = Quaternion.Euler(new Vector3(0f, Vector3.SignedAngle(transform.forward, dir, Vector3.up), 0f));
+            Quaternion currentRot = _pathShower.transform.rotation;
+
+            while (Mathf.Abs(endRot.eulerAngles.y - currentRot.eulerAngles.y) > 1f)
+            {
+                _pathShower.transform.RotateAround(transform.position, Vector3.up, rotWise * 400f * Time.deltaTime);
+                currentRot = _pathShower.transform.rotation;
+                yield return null;
+            }
+        }
+
+        #region Item Modifiers
+
         public void SetCandleFactor(float f) => _candleFactor = f;
         public float GetCandleFactor() => _candleFactor;
 
         public void SetSpeedFactor(float s) => _speedFactor = s;
         public float GetSpeedFactor() => _speedFactor;
+
+        #endregion
 
         private void FixedUpdate()
         {
