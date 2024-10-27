@@ -27,8 +27,10 @@ namespace Cameras
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
+            DOTween.defaultAutoPlay = AutoPlay.None;
             _spellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f).SetAutoKill(false);
             _resetSpellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 60f, 0.1f).SetAutoKill(false);
+            DOTween.defaultAutoPlay = AutoPlay.All;
         }
 
         private void Start()

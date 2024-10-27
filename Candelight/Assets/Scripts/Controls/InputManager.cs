@@ -65,7 +65,6 @@ namespace Controls
 
             InitializeControls();
 
-            DOTween.defaultAutoPlay = AutoPlay.None;
             DOTween.Init();
             Application.targetFrameRate = 60;
         }
