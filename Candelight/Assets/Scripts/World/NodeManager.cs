@@ -46,6 +46,7 @@ namespace World
     {
         Collider[] _closeNodes;
         public List<GameObject> ConnectedNodes = new List<GameObject>();
+        public Dictionary<NodeManager, GameObject> Connections = new Dictionary<NodeManager, GameObject>();
         [SerializeField] float _connectRadius;
 
         NodeData _data;
@@ -76,7 +77,8 @@ namespace World
             }
             _data.LevelTypes[0] = 0; //El primer nivel siempre sera de exploracion
 
-            if (EventCheck()) _data.EventID = Random.Range(0, 5);
+            _data.EventID = -1;
+            if (EventCheck()) _data.EventID = Random.Range(0, 2); //DEBUG
             _data.EventSolution = EEventSolution.None;
 
             yield return new WaitForSeconds(Random.Range(0.01f, 0.2f));
@@ -105,8 +107,11 @@ namespace World
             _completedConnection = true;
         }
 
-        void SpawnLine(Vector3 start, Vector3 end, Material lineMat)
+        void SpawnLine(NodeManager startNode, NodeManager endNode, Material lineMat)
         {
+            Vector3 start = startNode.transform.position;
+            Vector3 end = endNode.transform.position;
+
             GameObject lineGO = new GameObject("Connection");
             lineGO.transform.parent = transform;
             LineRenderer line = lineGO.AddComponent<LineRenderer>();
@@ -118,6 +123,8 @@ namespace World
             line.material = lineMat;
 
             line.SetPositions(positions);
+
+            Connections.Add(endNode, lineGO);
         }
 
         public void SetBiome(EBiome b)
@@ -131,32 +138,52 @@ namespace World
             Debug.Log($"Se registra nodo {gameObject.name} como: {s}");
             _data.State = s;
             Text.text += _data.State.ToString(); //Simplemente una guia para saber si se registra bien el estado
-            if (s == ENodeState.Explored)
-            {
-                Debug.Log("Connected nodes: " + ConnectedNodes.Count);
-                if (_completedConnection)
-                {
-                    foreach (var n in ConnectedNodes)
-                    {
-                        //Dibujamos la linea de conexion
-                        SpawnLine(transform.position, n.transform.position, UnexploredLineMat);
-                        Fog.SetActive(false);
-                    }
-                }
-                else
-                {
-                    StartCoroutine(DelayedConnection());
-                }
-            }
-            else if (s == ENodeState.Completed)
+            //if (s == ENodeState.Explored)
+            //{
+            //    Debug.Log("Connected nodes: " + ConnectedNodes.Count);
+            //    if (_completedConnection)
+            //    {
+            //        foreach (var n in ConnectedNodes)
+            //        {
+            //            //Dibujamos la linea de conexion
+            //            SpawnLine(transform.position, n.transform.position, UnexploredLineMat);
+            //            Fog.SetActive(false);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        StartCoroutine(DelayedConnection());
+            //    }
+            //}
+            if (s == ENodeState.Completed)
             {
                 foreach (var n in ConnectedNodes)
                 {
+                    NodeManager targetNode = n.GetComponent<NodeManager>();
+
+                    //Comprobamos si la linea no ha sido creada (registrada) antes. En ese caso, la sobreescribimos
+                    if (targetNode.Connections.ContainsKey(this))
+                    {
+                        targetNode.CleanLine(this);
+                        SpawnLine(this, targetNode, ExploredLineMat);
+                    }
+                    else SpawnLine(this, targetNode, UnexploredLineMat);
+
                     //Dibujamos la linea de conexion
-                    if (n.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completed) SpawnLine(transform.position, n.transform.position, ExploredLineMat);
+                    //Debug.Log($"Se dibujara con nuevo material?: {targetNode.GetNodeData().State == ENodeState.Completed}");
+                    //if (targetNode.GetNodeData().State == ENodeState.Completed) SpawnLine(this, targetNode, ExploredLineMat);
+                    //else SpawnLine(this, targetNode, UnexploredLineMat);
+
                     Fog.SetActive(false);
                 }
             }
+        }
+
+        public void CleanLine(NodeManager targetNode)
+        {
+            Debug.Log("Se destruira: " + Connections[targetNode].name);
+            Destroy(Connections[targetNode]);
+            Connections.Remove(targetNode);
         }
 
         IEnumerator DelayedConnection()
@@ -169,7 +196,7 @@ namespace World
             foreach (var n in ConnectedNodes)
             {
                 //Dibujamos la linea de conexion
-                SpawnLine(transform.position, n.transform.position, UnexploredLineMat);
+                SpawnLine(this, n.GetComponent<NodeManager>(), UnexploredLineMat);
                 Fog.SetActive(false);
             }
             yield return null;

@@ -7,9 +7,6 @@ namespace Map
 {
     public class TestRoom : ARoom
     {
-        private void Start()
-        {
-            
-        }
+
     }
 }

@@ -1,3 +1,4 @@
+using Controls;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,12 +13,15 @@ namespace Map
         public GameObject[] Rooms;
         GameObject _currentRoom;
         GameObject _player;
+        [SerializeField] GameObject _endTorch;
 
         public NodeInfo CurrentNodeInfo;
 
         private void Awake()
         {
             _player = FindObjectOfType<PlayerController>().gameObject;
+
+            FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
         }
 
         private void Start()
@@ -29,6 +33,11 @@ namespace Map
         {
             _currentRoom = Instantiate(Rooms[Random.Range(0, Rooms.Length)]);
             _player.transform.position = _currentRoom.GetComponent<ASimpleRoom>().GetPlayerStart().position;
+        }
+
+        public void PlaceTorch(Transform tr)
+        {
+            Instantiate(_endTorch, tr);
         }
 
         public void EndLevel()

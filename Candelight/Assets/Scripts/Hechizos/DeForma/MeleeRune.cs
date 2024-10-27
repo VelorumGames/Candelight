@@ -12,6 +12,7 @@ namespace Hechizos.DeForma
         public MeleeRune(Mage m) : base(m)
         {
             Name = "Melee";
+            Activate();
         }
         public override void LoadElements(Action<Transform>[] actions)
         {

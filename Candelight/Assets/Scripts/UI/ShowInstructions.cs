@@ -20,33 +20,36 @@ namespace UI
         private void Start()
         {
             ResetSprites();
-            ResetElements();
+            ShowElements();
         }
 
         public void ShowElements()
         {
             ResetElements();
-            for (int i = 0; i < Mage.Instance.GetActiveElements().Count; i++)
+            if (Mage.Instance != null)
             {
-                _elements[i].gameObject.SetActive(true);
-                ARune rune = Mage.Instance.GetActiveElements()[i];
-                switch (rune.Name)
+                for (int i = 0; i < Mage.Instance.GetActiveElements().Count; i++)
                 {
-                    case "Fire":
-                        _elements[i].sprite = _elementSprites[0];
-                        break;
-                    case "Electric":
-                        _elements[i].sprite = _elementSprites[1];
-                        break;
-                    case "Cosmic":
-                        _elements[i].sprite = _elementSprites[2];
-                        break;
-                    case "Phantom":
-                        _elements[i].sprite = _elementSprites[3];
-                        break;
-                    default:
-                        Debug.Log("ERROR: No se ha encontrado ningun sprite con este nombre: " + rune.Name);
-                        break;
+                    _elements[i].gameObject.SetActive(true);
+                    ARune rune = Mage.Instance.GetActiveElements()[i];
+                    switch (rune.Name)
+                    {
+                        case "Fire":
+                            _elements[i].sprite = _elementSprites[0];
+                            break;
+                        case "Electric":
+                            _elements[i].sprite = _elementSprites[1];
+                            break;
+                        case "Cosmic":
+                            _elements[i].sprite = _elementSprites[2];
+                            break;
+                        case "Phantom":
+                            _elements[i].sprite = _elementSprites[3];
+                            break;
+                        default:
+                            Debug.Log("ERROR: No se ha encontrado ningun sprite con este nombre: " + rune.Name);
+                            break;
+                    }
                 }
             }
         }
@@ -78,13 +81,17 @@ namespace UI
 
         public void ResetSprites()
         {
+            Debug.Log("Reseteo sprites");
             _current = 0;
 
             foreach (var i in _imgs)
             {
-                i.gameObject.SetActive(false);
-                i.color = Color.white;
-                i.sprite = null;
+                if (i != null)
+                {
+                    i.gameObject.SetActive(false);
+                    i.color = Color.white;
+                    i.sprite = null;
+                }
             }
         }
 

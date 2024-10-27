@@ -13,5 +13,6 @@ namespace Dialogues
         public GameObject item;
         public bool RandomItem;
         public DialogueBlock nextBlock;
+        public Dialogue nextDialogue;
     }
 }

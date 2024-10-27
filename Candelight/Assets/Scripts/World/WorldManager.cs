@@ -1,4 +1,5 @@
 using Controls;
+using Items;
 using Player;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,6 +50,7 @@ namespace World
             else Instance = this;
 
             _player = FindObjectOfType<PlayerController>().gameObject;
+            FindObjectOfType<InputManager>().LoadControls(EControlMap.World);
 
             //Si es la primera vez que se visita esta escena
             if (!World.World)
@@ -161,7 +163,6 @@ namespace World
                     return;
                 }
             }
-
             Debug.LogWarning("ERROR: No se ha encontrado ningun nodo de entrada valido");
         }
 
@@ -212,7 +213,7 @@ namespace World
         /// </summary>
         public void LoadNode()
         {
-            _worldParent.gameObject.SetActive(false);
+            World.World.SetActive(false);
             switch(CurrentNodeInfo.LevelTypes[0])
             {
                 case ELevel.Exploration:

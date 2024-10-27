@@ -1,3 +1,4 @@
+using Items;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,16 +42,18 @@ namespace Enemy
 
         public void SpawnFragments(AController _)
         {
-            int num = Random.Range(Info.MinFragments, Info.MaxFragments);
-            Debug.Log($"{gameObject.name} suelta {num} fragmentos");
-            for(int i = 0; i < num; i++)
-            {
-                if (Random.value < _fragDropRate * _modifier.FragDropMod)
-                {
-                    GameObject fragment = Instantiate(Fragment);
-                    fragment.transform.position = transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
-                }
-            }
+            Inventory.Instance.SpawnFragments(Random.Range(Info.MinFragments, Info.MaxFragments), _fragDropRate * _modifier.FragDropMod, transform);
+
+            //int num = Random.Range(Info.MinFragments, Info.MaxFragments);
+            //Debug.Log($"{gameObject.name} suelta {num} fragmentos");
+            //for(int i = 0; i < num; i++)
+            //{
+            //    if (Random.value < _fragDropRate * _modifier.FragDropMod)
+            //    {
+            //        GameObject fragment = Instantiate(Fragment);
+            //        fragment.transform.position = transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+            //    }
+            //}
         }
 
         public override void RecieveDamage(float damage)

@@ -27,7 +27,7 @@ namespace Hechizos
             Spells.Add(Instructions, this);
 
             //Para debuggear:
-            Activate();
+            //Activate();
 
             string instrs = "";
 

@@ -35,12 +35,20 @@ namespace Items
                 IsActivated = false;
                 ResetProperty();
                 Inventory.Instance.AddFragments((int)Data.Category);
+
+                Inventory.Instance.ActiveItems.Remove(gameObject);
+                Inventory.Instance.UnactiveItems.Add(gameObject);
+                Inventory.Instance.RelocateItems();
             }
             else if (Inventory.Instance.GetFragments() >= (int)Data.Category)
             {
                 IsActivated = true;
                 ApplyProperty();
                 Inventory.Instance.AddFragments(-(int)Data.Category);
+
+                Inventory.Instance.UnactiveItems.Remove(gameObject);
+                Inventory.Instance.ActiveItems.Add(gameObject);
+                Inventory.Instance.RelocateItems();
             } 
             else
             {               
@@ -49,6 +57,8 @@ namespace Items
             
 
         }
+
+        public bool IsActive() => IsActivated;
     }
 
     public enum EItemCategory

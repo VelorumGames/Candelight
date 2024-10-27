@@ -23,6 +23,29 @@ namespace Map
 
         [SerializeField] Transform _runeTransform;
         [SerializeField] Transform[] _spawnPoints;
+        [SerializeField] EnemyController[] _enemies;
+        int m_deaths;
+        int _enemyDeaths
+        {
+            get => m_deaths;
+            set
+            {
+                m_deaths = value;
+                if (m_deaths == _enemies.Length) BlockRoom(false);
+            }
+        }
+
+        private void Start()
+        {
+            if (_enemies.Length > 0)
+            {
+                BlockRoom(true);
+                foreach (var e in _enemies)
+                {
+                    e.OnDeath += RegisterEnemyDeath;
+                }
+            }
+        }
 
         public int GetID() => ID;
         public void SetID(int id)
@@ -43,5 +66,22 @@ namespace Map
         public void ActivateRuneRoom() => _runeTransform.gameObject.SetActive(true);
 
         public Transform GetRandomSpawnPoint() => _spawnPoints[Random.Range(0, _spawnPoints.Length)];
+
+        void RegisterEnemyDeath(AController cont)
+        {
+            _enemyDeaths++;
+        }
+
+        void BlockRoom(bool b)
+        {
+            if (b) //Bloquear salidas
+            {
+                Debug.Log("Se bloquearian las salidas");
+            }
+            else //Desbloquear salidas
+            {
+                Debug.Log("Se desbloquearian las salidas");
+            }
+        }
     }
 }

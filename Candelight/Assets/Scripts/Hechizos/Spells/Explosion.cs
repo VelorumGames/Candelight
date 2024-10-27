@@ -11,6 +11,12 @@ namespace Hechizos
         public event Action<Transform> OnImpact;
         public Transform Target;
         public float Damage;
+        [SerializeField] float _lifeSpan;
+
+        private void Start()
+        {
+            Invoke("Death", _lifeSpan);
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -25,5 +31,7 @@ namespace Hechizos
                 }
             }
         }
+
+        public void Death() => Destroy(gameObject);
     }
 }

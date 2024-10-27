@@ -25,8 +25,8 @@ namespace Hechizos
         public GameObject Explosion;
         public GameObject Melee;
 
-        int _numProjectiles;
-        int _extraParallelProjectiles;
+        int _numProjectiles = 1;
+        int _extraParallelProjectiles = 1;
 
         List<EElements> _trailElements = new List<EElements>();
 
@@ -64,10 +64,10 @@ namespace Hechizos
                     if (rune.GetType().IsSubclassOf(typeof(AShapeRune)))
                     {
                         AShapeRune shapeRune = (AShapeRune)rune;
-                        Debug.Log("Se encuentra una runa de forma a la que aplicar: " + shapeRune.Name);
+                        //Debug.Log("Se encuentra una runa de forma a la que aplicar: " + shapeRune.Name);
                         foreach (var element in runes)
                         {
-                            Debug.Log("Se aplica elemento: " + element.Name);
+                            //Debug.Log("Se aplica elemento: " + element.Name);
                             shapeRune.LoadElements(element.GetActions());
                         }
                     }
@@ -100,7 +100,7 @@ namespace Hechizos
                 if (rune.GetType().IsSubclassOf(typeof(AShapeRune)))
                 {
                     AShapeRune shapeRune = (AShapeRune)rune;
-                    Debug.Log("Se encuentra una runa de forma a la que desaplicar: " + shapeRune.Name);
+                    //Debug.Log("Se encuentra una runa de forma a la que desaplicar: " + shapeRune.Name);
                     shapeRune.ResetElements();
                 }
             }
@@ -130,6 +130,8 @@ namespace Hechizos
         #region Spell Functions
         public GameObject SpawnProjectile(int numProj)
         {
+            Debug.Log("Se instancia proyectil");
+
             _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
             _lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
             while (_lastProjectile.activeInHierarchy)
@@ -145,7 +147,6 @@ namespace Hechizos
         IEnumerator DelayedProjectile(float time)
         {
             yield return new WaitForSeconds(time);
-
             _lastProjectile.SetActive(true);
             
             foreach(var trailEl in _trailElements)
@@ -236,12 +237,12 @@ namespace Hechizos
         public Transform GetPlayerTarget() => _cont.transform;
 
         public void AddExtraSpellThrow(int num) => _numProjectiles += num;
-        public void ResetExtraSpellThrows() => _numProjectiles = 0;
+        public void ResetExtraSpellThrows() => _numProjectiles = 1;
 
         public int GetNumSpells() => _numProjectiles;
 
         public void AddExtraParallelSpellThrow(int num) => _extraParallelProjectiles += num;
-        public void ResetExtraParallelSpellThrows() => _extraParallelProjectiles = 0;
+        public void ResetExtraParallelSpellThrows() => _extraParallelProjectiles = 1;
 
         public void ShowTrail(EElements elem)
         {

@@ -135,6 +135,8 @@ public abstract class AController : MonoBehaviour
 
     public Vector3 GetOrientation() => Orientation;
 
+    public void SetMove(bool b) => CanMove = b;
+
     private void OnDisable()
     {
         OnDeath = null;

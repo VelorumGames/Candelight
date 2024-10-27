@@ -1,4 +1,5 @@
 using Cinemachine;
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -18,10 +19,16 @@ namespace Cameras
         float _originalAmp;
         float _originalFrec;
 
+        Tween _spellTween;
+        Tween _resetSpellTween;
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            _spellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f).SetAutoKill(false);
+            _resetSpellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 60f, 0.1f).SetAutoKill(false);
         }
 
         private void Start()
@@ -64,7 +71,10 @@ namespace Cameras
             return -1;
         }
 
-        public void AddCamera(CinemachineVirtualCamera cam) => Cameras.Add(cam);
+        public void AddCamera(CinemachineVirtualCamera cam)
+        {
+            if (!Cameras.Contains(cam)) Cameras.Add(cam);
+        }
 
         /// <summary>
         /// Agitacion temporal de la camara
@@ -105,6 +115,20 @@ namespace Cameras
         public void Impulse()
         {
 
+        }
+
+        public void EnterSpellMode()
+        {
+            _spellTween.Restart();
+            _resetSpellTween.Pause();
+            _spellTween.Play();
+        }
+
+        public void ExitSpellMode()
+        {
+            _spellTween.Pause();
+            _resetSpellTween.Restart();
+            _resetSpellTween.Play();
         }
 
         IEnumerator ManageShake(float amp, float frec, float time)

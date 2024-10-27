@@ -35,11 +35,13 @@ namespace Events
             switch (_map.CurrentNodeInfo.EventID)
             {
                 case 0:
+                    Debug.Log("Se genera evento");
                     ARoom room = _map.GetRandomAvailableRoom(true).GetComponent<ARoom>();
                     room.RoomType = ERoomType.Event;
                     room.IdText.text += " EVENT";
+                    room.gameObject.name = "Event Room";
 
-                    _currentEvent = Instantiate(_eventEndings[0], room.transform);
+                    _currentEvent = Instantiate(_eventEndings[0], room.GetRandomSpawnPoint());
                     _currentEvent.transform.position = room.GetRandomSpawnPoint().position;
                     break;
                 default:
@@ -52,10 +54,13 @@ namespace Events
 
         void SpawnRewardNPC()
         {
-            ARoom rewardRoom = MapManager.Instance.GetRandomAvailableRoom(true).GetComponent<ARoom>();
-            rewardRoom.IdText.text += " REWARD";
+            if (_rewardEvents.Length > 0)
+            {
+                ARoom rewardRoom = MapManager.Instance.GetRandomAvailableRoom(true).GetComponent<ARoom>();
+                rewardRoom.IdText.text += " REWARD";
 
-            GameObject rewardNPC = Instantiate(_rewardEvents[Random.Range(0, _rewardEvents.Length)], rewardRoom.GetRandomSpawnPoint());
+                GameObject rewardNPC = Instantiate(_rewardEvents[Random.Range(0, _rewardEvents.Length)], rewardRoom.GetRandomSpawnPoint());
+            }
         }
 
         private void OnDisable()

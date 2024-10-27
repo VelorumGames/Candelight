@@ -1,4 +1,5 @@
 using Enemy;
+using SpellInteractuable;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,22 @@ namespace Hechizos
 
         public Transform Target;
         public float Damage;
+        [SerializeField] float _lifeSpan;
+
+        private void Start()
+        {
+            Invoke("Death", _lifeSpan);
+
+            Collider[] nearCols = Physics.OverlapSphere(transform.position, GetComponent<SphereCollider>().radius);
+            foreach(var c in nearCols)
+            {
+                if (c.TryGetComponent(out ASpellInteractuable inter))
+                {
+                    inter.ForceApplyInteraction(this);
+                    break;
+                }
+            }
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -26,5 +43,7 @@ namespace Hechizos
                 }
             }
         }
+
+        public void Death() => Destroy(gameObject);
     }
 }

@@ -8,31 +8,26 @@ namespace SpellInteractuable
     public abstract class ASpellInteractuable : MonoBehaviour
     {
         [SerializeField] protected EElements Element;
+
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Spell") && other.TryGetComponent<ASpell>(out ASpell scriptSpell))
+            if (other.CompareTag("Spell") && other.TryGetComponent<ASpell>(out var scriptSpell))
             {
-                foreach (var elem in scriptSpell.Elements) 
+                foreach (var elem in scriptSpell.Elements)
                 {
                     if (elem.Name == Element.ToString())
                     {
-                        ApplyInteraction();
+                        ApplyInteraction(scriptSpell);
                         return;
                     }
-                       
-                   
                 }
             }
-
         }
 
+        protected abstract void ApplyInteraction(ASpell spell);
 
-        protected abstract void ApplyInteraction();
-       
-
+        public void ForceApplyInteraction(ASpell spell) => ApplyInteraction(spell);
     }
-
-
 
     public enum EElements
     {

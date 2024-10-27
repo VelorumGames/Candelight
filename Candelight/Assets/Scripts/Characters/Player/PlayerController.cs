@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using World;
 
 namespace Player
@@ -51,7 +52,6 @@ namespace Player
             }
         }
         [SerializeField] GameObject _selection;
-        Vector3 _oSelectionPos;
 
         List<ESpellInstruction> _instructions = new List<ESpellInstruction>();
         Mage _mage;
@@ -67,33 +67,61 @@ namespace Player
         public event Action<AShapeRune> OnSpell;
         public event Action<AElementalRune[]> OnElements;
 
+        [SerializeField] UIManager _UIMan;
+
         #endregion
 
         private void Awake()
         {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
+
             _rb = GetComponent<Rigidbody>();
 
             _mage = FindObjectOfType<Mage>();
+
+            DontDestroyOnLoad(gameObject);
         }
 
         private new void Start()
         {
             base.Start();
 
-            _rb.maxLinearVelocity = _maxSpeed;
-            _interaction = null;
-
-            _oSelectionPos = _selection.transform.position;
-
-            if (!_currentNode && WorldManager.Instance) _currentNode = WorldManager.Instance.CurrentNodeInfo.Node;
+            _rb.maxLinearVelocity = _maxSpeed;            
         }
 
         private void OnEnable()
         {
-            OnNewInstruction += UIManager.Instance.ShowNewInstruction;
-            OnSpell += UIManager.Instance.ShowValidSpell;
-            OnElements += UIManager.Instance.ShowValidElements;
-            World.OnCandleChanged += UIManager.Instance.RegisterCandle;
+            //_UIMan = FindObjectOfType<UIManager>();
+            //
+            //OnNewInstruction += _UIMan.ShowNewInstruction;
+            //OnSpell += _UIMan.ShowValidSpell;
+            //OnElements += _UIMan.ShowValidElements;
+            //World.OnCandleChanged += _UIMan.RegisterCandle;
+        }
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
+        {
+            _UIMan = FindObjectOfType<UIManager>();
+
+            OnNewInstruction += _UIMan.ShowNewInstruction;
+            OnSpell += _UIMan.ShowValidSpell;
+            OnElements += _UIMan.ShowValidElements;
+            World.OnCandleChanged += _UIMan.RegisterCandle;
+
+            _interaction = null;
+
+            CanMove = true;
+            
+            if (!_currentNode && FindObjectOfType<WorldManager>() != null) _currentNode = FindObjectOfType<WorldManager>().CurrentNodeInfo.Node;
+        }
+
+        void OnSceneUnloaded(Scene scene)
+        {
+            OnNewInstruction -= _UIMan.ShowNewInstruction;
+            OnSpell -= _UIMan.ShowValidSpell;
+            OnElements -= _UIMan.ShowValidElements;
+            World.OnCandleChanged -= _UIMan.RegisterCandle;
         }
 
         public override void RecieveDamage(float damage)
@@ -121,10 +149,11 @@ namespace Player
 
         public void OnInteract(InputAction.CallbackContext _)
         {
-            if (_interaction != null)
+            if (_interaction != null && _selection != null)
             {
                 _selection.transform.parent = transform;
-                _selection.transform.position = _oSelectionPos;
+                _selection.transform.localPosition = new Vector3();
+                _selection.SetActive(false);
                 _interaction();
             }
         }
@@ -145,7 +174,7 @@ namespace Player
             _interaction = null;
 
             _selection.transform.parent = transform;
-            _selection.transform.position = _oSelectionPos;
+            _selection.transform.localPosition = new Vector3();
             _selection.SetActive(false);
         }
 
@@ -166,7 +195,7 @@ namespace Player
         {
             if (CanMove)
             {
-                Debug.Log("Se ha registrado la instruccion " + instr);
+                //Debug.Log("Se ha registrado la instruccion " + instr);
                 _instructions.Add(instr);
 
                 if (_bookIsOpen)
@@ -189,7 +218,7 @@ namespace Player
                 }
                 else
                 {
-                    OnNewInstruction(instr);
+                    if (OnNewInstruction != null) OnNewInstruction(instr);
                 }
             }
         }
@@ -199,7 +228,8 @@ namespace Player
             if (_bookIsOpen) //Se registra un nuevo elemento
             {
                 ARune.Activate(_instructions.ToArray());
-                _book.ResetText();
+                if (ARune.FindSpell(_instructions.ToArray(), out var rune)) _book.ShowResult(rune);
+                else _book.ResetText();
             }
             else //Se activa un elemento(s)
             {
@@ -207,9 +237,9 @@ namespace Player
                 {
                     Debug.Log("Se encuentran elementos que aplicar: " + elements);
                     _mage.SetActiveElements(elements);
-                    OnElements(elements);
+                    if (OnElements != null) OnElements(elements);
                 }
-                else OnElements(null); //Si no encuentra elemento valido
+                else if (OnElements != null) OnElements(null); //Si no encuentra elemento valido
             }
         }
         public void OnSpellLaunch()
@@ -217,7 +247,8 @@ namespace Player
             if (_bookIsOpen) //Se registra una nueva forma
             {
                 ARune.Activate(_instructions.ToArray());
-                _book.ResetText();
+                if (ARune.FindSpell(_instructions.ToArray(), out var rune)) _book.ShowResult(rune);
+                else _book.ResetText();
             }
             else //Se lanza un hechizo
             {
@@ -233,10 +264,10 @@ namespace Player
                         if (shapeSpell != null)
                         {
                             shapeSpell.ThrowSpell();
-                            OnSpell(shapeSpell);
+                            if (OnSpell != null) OnSpell(shapeSpell);
                         }
                     }
-                    else OnSpell(null); //Si no encuentra hechizo valido
+                    else if (OnSpell != null) OnSpell(null); //Si no encuentra hechizo valido
                     ResetInstructions();
                 }
             }
@@ -246,15 +277,18 @@ namespace Player
 
         public void OnBook(InputAction.CallbackContext _)
         {
-            if (_bookIsOpen)
+            if (_book)
             {
-                _book.gameObject.SetActive(false);
-                _bookIsOpen = false;
-            }
-            else
-            {
-                _book.gameObject.SetActive(true);
-                _bookIsOpen = true;
+                if (_bookIsOpen)
+                {
+                    _book.gameObject.SetActive(false);
+                    _bookIsOpen = false;
+                }
+                else
+                {
+                    _book.gameObject.SetActive(true);
+                    _bookIsOpen = true;
+                }
             }
         }
 
@@ -262,32 +296,35 @@ namespace Player
 
         public void OnChoosePath(Vector2 direction)
         {
-            //Movemos un gameobject invisible
-            _pathChooser.transform.localPosition += new Vector3(direction.x, 0f, direction.y);
-            _pathChooser.transform.localPosition = Vector3.ClampMagnitude(_pathChooser.transform.localPosition, 7f);
-
-            //Comparamos con que nodo conectado al actual esta mas cerca y consideramos ese como la decision del jugador
-            float minDist = 9999f;
-            GameObject closest = null;
-            //Debug.Log($"Para el current node hay {_currentNode.ConnectedNodes.Count} nodos conectados");
-            foreach (var node in _currentNode.ConnectedNodes)
+            if (_currentNode != null)
             {
-                if (node != _currentNode.gameObject /*&& node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered*/) //Se queda comentado mientras queramos debuggear
+                //Movemos un gameobject invisible
+                _pathChooser.transform.localPosition += new Vector3(direction.x, 0f, direction.y);
+                _pathChooser.transform.localPosition = Vector3.ClampMagnitude(_pathChooser.transform.localPosition, 7f);
+
+                //Comparamos con que nodo conectado al actual esta mas cerca y consideramos ese como la decision del jugador
+                float minDist = 9999f;
+                GameObject closest = null;
+                //Debug.Log($"Para el current node hay {_currentNode.ConnectedNodes.Count} nodos conectados");
+                foreach (var node in _currentNode.ConnectedNodes)
                 {
-                    float dist = Vector3.Distance(_pathChooser.transform.position, node.transform.position);
-                    if (dist < minDist)
+                    if (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered)
                     {
-                        minDist = dist;
-                        closest = node;
+                        float dist = Vector3.Distance(_pathChooser.transform.position, node.transform.position);
+                        if (dist < minDist)
+                        {
+                            minDist = dist;
+                            closest = node;
+                        }
                     }
                 }
+                if (closest != null) _nextNode = closest.transform;
             }
-            _nextNode = closest.transform;
         }
 
         public void OnConfirmPath(InputAction.CallbackContext _)
         {
-            if (_rb.velocity.magnitude < 0.1f)
+            if (_rb && _rb.velocity.magnitude < 0.1f)
             {
                 _pathShower.SetActive(false);
                 StartCoroutine(MovePlayerTowardsNode(_nextNode));
@@ -301,21 +338,24 @@ namespace Player
 
         public void OnInventory(InputAction.CallbackContext _)
         {
-            UIManager.Instance.LoadUIWindow(UIManager.Instance.InventoryUI);
+            UIManager.Instance.LoadUIWindow(UIManager.Instance.InventoryUI, "i");
         }
 
         #endregion
 
         IEnumerator MovePlayerTowardsNode(Transform target)
         {
-            Vector3 direction = new Vector3((_nextNode.position - transform.position).x, 0f, (_nextNode.position - transform.position).z).normalized;
-            while (Vector3.Distance(transform.position, target.position) > 1.5f)
+            if (_nextNode != null)
             {
-                OnMove(new Vector2(direction.x, direction.z));
+                Vector3 direction = new Vector3((_nextNode.position - transform.position).x, 0f, (_nextNode.position - transform.position).z).normalized;
+                while (Vector3.Distance(transform.position, target.position) > 1.5f)
+                {
+                    OnMove(new Vector2(direction.x, direction.z));
+                    yield return null;
+                }
+                _currentNode = target.GetComponent<NodeManager>();
                 yield return null;
             }
-            _currentNode = target.GetComponent<NodeManager>();
-            yield return null;
         }
 
         IEnumerator RotatePathShower()
@@ -329,7 +369,7 @@ namespace Player
             Quaternion endRot = Quaternion.Euler(new Vector3(0f, Vector3.SignedAngle(transform.forward, dir, Vector3.up), 0f));
             Quaternion currentRot = _pathShower.transform.rotation;
 
-            while (Mathf.Abs(endRot.eulerAngles.y - currentRot.eulerAngles.y) > 1f)
+            while (Mathf.Abs(endRot.eulerAngles.y - currentRot.eulerAngles.y) > 4f)
             {
                 _pathShower.transform.RotateAround(transform.position, Vector3.up, rotWise * 400f * Time.deltaTime);
                 currentRot = _pathShower.transform.rotation;
@@ -354,10 +394,10 @@ namespace Player
 
         private void OnDisable()
         {
-            OnNewInstruction -= UIManager.Instance.ShowNewInstruction;
-            OnSpell -= UIManager.Instance.ShowValidSpell;
-            OnElements -= UIManager.Instance.ShowValidElements;
-            World.OnCandleChanged -= UIManager.Instance.RegisterCandle;
+            //OnNewInstruction -= _UIMan.ShowNewInstruction;
+            //OnSpell -= _UIMan.ShowValidSpell;
+            //OnElements -= _UIMan.ShowValidElements;
+            //World.OnCandleChanged -= _UIMan.RegisterCandle;
         }
     }
 }

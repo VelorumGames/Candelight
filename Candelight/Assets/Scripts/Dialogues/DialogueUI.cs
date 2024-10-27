@@ -23,8 +23,9 @@ namespace Dialogues
         TextMeshProUGUI _text;
         ShowUITextScript _showUIText;
         DialogueBlock _currentBlock;
+        DialogueAgent _currentAgent;
 
-        [SerializeField] GameObject _dialogueCanvas;
+        [SerializeField] GameObject _dialogueUI;
 
         PlayerController _cont;
 
@@ -44,7 +45,7 @@ namespace Dialogues
 
         private void Start()
         {
-            _inventory = Inventory.Instance;
+            _inventory = FindObjectOfType<Inventory>();
         }
 
         private void LoadBlockInfo(DialogueBlock block)
@@ -59,17 +60,17 @@ namespace Dialogues
                 switch(_currentNodeInfo.Biome)
                 {
                     case EBiome.A:
-                        _currentBlock.item = Inventory.Instance.GetRandomItem(EItemCategory.Common);
+                        _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Common);
                         break;
                     case EBiome.B:
-                        _currentBlock.item = Inventory.Instance.GetRandomItem(EItemCategory.Rare);
+                        _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Rare);
                         break;
                     case EBiome.C:
-                        _currentBlock.item = Inventory.Instance.GetRandomItem(EItemCategory.Epic);
+                        _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Epic);
                         break;
                     default:
                         Debug.Log("ERROR: Bioma no detectado correctamente. Se defaultea item a common.");
-                        _currentBlock.item = Inventory.Instance.GetRandomItem(EItemCategory.Common);
+                        _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Common);
                         break;
                 }
             }
@@ -82,17 +83,24 @@ namespace Dialogues
 
         private void NextBlock()
         {
+            Debug.Log("Siguiente bloque");
             if (_currentBlock.nextBlock != null) LoadBlockInfo(_currentBlock.nextBlock);
-            else EndDialogue();
+            else
+            {
+                EndDialogue();
+                if (_currentBlock.nextDialogue != null) _currentAgent.ChangeDialogue(_currentBlock.nextDialogue);
+            }
         }
 
-        public void StartDialogue(DialogueBlock block)
+        public void StartDialogue(DialogueBlock block, DialogueAgent ag)
         {
-            _dialogueCanvas.SetActive(true);
+            _currentAgent = ag;
+
+            _dialogueUI.SetActive(true);
 
             _active = true;
             _cont.UnloadInteraction();
-            InputManager.Instance.LoadControls(EControlMap.Dialogue);
+            FindObjectOfType<InputManager>().LoadControls(EControlMap.Dialogue);
 
             LoadBlockInfo(block);
         }
@@ -104,11 +112,11 @@ namespace Dialogues
         public void EndDialogue()
         {
             _active = false;
-            InputManager.Instance.LoadPreviousControls();
+            FindObjectOfType<InputManager>().LoadPreviousControls();
 
             _text.text = "";
 
-            _dialogueCanvas.SetActive(false);
+            _dialogueUI.SetActive(false);
         }
 
         public bool IsActive() => _active;

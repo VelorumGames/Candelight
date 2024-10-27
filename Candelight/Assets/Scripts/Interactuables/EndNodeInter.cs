@@ -7,7 +7,6 @@ using Map;
 using DG.Tweening;
 using Cameras;
 using UI;
-using UnityEditor.PackageManager;
 using Player;
 
 namespace Interactuables
@@ -17,6 +16,7 @@ namespace Interactuables
         public override void Interaction()
         {
             Debug.Log("Se completa el nodo");
+            FindObjectOfType<PlayerController>().SetMove(false);
             UIManager.Instance.FadeToWhite(2f);
             DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 90f, 2f).OnComplete(FinishScene);            
         }

@@ -78,6 +78,8 @@ namespace Map
 
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
         }
 
         private void Start()
@@ -113,6 +115,7 @@ namespace Map
         void EventCheck()
         {
             //Si el penultimo nivel es de exploracion, generamos el evento que corresponda
+            //DEBUG
             if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 2 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration && TryGetComponent<ExploreEventManager>(out var eventMan))
             {
                 eventMan.GenerateEvent(this);

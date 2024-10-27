@@ -17,7 +17,7 @@ namespace Map
         private void Start()
         {
             _rune = ChooseRune();
-            ShowHints();
+            if (_rune != null) ShowHints();
         }
 
         ESpellInstruction[] ChooseRune()
@@ -34,7 +34,7 @@ namespace Map
                 }
             }
             Debug.Log(runes.Count);
-            return runes[Random.Range(0, runes.Count)];
+            return runes.Count > 0 ? runes[Random.Range(0, runes.Count)] : null;
         }
 
         void ShowHints()

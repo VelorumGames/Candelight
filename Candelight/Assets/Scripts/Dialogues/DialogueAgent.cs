@@ -23,8 +23,10 @@ namespace Dialogues
 
         public void StartDialogue()
         {
-            if (Dialogue != null) _dialogueUI.StartDialogue(Dialogue.initialDialogueBlock);
+            if (Dialogue != null) _dialogueUI.StartDialogue(Dialogue.initialDialogueBlock, this);
             else Debug.LogWarning($"{this.name} has not found the dialogue data. Execution will continue but will not work properly.");
         }
+
+        public void ChangeDialogue(Dialogue newDialogue) => Dialogue = newDialogue;
     }
 }

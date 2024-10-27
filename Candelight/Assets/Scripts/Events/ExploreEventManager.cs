@@ -22,6 +22,7 @@ namespace Events
 
         public void GenerateEvent(MapManager map)
         {
+            Debug.Log("Se inicia generacion de evento con ID: " + map.CurrentNodeInfo.EventID);
             _map = map;
 
             switch(_map.CurrentNodeInfo.EventID)
@@ -30,8 +31,9 @@ namespace Events
                     ARoom room = _map.GetRandomAvailableRoom(true).GetComponent<ARoom>();
                     room.RoomType = ERoomType.Event;
                     room.IdText.text += " EVENT";
+                    room.gameObject.name = "Event Room";
 
-                    _currentEvent = Instantiate(_events[0], room.transform);
+                    _currentEvent = Instantiate(_events[0], room.GetRandomSpawnPoint());
                     break;
                 default:
                     Debug.Log("No se generara ningun evento para este nodo");
