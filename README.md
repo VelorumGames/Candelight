@@ -1,3 +1,5 @@
+Este GDD no contiene imágenes. Para ver el GDD completo, consultar el PDF de la entrega.
+
 **_ÍNDICE_**
 
 [RESUMEN 2](#_Toc628238059)
