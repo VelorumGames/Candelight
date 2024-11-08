@@ -52,6 +52,7 @@ namespace Map
         public float LargeThreshold;
         public float MediumThreshold;
         public float SmallThreshold;
+        public float AnchorCastOrigin;
 
         [Space(20)]
         [Header("===CONNECTION GENERATION===")]
@@ -79,7 +80,7 @@ namespace Map
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
-            FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
+            //FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
         }
 
         private void Start()
@@ -153,19 +154,24 @@ namespace Map
             }
 
             //Generamos el gameobject de la nueva habitacion
+            GameObject room = null;
             switch (size)
             {
                 case ERoomSize.Small:
-                    _rooms.Add(Instantiate(SmallRooms[Random.Range(0, SmallRooms.Length)], position, new Quaternion()));
+                    room = Instantiate(SmallRooms[Random.Range(0, SmallRooms.Length)], position, new Quaternion());
                     break;
                 case ERoomSize.Medium:
-                    _rooms.Add(Instantiate(MediumRooms[Random.Range(0, MediumRooms.Length)], position, new Quaternion()));
+                    room = Instantiate(MediumRooms[Random.Range(0, MediumRooms.Length)], position, new Quaternion());
                     break;
                 case ERoomSize.Large:
-                    _rooms.Add(Instantiate(LargeRooms[Random.Range(0, LargeRooms.Length)], position, new Quaternion()));
+                    room = Instantiate(LargeRooms[Random.Range(0, LargeRooms.Length)], position, new Quaternion());
+                    break;
+                default:
+                    room = Instantiate(SmallRooms[Random.Range(0, SmallRooms.Length)], position, new Quaternion());
                     break;
             }
-
+            _rooms.Add(room);
+            room.gameObject.name = "ROOM " + _currentRooms;
             _rooms[_rooms.Count - 1].GetComponent<ARoom>().SetID(_currentRooms);
 
             _currentRooms++;

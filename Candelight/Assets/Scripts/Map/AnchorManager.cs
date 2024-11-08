@@ -122,9 +122,12 @@ namespace Map
         void SpawnRoom()
         {
             //Averiguamos el tamano maximo 
-            int maxSize = Physics.Raycast(transform.position + 0.44f * transform.forward, _raycastDirection, out _hit, _map.MediumThreshold, ~_mask) ? _hit.distance < _map.SmallThreshold ? _hit.distance < _map.RoomSeparation ? -1 : 0 : 1 : 2;
-            if (Physics.Raycast(transform.position + 0.44f * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
-                Physics.Raycast(transform.position + 0.44f * transform.forward, _auxDirRight, out _auxRhit, _map.MediumThreshold, ~_mask) && _auxRhit.transform.parent.parent != transform.parent) maxSize -= 1;
+            int maxSize = Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _raycastDirection, out _hit, _map.MediumThreshold, ~_mask) ? _hit.distance < _map.SmallThreshold ? _hit.distance < _map.RoomSeparation ? -1 : 0 : 1 : 2;
+            Debug.Log($"Tamano original: {maxSize} (Distancia libre: {_hit.distance})");
+            if (_hit.transform != null) Debug.Log($"Soy {gameObject.name} ({transform.parent.gameObject.name}) y he colisionado con {_hit.transform.gameObject.name} ({_hit.transform.parent.gameObject.name})");
+            
+            if (Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
+                Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirRight, out _auxRhit, _map.MediumThreshold, ~_mask) && _auxRhit.transform.parent.parent != transform.parent) maxSize -= 1;
             //Debug.Log($"Colisiona con {_hit.transform.name}");
             if (Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold)) maxSize = -1;
             if (maxSize == -1) return;
@@ -436,7 +439,7 @@ namespace Map
             }
 
             //Expansion hasta la mitad de la conexion
-            Debug.Log($"Centro: {boxes[2].center[axis == 0 ? 2 : 0]} < Punto medio: {(start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2}; Despl: {Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10}");
+            //Debug.Log($"Centro: {boxes[2].center[axis == 0 ? 2 : 0]} < Punto medio: {(start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2}; Despl: {Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10}");
             if (boxes[2].center[axis == 0 ? 2 : 0] < (start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2) //Si va hacia delante
             {
                 while (boxes[2].center[axis == 0 ? 2 : 0] + halfSize[1] < (start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2 - Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10)
@@ -447,7 +450,7 @@ namespace Map
             }
             else //Si va hacia atras
             {
-                Debug.Log($"Comprobacion: {boxes[2].center[axis == 0 ? 2 : 0] - halfSize[1]} > {(start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2 + Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10}");
+                //Debug.Log($"Comprobacion: {boxes[2].center[axis == 0 ? 2 : 0] - halfSize[1]} > {(start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2 + Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10}");
                 while (boxes[2].center[axis == 0 ? 2 : 0] - halfSize[1] > (start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2 + Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10)
                 {
                     halfSize[1] += 0.01f;
