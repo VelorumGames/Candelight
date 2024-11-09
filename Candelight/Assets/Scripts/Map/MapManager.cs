@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using World;
+using UI;
 
 namespace Map
 {
@@ -16,6 +17,7 @@ namespace Map
         public static MapManager Instance;
 
         GameObject _player;
+        UIManager _uiMan;
 
         [Header("===ROOM GENERATION===")]
         [Space(10)]
@@ -80,6 +82,7 @@ namespace Map
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
+            _uiMan = FindObjectOfType<UIManager>();
             //FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
         }
 
@@ -104,7 +107,7 @@ namespace Map
             }
             else _maxRooms = 5;
 
-            if (_maxRooms > 0) RegisterNewRoom(-1, new Vector3(), ERoomSize.Medium);
+            if (_maxRooms > 0) RegisterNewRoom(-1, new Vector3(), new Vector2(), ERoomSize.Medium);
         }
 
         private void OnEnable()
@@ -141,7 +144,7 @@ namespace Map
         /// <param name="position"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public GameObject RegisterNewRoom(int originalRoomID, Vector3 position, ERoomSize size)
+        public GameObject RegisterNewRoom(int originalRoomID, Vector3 position, Vector2 minimapOffset, ERoomSize size)
         {
             //Debug.Log($"Se crea nueva habitacion ({CurrentRooms}) de tamano {size} conectada con habitacion {originalRoomID}");
             _roomGraph.Add(new List<int>());
@@ -174,8 +177,11 @@ namespace Map
             room.gameObject.name = "ROOM " + _currentRooms;
             _rooms[_rooms.Count - 1].GetComponent<ARoom>().SetID(_currentRooms);
 
-            _currentRooms++;
+            //Gestion del minimapa
+            room.GetComponent<ARoom>().SetMinimapOffset(minimapOffset);
+            _uiMan.RegisterMinimapRoom(_currentRooms, minimapOffset, room.GetComponent<ARoom>().RoomType);
 
+            _currentRooms++;
             return _rooms[_rooms.Count - 1];
         }
 
@@ -193,12 +199,14 @@ namespace Map
             rooms.Remove(startRoom);
             startRoom.RoomType = ERoomType.Start;
             startRoom.IdText.text += " START";
+            _uiMan.UpdateMinimapRoom(startRoom.GetID(), ERoomType.Start);
             _player.transform.position = startRoom.transform.position + 1f * Vector3.up;
 
             ARoom endRoom = rooms[Random.Range(rooms.Count / 2, rooms.Count)];
             rooms.Remove(endRoom);
             endRoom.RoomType = ERoomType.Exit;
             endRoom.IdText.text += " EXIT";
+            _uiMan.UpdateMinimapRoom(endRoom.GetID(), ERoomType.Exit);
             endRoom.RemoveEntities(); //Eliminamos los enemigos o npcs que pueda haber en la sala de salida
             GameObject torch = Instantiate(EndTorch, endRoom.transform);
             torch.transform.position = endRoom.GetRandomSpawnPoint().position;
@@ -210,6 +218,7 @@ namespace Map
                 rooms.Remove(runeRoom);
                 runeRoom.RoomType = ERoomType.Rune;
                 runeRoom.IdText.text += " RUNE";
+                _uiMan.UpdateMinimapRoom(runeRoom.GetID(), ERoomType.Rune);
 
                 runeRoom.ActivateRuneRoom();
             }

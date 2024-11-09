@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UI;
 
 namespace Map
 {
@@ -21,6 +22,8 @@ namespace Map
         public TextMeshPro IdText;
         public ERoomType RoomType = ERoomType.Normal;
 
+        UIManager _uiMan;
+
         [SerializeField] Transform _runeTransform;
         [SerializeField] Transform[] _spawnPoints;
         [SerializeField] EnemyController[] _enemies;
@@ -33,6 +36,13 @@ namespace Map
                 m_deaths = value;
                 if (m_deaths == _enemies.Length) BlockRoom(false);
             }
+        }
+
+        Vector2 _minimapOffset;
+
+        private void Awake()
+        {
+            _uiMan = FindObjectOfType<UIManager>();
         }
 
         private void Start()
@@ -81,6 +91,17 @@ namespace Map
             else //Desbloquear salidas
             {
                 Debug.Log("Se desbloquearian las salidas");
+            }
+        }
+
+        public void SetMinimapOffset(Vector2 offset) => _minimapOffset = offset;
+        public Vector2 GetMinimapOffset() => _minimapOffset;
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                _uiMan.ShowMinimapRoom(ID);
             }
         }
     }

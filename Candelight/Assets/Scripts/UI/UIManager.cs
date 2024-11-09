@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Map;
 
 namespace UI
 {
@@ -25,6 +26,7 @@ namespace UI
         public GameObject Options;
         public GameObject InventoryUI;
         public Image FadeImage;
+        [SerializeField] MinimapManager _minimap;
 
         ShowInstructions _showInstr;
 
@@ -105,6 +107,10 @@ namespace UI
         {
             FadeImage.DOColor(Color.white, duration);
         }
+
+        public void RegisterMinimapRoom(int id, Vector2 offset, ERoomType type) => _minimap.RegisterMinimapRoom(id, offset, type);
+        public void UpdateMinimapRoom(int id, ERoomType newType) => _minimap.UpdateRoom(id, newType);
+        public void ShowMinimapRoom(int id) => _minimap.ShowPlayerInRoom(id);
 
         #region UI Menus
 
