@@ -123,7 +123,7 @@ namespace Map
         {
             //Averiguamos el tamano maximo 
             int maxSize = Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _raycastDirection, out _hit, _map.MediumThreshold, ~_mask) ? _hit.distance < _map.SmallThreshold ? _hit.distance < _map.RoomSeparation ? -1 : 0 : 1 : 2;
-            Debug.Log($"Tamano original: {maxSize} (Distancia libre: {_hit.distance})");
+            //Debug.Log($"Tamano original: {maxSize} (Distancia libre: {_hit.distance})");
             if (_hit.transform != null) Debug.Log($"Soy {gameObject.name} ({transform.parent.gameObject.name}) y he colisionado con {_hit.transform.gameObject.name} ({_hit.transform.parent.gameObject.name})");
             
             if (Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
@@ -137,8 +137,11 @@ namespace Map
             //Generamos un tamano segun el maximo calculado y la posicion que le corresponde
             Vector3 localOffset = OffsetChooser(size);
 
+            //Procesamos cual es la posicion que le corresponde en el minimapa
+            Vector2 minimapOffset = MinimapOffsetChooser();
+
             //Generamos la nueva sala y encontramos su anclaje
-            AnchorManager obj = LocateObjectiveAnchor(_map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, size));
+            AnchorManager obj = LocateObjectiveAnchor(_map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, minimapOffset, size));
 
             //Suponiendo que existe el anclaje (en caso contrario, llevaria una referencia a si mismo para evitar errores), generamos la malla para la transicion entre ambos
             _connectionMesh = GenerateMesh(obj);
@@ -165,6 +168,29 @@ namespace Map
                 default:
                     return new Vector3();
             }
+        }
+
+        Vector2 MinimapOffsetChooser()
+        {
+            Vector2 miniOffset = _room.GetMinimapOffset();
+            switch (_direction)
+            {
+                case EAnchorDirection.Forward:
+                    miniOffset += new Vector2(0f, 40f);
+                    break;
+                case EAnchorDirection.Backward:
+                    miniOffset += new Vector2(0f, -40f);
+                    break;
+                case EAnchorDirection.Right:
+                    miniOffset += new Vector2(40f, 0f);
+                    break;
+                case EAnchorDirection.Left:
+                    miniOffset += new Vector2(-40f, 0f);
+                    break;
+                default:
+                    break;
+            }
+            return miniOffset;
         }
 
         #endregion
