@@ -1841,7 +1841,7 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: SmallRooms.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -1856,9 +1856,21 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: SmallRooms.Array.data[0]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 28f3608dd2b77084d8fae86ebadee189,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: SmallRooms.Array.data[1]
       value: 
-      objectReference: {fileID: 8668900970460633133, guid: 15a5d1fca4a31a8498bfa013b9978855,
+      objectReference: {fileID: 2188563618886970509, guid: 28f3608dd2b77084d8fae86ebadee189,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: SmallRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 28f3608dd2b77084d8fae86ebadee189,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
