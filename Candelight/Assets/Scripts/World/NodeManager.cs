@@ -7,7 +7,7 @@ namespace World
 {
     public enum EBiome
     {
-        Undefined, A, B, C
+        Undefined, Durnia, Temeria, Idria
     }
     public enum ELevel
     {
@@ -210,11 +210,11 @@ namespace World
         {
             bool start = true;
 
-            if (_data.Biome != EBiome.A) start = false;
+            if (_data.Biome != EBiome.Durnia) start = false;
             foreach(var n in ConnectedNodes)
             {
                 Debug.Log(n.GetComponent<NodeManager>().GetNodeData().Biome);
-                if (n.GetComponent<NodeManager>().GetNodeData().Biome != EBiome.A)
+                if (n.GetComponent<NodeManager>().GetNodeData().Biome != EBiome.Durnia)
                 {
                     start = false;
                     break;

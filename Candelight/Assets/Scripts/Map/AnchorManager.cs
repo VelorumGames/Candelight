@@ -109,7 +109,7 @@ namespace Map
         /// <returns></returns>
         IEnumerator DelayedRoomCreation()
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.25f);
             if (_map.CanCreateRoom()) SpawnRoom();
             else Destroy(gameObject);
         }
@@ -279,9 +279,10 @@ namespace Map
             BoxCollider baseCol = meshGO.AddComponent<BoxCollider>();
             baseCol.center = new Vector3(baseCol.center.x, 0f, baseCol.center.z);
 
-            if (Mathf.Abs(positions[0].x - positions[3].x) < 0.1f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
-            else if (Mathf.Abs(positions[0].z - positions[3].z) < 0.1f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
-                    else GenerateComplexColliders(meshGO, positions, line.endWidth);
+            //Debug.Log($"({_room.GetID()}) Diferencia en X: {positions[0].x - positions[3].x} < 0.3f; Diferencia en Z: {positions[0].z - positions[3].z} < 0.3f");
+            if (Mathf.Abs(positions[0].x - positions[3].x) < 1.5f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
+            else if (Mathf.Abs(positions[0].z - positions[3].z) < 1.5f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
+            else GenerateComplexColliders(meshGO, positions, line.endWidth);
 
             return meshGO;
         }
@@ -297,8 +298,8 @@ namespace Map
         {
             BoxCollider box1 = con.AddComponent<BoxCollider>();
             BoxCollider box2 = con.AddComponent<BoxCollider>();
-            box1.center += _map.ConnectionCollidersOffset * Vector3.right;
-            box2.center -= _map.ConnectionCollidersOffset * Vector3.right;
+            box1.center += _map.ConnectionCollidersOffset * 2f * Vector3.right;
+            box2.center -= _map.ConnectionCollidersOffset * 2f * Vector3.right;
             box1.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
             box2.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
         }
@@ -307,8 +308,8 @@ namespace Map
         {
             BoxCollider box1 = con.AddComponent<BoxCollider>();
             BoxCollider box2 = con.AddComponent<BoxCollider>();
-            box1.center += _map.ConnectionCollidersOffset * Vector3.forward;
-            box2.center -= _map.ConnectionCollidersOffset * Vector3.forward;
+            box1.center += _map.ConnectionCollidersOffset * 2f * Vector3.forward;
+            box2.center -= _map.ConnectionCollidersOffset * 2f * Vector3.forward;
             box1.size = new Vector3(box1.size.x * 0.8f, 2f, box1.size.z);
             box2.size = new Vector3(box1.size.x * 0.8f, 2f, box1.size.z);
         }

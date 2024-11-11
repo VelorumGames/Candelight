@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using World;
 using UI;
+using Visual;
 
 namespace Map
 {
@@ -23,7 +24,7 @@ namespace Map
         [Space(10)]
         [SerializeField] int _seed;
         [SerializeField] int _maxRooms;
-        int m_rooms;
+        [SerializeField] int m_rooms;
         int _currentRooms
         {
             get => m_rooms;
@@ -40,9 +41,20 @@ namespace Map
         public float RuneChance;
 
         [Space(10)]
-        public GameObject[] SmallRooms;
-        public GameObject[] MediumRooms;
-        public GameObject[] LargeRooms;
+        public GameObject[] DurniaSmallRooms;
+        public GameObject[] DurniaMediumRooms;
+        public GameObject[] DurniaLargeRooms;
+        public GameObject[] TemeriaSmallRooms;
+        public GameObject[] TemeriaMediumRooms;
+        public GameObject[] TemeriaLargeRooms;
+        public GameObject[] IdriaSmallRooms;
+        public GameObject[] IdriaMediumRooms;
+        public GameObject[] IdriaLargeRooms;
+
+        [HideInInspector] public GameObject[] SmallRooms;
+        [HideInInspector] public GameObject[] MediumRooms;
+        [HideInInspector] public GameObject[] LargeRooms;
+
         public GameObject EndTorch;
 
         List<List<int>> _roomGraph = new List<List<int>>();
@@ -84,6 +96,27 @@ namespace Map
 
             _uiMan = FindObjectOfType<UIManager>();
             //FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
+
+            ConnectionMaterial = FindObjectOfType<LightingManager>().GetConnectionMaterial(CurrentNodeInfo.Biome);
+
+            switch(CurrentNodeInfo.Biome)
+            {
+                case EBiome.Durnia:
+                    SmallRooms = DurniaSmallRooms;
+                    MediumRooms = DurniaMediumRooms;
+                    LargeRooms = DurniaLargeRooms;
+                    break;
+                case EBiome.Temeria:
+                    SmallRooms = TemeriaSmallRooms;
+                    MediumRooms = TemeriaMediumRooms;
+                    LargeRooms = TemeriaLargeRooms;
+                    break;
+                case EBiome.Idria:
+                    SmallRooms = IdriaSmallRooms;
+                    MediumRooms = IdriaMediumRooms;
+                    LargeRooms = IdriaLargeRooms;
+                    break;
+            }
         }
 
         private void Start()
@@ -94,13 +127,13 @@ namespace Map
             {
                 switch (CurrentNodeInfo.Biome)
                 {
-                    case EBiome.A:
+                    case EBiome.Durnia:
                         _maxRooms = 10;
                         break;
-                    case EBiome.B:
+                    case EBiome.Temeria:
                         _maxRooms = 20;
                         break;
-                    case EBiome.C:
+                    case EBiome.Idria:
                         _maxRooms = 30;
                         break;
                 }

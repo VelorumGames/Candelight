@@ -131,17 +131,17 @@ namespace World
                 float maxDataRange = 20f;
                 float biomeData = maxDataRange * Mathf.PerlinNoise(_biomeOffset + node.transform.position.x / _biomeSize, _biomeOffset + node.transform.position.z / _biomeSize);
                 
-                EBiome biome = biomeData < maxDataRange * _biomeAThreshold ? EBiome.A : biomeData < maxDataRange * _biomeBThreshold ? EBiome.B : EBiome.C;
+                EBiome biome = biomeData < maxDataRange * _biomeAThreshold ? EBiome.Durnia : biomeData < maxDataRange * _biomeBThreshold ? EBiome.Temeria : EBiome.Idria;
                 node.GetComponent<NodeManager>().SetBiome(biome);
                 switch (biome)
                 {
-                    case EBiome.A:
+                    case EBiome.Durnia:
                         node.GetComponent<Renderer>().material = biomeA;
                         break;
-                    case EBiome.B:
+                    case EBiome.Temeria:
                         node.GetComponent<Renderer>().material = biomeB;
                         break;
-                    case EBiome.C:
+                    case EBiome.Idria:
                         node.GetComponent<Renderer>().material = biomeC;
                         break;
                 }
