@@ -4,6 +4,7 @@ using Player;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UI;
 
 namespace World
 {
@@ -70,6 +71,8 @@ namespace World
 
         private void Start()
         {
+            FindObjectOfType<UIManager>().FadeFromBlack(2f);
+
             CurrentNodeInfo.CurrentLevel = 0;
 
             if (!World.World) //Si no se ha generado mundo previamente

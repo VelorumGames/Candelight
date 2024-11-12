@@ -103,9 +103,21 @@ namespace UI
             FadeImage.DOColor(Color.black, duration);
         }
 
+        public void FadeFromBlack(float duration)
+        {
+            FadeImage.color = new Color(0f, 0f, 0f, 1f);
+            FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play();
+        }
+
         public void FadeToWhite(float duration)
         {
             FadeImage.DOColor(Color.white, duration);
+        }
+
+        public void FadeFromWhite(float duration)
+        {
+            FadeImage.color = new Color(1f, 1f, 1f, 1f);
+            FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration);
         }
 
         public void RegisterMinimapRoom(int id, Vector2 offset, ERoomType type) => _minimap.RegisterMinimapRoom(id, offset, type);
