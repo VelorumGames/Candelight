@@ -28,9 +28,9 @@ namespace UI
             _trans.localPosition = _oPos + new Vector3(Random.Range(-_initialPosRange, _initialPosRange), Random.Range(-_initialPosRange, _initialPosRange), 0f);
             _trans.localRotation = Quaternion.Euler(Random.Range(-_initialRotRange, _initialRotRange), Random.Range(-_initialRotRange, _initialRotRange), Random.Range(-_initialRotRange, _initialRotRange));
 
-            _trans.DOScale(0.5f * Vector3.one, _animTime);
-            _trans.DOLocalMove(_oPos, _animTime);
-            _trans.DOLocalRotate(new Vector3(0f, 0f, 0f), _animTime);
+            _trans.DOScale(0.5f * Vector3.one, _animTime).Play();
+            _trans.DOLocalMove(_oPos, _animTime).Play();
+            _trans.DOLocalRotate(new Vector3(0f, 0f, 0f), _animTime).Play();
         }
     }
 }

@@ -7,42 +7,34 @@ using UnityEngine;
 
 public class DatabaseManager : MonoBehaviour
 {
-    List<UserData> players = new List<UserData>();
+    List<UserData> _players = new List<UserData>();
     UserData _currentUserData;
     UserNames _names;
 
+    ScoreboardManager _scoreboard;
+
     private void Awake()
     {
+        _scoreboard = FindObjectOfType<ScoreboardManager>();
+
         _names = new UserNames();
     }
 
     IEnumerator Start()
     {
-        ////Testeo
-        //UserData data1 = new UserData();
-        //data1.Name = "Mauro";
-        //data1.Score = 10;
-        //data1.posX = 2f;
-        //data1.posY = 2f;
-        //
-        //UserData data2 = new UserData();
-        //data2.Name = "Patricio";
-        //data2.Score = 20;
-        //data2.posX = -2f;
-        //data2.posY = -2f;
-        
-        //_names = new UserNames();
-        //_names.Names = "";
-        //Database.Send("Names/", _names);
-        
-        //yield return StartCoroutine(SendUserData(data1));
-        //yield return new WaitForSeconds(0.25f);
-        //yield return StartCoroutine(SendUserData(data2));
-        //yield return new WaitForSeconds(0.25f);
-
         yield return StartCoroutine(GetAllUsersData());
 
-        FindObjectOfType<ScoreboardManager>().SpawnStars(players.ToArray());
+        //Se ordenan los jugadores segun la puntuacion
+        _players.Sort(ScoreCompare);
+
+        _scoreboard.UpdatePlayers(_players.ToArray());
+    }
+
+    int ScoreCompare(UserData x, UserData y)
+    {
+        if (x.Score == y.Score) return 0;
+        else if (x.Score > y.Score) return -1;
+        else return 1;
     }
 
     public IEnumerator SendUserData(UserData data)
@@ -64,7 +56,7 @@ public class DatabaseManager : MonoBehaviour
     public IEnumerator GetAllUsersData()
     {
         Debug.Log("Se busca la info de todos los jugadores");
-        players.Clear();
+        _players.Clear();
 
         //Recibo todos los nombres que hay en la base de datos
         Database.Get<UserNames>("Names/", RecieveNames);
@@ -85,13 +77,16 @@ public class DatabaseManager : MonoBehaviour
                 yield return new WaitUntil(() => Database.Completed);
 
                 //Creo una copia de los datos y lo registro en la lista
-                UserData newData = new UserData();
-                newData.Name = _currentUserData.Name;
-                newData.Score = _currentUserData.Score;
-                newData.posX = _currentUserData.posX;
-                newData.posY = _currentUserData.posY;
+                if (_currentUserData != null)
+                {
+                    UserData newData = new UserData();
+                    newData.Name = _currentUserData.Name;
+                    newData.Score = _currentUserData.Score;
+                    newData.posX = _currentUserData.posX;
+                    newData.posY = _currentUserData.posY;
 
-                players.Add(newData);
+                    _players.Add(newData);
+                }
             }
             yield return null;
         }
@@ -106,6 +101,7 @@ public class DatabaseManager : MonoBehaviour
 
     void RecieveNames(UserNames previousNames)
     {
+        Debug.Log("AAAAAAAAAAAAAA ");
         _names.Names = previousNames.Names;
     }
 

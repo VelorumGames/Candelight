@@ -32,6 +32,11 @@ public static class Database
                 Debug.Log($"Info de tipo {response} encontrada!");
                 callback(response);
                 Completed = true;
+            }).Catch(ex =>
+            {
+                Debug.LogWarning($"ERROR: " + ex.Message + "\nSe devuelve un valor por defecto.");
+                callback(default);
+                Completed = true;
             });
         }
     }

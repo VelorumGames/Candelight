@@ -56,6 +56,8 @@ namespace World
         public TextMeshPro Text;
         public GameObject Fog;
 
+        [SerializeField] GameObject[] _biomeGOs;
+
         bool _completedConnection;
 
         private void Awake()
@@ -131,6 +133,14 @@ namespace World
         {
             _data.Biome = b;
             Text.text = _data.Biome.ToString();
+
+            for (int i = 0; i < _biomeGOs.Length; i++)
+            {
+                if (i == (int) b - 1)
+                {
+                    _biomeGOs[i].SetActive(true);
+                }
+            }
         }
 
         public void SetState(ENodeState s)
