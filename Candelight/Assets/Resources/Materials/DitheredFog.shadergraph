@@ -291,6 +291,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "ee7507e573064247a3fe0e4f15730a18"
+                },
+                "m_SlotId": 7
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "e0e82c3d5e0c469594792573c8f5af72"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "f1fcfb7661ab42aa8bbf5d24bdaa6afa"
                 },
                 "m_SlotId": 0
@@ -1720,7 +1734,7 @@
     "m_ObjectId": "94cea0980d884de99c74991b3b721e00",
     "m_Datas": [],
     "m_ActiveSubTarget": {
-        "m_Id": "abcf5cfefef1438a96101baa64c2522d"
+        "m_Id": "ba74f16a14544f3fb5d5cc7faa0c9993"
     },
     "m_AllowMaterialOverride": false,
     "m_SurfaceType": 0,
@@ -1950,12 +1964,6 @@
 }
 
 {
-    "m_SGVersion": 2,
-    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalUnlitSubTarget",
-    "m_ObjectId": "abcf5cfefef1438a96101baa64c2522d"
-}
-
-{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "afc2d705ef134fb4889bc74de7081dcd",
@@ -2066,6 +2074,12 @@
         "z": 0.0
     },
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalSpriteUnlitSubTarget",
+    "m_ObjectId": "ba74f16a14544f3fb5d5cc7faa0c9993"
 }
 
 {

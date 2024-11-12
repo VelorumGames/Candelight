@@ -59,13 +59,13 @@ namespace Dialogues
             {
                 switch(_currentNodeInfo.Biome)
                 {
-                    case EBiome.A:
+                    case EBiome.Durnia:
                         _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Common);
                         break;
-                    case EBiome.B:
+                    case EBiome.Temeria:
                         _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Rare);
                         break;
-                    case EBiome.C:
+                    case EBiome.Idria:
                         _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Epic);
                         break;
                     default:

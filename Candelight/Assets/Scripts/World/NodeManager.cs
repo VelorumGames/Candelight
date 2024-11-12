@@ -7,7 +7,7 @@ namespace World
 {
     public enum EBiome
     {
-        Undefined, A, B, C
+        Undefined, Durnia, Temeria, Idria
     }
     public enum ELevel
     {
@@ -55,6 +55,8 @@ namespace World
 
         public TextMeshPro Text;
         public GameObject Fog;
+
+        [SerializeField] GameObject[] _biomeGOs;
 
         bool _completedConnection;
 
@@ -131,6 +133,14 @@ namespace World
         {
             _data.Biome = b;
             Text.text = _data.Biome.ToString();
+
+            for (int i = 0; i < _biomeGOs.Length; i++)
+            {
+                if (i == (int) b - 1)
+                {
+                    _biomeGOs[i].SetActive(true);
+                }
+            }
         }
 
         public void SetState(ENodeState s)
@@ -210,11 +220,11 @@ namespace World
         {
             bool start = true;
 
-            if (_data.Biome != EBiome.A) start = false;
+            if (_data.Biome != EBiome.Durnia) start = false;
             foreach(var n in ConnectedNodes)
             {
                 Debug.Log(n.GetComponent<NodeManager>().GetNodeData().Biome);
-                if (n.GetComponent<NodeManager>().GetNodeData().Biome != EBiome.A)
+                if (n.GetComponent<NodeManager>().GetNodeData().Biome != EBiome.Durnia)
                 {
                     start = false;
                     break;
