@@ -58,7 +58,7 @@ namespace Enemy
 
         public override void RecieveDamage(float damage)
         {
-            Debug.Log($"Enemigo {gameObject.name} recibe {damage} de dano");
+            //Debug.Log($"Enemigo {gameObject.name} recibe {damage} de dano");
 
             CurrentHP -= damage;
         }
@@ -77,7 +77,7 @@ namespace Enemy
         {
             if (CanMove)
             {
-                Debug.Log($"Enemigo {gameObject.name} ataca con {Info.BaseDamage} (+ {Info.BaseDamage * (_modifier.DamageMod - 1)}) de ataque");
+                //Debug.Log($"Enemigo {gameObject.name} ataca con {Info.BaseDamage} (+ {Info.BaseDamage * (_modifier.DamageMod - 1)}) de ataque");
                 Collider[] objs = Physics.OverlapSphere(transform.position, 2f);
                 foreach (var col in objs)
                 {
@@ -92,7 +92,7 @@ namespace Enemy
 
         IEnumerator DebugAI()
         {
-            Debug.Log("Se inicia IA de prueba");
+            //Debug.Log("Se inicia IA de prueba");
             while (true)
             {
                 Vector3 target = transform.position + new Vector3(Random.Range(-2f, 2f), transform.position.y, Random.Range(-2f, 2f));
@@ -102,7 +102,7 @@ namespace Enemy
                 {
                     if (Vector3.Distance(transform.position, _player.transform.position) < 5f)
                     {
-                        Debug.Log("Enemigo va a atacar");
+                        //Debug.Log("Enemigo va a atacar");
                         yield return StartCoroutine(MoveTowards(_player.transform));
                         OnAttack();
                         yield return new WaitForSeconds(1f);

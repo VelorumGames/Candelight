@@ -69,6 +69,8 @@ namespace Player
 
         [SerializeField] UIManager _UIMan;
 
+        PlayerParticlesManager _particles;
+
         #endregion
 
         private void Awake()
@@ -77,6 +79,7 @@ namespace Player
             SceneManager.sceneUnloaded += OnSceneUnloaded;
 
             _rb = GetComponent<Rigidbody>();
+            _particles = GetComponent<PlayerParticlesManager>();
 
             _mage = FindObjectOfType<Mage>();
 
@@ -144,7 +147,14 @@ namespace Player
                 if (!_rb) _rb = GetComponent<Rigidbody>();
                 Vector3 force = (_bookIsOpen ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * _speedFactor * new Vector3(direction.x, 0f, direction.y);
                 _rb.AddForce(force, ForceMode.Force);
+
+                _particles.StartFootParticles();
             }
+        }
+
+        public void OnStopMove()
+        {
+            _particles.StopFootParticles();
         }
 
         public void OnInteract(InputAction.CallbackContext _)
@@ -182,7 +192,7 @@ namespace Player
         {
             if (CanMove)
             {
-                Orientation = new Vector3(mousePos.x / Screen.width - 0.5f, 0f, mousePos.y / Screen.height - 0.5f);
+                Orientation = new Vector3(mousePos.x / Screen.width - 0.5f, 0f, mousePos.y / Screen.height - 0.5f).normalized;
                 Debug.DrawRay(transform.position, 10f * Orientation, Color.red);
             }
         }
@@ -266,6 +276,7 @@ namespace Player
                             shapeSpell.ThrowSpell();
                             if (OnSpell != null) OnSpell(shapeSpell);
                         }
+                        else if (OnSpell != null) OnSpell(null); //Si no encuentra hechizo valido
                     }
                     else if (OnSpell != null) OnSpell(null); //Si no encuentra hechizo valido
                     ResetInstructions();

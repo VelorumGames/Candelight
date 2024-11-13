@@ -34,6 +34,8 @@ namespace Map
         RaycastHit _auxLhit;
         RaycastHit _auxRhit;
 
+        [SerializeField] GameObject _sprite;
+
         LayerMask _mask;
 
         bool _active;
@@ -111,7 +113,7 @@ namespace Map
         {
             yield return new WaitForSeconds(0.25f);
             if (_map.CanCreateRoom()) SpawnRoom();
-            else Destroy(gameObject);
+            //else Destroy(gameObject);
         }
 
 
@@ -255,10 +257,14 @@ namespace Map
             }
             positions[3] = obj.transform.position;
             line.SetPositions(positions);
-            Destroy(obj.gameObject);
-            Connected = true;
 
-            GetComponent<Collider>().enabled = false;
+            //Destroy(obj.gameObject);
+            obj.OpenAnchor();
+            //obj.GetComponent<Collider>().enabled = false;
+            
+            //GetComponent<Collider>().enabled = false;
+            OpenAnchor();
+            Connected = true;
 
             //Se bakea la imagen de la linea en una mesh
             Mesh transitionMesh = new Mesh();
@@ -488,5 +494,19 @@ namespace Map
         }
 
         #endregion
+
+        public void OpenAnchor()
+        {
+            GetComponent<Collider>().enabled = false;
+            _sprite.SetActive(false);
+
+            if (!_room.AvailableAnchors.Contains(this)) _room.AvailableAnchors.Add(this);
+        }
+
+        public void CloseAnchor()
+        {
+            GetComponent<Collider>().enabled = true;
+            _sprite.SetActive(true);
+        }
     }
 }

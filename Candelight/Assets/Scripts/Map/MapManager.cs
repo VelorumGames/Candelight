@@ -85,6 +85,10 @@ namespace Map
         public NodeInfo CurrentNodeInfo;
 
         public event System.Action OnRoomGenerationEnd;
+        public event System.Action OnCombatStart;
+        public event System.Action OnCombatEnd;
+
+        bool _inCombat;
 
         private void Awake()
         {
@@ -290,6 +294,27 @@ namespace Map
             GameObject r = _rooms[Random.Range(0, _rooms.Count)];
             if (remove) _rooms.Remove(r);
             return r;
+        }
+
+        public void StartCombat()
+        {
+            if (!_inCombat)
+            {
+                Debug.Log("EMPIEZA COMBATE");
+                if (OnCombatStart != null) OnCombatStart();
+
+                _inCombat = true;
+            }
+        }
+        public void EndCombat()
+        {
+            if (_inCombat)
+            {
+                Debug.Log("TERMINA COMBATE");
+                if (OnCombatEnd != null) OnCombatEnd();
+
+                _inCombat = false;
+            }
         }
 
         private void OnDisable()

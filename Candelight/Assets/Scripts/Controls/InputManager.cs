@@ -100,6 +100,7 @@ namespace Controls
             _levelMap = Input.FindActionMap("Level");
 
             _move = _levelMap.FindAction("Move");
+            //_move.canceled += _cont.OnStopMove;
             InputAction interact = _levelMap.FindAction("Interact");
             interact.performed += _cont.OnInteract;
             _element = _levelMap.FindAction("Element");
@@ -238,6 +239,7 @@ namespace Controls
             if (_cont)
             {
                 if (_move.IsPressed()) _cont.OnMove(_move.ReadValue<Vector2>());
+                else _cont.OnStopMove();
                 if (_choosePath.IsPressed()) _cont.OnChoosePath(_choosePath.ReadValue<Vector2>());
 
                 if (_look.enabled) _cont.OnLook(_look.ReadValue<Vector2>());

@@ -7,6 +7,9 @@ namespace Map
 {
     public class TestRoom : ARoom
     {
+        protected override void OnPlayerTrigger()
+        {
 
+        }
     }
 }

@@ -44,10 +44,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7819de4d0f60e89488127fb881ce9d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentNodeInfo: {fileID: 0}
+  CurrentNodeInfo: {fileID: 11400000, guid: 590e6fd0067b28f4e9bc3585d233a483, type: 2}
+  _ground: {fileID: 0}
   _dFog: {r: 0, g: 0, b: 0, a: 0}
-  _dFogDistance: 0
+  _dFogDistance: 20
+  _dGround: {fileID: 2100000, guid: 8ad00bf6e1388bb4e8d9032c74b4ae0e, type: 2}
+  _dConnection: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
   _tFog: {r: 0, g: 0, b: 0, a: 0}
-  _tFogDistance: 0
-  _iFog: {r: 0, g: 0, b: 0, a: 0}
-  _iFogDistance: 0
+  _tFogDistance: 25
+  _tGround: {fileID: 2100000, guid: 08384b54316ec2246b05a07bc389e16e, type: 2}
+  _tConnection: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
+  _iFog: {r: 0.39607844, g: 0.4117647, b: 0.50980395, a: 0}
+  _iFogDistance: 12
+  _iGround: {fileID: 2100000, guid: d7259ebd48478f84d931cfd06a70fcae, type: 2}
+  _iConnection: {fileID: 2100000, guid: 684e5d4f4149a8049a232ccf54115c5f, type: 2}

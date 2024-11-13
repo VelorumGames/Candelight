@@ -1730,6 +1730,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: TemeriaLargeRooms.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaSmallRooms.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: IdriaLargeRooms.Array.data[0]
       value: 
       objectReference: {fileID: 3729855312333802389, guid: c8243462fbea3b244b567e639eb55587,
@@ -1752,6 +1762,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3729855312333802389, guid: 846b9a3adf4294f4d9910d9cb905a739,
         type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaMediumRooms.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: DurniaLargeRooms.Array.data[0]
@@ -1799,6 +1814,42 @@ PrefabInstance:
       propertyPath: DurniaMediumRooms.Array.data[1]
       value: 
       objectReference: {fileID: 3729855312333802389, guid: 0d5d58f967d65e749ad2f242f0f97bc7,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaLargeRooms.Array.data[0]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 3d3e08163044bd54ea5375bf3a851661,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaLargeRooms.Array.data[1]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 596d1085b9827b44aaa635d9414a0150,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaSmallRooms.Array.data[0]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 28f3608dd2b77084d8fae86ebadee189,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaSmallRooms.Array.data[1]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: b5577167e8e0f4c4abe2cdda726c6399,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaMediumRooms.Array.data[0]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 02dce584f101ea440b7994c5ed439549,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaMediumRooms.Array.data[1]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: e7ff4a7dcf6e4b941a4ab56bbde25438,
         type: 3}
     - target: {fileID: 3307859510703695798, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -1877,72 +1928,6 @@ PrefabInstance:
       propertyPath: _ground
       value: 
       objectReference: {fileID: 137178346}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _iFog.b
-      value: 0.50980395
-      objectReference: {fileID: 0}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _iFog.g
-      value: 0.4117647
-      objectReference: {fileID: 0}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _iFog.r
-      value: 0.39607844
-      objectReference: {fileID: 0}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _dGround
-      value: 
-      objectReference: {fileID: 2100000, guid: 8ad00bf6e1388bb4e8d9032c74b4ae0e, type: 2}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _iGround
-      value: 
-      objectReference: {fileID: 2100000, guid: d7259ebd48478f84d931cfd06a70fcae, type: 2}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _tGround
-      value: 
-      objectReference: {fileID: 2100000, guid: 08384b54316ec2246b05a07bc389e16e, type: 2}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _dConnection
-      value: 
-      objectReference: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _iConnection
-      value: 
-      objectReference: {fileID: 2100000, guid: 684e5d4f4149a8049a232ccf54115c5f, type: 2}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _tConnection
-      value: 
-      objectReference: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _dFogDistance
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _iFogDistance
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _tFogDistance
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: CurrentNodeInfo
-      value: 
-      objectReference: {fileID: 11400000, guid: 590e6fd0067b28f4e9bc3585d233a483,
-        type: 2}
     - target: {fileID: 7150414812206426676, guid: 8a442ddb609d2e94b9c61b92fa386445,
         type: 3}
       propertyPath: m_LocalPosition.x

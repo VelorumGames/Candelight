@@ -10,7 +10,9 @@ namespace Map
 {
     public class SimpleRoomManager : MonoBehaviour
     {
-        public GameObject[] Rooms;
+        public GameObject[] DurniaRooms;
+        public GameObject[] TemeriaRooms;
+        public GameObject[] IdriaRooms;
         GameObject _currentRoom;
         GameObject _player;
         [SerializeField] GameObject _endTorch;
@@ -31,7 +33,23 @@ namespace Map
 
         void SpawnRoom()
         {
-            _currentRoom = Instantiate(Rooms[Random.Range(0, Rooms.Length)]);
+            switch(CurrentNodeInfo.Biome)
+            {
+                case EBiome.Durnia:
+                    _currentRoom = Instantiate(DurniaRooms[Random.Range(0, DurniaRooms.Length)]);
+                    break;
+                case EBiome.Temeria:
+                    _currentRoom = Instantiate(TemeriaRooms[Random.Range(0, TemeriaRooms.Length)]);
+                    break;
+                case EBiome.Idria:
+                    _currentRoom = Instantiate(IdriaRooms[Random.Range(0, IdriaRooms.Length)]);
+                    break;
+                default:
+                    Debug.LogWarning("ERROR: No se ha registrado bien el bioma. Se defaultea a Durnia.");
+                    _currentRoom = Instantiate(DurniaRooms[Random.Range(0, DurniaRooms.Length)]);
+                    break;
+            }
+            
             _player.transform.position = _currentRoom.GetComponent<ASimpleRoom>().GetPlayerStart().position;
         }
 

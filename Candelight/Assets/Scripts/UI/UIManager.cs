@@ -100,24 +100,30 @@ namespace UI
 
         public void FadeToBlack(float duration)
         {
-            FadeImage.DOColor(Color.black, duration);
+            if (FadeImage != null) FadeImage.DOColor(Color.black, duration);
         }
 
-        public void FadeFromBlack(float duration)
+        public void FadeFromBlack(float duration) //Esto puede lanzar excepcion si el jugador cambia de escena demasiado rapido. Por ahora el safe mode lo mantiene a raya, pero hay que solucionarlo
         {
-            FadeImage.color = new Color(0f, 0f, 0f, 1f);
-            FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play();
+            if (FadeImage != null)
+            {
+                FadeImage.color = new Color(0f, 0f, 0f, 1f);
+                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play();
+            }
         }
 
         public void FadeToWhite(float duration)
         {
-            FadeImage.DOColor(Color.white, duration);
+            if (FadeImage != null) FadeImage.DOColor(Color.white, duration);
         }
 
         public void FadeFromWhite(float duration)
         {
-            FadeImage.color = new Color(1f, 1f, 1f, 1f);
-            FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration);
+            if (FadeImage != null)
+            {
+                FadeImage.color = new Color(1f, 1f, 1f, 1f);
+                FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration);
+            }
         }
 
         public void RegisterMinimapRoom(int id, Vector2 offset, ERoomType type) => _minimap.RegisterMinimapRoom(id, offset, type);

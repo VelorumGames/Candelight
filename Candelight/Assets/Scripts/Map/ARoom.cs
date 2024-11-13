@@ -26,35 +26,19 @@ namespace Map
 
         [SerializeField] Transform _runeTransform;
         [SerializeField] Transform[] _spawnPoints;
-        [SerializeField] EnemyController[] _enemies;
-        int m_deaths;
-        int _enemyDeaths
-        {
-            get => m_deaths;
-            set
-            {
-                m_deaths = value;
-                if (m_deaths == _enemies.Length) BlockRoom(false);
-            }
-        }
 
         Vector2 _minimapOffset;
+
+        public List<AnchorManager> AvailableAnchors = new List<AnchorManager>();
 
         private void Awake()
         {
             _uiMan = FindObjectOfType<UIManager>();
         }
 
-        private void Start()
+        protected void Start()
         {
-            if (_enemies.Length > 0)
-            {
-                BlockRoom(true);
-                foreach (var e in _enemies)
-                {
-                    e.OnDeath += RegisterEnemyDeath;
-                }
-            }
+            
         }
 
         public int GetID() => ID;
@@ -77,23 +61,6 @@ namespace Map
 
         public Transform GetRandomSpawnPoint() => _spawnPoints[Random.Range(0, _spawnPoints.Length)];
 
-        void RegisterEnemyDeath(AController cont)
-        {
-            _enemyDeaths++;
-        }
-
-        void BlockRoom(bool b)
-        {
-            if (b) //Bloquear salidas
-            {
-                Debug.Log("Se bloquearian las salidas");
-            }
-            else //Desbloquear salidas
-            {
-                Debug.Log("Se desbloquearian las salidas");
-            }
-        }
-
         public void SetMinimapOffset(Vector2 offset) => _minimapOffset = offset;
         public Vector2 GetMinimapOffset() => _minimapOffset;
 
@@ -102,7 +69,10 @@ namespace Map
             if (other.CompareTag("Player"))
             {
                 _uiMan.ShowMinimapRoom(ID);
+                OnPlayerTrigger();
             }
         }
+
+        protected abstract void OnPlayerTrigger();
     }
 }
