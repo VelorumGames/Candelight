@@ -37,21 +37,18 @@ namespace Items
         public Vector3 Position; //(-210f, 100f, 0f);
         public Vector3 Offset;
 
-        private void Awake()
+        private void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
+        }
 
+        private void Awake()
+        {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
             DontDestroyOnLoad(gameObject);
-        }
-
-        private void Start()
-        {
-            //DEBUG
-            //AddItem(GetRandomItem(EItemCategory.Epic));
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
@@ -174,7 +171,8 @@ namespace Items
 
         private void OnDisable()
         {
-            
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
     }
 

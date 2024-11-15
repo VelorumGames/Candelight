@@ -1,5 +1,6 @@
 using Enemy;
 using Map;
+using Music;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,11 +21,6 @@ public class EnemyRoom : ARoom
         }
     }
 
-    protected new void Start()
-    {
-        base.Start();
-    }
-
     private void OnEnable()
     {
         EnemyController[] enemies = GetComponentsInChildren<EnemyController>();
@@ -37,8 +33,11 @@ public class EnemyRoom : ARoom
 
     protected override void OnPlayerTrigger()
     {
-        FindObjectOfType<MapManager>().StartCombat();
-        Invoke("CloseAllAnchors", 1f);
+        if (_enemyCount > 0)
+        {
+            FindObjectOfType<MapManager>().StartCombat();
+            Invoke("CloseAllAnchors", 1f);
+        }
     }
 
     void EndCombat()
@@ -57,6 +56,7 @@ public class EnemyRoom : ARoom
 
     void OpenAllAnchors()
     {
+        Debug.Log($"Se abriran {AvailableAnchors.Count} anchors");
         foreach (var anchor in AvailableAnchors)
         {
             anchor.OpenAnchor();

@@ -13,6 +13,7 @@ namespace World
         public int CompletedNodes;
         public float NodeCandleFactor = 1f;
 
+        public float MAX_CANDLE = 100f;
         [SerializeField] float m_candle;
         public float Candle
         {

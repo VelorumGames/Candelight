@@ -73,11 +73,14 @@ namespace Player
 
         #endregion
 
-        private void Awake()
+        private void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
+        }
 
+        private void Awake()
+        {
             _rb = GetComponent<Rigidbody>();
             _particles = GetComponent<PlayerParticlesManager>();
 
@@ -91,16 +94,6 @@ namespace Player
             base.Start();
 
             _rb.maxLinearVelocity = _maxSpeed;            
-        }
-
-        private void OnEnable()
-        {
-            //_UIMan = FindObjectOfType<UIManager>();
-            //
-            //OnNewInstruction += _UIMan.ShowNewInstruction;
-            //OnSpell += _UIMan.ShowValidSpell;
-            //OnElements += _UIMan.ShowValidElements;
-            //World.OnCandleChanged += _UIMan.RegisterCandle;
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
@@ -121,6 +114,9 @@ namespace Player
 
         void OnSceneUnloaded(Scene scene)
         {
+            UnloadInteraction();
+            _pathShower.SetActive(false);
+
             OnNewInstruction -= _UIMan.ShowNewInstruction;
             OnSpell -= _UIMan.ShowValidSpell;
             OnElements -= _UIMan.ShowValidElements;
@@ -391,9 +387,13 @@ namespace Player
         #region Item Modifiers
 
         public void SetCandleFactor(float f) => _candleFactor = f;
+        public void AddCandleFactor(float f) => _candleFactor += f;
+        public void RemoveCandleFactor(float f) => _candleFactor -= f;
         public float GetCandleFactor() => _candleFactor;
 
         public void SetSpeedFactor(float s) => _speedFactor = s;
+        public void AddSpeedFactor(float s) => _speedFactor += s;
+        public void RemoveSpeedFactor(float s) => _speedFactor -= s;
         public float GetSpeedFactor() => _speedFactor;
 
         #endregion
@@ -405,10 +405,8 @@ namespace Player
 
         private void OnDisable()
         {
-            //OnNewInstruction -= _UIMan.ShowNewInstruction;
-            //OnSpell -= _UIMan.ShowValidSpell;
-            //OnElements -= _UIMan.ShowValidElements;
-            //World.OnCandleChanged -= _UIMan.RegisterCandle;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
     }
 }

@@ -48,6 +48,8 @@ namespace Hechizos.Elementales
 
         public float GetDamage() => Damage * DamageFactor;
         public float SetDamageFactor(float factor) => DamageFactor = factor;
+        public float AddDamageFactor(float factor) => DamageFactor += factor;
+        public float RemoveDamageFactor(float factor) => DamageFactor -= factor;
 
     }
 

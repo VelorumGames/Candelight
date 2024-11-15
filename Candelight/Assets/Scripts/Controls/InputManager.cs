@@ -54,12 +54,17 @@ namespace Controls
 
         float _spellTimeScale = 0.75f;
 
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
+        }
+
         private void Awake()
         {
             //if (Instance != null) Destroy(gameObject);
             //else Instance = this;
-            SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.sceneUnloaded += OnSceneUnloaded;
+            
 
             DontDestroyOnLoad(gameObject);
 
@@ -187,51 +192,8 @@ namespace Controls
 
         private void OnDisable()
         {
-            //_currentMap.Disable();
-            //
-            //if (_cont)
-            //{
-            //    InputAction interact = _levelMap.FindAction("Interact");
-            //    interact.performed -= _cont.OnInteract;
-            //    _element.performed -= StartElementMode;
-            //    _element.canceled -= StopElementMode;
-            //    _spell.performed -= StartSpellMode;
-            //    _spell.canceled -= StopSpellMode;
-            //    InputAction spellUp = _levelMap.FindAction("SpellUp");
-            //    spellUp.performed -= RegisterSpellUp;
-            //    InputAction spellDown = _levelMap.FindAction("SpellDown");
-            //    spellDown.performed -= RegisterSpellDown;
-            //    InputAction spellRight = _levelMap.FindAction("SpellRight");
-            //    spellRight.performed -= RegisterSpellRight;
-            //    InputAction spellLeft = _levelMap.FindAction("SpellLeft");
-            //    spellLeft.performed -= RegisterSpellLeft;
-            //    InputAction book = _levelMap.FindAction("Book");
-            //    book.performed -= _cont.OnBook;
-            //    InputAction levelPause = _levelMap.FindAction("Pause");
-            //    levelPause.performed -= _cont.OnPause;
-            //    InputAction inventory = _levelMap.FindAction("Inventory");
-            //    inventory.performed -= _cont.OnInventory;
-            //    _move.Disable();
-            //
-            //    InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
-            //    confirmPath.performed -= _cont.OnConfirmPath;
-            //    InputAction worldInteract = _worldMap.FindAction("Interact");
-            //    worldInteract.performed -= _cont.OnInteract;
-            //    InputAction worldPause = _worldMap.FindAction("Pause");
-            //    worldPause.performed -= _cont.OnPause;
-            //    InputAction worldInventory = _worldMap.FindAction("Inventory");
-            //    worldInventory.performed -= _cont.OnInventory;
-            //    _choosePath.Disable();
-            //
-            //    InputAction next = _dialogueMap.FindAction("Next");
-            //    next.performed -= NextDialogueBlock;
-            //    InputAction dialoguePause = _dialogueMap.FindAction("Pause");
-            //    dialoguePause.performed -= _cont.OnPause;
-            //}
-            //else Debug.LogWarning("ERROR: No se han borrado efectivamente todas las subscripciones, solo las de UI");
-            //
-            //InputAction back = _uiMap.FindAction("Back");
-            //back.performed -= UIManager.Instance.OnUIBack;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
 
         private void FixedUpdate()

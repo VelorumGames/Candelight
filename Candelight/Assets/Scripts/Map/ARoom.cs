@@ -31,7 +31,7 @@ namespace Map
 
         public List<AnchorManager> AvailableAnchors = new List<AnchorManager>();
 
-        private void Awake()
+        protected void Awake()
         {
             _uiMan = FindObjectOfType<UIManager>();
         }

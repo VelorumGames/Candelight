@@ -30,17 +30,19 @@ namespace Hechizos
 
         List<EElements> _trailElements = new List<EElements>();
 
+        private void OnEnable()
+        {
+            _cont = FindObjectOfType<PlayerController>();
+        }
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
             ARune.RegisterMage(this);
-        }
 
-        private void OnEnable()
-        {
-            _cont = FindObjectOfType<PlayerController>();
+            DontDestroyOnLoad(gameObject);
         }
 
         #region Active Elements

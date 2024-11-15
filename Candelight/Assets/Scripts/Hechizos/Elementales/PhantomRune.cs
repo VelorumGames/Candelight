@@ -8,6 +8,8 @@ namespace Hechizos.Elementales
 {
     public class PhantomRune : AElementalRune
     {
+        int _maxSpellsOnExplosion = 5;
+
         public PhantomRune(Mage m) : base(m)
         {
             Name = "Phantom";
@@ -59,7 +61,7 @@ namespace Hechizos.Elementales
         //Explosion fantasmal
         public override void ExplosionActivation(Transform target)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < _maxSpellsOnExplosion; i++)
             {
                 GameObject projGO = MageManager.SpawnProjectileWithRandomDirection();
                 ProjectileStart(target);
@@ -85,6 +87,11 @@ namespace Hechizos.Elementales
         {
 
         }
+
+        public void SetMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion = n;
+        public void AddMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion += n;
+        public void RemoveMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion -= n;
+        public int GetMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion;
 
     }
 }

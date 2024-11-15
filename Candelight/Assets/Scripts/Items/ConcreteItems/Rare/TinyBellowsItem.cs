@@ -22,8 +22,8 @@ namespace Items.ConcreteItems
                 _buff = rune as BuffRune;
                 if (_buff != null)
                 {
-                    _buff.SetNewFactor(_buff.GetNewFactor() * 1.1f);
-                    _cont.SetCandleFactor(_cont.GetCandleFactor() * 1.1f);
+                    _buff.AddNewFactor(_buff.GetNewFactor() * 1.1f);
+                    _cont.AddCandleFactor(_cont.GetCandleFactor() * 1.1f);
                 }
                 else Debug.LogWarning("ERROR: No se ha podido aplicar TinyBellows porque el casteo a BuffRune no ha sido exitoso o no se ha encontrado en el diccionario de runas");
             }
@@ -33,8 +33,8 @@ namespace Items.ConcreteItems
         {
             if (_buff != null)
             {
-                _buff.SetNewFactor(_buff.GetNewFactor() / 1.1f);
-                _cont.SetCandleFactor(_cont.GetCandleFactor() / 1.1f);
+                _buff.RemoveNewFactor(_buff.GetNewFactor() * 1.1f);
+                _cont.RemoveCandleFactor(_cont.GetCandleFactor() * 1.1f);
             }
             else Debug.LogWarning("ERROR: No se ha encontrado BuffRune");
         }

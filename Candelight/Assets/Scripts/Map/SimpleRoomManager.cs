@@ -79,7 +79,8 @@ namespace Map
             else //Si es el ultimo nivel
             {
                 //Se vuelve al mapa del mundo
-                SceneManager.LoadScene("NodeEndScene");
+                SceneManager.LoadScene("WorldScene");
+                CurrentNodeInfo.Node.RegisterCompletedNode();
             }
         }
     }

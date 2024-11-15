@@ -6,6 +6,9 @@ namespace Map
 {
     public class EndRoom : ASimpleRoom
     {
-        
+        private void Start()
+        {
+            FindObjectOfType<SimpleRoomManager>().PlaceTorch(GetRandomSpawn());
+        }
     }
 }

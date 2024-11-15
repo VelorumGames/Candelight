@@ -20,6 +20,8 @@ namespace Hechizos
         public static AElementalRune[] ActiveElements;
         public static Mage MageManager;
 
+        static bool _extraElement;
+
         public ARune(Mage m, int Complexity, float Difficulty)
         {
             MageManager = m;
@@ -50,6 +52,12 @@ namespace Hechizos
             else return chain;
         }
 
+        /// <summary>
+        /// Encuentra cualquier hechizo en base a su nombre
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="spell"></param>
+        /// <returns></returns>
         public static bool FindSpell(string name, out ARune spell)
         {
             spell = null;
@@ -66,7 +74,7 @@ namespace Hechizos
         }
 
         /// <summary>
-        /// Encuentra un hechizo en base a una cadena de instrucciones
+        /// Encuentra un hechizo (previamente activado) en base a una cadena de instrucciones
         /// </summary>
         /// <param name="chain"></param>
         /// <param name="spell"></param>
@@ -132,7 +140,7 @@ namespace Hechizos
         public static bool FindElements(ESpellInstruction[] chain, out AElementalRune[] elements)
         {
             int found = 0;
-            int num = chain.Length / 2;  //2 Es la complejidad de cada elemento
+            int num = System.Math.Clamp(chain.Length / 2, 0, _extraElement ? 3 : 2);  //2 Es la complejidad de cada elemento
             Debug.Log($"Deberia haber {num} elementos en esta cadena: " + InstructionsToString(chain));
             elements = new AElementalRune[num];
 
@@ -243,5 +251,7 @@ namespace Hechizos
             }
             return false;
         }
+
+        public void SetExtraElement(bool b) => _extraElement = b;
     }
 }
