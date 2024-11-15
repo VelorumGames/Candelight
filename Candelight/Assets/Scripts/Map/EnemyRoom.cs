@@ -1,6 +1,7 @@
 using Enemy;
 using Map;
 using Music;
+using SpellInteractuable;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,6 +52,7 @@ public class EnemyRoom : ARoom
         foreach (var anchor in AvailableAnchors)
         {
             anchor.CloseAnchor();
+            anchor.GetComponent<SI_AnchorBarrier>().Activate(true);
         }
     }
 
@@ -60,6 +62,7 @@ public class EnemyRoom : ARoom
         foreach (var anchor in AvailableAnchors)
         {
             anchor.OpenAnchor();
+            anchor.GetComponent<SI_AnchorBarrier>().Activate(false);
         }
     }
 

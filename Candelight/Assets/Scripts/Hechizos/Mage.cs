@@ -22,11 +22,12 @@ namespace Hechizos
         public GameObject[] Projectiles;
         GameObject _lastProjectile;
         [SerializeField] float _projectileSpeed;
+        [SerializeField] float _projectileSpeedFactor = 1f;
         public GameObject Explosion;
         public GameObject Melee;
 
         int _numProjectiles = 1;
-        int _extraParallelProjectiles = 1;
+        bool _extraProjs;
 
         List<EElements> _trailElements = new List<EElements>();
 
@@ -134,12 +135,7 @@ namespace Hechizos
         {
             Debug.Log("Se instancia proyectil");
 
-            _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
-            _lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
-            while (_lastProjectile.activeInHierarchy)
-            {
-                _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
-            }
+            _lastProjectile = GetAvailableProjectile();
 
             StartCoroutine(DelayedProjectile(numProj * 0.5f)); //NumProj es el numero del proyectil
 
@@ -149,17 +145,60 @@ namespace Hechizos
         IEnumerator DelayedProjectile(float time)
         {
             yield return new WaitForSeconds(time);
-            _lastProjectile.SetActive(true);
             
-            foreach(var trailEl in _trailElements)
+            if (_extraProjs) //Si se lanzan tres
             {
-                if (IsElementActive(trailEl)) _lastProjectile.GetComponent<Projectile>().ShowTrail(trailEl);
+                GameObject[] projs = new GameObject[3];
+                projs[0] = _lastProjectile;
+                projs[1] = GetAvailableProjectile();
+                projs[2] = GetAvailableProjectile();
+
+                int count = 0;
+                foreach(var proj in projs)
+                {
+                    proj.SetActive(true);
+
+                    foreach (var trailEl in _trailElements)
+                    {
+                        if (IsElementActive(trailEl)) proj.GetComponent<Projectile>().ShowTrail(trailEl);
+                    }
+
+                    proj.transform.position = _cont.transform.position;
+                    Vector3 orientation = _cont.GetOrientation();
+                    if (count == 0) orientation = Quaternion.AngleAxis(30f, Vector3.up) * orientation;
+                    else if (count == 1) orientation = Quaternion.AngleAxis(-30f, Vector3.up) * orientation;
+                    proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * orientation.normalized, ForceMode.Impulse);
+
+                    count++;
+                    yield return null;
+                }
             }
+            else //Si solo se lanza un proyectil
+            {
+                _lastProjectile.SetActive(true);
 
-            _lastProjectile.transform.position = _cont.transform.position;
-            _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _cont.GetOrientation(), ForceMode.Impulse);
+                foreach (var trailEl in _trailElements)
+                {
+                    if (IsElementActive(trailEl)) _lastProjectile.GetComponent<Projectile>().ShowTrail(trailEl);
+                }
 
-            yield return null;
+                _lastProjectile.transform.position = _cont.transform.position;
+                _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
+
+                yield return null;
+            }
+        }
+
+        GameObject GetAvailableProjectile()
+        {
+            GameObject proj = null;
+            proj = Projectiles[Random.Range(0, Projectiles.Length)];
+            proj.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
+            while (proj.activeInHierarchy)
+            {
+                proj = Projectiles[Random.Range(0, Projectiles.Length)];
+            }
+            return proj;
         }
 
         public GameObject SpawnProjectileWithRandomDirection()
@@ -243,8 +282,7 @@ namespace Hechizos
 
         public int GetNumSpells() => _numProjectiles;
 
-        public void AddExtraParallelSpellThrow(int num) => _extraParallelProjectiles += num;
-        public void ResetExtraParallelSpellThrows() => _extraParallelProjectiles = 1;
+        public void SetExtraProjectiles(bool b) => _extraProjs = b;
 
         public void ShowTrail(EElements elem)
         {
@@ -279,6 +317,13 @@ namespace Hechizos
             }
 
             return false;
+        }
+
+        public void SetExtraProjSpeed(float speed) => _projectileSpeedFactor = speed;
+
+        public void ManageBuffReset(IEnumerator func)
+        {
+            StartCoroutine(func);
         }
     }
 }

@@ -252,6 +252,6 @@ namespace Hechizos
             return false;
         }
 
-        public void SetExtraElement(bool b) => _extraElement = b;
+        public static void SetExtraElement(bool b) => _extraElement = b;
     }
 }

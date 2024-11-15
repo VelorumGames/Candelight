@@ -57,10 +57,12 @@ namespace Player
         Mage _mage;
 
         float _candleFactor = 1f;
+        int _extraLives;
 
         Action _interaction;
 
         bool _bookIsOpen;
+        bool _instrInBook;
         [SerializeField] BookManager _book;
 
         public event Action<ESpellInstruction> OnNewInstruction;
@@ -127,9 +129,15 @@ namespace Player
         {
             Debug.Log($"Jugador recibe {damage} de dano -> Se restan {damage * _candleFactor} puntos a la vela");
 
-            World.Candle -= damage * _candleFactor;
+            float finalHealth = World.Candle - damage * _candleFactor;
 
-            //CurrentHP -= damage;
+            if (finalHealth <= 0 && _extraLives > 0) //Se revive al jugador si tiene vidas extras y va a morir
+            {
+                _extraLives--;
+                finalHealth = 0.25f * World.MAX_CANDLE;
+            }
+
+            World.Candle = finalHealth;
         }
 
         #region Actions
@@ -206,20 +214,26 @@ namespace Player
 
                 if (_bookIsOpen)
                 {
-                    switch (instr)
+                    if (_instrInBook) //Para que haya un delay y el jugador no spamee
                     {
-                        case ESpellInstruction.Up:
-                            _book.AddNewString("W");
-                            break;
-                        case ESpellInstruction.Down:
-                            _book.AddNewString("S");
-                            break;
-                        case ESpellInstruction.Right:
-                            _book.AddNewString("D");
-                            break;
-                        case ESpellInstruction.Left:
-                            _book.AddNewString("A");
-                            break;
+                        switch (instr)
+                        {
+                            case ESpellInstruction.Up:
+                                _book.AddNewString("W");
+                                break;
+                            case ESpellInstruction.Down:
+                                _book.AddNewString("S");
+                                break;
+                            case ESpellInstruction.Right:
+                                _book.AddNewString("D");
+                                break;
+                            case ESpellInstruction.Left:
+                                _book.AddNewString("A");
+                                break;
+                        }
+
+                        _instrInBook = false;
+                        Invoke("ResetBookInstructionTimer", 1f);
                     }
                 }
                 else
@@ -228,6 +242,8 @@ namespace Player
                 }
             }
         }
+
+        public void ResetBookInstructionTimer() => _instrInBook = true;
 
         public void OnChooseElements()
         {
@@ -395,6 +411,8 @@ namespace Player
         public void AddSpeedFactor(float s) => _speedFactor += s;
         public void RemoveSpeedFactor(float s) => _speedFactor -= s;
         public float GetSpeedFactor() => _speedFactor;
+
+        public void AddExtraLife(int n) => _extraLives += n;
 
         #endregion
 

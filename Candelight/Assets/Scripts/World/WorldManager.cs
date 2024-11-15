@@ -27,6 +27,14 @@ namespace World
         [SerializeField] Vector2 _spawnRange;
         [SerializeField] float _minDistBetweenNodes;
 
+        [Space(10)]
+        public string[] DurniaNodeNames;
+        public string[] TemeriaNodeNames;
+        public string[] IdriaNodeNames;
+        public string[] DurniaNodeDescriptions;
+        public string[] TemeriaNodeDescriptions;
+        public string[] IdriaNodeDescriptions;
+
         [Space(20)]
         [Header("===BIOME GENERATION===")]
         [Space(10)]
@@ -229,6 +237,52 @@ namespace World
                     SceneManager.LoadScene("ChallengeScene");
                     break;
             }
+        }
+
+        public string[] GetRandomNames(EBiome biome)
+        {
+            string[] result = new string[2];
+
+            string[] names;
+            string[] descs;
+
+            switch (biome)
+            {
+                case EBiome.Durnia:
+                    names = DurniaNodeNames;
+                    descs = DurniaNodeDescriptions;
+                    break;
+                case EBiome.Temeria:
+                    names = TemeriaNodeNames;
+                    descs = TemeriaNodeDescriptions;
+                    break;
+                case EBiome.Idria:
+                    names = IdriaNodeNames;
+                    descs = IdriaNodeDescriptions;
+                    break;
+                default:
+                    names = DurniaNodeNames;
+                    descs = DurniaNodeDescriptions;
+                    break;
+
+            }
+
+            int id = Random.Range(0, names.Length);
+            result[0] = names[id];
+
+            int timeout = 50;
+            while (result[0] == "TAKEN")
+            {
+                id = Random.Range(0, names.Length);
+                result[0] = names[id];
+
+                if (timeout-- <= 0) break;
+            }
+            names[id] = "TAKEN";
+
+            result[1] = descs[id]; 
+
+            return result;
         }
     }
 }

@@ -33,6 +33,8 @@ namespace World
 
     public struct NodeData
     {
+        public string Name;
+        public string Description;
         public int NumLevels; //Numero de niveles en cada nodo
         public int[] SeedExtra; //Para cada nivel se genera una seed extra (basada en la seed actual). Esta sera la seed en la que se base el nivel concreto para su generacion
         public ELevel[] LevelTypes;

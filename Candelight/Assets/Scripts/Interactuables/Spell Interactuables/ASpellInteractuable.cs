@@ -8,6 +8,7 @@ namespace SpellInteractuable
     public abstract class ASpellInteractuable : MonoBehaviour
     {
         [SerializeField] protected EElements Element;
+        [SerializeField] protected bool IgnoreElements;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -15,7 +16,7 @@ namespace SpellInteractuable
             {
                 foreach (var elem in scriptSpell.Elements)
                 {
-                    if (elem.Name == Element.ToString())
+                    if (elem.Name == Element.ToString() || IgnoreElements)
                     {
                         ApplyInteraction(scriptSpell);
                         return;

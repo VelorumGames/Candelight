@@ -11,6 +11,9 @@ namespace Hechizos.Elementales
         protected float DamageFactor = 1f;
         Action<Transform>[] _actions = new Action<Transform>[9]; //Porque son 9 funciones
 
+        protected float _buffedSpeed = 1f;
+        protected float _buffDuration = 10f;
+
         public AElementalRune(Mage m) : base(m, 2, 1f)
         {
             _actions[0] = ProjectileStart;
@@ -45,12 +48,17 @@ namespace Hechizos.Elementales
 
         //Potenciador
         public abstract void BuffActivation(Transform target);
+        public abstract IEnumerator BuffReset(Transform target);
 
         public float GetDamage() => Damage * DamageFactor;
         public float SetDamageFactor(float factor) => DamageFactor = factor;
         public float AddDamageFactor(float factor) => DamageFactor += factor;
         public float RemoveDamageFactor(float factor) => DamageFactor -= factor;
 
+        public void SetBuffProjSpeed(float extraSpeed) => _buffedSpeed = extraSpeed;
+        public void AddBuffProjSpeed(float extraSpeed) => _buffedSpeed += extraSpeed;
+        public void RemoveBuffProjSpeed(float extraSpeed) => _buffedSpeed -= extraSpeed;
+        public float GetBuffProjSpeed(float extraSpeed) => _buffedSpeed;
     }
 
 }

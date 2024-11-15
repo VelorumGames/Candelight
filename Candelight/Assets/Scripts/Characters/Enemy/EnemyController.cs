@@ -42,7 +42,7 @@ namespace Enemy
 
         public void SpawnFragments(AController _)
         {
-            Inventory.Instance.SpawnFragments(Random.Range(Info.MinFragments, Info.MaxFragments), _fragDropRate * _modifier.FragDropMod, transform);
+            FindObjectOfType<Inventory>().SpawnFragments(Random.Range(Info.MinFragments, Info.MaxFragments), _fragDropRate * _modifier.FragDropMod, transform);
 
             //int num = Random.Range(Info.MinFragments, Info.MaxFragments);
             //Debug.Log($"{gameObject.name} suelta {num} fragmentos");

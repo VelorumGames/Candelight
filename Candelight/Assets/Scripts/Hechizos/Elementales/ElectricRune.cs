@@ -68,7 +68,18 @@ namespace Hechizos.Elementales
         {
 
         }
+        public override IEnumerator BuffReset(Transform target)
+        {
+            yield return new WaitForSeconds(_buffDuration);
+        }
 
+        public void ConstantBuff()
+        {
+
+        }
+        public void ConstantBuffReset()
+        {
+
+        }
     }
-
 }
