@@ -7,6 +7,8 @@ using System.Data;
 using Player;
 using UI;
 using SpellInteractuable;
+using Cameras;
+using UnityEngine.SceneManagement;
 
 namespace Hechizos
 {
@@ -18,6 +20,7 @@ namespace Hechizos
         static List<AElementalRune> _activeElements = new List<AElementalRune>(); // Propiedad que mantiene el elemento activo (o plural) del mago
 
         PlayerController _cont;
+        CameraManager _cam;
 
         public GameObject[] Projectiles;
         GameObject _lastProjectile;
@@ -34,6 +37,9 @@ namespace Hechizos
         private void OnEnable()
         {
             _cont = FindObjectOfType<PlayerController>();
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
         private void Awake()
@@ -44,6 +50,16 @@ namespace Hechizos
             ARune.RegisterMage(this);
 
             DontDestroyOnLoad(gameObject);
+        }
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            _cam = FindObjectOfType<CameraManager>();
+        }
+
+        void OnSceneUnloaded(Scene scene)
+        {
+
         }
 
         #region Active Elements
@@ -172,6 +188,9 @@ namespace Hechizos
                     count++;
                     yield return null;
                 }
+
+                _cam.Shake(10f, 0.2f, 0.5f);
+                yield return null;
             }
             else //Si solo se lanza un proyectil
             {
@@ -184,6 +203,8 @@ namespace Hechizos
 
                 _lastProjectile.transform.position = _cont.transform.position;
                 _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
+
+                _cam.Shake(6f, 0.1f, 0.4f);
 
                 yield return null;
             }
@@ -214,6 +235,8 @@ namespace Hechizos
             _lastProjectile.transform.position = _cont.transform.position;
             _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)), ForceMode.Impulse);
 
+            _cam.Shake(5f, 0.4f, 0.5f);
+
             return _lastProjectile;
         }
 
@@ -222,7 +245,11 @@ namespace Hechizos
         public GameObject SpawnExplosion()
         {
             GameObject expl = Instantiate(Explosion);
+            expl.GetComponent<Explosion>().RegisterTypes(_activeElements.ToArray());
             expl.transform.position = _cont.transform.position;
+
+            _cam.Shake(10f, 0.2f, 1f);
+
             return expl;
         }
 
@@ -230,6 +257,9 @@ namespace Hechizos
         {
             GameObject mel = Instantiate(Melee);
             mel.transform.position = _cont.transform.position;
+
+            _cam.Shake(2f, 0.1f, 0.3f);
+
             return mel;
         }
 
@@ -324,6 +354,12 @@ namespace Hechizos
         public void ManageBuffReset(IEnumerator func)
         {
             StartCoroutine(func);
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
     }
 }
