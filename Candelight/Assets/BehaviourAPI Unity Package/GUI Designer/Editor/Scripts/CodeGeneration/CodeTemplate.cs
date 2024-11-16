@@ -235,7 +235,7 @@ namespace BehaviourAPI.UnityToolkit.GUIDesigner.Editor.CodeGenerator
 
                     var agentId = GetOrCreateLocalComponentReference(typeof(SmartAgent));
                     statements.Add(new CodeCustomStatement($"{identifier}.agent = {agentId};"));
- 
+
                     var fields = type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.FlattenHierarchy);
                     foreach (var field in fields)
                     {
@@ -316,8 +316,8 @@ namespace BehaviourAPI.UnityToolkit.GUIDesigner.Editor.CodeGenerator
                     var statement = new CodeVariableDeclarationStatement(typeof(ConditionPerception), identifier);
                     var expression = new CodeObjectCreationExpression(typeof(ConditionPerception));
                     statement.RightExpression = expression;
-                    statements.Add(statement);    
-                        
+                    statements.Add(statement);
+
                     CodeExpression startMethodArg = GenerateMethodCodeExpression(custom.init, null);
                     CodeExpression updateMethodArg = GenerateMethodCodeExpression(custom.check, null, typeof(bool));
                     CodeExpression stopMethodArg = GenerateMethodCodeExpression(custom.reset, null);
@@ -535,7 +535,7 @@ namespace BehaviourAPI.UnityToolkit.GUIDesigner.Editor.CodeGenerator
 
             codeWriter.IdentationLevel++;
 
-            m_CodeGraphStatements.ForEach(c => c.GenerateCode(codeWriter, options));               
+            m_CodeGraphStatements.ForEach(c => c.GenerateCode(codeWriter, options));
             codeWriter.AppendLine("");
             m_CodeNodeStatementList.ForEach(c => c.GenerateCode(codeWriter, options));
 
@@ -613,7 +613,7 @@ namespace BehaviourAPI.UnityToolkit.GUIDesigner.Editor.CodeGenerator
 
         private string GetOrCreateLocalComponentReference(Type componentType)
         {
-            if(m_ComponentReferenceIdentifierMap.TryGetValue(componentType, out var componentReference))
+            if (m_ComponentReferenceIdentifierMap.TryGetValue(componentType, out var componentReference))
             {
                 return componentReference;
             }
@@ -702,7 +702,7 @@ namespace BehaviourAPI.UnityToolkit.GUIDesigner.Editor.CodeGenerator
                 }
             }
 
-            if(m_FieldIdentifierMap.TryGetValue(obj, out string id))
+            if (m_FieldIdentifierMap.TryGetValue(obj, out string id))
             {
                 return new CodeCustomExpression(id);
             }
