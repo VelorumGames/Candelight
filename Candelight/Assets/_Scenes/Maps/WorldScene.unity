@@ -2642,8 +2642,53 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
+      propertyPath: IdriaNodeNames.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: DurniaNodeNames.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
       propertyPath: NodeDescriptions.Array.size
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: TemeriaNodeNames.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: IdriaNodeNames.Array.data[0]
+      value: ccc1
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: IdriaNodeNames.Array.data[1]
+      value: ccc2
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: IdriaNodeNames.Array.data[2]
+      value: ccc3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: DurniaNodeNames.Array.data[0]
+      value: aaa1
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: DurniaNodeNames.Array.data[1]
+      value: aaa2
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: DurniaNodeNames.Array.data[2]
+      value: aaa3
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
@@ -2660,6 +2705,81 @@ PrefabInstance:
       propertyPath: NodeDescriptions.Array.data[2]
       value: cccc
       objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: TemeriaNodeNames.Array.data[0]
+      value: bbb1
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: TemeriaNodeNames.Array.data[1]
+      value: bbb2
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: TemeriaNodeNames.Array.data[2]
+      value: bbb3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: IdriaNodeDescriptions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: DurniaNodeDescriptions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: TemeriaNodeDescriptions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: IdriaNodeDescriptions.Array.data[0]
+      value: ccc1
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: IdriaNodeDescriptions.Array.data[1]
+      value: ccc2
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: IdriaNodeDescriptions.Array.data[2]
+      value: ccc3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: DurniaNodeDescriptions.Array.data[0]
+      value: aaa1
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: DurniaNodeDescriptions.Array.data[1]
+      value: aaa2
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: DurniaNodeDescriptions.Array.data[2]
+      value: aaa3
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: TemeriaNodeDescriptions.Array.data[0]
+      value: bbb1
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: TemeriaNodeDescriptions.Array.data[1]
+      value: bbb2
+      objectReference: {fileID: 0}
+    - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
+        type: 3}
+      propertyPath: TemeriaNodeDescriptions.Array.data[2]
+      value: bbb3
+      objectReference: {fileID: 0}
     - target: {fileID: 5496283967911012366, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: m_Name
@@ -2670,74 +2790,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e40d5efc02419ed4296139547de937bb, type: 3}
---- !u!1001 &9165462141631671111
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4898735300453161175, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_Name
-      value: '@MageManager'
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496103201133973553, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496103201133973553, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496103201133973553, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496103201133973553, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496103201133973553, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496103201133973553, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496103201133973553, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496103201133973553, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496103201133973553, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496103201133973553, guid: cdc191514a5383d4fbc323b1a11c36d9,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: cdc191514a5383d4fbc323b1a11c36d9, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2749,7 +2801,6 @@ SceneRoots:
   - {fileID: 1333241005}
   - {fileID: 6500311124704856169}
   - {fileID: 153217515}
-  - {fileID: 9165462141631671111}
   - {fileID: 1342569512}
   - {fileID: 1723337445}
   - {fileID: 405259075}

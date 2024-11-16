@@ -99,6 +99,10 @@ public abstract class AController : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Se desplaza a un personaje en una direccion
+    /// </summary>
+    /// <param name="direction"></param>
     public void OnMove(Vector2 direction)
     {
         if (CanMove)
@@ -109,6 +113,11 @@ public abstract class AController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Se desplaza a un personaje hacia un objetivo
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
     protected IEnumerator MoveTowards(Transform target)
     {
         Vector3 direction;
@@ -120,6 +129,12 @@ public abstract class AController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Se desplaza al personaje hacia un objetivo pero deja de intentar aproximarse pasado un tiempo
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="timeOut"></param>
+    /// <returns></returns>
     protected IEnumerator MoveTowards(Vector3 target, float timeOut)
     {
         float outTime = 0;
