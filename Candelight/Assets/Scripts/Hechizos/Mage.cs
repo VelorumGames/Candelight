@@ -5,64 +5,109 @@ using Hechizos.Elementales;
 using Hechizos.DeForma;
 using System.Data;
 using Player;
+using UI;
+using SpellInteractuable;
+using Cameras;
+using UnityEngine.SceneManagement;
 
 namespace Hechizos
 {
     public class Mage : MonoBehaviour
     {
+        public static Mage Instance;
+
         [SerializeField] int _maxElements;
-        public List<AElementalRune> ActiveElements; // Propiedad que mantiene el elemento activo (o plural) del mago
+        static List<AElementalRune> _activeElements = new List<AElementalRune>(); // Propiedad que mantiene el elemento activo (o plural) del mago
 
         PlayerController _cont;
+        CameraManager _cam;
 
-        public GameObject Projectile;
+        public GameObject[] Projectiles;
+        GameObject _lastProjectile;
         [SerializeField] float _projectileSpeed;
+        [SerializeField] float _projectileSpeedFactor = 1f;
         public GameObject Explosion;
+        public GameObject Melee;
+
+        int _numProjectiles = 1;
+        bool _extraProjs;
+
+        List<EElements> _trailElements = new List<EElements>();
+
+        private void OnEnable()
+        {
+            _cont = FindObjectOfType<PlayerController>();
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
+        }
 
         private void Awake()
         {
-            ActiveElements = new List<AElementalRune>();
-            _cont = GetComponent<PlayerController>();
+            if (Instance != null) Destroy(gameObject);
+            else Instance = this;
+
+            ARune.RegisterMage(this);
+
+            DontDestroyOnLoad(gameObject);
         }
 
-        private void Start()
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            new CosmicRune(this);
-            new MeleeRune(this);
-            new ProjectileRune(this);
+            _cam = FindObjectOfType<CameraManager>();
         }
+
+        void OnSceneUnloaded(Scene scene)
+        {
+
+        }
+
+        #region Active Elements
 
         // Método para cambiar el elemento activo cuando se usa un glifo elemental
         public void SetActiveElements(AElementalRune[] runes)
         {
-            ResetActiveElements();
-            ActiveElements.Clear();
-
-            foreach(var r in runes)
+            if (runes.Length > 0)
             {
-                ActiveElements.Add(r);
-            }
+                Debug.Log($"Se registran {runes.Length} nuevos elementos");
+                ResetActiveElements();
+                _activeElements.Clear();
 
-            foreach (var rune in ARune.Spells.Values)
-            {
-                if (rune.GetType().IsSubclassOf(typeof(AShapeRune)))
+                foreach (var r in runes)
                 {
-                    AShapeRune shapeRune = (AShapeRune)rune;
-                    Debug.Log("Se encuentra una runa de forma a la que aplicar: " + shapeRune.Name);
-                    foreach (var element in runes)
+                    _activeElements.Add(r);
+                }
+
+                foreach (var rune in ARune.Spells.Values)
+                {
+                    if (rune.GetType().IsSubclassOf(typeof(AShapeRune)))
                     {
-                        Debug.Log("Se aplica elemento: " + element.Name);
-                        shapeRune.LoadElements(element.GetActions());
+                        AShapeRune shapeRune = (AShapeRune)rune;
+                        //Debug.Log("Se encuentra una runa de forma a la que aplicar: " + shapeRune.Name);
+                        foreach (var element in runes)
+                        {
+                            //Debug.Log("Se aplica elemento: " + element.Name);
+                            shapeRune.LoadElements(element.GetActions());
+                        }
                     }
                 }
+
+                UIManager.Instance.ShowElements();
             }
+        }
+
+        public void SetInitialElement(AElementalRune element)
+        {
+            AElementalRune[] initial = new AElementalRune[1];
+            initial[0] = element;
+            SetActiveElements(initial);
         }
 
         public void AddActiveElement(AElementalRune rune)
         {
-            if (ActiveElements.Count < _maxElements)
+            if (_activeElements.Count < _maxElements)
             {
-                ActiveElements.Add(rune);
+                _activeElements.Add(rune);
             }
             else Debug.Log("ERROR: No se pueden almacenar mas elementos");
         }
@@ -74,38 +119,247 @@ namespace Hechizos
                 if (rune.GetType().IsSubclassOf(typeof(AShapeRune)))
                 {
                     AShapeRune shapeRune = (AShapeRune)rune;
-                    Debug.Log("Se encuentra una runa de forma a la que desaplicar: " + shapeRune.Name);
+                    //Debug.Log("Se encuentra una runa de forma a la que desaplicar: " + shapeRune.Name);
                     shapeRune.ResetElements();
                 }
             }
 
-            ActiveElements.Clear();
+            _activeElements.Clear();
         }
 
         // Método para obtener el elemento activo actual
         public List<AElementalRune> GetActiveElements()
         {
-            return ActiveElements;
+            return _activeElements;
         }
 
-        // Método para lanzar un hechizo con un glifo de forma
-        public void ThrowSpell(AShapeRune currentShape)
+        public int GetMaxElements() => _maxElements;
+
+        public bool IsElementActive(string name)
         {
-            currentShape.ThrowSpell(); // Llama al método que aplica el efecto del glifo de forma
+            foreach(var el in _activeElements)
+            {
+                if (el.Name == name) return true;
+            }
+            return false;
         }
 
-        public GameObject SpawnProjectile()
+        #endregion
+
+        #region Spell Functions
+        public GameObject SpawnProjectile(int numProj)
         {
-            GameObject proj = Instantiate(Projectile);
-            proj.transform.position = transform.position;
-            proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _cont.Orientation, ForceMode.Impulse);
+            Debug.Log("Se instancia proyectil");
+
+            _lastProjectile = GetAvailableProjectile();
+
+            StartCoroutine(DelayedProjectile(numProj * 0.5f)); //NumProj es el numero del proyectil
+
+            return _lastProjectile;
+        }
+
+        IEnumerator DelayedProjectile(float time)
+        {
+            yield return new WaitForSeconds(time);
+            
+            if (_extraProjs) //Si se lanzan tres
+            {
+                GameObject[] projs = new GameObject[3];
+                projs[0] = _lastProjectile;
+                projs[1] = GetAvailableProjectile();
+                projs[2] = GetAvailableProjectile();
+
+                int count = 0;
+                foreach(var proj in projs)
+                {
+                    proj.SetActive(true);
+
+                    foreach (var trailEl in _trailElements)
+                    {
+                        if (IsElementActive(trailEl)) proj.GetComponent<Projectile>().ShowTrail(trailEl);
+                    }
+
+                    proj.transform.position = _cont.transform.position;
+                    Vector3 orientation = _cont.GetOrientation();
+                    if (count == 0) orientation = Quaternion.AngleAxis(30f, Vector3.up) * orientation;
+                    else if (count == 1) orientation = Quaternion.AngleAxis(-30f, Vector3.up) * orientation;
+                    proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * orientation.normalized, ForceMode.Impulse);
+
+                    count++;
+                    yield return null;
+                }
+
+                _cam.Shake(10f, 0.2f, 0.5f);
+                yield return null;
+            }
+            else //Si solo se lanza un proyectil
+            {
+                _lastProjectile.SetActive(true);
+
+                foreach (var trailEl in _trailElements)
+                {
+                    if (IsElementActive(trailEl)) _lastProjectile.GetComponent<Projectile>().ShowTrail(trailEl);
+                }
+
+                _lastProjectile.transform.position = _cont.transform.position;
+                _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
+
+                _cam.Shake(6f, 0.1f, 0.4f);
+
+                yield return null;
+            }
+        }
+
+        GameObject GetAvailableProjectile()
+        {
+            GameObject proj = null;
+            proj = Projectiles[Random.Range(0, Projectiles.Length)];
+            proj.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
+            while (proj.activeInHierarchy)
+            {
+                proj = Projectiles[Random.Range(0, Projectiles.Length)];
+            }
             return proj;
         }
+
+        public GameObject SpawnProjectileWithRandomDirection()
+        {
+            _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
+            _lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
+            while (_lastProjectile.activeInHierarchy)
+            {
+                _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
+            }
+
+            _lastProjectile.SetActive(true);
+            _lastProjectile.transform.position = _cont.transform.position;
+            _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)), ForceMode.Impulse);
+
+            _cam.Shake(5f, 0.4f, 0.5f);
+
+            return _lastProjectile;
+        }
+
+        
 
         public GameObject SpawnExplosion()
         {
-            GameObject proj = Instantiate(Explosion);
-            return proj;
+            GameObject expl = Instantiate(Explosion);
+            expl.GetComponent<Explosion>().RegisterTypes(_activeElements.ToArray());
+            expl.transform.position = _cont.transform.position;
+
+            _cam.Shake(10f, 0.2f, 1f);
+
+            return expl;
+        }
+
+        public GameObject SpawnMelee()
+        {
+            GameObject mel = Instantiate(Melee);
+            mel.transform.position = _cont.transform.position;
+
+            _cam.Shake(2f, 0.1f, 0.3f);
+
+            return mel;
+        }
+
+        public GameObject SpawnBuff()
+        {
+            return null;
+        }
+
+        public bool TryFindClosestEnemy(out Transform closest)
+        {
+            bool found = false;
+
+            Collider[] cols = Physics.OverlapSphere(_cont.transform.position, 10f);
+
+            float minDist = 9999;
+            closest = null;
+            foreach (var c in cols)
+            {
+                if (c.CompareTag("Enemy"))
+                {
+                    float dist = Vector3.Distance(c.transform.position, _cont.transform.position);
+                    if (dist < minDist)
+                    {
+                        closest = c.transform;
+                        minDist = dist;
+                        found = true;
+                    }
+                }
+            }
+
+            return found;
+        }
+
+        public void SetProjectileDrag(float d) => _lastProjectile.GetComponent<Rigidbody>().drag = d;
+        public void SetProjectileTarget(Transform target, float speed)
+        {
+            Projectile proj = _lastProjectile.GetComponent<Projectile>();
+
+            proj.Target = target;
+            proj.SetFollowSpeed(speed);
+            proj.OnUpdate += proj.FollowTarget;
+        }
+
+        #endregion
+
+        public Transform GetPlayerTarget() => _cont.transform;
+
+        public void AddExtraSpellThrow(int num) => _numProjectiles += num;
+        public void ResetExtraSpellThrows() => _numProjectiles = 1;
+
+        public int GetNumSpells() => _numProjectiles;
+
+        public void SetExtraProjectiles(bool b) => _extraProjs = b;
+
+        public void ShowTrail(EElements elem)
+        {
+            _trailElements.Add(elem);
+        }
+        public void HideTrail(EElements elem)
+        {
+            _trailElements.Remove(elem);
+        }
+
+
+        public bool IsElementActive(AElementalRune rune) => _activeElements.Contains(rune);
+        public bool IsElementActive(EElements element)
+        {
+            foreach(var e in _activeElements)
+            {
+                if (e.Name == element.ToString()) return true;
+            }
+
+            return false;
+        }
+        public bool IsElementActive(EElements element, out AElementalRune rune)
+        {
+            rune = null;
+            foreach (var e in _activeElements)
+            {
+                if (e.Name == element.ToString())
+                {
+                    rune = e;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void SetExtraProjSpeed(float speed) => _projectileSpeedFactor = speed;
+
+        public void ManageBuffReset(IEnumerator func)
+        {
+            StartCoroutine(func);
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
     }
 }

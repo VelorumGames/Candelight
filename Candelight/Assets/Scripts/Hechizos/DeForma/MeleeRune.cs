@@ -7,24 +7,37 @@ namespace Hechizos.DeForma
 {
     public class MeleeRune : AShapeRune
     {
-        public event Action OnMeleeActivation;
-        public MeleeRune(Mage m) : base(m)
+        public event Action<Transform> OnMeleeActivation;
+        public event Action<Transform> OnMeleeImpact;
+        public MeleeRune(Mage m) : base(m, 2, 0.5f)
         {
-            Name = "Cuerpo a Cuerpo";
+            Name = "Melee";
+            Activate();
         }
-        public override void LoadElements(Action[] actions)
+        public override void LoadElements(Action<Transform>[] actions)
         {
             OnMeleeActivation += actions[4];
+            OnMeleeImpact += actions[5];
         }
 
         public override void ResetElements()
         {
             OnMeleeActivation = null;
+            OnMeleeImpact = null;
         }
 
         public override void ThrowSpell()
         {
-            if (OnMeleeActivation != null) OnMeleeActivation();
+            GameObject meleeGO = MageManager.SpawnMelee();
+            if (OnMeleeActivation != null) OnMeleeActivation(MageManager.GetPlayerTarget());
+
+            Melee melee = meleeGO.GetComponent<Melee>();
+            melee.OnImpact += OnMeleeImpact;
+
+            float avDam = 0;
+            foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
+            avDam /= MageManager.GetMaxElements();
+            melee.Damage = avDam;
         }
     }
 }

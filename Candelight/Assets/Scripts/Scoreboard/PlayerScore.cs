@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Scoreboard
 {
+    [CreateAssetMenu(menuName = "Player Score")]
     public class PlayerScore : ScriptableObject
     {
         public string Name;

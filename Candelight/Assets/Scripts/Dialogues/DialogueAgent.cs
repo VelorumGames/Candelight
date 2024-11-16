@@ -6,7 +6,9 @@ namespace Dialogues
 {
     public class DialogueAgent : MonoBehaviour
     {
-        public Dialogue dialogue;
+        public bool Reward;
+
+        public Dialogue Dialogue;
         DialogueUI _dialogueUI;
 
         private void Awake()
@@ -16,14 +18,15 @@ namespace Dialogues
 
         private void Start()
         {
-            //if (_dialogueUI != null) StartDialogue();
-            //else Debug.LogWarning($"{this.name} has not found the DialogueUI script. Execution will continue but will not work properly.");
+            if (!Dialogue) Dialogue = Reward ? FindObjectOfType<RandomDialogues>().GetRewardDialogue() : FindObjectOfType<RandomDialogues>().GetLoreDialogue();
         }
 
         public void StartDialogue()
         {
-            if (dialogue != null) _dialogueUI.StartDialogue(dialogue.initialDialogueBlock);
+            if (Dialogue != null) _dialogueUI.StartDialogue(Dialogue.initialDialogueBlock, this);
             else Debug.LogWarning($"{this.name} has not found the dialogue data. Execution will continue but will not work properly.");
         }
+
+        public void ChangeDialogue(Dialogue newDialogue) => Dialogue = newDialogue;
     }
 }

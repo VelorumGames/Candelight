@@ -11,7 +11,10 @@ namespace World
         public int Levels;
         public int CurrentLevel;
         public int[] Seeds;
+        public ELevel[] LevelTypes;
         public EBiome Biome;
         public NodeManager Node;
+        public int EventID;
+        public EEventSolution EventSolution;
     }
 }

@@ -7,14 +7,15 @@ namespace Hechizos.DeForma
 {
     public class BuffRune : AShapeRune
     {
-        public event Action OnBuffActivation;
-        public BuffRune(Mage m) : base(m)
+        float NewDamageFactor = 1f;
+        public event Action<Transform> OnBuffActivation;
+        public BuffRune(Mage m) : base(m, 6, 0.5f)
         {
-            Name = "Potenciación";
+            Name = "Buff";
         }
-        public override void LoadElements(Action[] actions)
+        public override void LoadElements(Action<Transform>[] actions)
         {
-            OnBuffActivation += actions[7];
+            OnBuffActivation += actions[8];
         }
 
         public override void ResetElements()
@@ -24,7 +25,18 @@ namespace Hechizos.DeForma
 
         public override void ThrowSpell()
         {
-            
+            GameObject buffGO = MageManager.SpawnBuff();
+            if (OnBuffActivation != null) OnBuffActivation(MageManager.GetPlayerTarget());
+
+            foreach(var el in MageManager.GetActiveElements())
+            {
+                el.AddDamageFactor(NewDamageFactor);
+            }
         }
+
+        public float GetNewFactor() => NewDamageFactor;
+        public void SetNewFactor(float newFactor) => NewDamageFactor = newFactor;
+        public void AddNewFactor(float newFactor) => NewDamageFactor += newFactor;
+        public void RemoveNewFactor(float newFactor) => NewDamageFactor -= newFactor;
     }
 }

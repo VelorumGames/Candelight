@@ -1,3 +1,4 @@
+using Enemy;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,48 +10,76 @@ namespace Hechizos.Elementales
     {
         public ElectricRune(Mage m) : base(m)
         {
-            Name = "Electricidad";
+            Name = "Electric";
+            Damage = 15f;
         }
 
         //Proyectil electrico
-        public override void ProjectileStart()
+        public override void ProjectileStart(Transform target)
         {
         }
-        public override void ProjectileUpdate()
-        {
-
-        }
-        public override void ProjectileImpact()
+        public override void ProjectileUpdate(Transform target)
         {
 
         }
-        public override void ProjectileEnd()
+        public override void ProjectileImpact(Transform target)
+        {
+            //Queda paralizado durante cierto tiempo
+            if (target.TryGetComponent<EnemyController>(out var cont))
+            {
+                cont.Paralize(3f);
+            }
+        }
+        public override void ProjectileEnd(Transform target)
         {
 
         }
 
         //Cuerpo a cuerpo electrico
-        public override void MeleeActivation()
+        public override void MeleeActivation(Transform target)
         {
 
+        }
+        public override void MeleeImpact(Transform target)
+        {
+            //Queda paralizado durante cierto tiempo
+            if (target.TryGetComponent<EnemyController>(out var cont))
+            {
+                cont.Paralize(1.5f);
+            }
         }
 
         //Explosion electrica
-        public override void ExplosionActivation()
+        public override void ExplosionActivation(Transform target)
         {
 
         }
-        public override void ExplosionImpact()
+        public override void ExplosionImpact(Transform target)
         {
-
+            //Queda paralizado durante cierto tiempo
+            if (target.TryGetComponent<EnemyController>(out var cont))
+            {
+                cont.Paralize(5f);
+            }
         }
 
         //Potenciador electrico
-        public override void BuffActivation()
+        public override void BuffActivation(Transform target)
         {
 
         }
+        public override IEnumerator BuffReset(Transform target)
+        {
+            yield return new WaitForSeconds(_buffDuration);
+        }
 
+        public void ConstantBuff()
+        {
+
+        }
+        public void ConstantBuffReset()
+        {
+
+        }
     }
-
 }

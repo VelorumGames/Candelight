@@ -1,3 +1,4 @@
+using Items.ConcreteItems;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,28 +10,19 @@ namespace Items
 
     public abstract class AItem : MonoBehaviour
     {
-
-        public EItemCategory Category;
+        public ItemInfo Data;
 
         protected bool IsActivated = false;
-
-        public Inventory MyInventory;
-
-        public string Name;
-
-        protected void Awake()
-        {
-            MyInventory = FindObjectOfType<Inventory>();
-        }
-
+             
         private void Start()
         {
-            GetComponentInChildren<TextMeshProUGUI>().text = Name;
+            GetComponentInChildren<TextMeshProUGUI>().text = Data.Name;
         }
 
         protected abstract void ApplyProperty();
+        protected abstract void ResetProperty();
 
-        public void Activation()
+        public void ApplyItem()
         {
             if (IsActivated)
                 ApplyProperty();
@@ -41,13 +33,22 @@ namespace Items
             if (IsActivated)
             {
                 IsActivated = false;
-                MyInventory.AddFragments((int)Category);
+                ResetProperty();
+                Inventory.Instance.AddFragments((int)Data.Category);
+
+                Inventory.Instance.ActiveItems.Remove(gameObject);
+                Inventory.Instance.UnactiveItems.Add(gameObject);
+                Inventory.Instance.RelocateItems();
             }
-            else if (MyInventory.TotalNumFragments >= (int)Category)
+            else if (Inventory.Instance.GetFragments() >= (int)Data.Category)
             {
                 IsActivated = true;
                 ApplyProperty();
-                MyInventory.AddFragments(-(int)Category);
+                Inventory.Instance.AddFragments(-(int)Data.Category);
+
+                Inventory.Instance.UnactiveItems.Remove(gameObject);
+                Inventory.Instance.ActiveItems.Add(gameObject);
+                Inventory.Instance.RelocateItems();
             } 
             else
             {               
@@ -56,6 +57,8 @@ namespace Items
             
 
         }
+
+        public bool IsActive() => IsActivated;
     }
 
     public enum EItemCategory

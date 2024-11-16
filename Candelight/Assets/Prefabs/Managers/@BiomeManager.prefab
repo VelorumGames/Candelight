@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7423226037996681633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7150414812206426676}
+  - component: {fileID: 6719427425385065564}
+  - component: {fileID: 1568954402014988464}
+  m_Layer: 0
+  m_Name: '@BiomeManager'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7150414812206426676
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423226037996681633}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6719427425385065564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423226037996681633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7819de4d0f60e89488127fb881ce9d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentNodeInfo: {fileID: 11400000, guid: 590e6fd0067b28f4e9bc3585d233a483, type: 2}
+  _ground: {fileID: 0}
+  _dFog: {r: 0, g: 0, b: 0, a: 0}
+  _dFogDistance: 20
+  _dGround: {fileID: 2100000, guid: 8ad00bf6e1388bb4e8d9032c74b4ae0e, type: 2}
+  _dConnection: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
+  _tFog: {r: 0, g: 0, b: 0, a: 0}
+  _tFogDistance: 25
+  _tGround: {fileID: 2100000, guid: 08384b54316ec2246b05a07bc389e16e, type: 2}
+  _tConnection: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
+  _iFog: {r: 0.39607844, g: 0.4117647, b: 0.50980395, a: 0}
+  _iFogDistance: 12
+  _iGround: {fileID: 2100000, guid: d7259ebd48478f84d931cfd06a70fcae, type: 2}
+  _iConnection: {fileID: 2100000, guid: 684e5d4f4149a8049a232ccf54115c5f, type: 2}
+--- !u!114 &1568954402014988464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423226037996681633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd1fa87af4ab22b48904ef1e0895b412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _durniaMusic:
+  - {fileID: 8300000, guid: a3d32e330a4d32340b7a2f960c656818, type: 3}
+  - {fileID: 8300000, guid: c39a666652fded643bb83963e126665b, type: 3}
+  - {fileID: 8300000, guid: 9fc97db223806714aa320c68da9e0c7c, type: 3}
+  - {fileID: 8300000, guid: 2c735e0f67403be4bbd6824d40291894, type: 3}
+  _dStartVolumes:
+  - 0.5
+  - 0
+  - 0
+  - 0
+  _temeriaMusic:
+  - {fileID: 8300000, guid: cc3495825548c8b4ba7becc193327e2f, type: 3}
+  - {fileID: 8300000, guid: de575c30d3e71fb449951d0adeafed10, type: 3}
+  - {fileID: 8300000, guid: 15952e19e1a30704db719ea696555452, type: 3}
+  - {fileID: 8300000, guid: 63cccd4b81852d54f9ead2ea33553e5b, type: 3}
+  _tStartVolumes:
+  - 0.5
+  - 0
+  - 0
+  - 0
+  _idriaMusic:
+  - {fileID: 8300000, guid: 91362f2789170be49813bf9e9add52db, type: 3}
+  - {fileID: 8300000, guid: 9c1d36af7968aa74bb0ca1c04e78cd37, type: 3}
+  - {fileID: 8300000, guid: 2a3d10542ef94ed4bbc165664c8acc13, type: 3}
+  - {fileID: 8300000, guid: 4919cde3dff03d1439c8c59862ad2abd, type: 3}
+  _iStartVolumes:
+  - 0.5
+  - 0
+  - 0
+  - 0
+  CurrentNodeInfo: {fileID: 11400000, guid: 590e6fd0067b28f4e9bc3585d233a483, type: 2}

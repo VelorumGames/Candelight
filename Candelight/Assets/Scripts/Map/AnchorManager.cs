@@ -34,6 +34,8 @@ namespace Map
         RaycastHit _auxLhit;
         RaycastHit _auxRhit;
 
+        [SerializeField] GameObject _sprite;
+
         LayerMask _mask;
 
         bool _active;
@@ -109,9 +111,9 @@ namespace Map
         /// <returns></returns>
         IEnumerator DelayedRoomCreation()
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.25f);
             if (_map.CanCreateRoom()) SpawnRoom();
-            else Destroy(gameObject);
+            //else Destroy(gameObject);
         }
 
 
@@ -122,9 +124,12 @@ namespace Map
         void SpawnRoom()
         {
             //Averiguamos el tamano maximo 
-            int maxSize = Physics.Raycast(transform.position + 0.44f * transform.forward, _raycastDirection, out _hit, _map.MediumThreshold, ~_mask) ? _hit.distance < _map.SmallThreshold ? _hit.distance < _map.RoomSeparation ? -1 : 0 : 1 : 2;
-            if (Physics.Raycast(transform.position + 0.44f * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
-                Physics.Raycast(transform.position + 0.44f * transform.forward, _auxDirRight, out _auxRhit, _map.MediumThreshold, ~_mask) && _auxRhit.transform.parent.parent != transform.parent) maxSize -= 1;
+            int maxSize = Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _raycastDirection, out _hit, _map.MediumThreshold, ~_mask) ? _hit.distance < _map.SmallThreshold ? _hit.distance < _map.RoomSeparation ? -1 : 0 : 1 : 2;
+            //Debug.Log($"Tamano original: {maxSize} (Distancia libre: {_hit.distance})");
+            if (_hit.transform != null) Debug.Log($"Soy {gameObject.name} ({transform.parent.gameObject.name}) y he colisionado con {_hit.transform.gameObject.name} ({_hit.transform.parent.gameObject.name})");
+            
+            if (Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
+                Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirRight, out _auxRhit, _map.MediumThreshold, ~_mask) && _auxRhit.transform.parent.parent != transform.parent) maxSize -= 1;
             //Debug.Log($"Colisiona con {_hit.transform.name}");
             if (Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold)) maxSize = -1;
             if (maxSize == -1) return;
@@ -134,13 +139,16 @@ namespace Map
             //Generamos un tamano segun el maximo calculado y la posicion que le corresponde
             Vector3 localOffset = OffsetChooser(size);
 
+            //Procesamos cual es la posicion que le corresponde en el minimapa
+            Vector2 minimapOffset = MinimapOffsetChooser();
+
             //Generamos la nueva sala y encontramos su anclaje
-            AnchorManager obj = LocateObjectiveAnchor(_map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, size));
+            AnchorManager obj = LocateObjectiveAnchor(_map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, minimapOffset, size));
 
             //Suponiendo que existe el anclaje (en caso contrario, llevaria una referencia a si mismo para evitar errores), generamos la malla para la transicion entre ambos
             _connectionMesh = GenerateMesh(obj);
             SetUVToWorld uvScript = _connectionMesh.AddComponent<SetUVToWorld>();
-            uvScript.MaterialToUse = _map.ConnectionMat;
+            uvScript.MaterialToUse = _map.ConnectionMaterial;
             transform.localPosition -= 0.01f * transform.up;
         }
 
@@ -162,6 +170,29 @@ namespace Map
                 default:
                     return new Vector3();
             }
+        }
+
+        Vector2 MinimapOffsetChooser()
+        {
+            Vector2 miniOffset = _room.GetMinimapOffset();
+            switch (_direction)
+            {
+                case EAnchorDirection.Forward:
+                    miniOffset += new Vector2(0f, 40f);
+                    break;
+                case EAnchorDirection.Backward:
+                    miniOffset += new Vector2(0f, -40f);
+                    break;
+                case EAnchorDirection.Right:
+                    miniOffset += new Vector2(40f, 0f);
+                    break;
+                case EAnchorDirection.Left:
+                    miniOffset += new Vector2(-40f, 0f);
+                    break;
+                default:
+                    break;
+            }
+            return miniOffset;
         }
 
         #endregion
@@ -226,10 +257,14 @@ namespace Map
             }
             positions[3] = obj.transform.position;
             line.SetPositions(positions);
-            Destroy(obj.gameObject);
-            Connected = true;
 
-            GetComponent<Collider>().enabled = false;
+            //Destroy(obj.gameObject);
+            obj.OpenAnchor();
+            //obj.GetComponent<Collider>().enabled = false;
+            
+            //GetComponent<Collider>().enabled = false;
+            OpenAnchor();
+            Connected = true;
 
             //Se bakea la imagen de la linea en una mesh
             Mesh transitionMesh = new Mesh();
@@ -250,9 +285,10 @@ namespace Map
             BoxCollider baseCol = meshGO.AddComponent<BoxCollider>();
             baseCol.center = new Vector3(baseCol.center.x, 0f, baseCol.center.z);
 
-            if (Mathf.Abs(positions[0].x - positions[3].x) < 0.1f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
-            else if (Mathf.Abs(positions[0].z - positions[3].z) < 0.1f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
-                    else GenerateComplexColliders(meshGO, positions, line.endWidth);
+            //Debug.Log($"({_room.GetID()}) Diferencia en X: {positions[0].x - positions[3].x} < 0.3f; Diferencia en Z: {positions[0].z - positions[3].z} < 0.3f");
+            if (Mathf.Abs(positions[0].x - positions[3].x) < 1.5f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
+            else if (Mathf.Abs(positions[0].z - positions[3].z) < 1.5f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
+            else GenerateComplexColliders(meshGO, positions, line.endWidth);
 
             return meshGO;
         }
@@ -268,8 +304,8 @@ namespace Map
         {
             BoxCollider box1 = con.AddComponent<BoxCollider>();
             BoxCollider box2 = con.AddComponent<BoxCollider>();
-            box1.center += _map.ConnectionCollidersOffset * Vector3.right;
-            box2.center -= _map.ConnectionCollidersOffset * Vector3.right;
+            box1.center += _map.ConnectionCollidersOffset * 2f * Vector3.right;
+            box2.center -= _map.ConnectionCollidersOffset * 2f * Vector3.right;
             box1.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
             box2.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
         }
@@ -278,8 +314,8 @@ namespace Map
         {
             BoxCollider box1 = con.AddComponent<BoxCollider>();
             BoxCollider box2 = con.AddComponent<BoxCollider>();
-            box1.center += _map.ConnectionCollidersOffset * Vector3.forward;
-            box2.center -= _map.ConnectionCollidersOffset * Vector3.forward;
+            box1.center += _map.ConnectionCollidersOffset * 2f * Vector3.forward;
+            box2.center -= _map.ConnectionCollidersOffset * 2f * Vector3.forward;
             box1.size = new Vector3(box1.size.x * 0.8f, 2f, box1.size.z);
             box2.size = new Vector3(box1.size.x * 0.8f, 2f, box1.size.z);
         }
@@ -436,7 +472,7 @@ namespace Map
             }
 
             //Expansion hasta la mitad de la conexion
-            Debug.Log($"Centro: {boxes[2].center[axis == 0 ? 2 : 0]} < Punto medio: {(start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2}; Despl: {Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10}");
+            //Debug.Log($"Centro: {boxes[2].center[axis == 0 ? 2 : 0]} < Punto medio: {(start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2}; Despl: {Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10}");
             if (boxes[2].center[axis == 0 ? 2 : 0] < (start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2) //Si va hacia delante
             {
                 while (boxes[2].center[axis == 0 ? 2 : 0] + halfSize[1] < (start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2 - Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10)
@@ -447,7 +483,7 @@ namespace Map
             }
             else //Si va hacia atras
             {
-                Debug.Log($"Comprobacion: {boxes[2].center[axis == 0 ? 2 : 0] - halfSize[1]} > {(start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2 + Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10}");
+                //Debug.Log($"Comprobacion: {boxes[2].center[axis == 0 ? 2 : 0] - halfSize[1]} > {(start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2 + Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10}");
                 while (boxes[2].center[axis == 0 ? 2 : 0] - halfSize[1] > (start[axis == 0 ? 2 : 0] + end[axis == 0 ? 2 : 0]) / 2 + Mathf.Abs(start[axis == 0 ? 2 : 0] - end[axis == 0 ? 2 : 0]) / 10)
                 {
                     halfSize[1] += 0.01f;
@@ -458,5 +494,19 @@ namespace Map
         }
 
         #endregion
+
+        public void OpenAnchor()
+        {
+            GetComponent<Collider>().enabled = false;
+            _sprite.SetActive(false);
+
+            if (!_room.AvailableAnchors.Contains(this)) _room.AvailableAnchors.Add(this);
+        }
+
+        public void CloseAnchor()
+        {
+            GetComponent<Collider>().enabled = true;
+            _sprite.SetActive(true);
+        }
     }
 }

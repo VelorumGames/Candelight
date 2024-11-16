@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Scenes/Maps/MenuScene.unity
+    guid: a725460e2e4be5e4f9136748c13ed331
+  - enabled: 1
     path: Assets/_Scenes/Maps/WorldScene.unity
     guid: 11d0e55842112834587366fdb370007f
   - enabled: 1
@@ -13,8 +16,14 @@ EditorBuildSettings:
     guid: 101c967fea7fead43add975030d2e2dc
   - enabled: 1
     path: Assets/_Scenes/Maps/CalmScene.unity
-    guid: 683a3542d1bfd5b4e875309e6f50c775
+    guid: a5c454cc18043ff4fa0027d469fc2373
   - enabled: 1
     path: Assets/_Scenes/Maps/ScoreboardScene.unity
     guid: 15c0278fab9b0d743936e98c36b02784
+  - enabled: 1
+    path: Assets/_Scenes/Maps/NodeEndScene.unity
+    guid: 1935493dbf6db5b4bac274086b1a72da
+  - enabled: 1
+    path: Assets/_Scenes/Maps/ChallengeScene.unity
+    guid: 8d00ce47992741541958d3e4d58b94f8
   m_configObjects: {}
