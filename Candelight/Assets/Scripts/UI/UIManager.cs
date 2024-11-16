@@ -10,6 +10,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Map;
+using System.Collections;
+using System;
+using UI.Window;
 
 namespace UI
 {
@@ -26,7 +29,9 @@ namespace UI
         float _fpsSum;
 
         public GameObject PauseMenu;
+        public GameObject Warning;
         public GameObject Options;
+        public GameObject InventoryNotif;
         public GameObject InventoryUI;
         public Image FadeImage;
         [SerializeField] MinimapManager _minimap;
@@ -123,23 +128,42 @@ namespace UI
             _candle = candle;
         }
 
-        public void FadeToBlack(float duration)
+        public void FadeToBlack(float duration, System.Action onEnd)
         {
-            if (FadeImage != null) FadeImage.DOColor(Color.black, duration);
+            if (FadeImage != null) FadeImage.DOColor(Color.black, duration).OnComplete(() => onEnd());
         }
 
         public void FadeFromBlack(float duration) //Esto puede lanzar excepcion si el jugador cambia de escena demasiado rapido. Por ahora el safe mode lo mantiene a raya, pero hay que solucionarlo
         {
             if (FadeImage != null)
             {
+                Debug.Log("Fade image: " + FadeImage);
                 FadeImage.color = new Color(0f, 0f, 0f, 1f);
                 FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play();
             }
         }
 
-        public void FadeToWhite(float duration)
+        public void FadeFromBlack(float timeOffset, float duration) //Esto puede lanzar excepcion si el jugador cambia de escena demasiado rapido. Por ahora el safe mode lo mantiene a raya, pero hay que solucionarlo
         {
-            if (FadeImage != null) FadeImage.DOColor(Color.white, duration);
+            StartCoroutine(ManageTimeOffsetBlack(timeOffset, duration));
+        }
+
+        IEnumerator ManageTimeOffsetBlack(float offset, float duration)
+        {
+            FadeImage.color = new Color(0f, 0f, 0f, 1f);
+            yield return new WaitForSeconds(offset);
+
+            if (FadeImage != null)
+            {
+                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play();
+
+                yield return null;
+            }
+        }
+
+        public void FadeToWhite(float duration, System.Action onEnd)
+        {
+            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).OnComplete(() => onEnd());
         }
 
         public void FadeFromWhite(float duration)
@@ -154,6 +178,12 @@ namespace UI
         public void RegisterMinimapRoom(int id, Vector2 offset, ERoomType type) => _minimap.RegisterMinimapRoom(id, offset, type);
         public void UpdateMinimapRoom(int id, ERoomType newType) => _minimap.UpdateRoom(id, newType);
         public void ShowMinimapRoom(int id) => _minimap.ShowPlayerInRoom(id);
+
+        public void ShowItemNotification(AItem item)
+        {
+            InventoryNotif.SetActive(true);
+            InventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
+        }
 
         #region UI Menus
 
@@ -201,10 +231,9 @@ namespace UI
             LoadUIWindow(Options);
         }
 
-        public void OnReturnToMenu()
-        {
-            SceneManager.LoadScene("MenuScene");
-        }
+        public void ShowWarning(Action action, string desc) => Warning.GetComponent<WarningWindow>().Show(action, desc);
+
+        public void ShowWarning(Action action, string desc, string yes, string no) => Warning.GetComponent<WarningWindow>().Show(action, desc, yes, no);
 
         #endregion
     }

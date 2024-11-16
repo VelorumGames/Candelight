@@ -62,7 +62,7 @@ public class DatabaseManager : MonoBehaviour
         Database.Get<UserNames>("Names/", RecieveNames);
         yield return new WaitUntil(() => Database.Completed);
 
-        Debug.Log("BBB");
+        //Debug.Log("BBB");
 
         //Los separo en un array
         string[] names = _names.Names.Split('*');
@@ -79,11 +79,7 @@ public class DatabaseManager : MonoBehaviour
                 //Creo una copia de los datos y lo registro en la lista
                 if (_currentUserData != null)
                 {
-                    UserData newData = new UserData();
-                    newData.Name = _currentUserData.Name;
-                    newData.Score = _currentUserData.Score;
-                    newData.posX = _currentUserData.posX;
-                    newData.posY = _currentUserData.posY;
+                    UserData newData = new UserData(_currentUserData.Name, _currentUserData.Score, _currentUserData.posX, _currentUserData.posY);
 
                     _players.Add(newData);
                 }
@@ -101,7 +97,7 @@ public class DatabaseManager : MonoBehaviour
 
     void RecieveNames(UserNames previousNames)
     {
-        Debug.Log("AAAAAAAAAAAAAA ");
+        //Debug.Log("AAAAAAAAAAAAAA ");
         _names.Names = previousNames.Names;
     }
 

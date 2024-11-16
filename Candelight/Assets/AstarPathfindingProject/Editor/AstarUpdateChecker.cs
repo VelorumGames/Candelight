@@ -219,12 +219,12 @@ namespace Pathfinding {
 						   "&unityversion="+Application.unityVersion +
 						   "&branch="+AstarPath.Branch;
 
-#if UNITY_2018_1_OR_NEWER
-			updateCheckDownload = UnityWebRequest.Get(query);
-			updateCheckDownload.SendWebRequest();
-#else
-			updateCheckDownload = new WWW(query);
-#endif
+//#if UNITY_2018_1_OR_NEWER
+//			updateCheckDownload = UnityWebRequest.Get(query);
+//			updateCheckDownload.SendWebRequest();
+//#else
+//			updateCheckDownload = new WWW(query);
+//#endif
 			lastUpdateCheck = System.DateTime.UtcNow;
 		}
 

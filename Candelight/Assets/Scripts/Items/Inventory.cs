@@ -5,12 +5,16 @@ using UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using World;
 
 namespace Items
 {
     public class Inventory : MonoBehaviour
     {
         public static Inventory Instance;
+        UIManager _uiMan;
+
+        public WorldInfo World;
 
         [Header("===POOLS===")]
         [Space(10)]
@@ -53,7 +57,8 @@ namespace Items
 
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
         {
-            _itemContainer = FindObjectOfType<UIManager>().InventoryUI.GetComponent<RectTransform>();
+            _uiMan = FindObjectOfType<UIManager>();
+            _itemContainer = _uiMan.InventoryUI.GetComponent<RectTransform>();
         }
 
         void OnSceneUnloaded(Scene scene)
@@ -95,6 +100,7 @@ namespace Items
             if(MaxCheck(item.GetComponent<AItem>()))
             {
                 ItemsList.Add(item);
+                _uiMan.ShowItemNotification(item.GetComponent<AItem>());
                 //ItemsList.Add(item.GetComponent<AItem>());
 
                 //GameObject itemButton = Instantiate(item, _itemContainer);
@@ -167,6 +173,50 @@ namespace Items
                     break;
             }
             return item;
+        }
+
+        public void LoadInventory(int[] activeItems, int[] unactiveItems, int fragments)
+        {
+            _totalNumFragments = 999999;
+
+            foreach (var id in activeItems)
+            {
+                GameObject item = SearchForItem(id);
+                ActiveItems.Add(item);
+                item.GetComponent<AItem>().SetActivation();
+            }
+
+            foreach (var id in unactiveItems)
+            {
+                UnactiveItems.Add(SearchForItem(id));
+            }
+
+            _totalNumFragments = fragments;
+        }
+
+        GameObject SearchForItem(int id)
+        {
+            foreach (var item in CommonItemPool)
+            {
+                if (item.GetComponent<AItem>().Data.Id == id) return item;
+            }
+
+            foreach (var item in RareItemPool)
+            {
+                if (item.GetComponent<AItem>().Data.Id == id) return item;
+            }
+
+            foreach (var item in EpicItemPool)
+            {
+                if (item.GetComponent<AItem>().Data.Id == id) return item;
+            }
+
+            foreach (var item in LegendaryItemPool)
+            {
+                if (item.GetComponent<AItem>().Data.Id == id) return item;
+            }
+
+            return null;
         }
 
         private void OnDisable()

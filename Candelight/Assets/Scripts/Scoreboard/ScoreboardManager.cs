@@ -12,8 +12,6 @@ namespace Scoreboard
         public Transform StarsContainer;
         GameObject[] _stars;
 
-        string _currentName = "Prueba";
-
         [SerializeField] TextMeshProUGUI[] _bestPlayers;
         [SerializeField] TextMeshProUGUI[] _surroundingPlayers;
 
@@ -37,7 +35,7 @@ namespace Scoreboard
 
             foreach (var d in data)
             {
-                if (d.Name == _currentName) break;
+                if (d.Name == SaveSystem.PlayerData.Name) break;
                 index++;
             }
 
@@ -60,7 +58,7 @@ namespace Scoreboard
             for (int i = 0; i < _bestPlayers.Length; i++)
             {
                 _bestPlayers[i].text = $"{i + 1}. ({data[i].Score} - {data[i].Name})";
-                if (data[i].Name == _currentName) _bestPlayers[i].color = Color.yellow;
+                if (data[i].Name == SaveSystem.PlayerData.Name) _bestPlayers[i].color = Color.yellow;
             }
         }
 
@@ -73,7 +71,7 @@ namespace Scoreboard
                 if (index > 0 && index < data.Length)
                 {
                     p.text = $"{index + 1}. ({data[index].Score} - {data[index].Name})";
-                    if (data[index].Name == _currentName) p.color = Color.yellow;
+                    if (data[index].Name == SaveSystem.PlayerData.Name) p.color = Color.yellow;
                     index++;
                 }
             }

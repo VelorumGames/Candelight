@@ -46,6 +46,8 @@ namespace World
 
     public class NodeManager : MonoBehaviour
     {
+        public int Id;
+
         Collider[] _closeNodes;
         public List<GameObject> ConnectedNodes = new List<GameObject>();
         public Dictionary<NodeManager, GameObject> Connections = new Dictionary<NodeManager, GameObject>();
@@ -147,7 +149,7 @@ namespace World
 
         public void SetState(ENodeState s)
         {
-            Debug.Log($"Se registra nodo {gameObject.name} como: {s}");
+            Debug.Log($"Se registra {gameObject.name} como: {s}");
             _data.State = s;
             Text.text += _data.State.ToString(); //Simplemente una guia para saber si se registra bien el estado
             //if (s == ENodeState.Explored)
@@ -187,6 +189,9 @@ namespace World
                     //else SpawnLine(this, targetNode, UnexploredLineMat);
 
                     Fog.SetActive(false);
+
+                    FindObjectOfType<WorldManager>().World.CompletedNodes++;
+                    FindObjectOfType<WorldManager>().World.CompletedIds.Add(Id);
                 }
             }
         }

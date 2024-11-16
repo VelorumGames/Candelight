@@ -202,7 +202,10 @@ namespace Hechizos
                 }
 
                 _lastProjectile.transform.position = _cont.transform.position;
-                _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
+                Debug.Log("FUERZA: " + _projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation());
+
+                _lastProjectile.GetComponent<Rigidbody>().maxLinearVelocity = _projectileSpeed * _projectileSpeedFactor * 0.1f;
+                _lastProjectile.GetComponent<Rigidbody>().AddRelativeForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
 
                 _cam.Shake(6f, 0.1f, 0.4f);
 
@@ -248,7 +251,7 @@ namespace Hechizos
             expl.GetComponent<Explosion>().RegisterTypes(_activeElements.ToArray());
             expl.transform.position = _cont.transform.position;
 
-            _cam.Shake(10f, 0.2f, 1f);
+            _cam.Shake(20f, 0.2f, 1f);
 
             return expl;
         }
@@ -256,7 +259,10 @@ namespace Hechizos
         public GameObject SpawnMelee()
         {
             GameObject mel = Instantiate(Melee);
+            mel.GetComponent<Melee>().RegisterTypes(_activeElements.ToArray());
             mel.transform.position = _cont.transform.position;
+
+            mel.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * 0.15f * _cont.GetOrientation(), ForceMode.Impulse);
 
             _cam.Shake(2f, 0.1f, 0.3f);
 

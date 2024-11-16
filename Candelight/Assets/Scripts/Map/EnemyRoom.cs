@@ -51,8 +51,11 @@ public class EnemyRoom : ARoom
     {
         foreach (var anchor in AvailableAnchors)
         {
-            anchor.CloseAnchor();
-            anchor.GetComponent<SI_AnchorBarrier>().Activate(true);
+            if (anchor != null)
+            {
+                anchor.CloseAnchor();
+                anchor.GetComponent<SI_AnchorBarrier>().Activate(true);
+            }
         }
     }
 
@@ -61,8 +64,11 @@ public class EnemyRoom : ARoom
         Debug.Log($"Se abriran {AvailableAnchors.Count} anchors");
         foreach (var anchor in AvailableAnchors)
         {
-            anchor.OpenAnchor();
-            anchor.GetComponent<SI_AnchorBarrier>().Activate(false);
+            if (anchor != null)
+            {
+                anchor.OpenAnchor();
+                anchor.GetComponent<SI_AnchorBarrier>().Activate(false);
+            }
         }
     }
 

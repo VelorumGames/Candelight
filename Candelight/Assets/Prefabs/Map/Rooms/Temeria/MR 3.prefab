@@ -341,7 +341,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2992862011056525215}
   - component: {fileID: 8428996807042466062}
-  - component: {fileID: 4826722925263207882}
   - component: {fileID: 1147016249810241676}
   m_Layer: 0
   m_Name: assets temeria_3
@@ -417,27 +416,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!65 &4826722925263207882
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481919880761792104}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.2, y: 1.4, z: 0.24423897}
-  m_Center: {x: 0, y: 0, z: 0.016609251}
 --- !u!114 &1147016249810241676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -855,7 +833,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.3, y: 3.1, z: 0.3541852}
+  m_Size: {x: 4.85, y: 3.1, z: 0.3541852}
   m_Center: {x: 0, y: 0, z: -0.0770926}
 --- !u!114 &4760342419289477957
 MonoBehaviour:
@@ -2115,7 +2093,7 @@ PrefabInstance:
     - target: {fileID: 3091247415687820333, guid: da90dcee6fc7ee741b957caffbefec30,
         type: 3}
       propertyPath: m_Size.y
-      value: 3.3
+      value: 5.87
       objectReference: {fileID: 0}
     - target: {fileID: 3091247415687820333, guid: da90dcee6fc7ee741b957caffbefec30,
         type: 3}

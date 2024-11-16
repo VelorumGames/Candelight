@@ -49,5 +49,13 @@ public class UserData
     public int Score;
     public float posX;
     public float posY;
+
+    public UserData(string n, int sc, float pX, float pY)
+    {
+        Name = n;
+        Score = sc;
+        posX = pX;
+        posY = pY;
+    }
 }
 

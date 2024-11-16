@@ -148,7 +148,11 @@ public abstract class AController : MonoBehaviour
         }
     }
 
-    public Vector3 GetOrientation() => Orientation;
+    public Vector3 GetOrientation()
+    {
+        Debug.Log("ORIENTATION: " + Orientation);
+        return Orientation.normalized;
+    }
 
     public void SetMove(bool b) => CanMove = b;
 

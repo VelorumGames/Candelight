@@ -125,6 +125,8 @@ namespace Map
 
         private void Start()
         {
+            FindObjectOfType<UIManager>().FadeFromBlack(1f, 2f);
+
             _player = FindObjectOfType<PlayerController>().gameObject;
 
             if (CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration)
@@ -183,7 +185,7 @@ namespace Map
         /// <returns></returns>
         public GameObject RegisterNewRoom(int originalRoomID, Vector3 position, Vector2 minimapOffset, ERoomSize size)
         {
-            //Debug.Log($"Se crea nueva habitacion ({CurrentRooms}) de tamano {size} conectada con habitacion {originalRoomID}");
+            Debug.Log($"Se crea nueva habitacion ({_rooms.Count}) de tamano {size} conectada con habitacion {originalRoomID}");
             _roomGraph.Add(new List<int>());
 
             if (originalRoomID != -1)

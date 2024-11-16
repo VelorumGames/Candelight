@@ -62,7 +62,7 @@ namespace Player
         Action _interaction;
 
         bool _bookIsOpen;
-        bool _instrInBook;
+        bool _instrInBook = true;
         [SerializeField] BookManager _book;
 
         public event Action<ESpellInstruction> OnNewInstruction;

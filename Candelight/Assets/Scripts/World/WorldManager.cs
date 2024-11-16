@@ -118,6 +118,7 @@ namespace World
             {
                 //Genero un nodo y lo coloco en una posicion aleatoria
                 GameObject node = Instantiate(NodePrefab, _worldParent);
+                node.GetComponent<NodeManager>().Id = id;
                 node.transform.position = new Vector3(Random.Range(-_spawnRange.x, _spawnRange.x), 0, Random.Range(-_spawnRange.y, _spawnRange.y));
 
                 //Check de distancia minima
@@ -159,6 +160,7 @@ namespace World
             }
 
             GenerateStart();
+            if (!World.LoadedInfo) LoadPreviousGame();
         }
 
         public void GenerateStart()
@@ -175,6 +177,14 @@ namespace World
                 }
             }
             Debug.LogWarning("ERROR: No se ha encontrado ningun nodo de entrada valido");
+        }
+
+        void LoadPreviousGame()
+        {
+            foreach(var id in World.CompletedIds)
+            {
+                _nodes[id].GetComponent<NodeManager>().SetState(ENodeState.Completed);
+            }
         }
 
         void MovePlayerToLastNode(Transform node)
@@ -224,8 +234,14 @@ namespace World
         /// </summary>
         public void LoadNode()
         {
+            FindObjectOfType<UIManager>().FadeToBlack(1f, LoadNextScene);
+        }
+
+        void LoadNextScene()
+        {
+            _player.transform.position = new Vector3(999f, 999f, 999f);
             World.World.SetActive(false);
-            switch(CurrentNodeInfo.LevelTypes[0])
+            switch (CurrentNodeInfo.LevelTypes[0])
             {
                 case ELevel.Exploration:
                     SceneManager.LoadScene("LevelScene");

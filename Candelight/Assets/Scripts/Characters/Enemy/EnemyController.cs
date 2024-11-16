@@ -15,7 +15,7 @@ namespace Enemy
 
         public GameObject Fragment;
 
-        float _fragDropRate;
+        float _fragDropRate = 0.5f;
 
         private void Awake()
         {
