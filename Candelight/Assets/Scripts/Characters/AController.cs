@@ -38,6 +38,7 @@ public abstract class AController : MonoBehaviour
 
     protected bool CanMove = true;
 
+    public event Action<float, float> OnDamage; //Primer float: el dano; Segundo float: la vida restante
     public event Action<AController> OnDeath;
 
     protected void Start()
@@ -46,6 +47,11 @@ public abstract class AController : MonoBehaviour
     }
 
     #region Damage & Effects
+
+    protected void CallDamageEvent(float dam, float health)
+    {
+        if (OnDamage != null) OnDamage(dam, health);
+    }
 
     public abstract void RecieveDamage(float damage);
 
@@ -150,7 +156,7 @@ public abstract class AController : MonoBehaviour
 
     public Vector3 GetOrientation()
     {
-        Debug.Log("ORIENTATION: " + Orientation);
+        //Debug.Log("ORIENTATION: " + Orientation);
         return Orientation.normalized;
     }
 

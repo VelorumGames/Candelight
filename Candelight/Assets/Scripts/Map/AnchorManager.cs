@@ -91,6 +91,8 @@ namespace Map
             _active = Random.value < 0.5f;
             if (_active && _map.CanCreateRoom()) SpawnRoom();
             else StartCoroutine(DelayedRoomCreation());
+
+            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 0);
         }
 
         private void Update()
@@ -128,15 +130,15 @@ namespace Map
         {
             //Averiguamos el tamano maximo 
             int maxSize = Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _raycastDirection, out _hit, _map.MediumThreshold, ~_mask) ? _hit.distance < _map.SmallThreshold ? _hit.distance < _map.RoomSeparation ? -1 : 0 : 1 : 2;
-            Debug.Log($"Tamano original: {maxSize} (Distancia libre: {_hit.distance})");
+            //Debug.Log($"Tamano original: {maxSize} (Distancia libre: {_hit.distance})");
             if (_hit.transform != null) Debug.Log($"Soy {gameObject.name} ({transform.parent.gameObject.name}) y he colisionado con {_hit.transform.gameObject.name} ({_hit.transform.parent.gameObject.name})");
             
             if (Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
                 Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirRight, out _auxRhit, _map.MediumThreshold, ~_mask) && _auxRhit.transform.parent.parent != transform.parent) maxSize -= 1;
             //Debug.Log($"Colisiona con {_hit.transform.name}");
-            Debug.Log("Prev MAX_SIZE: " + maxSize);
+            //Debug.Log("Prev MAX_SIZE: " + maxSize);
             if (Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold)) maxSize = -1;
-            Debug.Log(Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold));
+            //Debug.Log(Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold));
             if (maxSize == -1) return;
 
             ERoomSize size = (ERoomSize)Random.Range(0, maxSize + 1);
@@ -504,12 +506,14 @@ namespace Map
         {
             GetComponent<Collider>().enabled = false;
             _sprite.SetActive(false);
+            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 0);
 
             if (!_room.AvailableAnchors.Contains(this)) _room.AvailableAnchors.Add(this);
         }
 
         public void CloseAnchor()
         {
+            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 1);
             GetComponent<Collider>().enabled = true;
             _sprite.SetActive(true);
         }

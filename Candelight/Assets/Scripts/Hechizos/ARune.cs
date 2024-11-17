@@ -3,6 +3,7 @@ using Hechizos.DeForma;
 using Hechizos.Elementales;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Hechizos
@@ -253,5 +254,17 @@ namespace Hechizos
         }
 
         public static void SetExtraElement(bool b) => _extraElement = b;
+
+        public string GetInstructionsToString()
+        {
+            string instrs = "";
+            foreach(var i in Instructions)
+            {
+                instrs += i.ToString();
+            }
+            return instrs;
+        }
+
+        public ESpellInstruction[] GetInstructions() => Instructions.ToArray();
     }
 }

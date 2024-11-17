@@ -29,6 +29,11 @@ namespace Visual
 
         private void Start()
         {
+            if (SystemInfo.deviceType == DeviceType.Handheld) //Si es movil, quitar el post procesado
+            {
+                _postVolume.enabled = false;
+            }
+
             //Tomamos los valores originales
             if (_postVolume.sharedProfile.TryGet(out ColorAdjustments color))
             {

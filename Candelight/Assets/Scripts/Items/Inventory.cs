@@ -58,7 +58,12 @@ namespace Items
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
         {
             _uiMan = FindObjectOfType<UIManager>();
-            _itemContainer = _uiMan.InventoryUI.GetComponent<RectTransform>();
+            if (_uiMan != null) _itemContainer = _uiMan.InventoryUI.GetComponent<RectTransform>();
+
+            if(scene.name == "WorldScene")
+            {
+                SecureItems();
+            }
         }
 
         void OnSceneUnloaded(Scene scene)
@@ -83,13 +88,13 @@ namespace Items
 
         public void SpawnFragments(int num, float probability, Transform location)
         {
-            Debug.Log($"{location.gameObject.name} suelta {num} fragmentos");
+            //Debug.Log($"{location.gameObject.name} suelta {num} fragmentos");
             for (int i = 0; i < num; i++)
             {
                 if (Random.value <= probability)
                 {
                     GameObject fragment = Instantiate(Fragment);
-                    fragment.transform.position = location.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+                    fragment.transform.position = location.position + new Vector3(Random.Range(-0.5f, 5f), 0f, Random.Range(-0.5f, 0.5f));
                 }
             }
         }
@@ -116,12 +121,31 @@ namespace Items
                 GameObject itemButton = Instantiate(item, _itemContainer);
                 if (itemButton.GetComponent<AItem>().IsActive()) ActiveItems.Add(itemButton);
                 else UnactiveItems.Add(itemButton);
+
+                item.GetComponent<AItem>().IsNew = false;
                 //itemButton.GetComponent<RectTransform>().localPosition = Position + (ItemsList.Count - 1) * Offset; //Los vectores siempre a la derecha de la multiplicacion
             }
 
             RelocateItems();
 
             return true;
+        }
+
+        public void LooseItemsOnNodeExit()
+        {
+            //El jugador perdera el progreso del inventario al salirse del nodo 
+            ActiveItems.RemoveAll(item =>
+            {
+                if (item.GetComponent<AItem>().IsNew) item.GetComponent<AItem>().SetActivation();
+                return item.GetComponent<AItem>().IsNew;
+            });
+
+            UnactiveItems.RemoveAll(item => item.GetComponent<AItem>().IsNew);
+        }
+
+        public void SecureItems()
+        {
+            foreach (var item in ItemsList) item.GetComponent<AItem>().IsNew = false;
         }
 
         public void UnloadItems()

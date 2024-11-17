@@ -40,17 +40,17 @@ public class DatabaseManager : MonoBehaviour
     public IEnumerator SendUserData(UserData data)
     {
         //Mandamos la info
-        Database.Send($"Players/{data.Name}", data);
+        yield return Database.Send($"Players/{data.Name}", data);
 
         //Tomamos la lista de nombres anteriores registrados
-        Database.Get<UserNames>("Names/", RecieveNames);
-        yield return new WaitUntil(() => Database.Completed);
+        yield return Database.Get<UserNames>("Names/", RecieveNames);
+        //yield return new WaitUntil(() => Database.Completed);
 
         //Actualizamos la lista y la devolvemos a la base de datos
         Debug.Log("Se registra un nuevo nombre en " + _names.Names);
         _names.Names += $"{data.Name}*";
         Debug.Log("Nueva lista: " + _names.Names);
-        Database.Send("Names/", _names);
+        yield return Database.Send("Names/", _names);
     }
 
     public IEnumerator GetAllUsersData()
@@ -59,8 +59,8 @@ public class DatabaseManager : MonoBehaviour
         _players.Clear();
 
         //Recibo todos los nombres que hay en la base de datos
-        Database.Get<UserNames>("Names/", RecieveNames);
-        yield return new WaitUntil(() => Database.Completed);
+        yield return Database.Get<UserNames>("Names/", RecieveNames);
+        //yield return new WaitUntil(() => Database.Completed);
 
         //Debug.Log("BBB");
 
@@ -73,8 +73,8 @@ public class DatabaseManager : MonoBehaviour
                 Debug.Log("Se busca la info del jugador: " + name);
 
                 //Tomo los datos de cada jugador
-                Database.Get<UserData>($"Players/{name}", RecieveData);
-                yield return new WaitUntil(() => Database.Completed);
+                yield return Database.Get<UserData>($"Players/{name}", RecieveData);
+                //yield return new WaitUntil(() => Database.Completed);
 
                 //Creo una copia de los datos y lo registro en la lista
                 if (_currentUserData != null)

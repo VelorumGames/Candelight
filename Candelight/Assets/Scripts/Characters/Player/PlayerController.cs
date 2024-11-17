@@ -1,3 +1,5 @@
+using Cameras;
+using Cinemachine;
 using Controls;
 using DG.Tweening;
 using Hechizos;
@@ -72,6 +74,14 @@ namespace Player
         [SerializeField] UIManager _UIMan;
 
         PlayerParticlesManager _particles;
+        [SerializeField] CinemachineVirtualCamera _fpCam;
+        bool _isFirstPerson;
+        CameraManager _camMan;
+
+        [Space(10)]
+        [Header("FIRST PERSON")]
+        float _fpOrientation;
+        float _mouseSens = 0.2f;
 
         #endregion
 
@@ -101,6 +111,8 @@ namespace Player
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
         {
             _UIMan = FindObjectOfType<UIManager>();
+            _camMan = FindObjectOfType<CameraManager>();
+            if (_camMan != null) _camMan.AddCamera(_fpCam);
 
             OnNewInstruction += _UIMan.ShowNewInstruction;
             OnSpell += _UIMan.ShowValidSpell;
@@ -127,15 +139,19 @@ namespace Player
 
         public override void RecieveDamage(float damage)
         {
-            Debug.Log($"Jugador recibe {damage} de dano -> Se restan {damage * _candleFactor} puntos a la vela");
+            float finalDamage = damage * _candleFactor;
 
-            float finalHealth = World.Candle - damage * _candleFactor;
+            Debug.Log($"Jugador recibe {damage} de dano -> Se restan {finalDamage} puntos a la vela");
+            
+            float finalHealth = World.Candle - finalDamage;
 
             if (finalHealth <= 0 && _extraLives > 0) //Se revive al jugador si tiene vidas extras y va a morir
             {
                 _extraLives--;
                 finalHealth = 0.25f * World.MAX_CANDLE;
             }
+
+            CallDamageEvent(finalDamage, finalHealth / World.MAX_CANDLE);
 
             World.Candle = finalHealth;
         }
@@ -149,7 +165,7 @@ namespace Player
             if (CanMove)
             {
                 if (!_rb) _rb = GetComponent<Rigidbody>();
-                Vector3 force = (_bookIsOpen ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * _speedFactor * new Vector3(direction.x, 0f, direction.y);
+                Vector3 force = (_bookIsOpen || _isFirstPerson ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * _speedFactor * new Vector3(direction.x, 0f, direction.y);
                 _rb.AddForce(force, ForceMode.Force);
 
                 _particles.StartFootParticles();
@@ -201,6 +217,15 @@ namespace Player
             }
         }
 
+        public void OnFirstPersonLook(Vector2 delta)
+        {
+            if (_isFirstPerson)
+            {
+                _fpOrientation = Mathf.Clamp(_fpOrientation + delta[1] * _mouseSens * Time.deltaTime * 10f, -60f, 60f);
+                _camMan.GetActiveCam().transform.rotation = Quaternion.Euler(-_fpOrientation, 0f, 0f);
+            }
+        }
+
         #endregion
 
         #region Spells
@@ -210,12 +235,11 @@ namespace Player
             if (CanMove)
             {
                 //Debug.Log("Se ha registrado la instruccion " + instr);
-                _instructions.Add(instr);
-
                 if (_bookIsOpen)
                 {
                     if (_instrInBook) //Para que haya un delay y el jugador no spamee
                     {
+                        _instructions.Add(instr);
                         switch (instr)
                         {
                             case ESpellInstruction.Up:
@@ -233,11 +257,13 @@ namespace Player
                         }
 
                         _instrInBook = false;
+                        _UIMan.BookInstructionFeedback(1f);
                         Invoke("ResetBookInstructionTimer", 1f);
                     }
                 }
                 else
                 {
+                    _instructions.Add(instr);
                     if (OnNewInstruction != null) OnNewInstruction(instr);
                 }
             }
@@ -300,7 +326,7 @@ namespace Player
 
         public void OnBook(InputAction.CallbackContext _)
         {
-            if (_book)
+            if (!_isFirstPerson && _book)
             {
                 if (_bookIsOpen)
                 {
@@ -328,9 +354,11 @@ namespace Player
                 //Comparamos con que nodo conectado al actual esta mas cerca y consideramos ese como la decision del jugador
                 float minDist = 9999f;
                 GameObject closest = null;
-                //Debug.Log($"Para el current node hay {_currentNode.ConnectedNodes.Count} nodos conectados");
+                Debug.Log($"Para el current node hay {_currentNode.ConnectedNodes.Count} nodos conectados");
                 foreach (var node in _currentNode.ConnectedNodes)
                 {
+                    Debug.Log($"1: {node != _currentNode.gameObject}");
+                    Debug.Log($"2: {node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered} ({node.GetComponent<NodeManager>().GetNodeData().State})");
                     if (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered)
                     {
                         float dist = Vector3.Distance(_pathChooser.transform.position, node.transform.position);
@@ -341,6 +369,7 @@ namespace Player
                         }
                     }
                 }
+                Debug.Log("Closest: " + closest);
                 if (closest != null) _nextNode = closest.transform;
             }
         }
@@ -399,6 +428,26 @@ namespace Player
                 yield return null;
             }
         }
+        public void ChangeToFirstPerson()
+        {
+            if (!_isFirstPerson)
+            {
+                _camMan.SetActiveCamera(_fpCam, 1.5f);
+
+                _isFirstPerson = true;
+            }
+        }
+
+        public void ReturnToThirdPerson()
+        {
+            if (_isFirstPerson)
+            {
+                _camMan.SetActiveCamera(_camMan.InitialCam, 1f);
+
+                _isFirstPerson = false;
+            }
+        }
+
 
         #region Item Modifiers
 

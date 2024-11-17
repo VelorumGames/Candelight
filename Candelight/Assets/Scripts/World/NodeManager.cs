@@ -171,6 +171,7 @@ namespace World
             //}
             if (s == ENodeState.Completed)
             {
+                //Debug.Log("COUNT: " + ConnectedNodes.Count);
                 foreach (var n in ConnectedNodes)
                 {
                     NodeManager targetNode = n.GetComponent<NodeManager>();
@@ -189,9 +190,6 @@ namespace World
                     //else SpawnLine(this, targetNode, UnexploredLineMat);
 
                     Fog.SetActive(false);
-
-                    FindObjectOfType<WorldManager>().World.CompletedNodes++;
-                    FindObjectOfType<WorldManager>().World.CompletedIds.Add(Id);
                 }
             }
         }
@@ -246,9 +244,11 @@ namespace World
         public void RegisterCompletedNode()
         {
             SetState(ENodeState.Completed);
+            WorldManager.Instance.World.CompletedIds.Add(Id);
             WorldManager.Instance.World.CompletedNodes++;
             foreach(var node in ConnectedNodes)
             {
+                //Debug.Log("NODO: " + node);
                 node.GetComponent<NodeManager>().SetState(ENodeState.Explored);
             }
         }

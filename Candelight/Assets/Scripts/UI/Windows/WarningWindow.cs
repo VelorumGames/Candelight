@@ -26,8 +26,6 @@ namespace UI.Window
 
         public void Show(System.Action act, string descr, string yesText, string noText)
         {
-            gameObject.SetActive(true);
-
             _action = act;
             _description.text = descr;
             _yes.text = yesText;
@@ -36,8 +34,6 @@ namespace UI.Window
 
         public void Show(System.Action act, string descr)
         {
-            gameObject.SetActive(true);
-
             _action = act;
             _description.text = descr;
             _yes.text = "SÍ";

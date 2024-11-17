@@ -11,8 +11,13 @@ public static class SaveSystem
 {
     public static string path = Application.persistentDataPath + "/player.save";
     public static UserData PlayerData;
+    public static SaveData GameData;
 
-    public static void Save(SaveData data)
+    public static float StarRange = 10f;
+
+    public static bool ScoreboardIntro;
+
+    public static IEnumerator Save(SaveData data)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(path, FileMode.Create);
@@ -21,10 +26,12 @@ public static class SaveSystem
         stream.Close();
 
         //Subir info a la base de datos
-        Database.Send($"Players/{PlayerData.Name}", PlayerData);
+        Debug.Log("Se guardarán los datos de: " + PlayerData.Name);
+        //Database.Send($"Players/{PlayerData.Name}", PlayerData);
+        yield return Database.SendUserData(PlayerData);
     }
 
-    public static SaveData Load()
+    public static IEnumerator Load()
     {
         if (File.Exists(path))
         {
@@ -34,14 +41,46 @@ public static class SaveSystem
             SaveData save = formatter.Deserialize(stream) as SaveData;
             stream.Close();
 
-            return save;
+            //Coger info de la base de datos
+            yield return Database.Get<UserData>($"Players/{PlayerData.Name}", GetPlayerData);
+
+            GameData = save;
         }
         else
         {
             Debug.Log("ERROR: No se ha encontrado archivo de guardado");
-            return null;
+            GameData = null;
         }
     }
+
+    static void GetPlayerData(UserData data)
+    {
+        if (data != null) PlayerData = data; //Si se ha encontrado
+        else //Si no se ha encontrado
+        {
+            Debug.LogWarning($"ERROR: No se ha encontrado datos del jugador \"{PlayerData.Name}\" en la base de datos");
+        }
+    }
+
+    public static void GenerateNewPlayerData(WorldInfo world)
+    {
+        PlayerData.Score = world.CompletedNodes;
+        PlayerData.posX = Random.Range(-StarRange, StarRange);
+        PlayerData.posY = Random.Range(-StarRange, StarRange);
+    }
+
+    public static bool RemovePreviousGameData()
+    {
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool ExistsPreviousGame() => File.Exists(path);
 }
 
 [System.Serializable]
@@ -85,7 +124,7 @@ public class SaveData
 
     int[][] GetInventoryData(Inventory inv)
     {
-        int[][] invData = new int[2][];
+        int[][] invData = new int[3][];
 
         invData[0] = new int[inv.ActiveItems.Count];
         for (int i = 0; i < inv.ActiveItems.Count; i++)

@@ -100,7 +100,6 @@ namespace Music
                     _sources[2].Play();
 
                     ChangeVolumeTo(1, 0.5f, 10f);
-                    ChangeVolumeTo(2, 0.5f, 10f);
                 }
             }
         }

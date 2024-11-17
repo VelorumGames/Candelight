@@ -44,7 +44,7 @@ namespace Hechizos
 
         private void Update()
         {
-            Debug.Log("Vel: " + GetComponent<Rigidbody>().velocity);
+            //Debug.Log("Vel: " + GetComponent<Rigidbody>().velocity);
 
             if (OnUpdate != null) OnUpdate(Target);
         }
