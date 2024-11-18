@@ -29,6 +29,8 @@ namespace Dialogues
 
         PlayerController _cont;
 
+        System.Action _onEndDialogue;
+
         Image _spriteRend;
 
         Inventory _inventory;
@@ -89,10 +91,24 @@ namespace Dialogues
             {
                 EndDialogue();
                 if (_currentBlock.nextDialogue != null) _currentAgent.ChangeDialogue(_currentBlock.nextDialogue);
+                else if (_onEndDialogue != null) _onEndDialogue();
             }
         }
 
         public void StartDialogue(DialogueBlock block, DialogueAgent ag)
+        {
+            _onEndDialogue = null;
+            _currentAgent = ag;
+
+            _dialogueUI.SetActive(true);
+
+            _active = true;
+            _cont.UnloadInteraction();
+            FindObjectOfType<InputManager>().LoadControls(EControlMap.Dialogue);
+
+            LoadBlockInfo(block);
+        }
+        public void StartDialogue(DialogueBlock block, DialogueAgent ag, System.Action endAction)
         {
             _currentAgent = ag;
 
@@ -101,6 +117,8 @@ namespace Dialogues
             _active = true;
             _cont.UnloadInteraction();
             FindObjectOfType<InputManager>().LoadControls(EControlMap.Dialogue);
+
+            _onEndDialogue = endAction;
 
             LoadBlockInfo(block);
         }

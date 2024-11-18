@@ -40,17 +40,17 @@ public class DatabaseManager : MonoBehaviour
     public IEnumerator SendUserData(UserData data)
     {
         //Mandamos la info
-        Database.Send($"Players/{data.Name}", data);
+        yield return Database.Send($"Players/{data.Name}", data);
 
         //Tomamos la lista de nombres anteriores registrados
-        Database.Get<UserNames>("Names/", RecieveNames);
-        yield return new WaitUntil(() => Database.Completed);
+        yield return Database.Get<UserNames>("Names/", RecieveNames);
+        //yield return new WaitUntil(() => Database.Completed);
 
         //Actualizamos la lista y la devolvemos a la base de datos
         Debug.Log("Se registra un nuevo nombre en " + _names.Names);
         _names.Names += $"{data.Name}*";
         Debug.Log("Nueva lista: " + _names.Names);
-        Database.Send("Names/", _names);
+        yield return Database.Send("Names/", _names);
     }
 
     public IEnumerator GetAllUsersData()
@@ -59,10 +59,10 @@ public class DatabaseManager : MonoBehaviour
         _players.Clear();
 
         //Recibo todos los nombres que hay en la base de datos
-        Database.Get<UserNames>("Names/", RecieveNames);
-        yield return new WaitUntil(() => Database.Completed);
+        yield return Database.Get<UserNames>("Names/", RecieveNames);
+        //yield return new WaitUntil(() => Database.Completed);
 
-        Debug.Log("BBB");
+        //Debug.Log("BBB");
 
         //Los separo en un array
         string[] names = _names.Names.Split('*');
@@ -73,17 +73,13 @@ public class DatabaseManager : MonoBehaviour
                 Debug.Log("Se busca la info del jugador: " + name);
 
                 //Tomo los datos de cada jugador
-                Database.Get<UserData>($"Players/{name}", RecieveData);
-                yield return new WaitUntil(() => Database.Completed);
+                yield return Database.Get<UserData>($"Players/{name}", RecieveData);
+                //yield return new WaitUntil(() => Database.Completed);
 
                 //Creo una copia de los datos y lo registro en la lista
                 if (_currentUserData != null)
                 {
-                    UserData newData = new UserData();
-                    newData.Name = _currentUserData.Name;
-                    newData.Score = _currentUserData.Score;
-                    newData.posX = _currentUserData.posX;
-                    newData.posY = _currentUserData.posY;
+                    UserData newData = new UserData(_currentUserData.Name, _currentUserData.Score, _currentUserData.posX, _currentUserData.posY);
 
                     _players.Add(newData);
                 }
@@ -101,7 +97,7 @@ public class DatabaseManager : MonoBehaviour
 
     void RecieveNames(UserNames previousNames)
     {
-        Debug.Log("AAAAAAAAAAAAAA ");
+        //Debug.Log("AAAAAAAAAAAAAA ");
         _names.Names = previousNames.Names;
     }
 

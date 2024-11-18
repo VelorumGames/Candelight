@@ -11,6 +11,8 @@ namespace Cameras
     {
         public static CameraManager Instance;
 
+        CinemachineBrain _brain;
+
         public List<CinemachineVirtualCamera> Cameras = new List<CinemachineVirtualCamera>();
         public CinemachineVirtualCamera InitialCam;
         CinemachineVirtualCamera _activeCam;
@@ -28,14 +30,17 @@ namespace Cameras
             else Instance = this;
 
             DOTween.defaultAutoPlay = AutoPlay.None;
-            _spellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f).SetAutoKill(false).OnComplete(() => Debug.Log("AAAAAAAA"));
+            _spellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f).SetAutoKill(false);
             _resetSpellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 60f, 0.1f).SetAutoKill(false);
             DOTween.defaultAutoPlay = AutoPlay.All;
+
+            _brain = FindObjectOfType<CinemachineBrain>();
+            _brain.m_DefaultBlend.m_Time = 0f;
         }
 
         private void Start()
         {
-            SetActiveCamera(InitialCam);
+            SetActiveCamera(InitialCam, 0f);
         }
 
         public void SetActiveCamera(CinemachineVirtualCamera newCam)
@@ -60,7 +65,32 @@ namespace Cameras
             }
         }
 
+        public void SetActiveCamera(CinemachineVirtualCamera newCam, float blendTime)
+        {
+            if (newCam != _activeCam)
+            {
+                foreach (var c in Cameras)
+                {
+                    if (c == newCam)
+                    {
+                        _brain.m_DefaultBlend.m_Time = blendTime;
+
+                        c.Priority = 1;
+                        _noise = c.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+                        if (_noise != null)
+                        {
+                            _originalAmp = _noise.m_AmplitudeGain;
+                            _originalFrec = _noise.m_FrequencyGain;
+                        }
+                        _activeCam = newCam;
+                    }
+                    else c.Priority = 0;
+                }
+            }
+        }
+
         public void SetActiveCamera(int i) => SetActiveCamera(Cameras[i]);
+        public void SetActiveCamera(int i, float blendTime) => SetActiveCamera(Cameras[i], blendTime);
 
         public CinemachineVirtualCamera GetActiveCam() => _activeCam;
         public int GetActiveCamIndex()
@@ -152,5 +182,7 @@ namespace Cameras
             _noise.m_FrequencyGain = iFrec;
             yield return null;
         }
+
+        public float GetCurrentBlendTime() => _brain.m_DefaultBlend.m_Time;
     }
 }

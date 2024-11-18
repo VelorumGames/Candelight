@@ -47,7 +47,7 @@ namespace Hechizos
             {
                 ResetText();
                 _prevCam = _camMan.GetActiveCam();
-                _camMan.SetActiveCamera(_bookCam);
+                _camMan.SetActiveCamera(_bookCam, 0.5f);
             }
         }
 
@@ -68,7 +68,7 @@ namespace Hechizos
 
         private void OnDisable()
         {
-            if (_camMan != null) _camMan.SetActiveCamera(_prevCam);
+            if (_camMan != null) _camMan.SetActiveCamera(_prevCam, 1f);
         }
     }
 }

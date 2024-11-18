@@ -99,6 +99,7 @@ namespace Map
             else Instance = this;
 
             _uiMan = FindObjectOfType<UIManager>();
+            //Debug
             FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
 
             ConnectionMaterial = FindObjectOfType<LightingManager>().GetConnectionMaterial(CurrentNodeInfo.Biome);
@@ -125,6 +126,8 @@ namespace Map
 
         private void Start()
         {
+            _uiMan.FadeFromBlack(1f, 2f);
+
             _player = FindObjectOfType<PlayerController>().gameObject;
 
             if (CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration)
@@ -151,6 +154,7 @@ namespace Map
         {
             OnRoomGenerationEnd += RegisterRoomTypes;
             OnRoomGenerationEnd += EventCheck;
+            OnCombatEnd += _uiMan.WinCombat;
         }
 
         void EventCheck()
@@ -183,7 +187,7 @@ namespace Map
         /// <returns></returns>
         public GameObject RegisterNewRoom(int originalRoomID, Vector3 position, Vector2 minimapOffset, ERoomSize size)
         {
-            //Debug.Log($"Se crea nueva habitacion ({CurrentRooms}) de tamano {size} conectada con habitacion {originalRoomID}");
+            //Debug.Log($"Se crea nueva habitacion ({_rooms.Count}) de tamano {size} conectada con habitacion {originalRoomID}");
             _roomGraph.Add(new List<int>());
 
             if (originalRoomID != -1)
@@ -321,6 +325,7 @@ namespace Map
         {
             OnRoomGenerationEnd -= RegisterRoomTypes;
             OnRoomGenerationEnd -= EventCheck;
+            OnCombatEnd -= _uiMan.WinCombat;
         }
     }
 }

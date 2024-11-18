@@ -46,6 +46,8 @@ namespace World
 
     public class NodeManager : MonoBehaviour
     {
+        public int Id;
+
         Collider[] _closeNodes;
         public List<GameObject> ConnectedNodes = new List<GameObject>();
         public Dictionary<NodeManager, GameObject> Connections = new Dictionary<NodeManager, GameObject>();
@@ -147,7 +149,7 @@ namespace World
 
         public void SetState(ENodeState s)
         {
-            Debug.Log($"Se registra nodo {gameObject.name} como: {s}");
+            Debug.Log($"Se registra {gameObject.name} como: {s}");
             _data.State = s;
             Text.text += _data.State.ToString(); //Simplemente una guia para saber si se registra bien el estado
             //if (s == ENodeState.Explored)
@@ -169,6 +171,7 @@ namespace World
             //}
             if (s == ENodeState.Completed)
             {
+                //Debug.Log("COUNT: " + ConnectedNodes.Count);
                 foreach (var n in ConnectedNodes)
                 {
                     NodeManager targetNode = n.GetComponent<NodeManager>();
@@ -241,9 +244,11 @@ namespace World
         public void RegisterCompletedNode()
         {
             SetState(ENodeState.Completed);
+            WorldManager.Instance.World.CompletedIds.Add(Id);
             WorldManager.Instance.World.CompletedNodes++;
             foreach(var node in ConnectedNodes)
             {
+                //Debug.Log("NODO: " + node);
                 node.GetComponent<NodeManager>().SetState(ENodeState.Explored);
             }
         }

@@ -10,12 +10,21 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Map;
+using System.Collections;
+using System;
+using UI.Window;
+using Player;
+using Cameras;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace UI
 {
     public class UIManager : MonoBehaviour
     {
         public static UIManager Instance;
+
+        [Header("GENERAL")]
         public string NextNodeName;
         public string ActualNodeName;
         string _chains;
@@ -26,12 +35,24 @@ namespace UI
         float _fpsSum;
 
         public GameObject PauseMenu;
+        public GameObject Warning;
         public GameObject Options;
+        public GameObject InventoryNotif;
         public GameObject InventoryUI;
         public Image FadeImage;
         [SerializeField] MinimapManager _minimap;
 
+        [Space(10)]
+        [Header("FEEDBACK")]
+        public Image RedFilter;
+        public Image WhiteFilter;
+        Volume _vol;
+
         ShowInstructions _showInstr;
+        CameraManager _camMan;
+        PlayerController _player;
+
+        Coroutine _timeFreeze;
 
         Stack<GameObject> _windows = new Stack<GameObject>();
 
@@ -40,7 +61,16 @@ namespace UI
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
+            _vol = FindObjectOfType<Volume>();
+
             _showInstr = FindObjectOfType<ShowInstructions>();
+            _camMan = FindObjectOfType<CameraManager>();
+            _player = FindObjectOfType<PlayerController>();
+        }
+
+        private void OnEnable()
+        {
+            if (_player != null) _player.OnDamage += PlayerDamageFeedback;
         }
 
         private void OnGUI()
@@ -54,7 +84,10 @@ namespace UI
             {
                 if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<SimpleRoomManager>().EndLevel();
             }
-            //if (GUI.Button(new Rect(350, 40, 150, 20), "LEVEL SCENE")) SceneManager.LoadScene("LevelScene");
+            if (SceneManager.GetActiveScene().name == "MenuScene")
+            {
+                if (GUI.Button(new Rect(350, 40, 150, 20), "REMOVE DATA")) SaveSystem.RemovePreviousGameData();
+            }
             //if (GUI.Button(new Rect(500, 40, 150, 20), "CALM SCENE")) SceneManager.LoadScene("CalmScene");
             if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM")) Inventory.Instance.AddItem(Inventory.Instance.GetRandomItem(EItemCategory.Rare));
             if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
@@ -91,6 +124,17 @@ namespace UI
             }
         }
 
+        public void ShowItemNotification(AItem item)
+        {
+            InventoryNotif.SetActive(true);
+            InventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
+        }
+
+        public void RegisterCandle(float candle)
+        {
+            _candle = candle;
+        }
+
         #region Spell UI
 
         public void ShowNewInstruction(ESpellInstruction instr)
@@ -118,14 +162,11 @@ namespace UI
 
         #endregion
 
-        public void RegisterCandle(float candle)
-        {
-            _candle = candle;
-        }
+        #region Fades
 
-        public void FadeToBlack(float duration)
+        public void FadeToBlack(float duration, Action onEnd)
         {
-            if (FadeImage != null) FadeImage.DOColor(Color.black, duration);
+            if (FadeImage != null) FadeImage.DOColor(Color.black, duration).Play().OnComplete(() => onEnd());
         }
 
         public void FadeFromBlack(float duration) //Esto puede lanzar excepcion si el jugador cambia de escena demasiado rapido. Por ahora el safe mode lo mantiene a raya, pero hay que solucionarlo
@@ -137,9 +178,34 @@ namespace UI
             }
         }
 
-        public void FadeToWhite(float duration)
+        public void FadeFromBlack(float timeOffset, float duration)
         {
-            if (FadeImage != null) FadeImage.DOColor(Color.white, duration);
+            StartCoroutine(ManageTimeOffsetBlack(timeOffset, duration));
+        }
+
+        IEnumerator ManageTimeOffsetBlack(float offset, float duration)
+        {
+            FadeImage.color = new Color(0f, 0f, 0f, 1f);
+            yield return new WaitForSeconds(offset);
+
+            if (FadeImage != null)
+            {
+                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play();
+
+                yield return null;
+            }
+        }
+
+        public void FadeToWhite(float duration, Ease ease, Action onEnd)
+        {
+            FadeImage.color = new Color(1f, 1f, 1f, 0f);
+            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetEase(ease);
+        }
+
+        public void FadeToWhite(float duration, Action onEnd)
+        {
+            FadeImage.color = new Color(1f, 1f, 1f, 0f);
+            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd());
         }
 
         public void FadeFromWhite(float duration)
@@ -147,13 +213,19 @@ namespace UI
             if (FadeImage != null)
             {
                 FadeImage.color = new Color(1f, 1f, 1f, 1f);
-                FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration);
+                FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration).Play();
             }
         }
+
+        #endregion
+
+        #region Minimap
 
         public void RegisterMinimapRoom(int id, Vector2 offset, ERoomType type) => _minimap.RegisterMinimapRoom(id, offset, type);
         public void UpdateMinimapRoom(int id, ERoomType newType) => _minimap.UpdateRoom(id, newType);
         public void ShowMinimapRoom(int id) => _minimap.ShowPlayerInRoom(id);
+
+        #endregion
 
         #region UI Menus
 
@@ -201,11 +273,66 @@ namespace UI
             LoadUIWindow(Options);
         }
 
-        public void OnReturnToMenu()
+        public void ShowWarning(Action action, string desc)
         {
-            SceneManager.LoadScene("MenuScene");
+            LoadUIWindow(Warning);
+            Warning.GetComponent<WarningWindow>().Show(action, desc);
+        }
+
+        public void ShowWarning(Action action, string desc, string yes, string no)
+        {
+            LoadUIWindow(Warning);
+            Warning.GetComponent<WarningWindow>().Show(action, desc, yes, no);
         }
 
         #endregion
+
+        #region Feedback
+
+        public void BookInstructionFeedback(float duration)
+        {
+            if (_vol.sharedProfile.TryGet(out Vignette vig))
+            {
+                float oIntensity = vig.intensity.GetValue<float>();
+
+                DOTween.To(vig.intensity.Override, oIntensity, 0.5f, duration * 0.2f).Play().OnComplete(() => DOTween.To(vig.intensity.Override, 0.5f, oIntensity, duration * 0.8f).Play());
+            }
+        }
+
+        public void PlayerDamageFeedback(float damage, float remHealth)
+        {
+            RedFilter.DOFade(remHealth * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play());
+            _camMan.Shake(5f, 20f, 0.4f);
+        }
+
+        public void EnemyDamageFeedback(float damage, float remHealth)
+        {
+            WhiteFilter.DOFade(remHealth * 0.35f, 0.2f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.2f).Play());
+
+            if (_timeFreeze != null) StopCoroutine(_timeFreeze);
+            _timeFreeze = StartCoroutine(FreezeGame(0.2f, remHealth));
+        }
+
+        public void WinCombat()
+        {
+            WhiteFilter.DOFade(0.5f, 0.3f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.3f).Play());
+        }
+
+        public IEnumerator FreezeGame(float duration, float freezeScale)
+        {
+            float oScale = Time.timeScale;
+            Time.timeScale = 0.3f;
+
+            yield return new WaitForSecondsRealtime(duration);
+
+            Time.timeScale = oScale;
+        }
+
+        #endregion
+
+        private void OnDisable()
+        {
+            if (_player != null) _player.OnDamage -= PlayerDamageFeedback;
+        }
     }
 }
