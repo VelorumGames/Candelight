@@ -12,6 +12,8 @@ namespace Map
         ESpellInstruction[] _rune;
         [SerializeField] Sprite[] _hintSprites;
 
+        [SerializeField] string _runeToFind;
+
         [SerializeField] float _offset;
 
         private void Start()
@@ -22,19 +24,26 @@ namespace Map
 
         ESpellInstruction[] ChooseRune()
         {
-            int maxComplexity = (int)FindObjectOfType<MapManager>().CurrentNodeInfo.Biome + 3;
-
-            List<ESpellInstruction[]> runes = new List<ESpellInstruction[]>();
-            
-            foreach (var chain in ARune.Spells.Keys)
+            if (_runeToFind != "")
             {
-                if (chain.Length <= maxComplexity && !ARune.Spells[chain].IsActivated())
-                {
-                    runes.Add(chain);
-                }
+                return ARune.FindSpell(_runeToFind, out var spell) ? spell.GetInstructions() : null;
             }
-            Debug.Log(runes.Count);
-            return runes.Count > 0 ? runes[Random.Range(0, runes.Count)] : null;
+            else
+            {
+                int maxComplexity = (int)FindObjectOfType<MapManager>().CurrentNodeInfo.Biome + 3;
+
+                List<ESpellInstruction[]> runes = new List<ESpellInstruction[]>();
+
+                foreach (var chain in ARune.Spells.Keys)
+                {
+                    if (chain.Length <= maxComplexity && !ARune.Spells[chain].IsActivated())
+                    {
+                        runes.Add(chain);
+                    }
+                }
+                Debug.Log(runes.Count);
+                return runes.Count > 0 ? runes[Random.Range(0, runes.Count)] : null;
+            }
         }
 
         void ShowHints()

@@ -27,7 +27,7 @@ public class IntroTutorial : MonoBehaviour
     public string _runeInstructions;
 
     float _spellTime;
-    float _maxSpellTime = 3f;
+    float _maxSpellTime = 2f;
     bool _spellModeTest;
 
     bool _instrTest;
@@ -44,8 +44,10 @@ public class IntroTutorial : MonoBehaviour
         InstrText.text = "";
         DramaticText.text = "";
 
+        //Debug.Log("ENERGY IMAGE: " + EnergyImage.gameObject.name);
+
         //Debug
-        _ui.FadeToWhite(7f, () => StartCoroutine(Tutorial()));
+        //_ui.FadeToWhite(1f, () => StartCoroutine(Tutorial()));
     }
 
     private void OnTriggerEnter(Collider other)
@@ -59,7 +61,8 @@ public class IntroTutorial : MonoBehaviour
     IEnumerator Tutorial()
     {
         Background.SetActive(true);
-        EnergyImage.DOFade(1f, 0f);
+        //EnergyImage.gameObject.SetActive(true);
+        EnergyImage.DOFade(1f, 0.1f).Play();
 
         yield return new WaitForSeconds(1f);
 
@@ -88,6 +91,11 @@ public class IntroTutorial : MonoBehaviour
         EndInstructions();
         HideText();
 
+        //_ui.FadeToBlack(1f, () =>
+        //{
+        //    EnergyImage.gameObject.SetActive(false);
+        //    _ui.FadeFromBlack(1f);
+        //});
         EnergyImage.DOFade(0f, 2f);
 
         Debug.Log("ANIMACION DE SER UNO CON LA LLAMA");
@@ -116,7 +124,7 @@ public class IntroTutorial : MonoBehaviour
         if (Keyboard.current.spaceKey.isPressed)
         {
             _spellTime += Time.deltaTime;
-            Element.color = new Color(1f, 1f, 1f, _spellTime / _maxSpellTime);
+            Element.color = new Color(1f, 1f, 1f, 0.5f * _spellTime / _maxSpellTime);
         }
         else
         {
@@ -134,7 +142,8 @@ public class IntroTutorial : MonoBehaviour
             if (Keyboard.current.spaceKey.isPressed)
             {
                 _spellTime += Time.deltaTime;
-                Element.color = new Color(1f, 1f, 1f, _spellTime / _maxSpellTime);
+                Element.color = new Color(1f, 1f, 1f, 0.5f * _spellTime / _maxSpellTime);
+                foreach (var rune in FireRunes) rune.color = new Color(1f, 1f, 1f, _spellTime / _maxSpellTime);
             }
             else
             {
@@ -147,6 +156,11 @@ public class IntroTutorial : MonoBehaviour
                 }
                 else
                 {
+                    foreach (var rune in FireRunes)
+                    {
+                        rune.DOFade(0f, 1f).Play();
+                    }
+
                     _playerInstructions = "";
                     InstrText.text = "";
                 }

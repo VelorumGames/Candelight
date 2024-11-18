@@ -20,6 +20,7 @@ public class ShowUIRuneSprites : MonoBehaviour
     {
         if (ARune.FindSpell(name, out var spell))
         {
+            Debug.Log(spell.GetInstructions().Length == _sprites.Length);
             if (spell.GetInstructions().Length == _sprites.Length)
             {
                 int count = 0;

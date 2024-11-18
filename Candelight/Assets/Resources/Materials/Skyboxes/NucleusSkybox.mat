@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EnergyMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 5911c40b61ed0634686df8742d02aeab,
+  m_Name: NucleusSkybox
+  m_Shader: {fileID: -6465566751694194690, guid: b8b4efe955d835642b8a1c48f3a2beef,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,14 +24,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Texture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -46,12 +38,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Speed: 0.1
+    - _QueueControl: 0
+    - _QueueOffset: 0
     m_Colors:
-    - _MainColor: {r: 0.57978314, g: 0.88298196, b: 0.899371, a: 1}
-    - _SecondaryColor: {r: 0.77672946, g: 0.84217083, b: 1, a: 1}
+    - _MainColor: {r: 0.7171393, g: 0.8502506, b: 0.8805031, a: 1}
+    - _SecondaryColor: {r: 0.6301768, g: 0.8113208, b: 0.6427781, a: 1}
+    - _TertiaryColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &9196302263926062312
+--- !u!114 &1864544565677645113
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

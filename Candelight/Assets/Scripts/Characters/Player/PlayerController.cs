@@ -275,8 +275,8 @@ namespace Player
         {
             if (_bookIsOpen) //Se registra un nuevo elemento
             {
-                ARune.Activate(_instructions.ToArray());
-                if (ARune.FindSpell(_instructions.ToArray(), out var rune)) _book.ShowResult(rune);
+                ARune.Activate(_instructions.ToArray(), out var rune);
+                if (rune != null) StartCoroutine(_book.ShowResult(rune));
                 else _book.ResetText();
             }
             else //Se activa un elemento(s)
@@ -294,8 +294,9 @@ namespace Player
         {
             if (_bookIsOpen) //Se registra una nueva forma
             {
-                ARune.Activate(_instructions.ToArray());
-                if (ARune.FindSpell(_instructions.ToArray(), out var rune)) _book.ShowResult(rune);
+                ARune.Activate(_instructions.ToArray(), out var rune);
+                Debug.Log(rune.Name);
+                if (rune != null) StartCoroutine(_book.ShowResult(rune));
                 else _book.ResetText();
             }
             else //Se lanza un hechizo

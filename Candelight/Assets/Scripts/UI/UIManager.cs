@@ -173,13 +173,12 @@ namespace UI
         {
             if (FadeImage != null)
             {
-                Debug.Log("Fade image: " + FadeImage);
                 FadeImage.color = new Color(0f, 0f, 0f, 1f);
                 FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play();
             }
         }
 
-        public void FadeFromBlack(float timeOffset, float duration) //Esto puede lanzar excepcion si el jugador cambia de escena demasiado rapido. Por ahora el safe mode lo mantiene a raya, pero hay que solucionarlo
+        public void FadeFromBlack(float timeOffset, float duration)
         {
             StartCoroutine(ManageTimeOffsetBlack(timeOffset, duration));
         }

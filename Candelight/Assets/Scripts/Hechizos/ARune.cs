@@ -30,7 +30,7 @@ namespace Hechizos
             Spells.Add(Instructions, this);
 
             //Para debuggear:
-            Activate();
+            //Activate();
 
             string instrs = "";
 
@@ -70,7 +70,6 @@ namespace Hechizos
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -217,10 +216,12 @@ namespace Hechizos
 
         public void Activate() => Activated = true;
         public bool IsActivated() => Activated;
-        public static void Activate(ESpellInstruction[] chain)
+        public static void Activate(ESpellInstruction[] chain, out ARune rune)
         {
+            rune = null;
+
             Debug.Log("Se busca el hechizo con cadena: " + InstructionsToString(chain) + $"({Spells.Keys.Count})");
-            if (FindUnactiveSpell(chain, out var rune))
+            if (FindUnactiveSpell(chain, out rune))
             {
                 Debug.Log("Se activa el hechizo: " + rune.Name);
                 rune.Activate();
