@@ -32,22 +32,39 @@ namespace Events
         {
             _map = map;
 
+            Debug.Log("Se genera evento");
+            ARoom room = _map.GetRandomAvailableRoom(true).GetComponent<ARoom>();
+            room.RoomType = ERoomType.Event;
+            room.IdText.text += " EVENT";
+            room.gameObject.name = "Event Room";
+
             switch (_map.CurrentNodeInfo.EventID)
             {
-                case 0:
-                    Debug.Log("Se genera evento");
-                    ARoom room = _map.GetRandomAvailableRoom(true).GetComponent<ARoom>();
-                    room.RoomType = ERoomType.Event;
-                    room.IdText.text += " EVENT";
-                    room.gameObject.name = "Event Room";
-
+                case 0: //Test
                     _currentEvent = Instantiate(_eventEndings[0], room.GetRandomSpawnPoint());
-                    _currentEvent.transform.position = room.GetRandomSpawnPoint().position;
+                    break;
+                case 1: //Honor Herido
+                    switch(GetEventSolution())
+                    {
+                        case EEventSolution.Ignored:
+                            _currentEvent = Instantiate(_eventEndings[1], room.GetRandomSpawnPoint());
+                            break;
+                        case EEventSolution.Failed:
+                            _currentEvent = Instantiate(_eventEndings[1], room.GetRandomSpawnPoint());
+                            break;
+                        case EEventSolution.Completed:
+                            _currentEvent = Instantiate(_eventEndings[2], room.GetRandomSpawnPoint());
+                            break;
+                    }
+                    break;
+                case 2: //Mr Bombastic
                     break;
                 default:
                     Debug.Log("No se generara ningun evento para este nodo");
                     break;
             }
+
+            if (_currentEvent != null) _currentEvent.transform.position = room.GetRandomSpawnPoint().position;
         }
 
         public EEventSolution GetEventSolution() => _map.CurrentNodeInfo.EventSolution;
