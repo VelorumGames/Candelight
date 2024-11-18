@@ -1,3 +1,4 @@
+using Controls;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Map
 
         private void Start()
         {
+            FindAnyObjectByType<InputManager>().LoadControls(EControlMap.Level);
             _player.transform.position = GetPlayerStart().position;
         }
 

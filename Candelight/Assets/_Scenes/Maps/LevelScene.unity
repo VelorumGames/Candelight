@@ -433,7 +433,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 0.5
+    m_Time: 0
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -615,12 +615,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mixer: {fileID: 24100000, guid: f6317272d0ee82c459c96664b6a5b4e6, type: 2}
---- !u!224 &809893926 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4106319399860328216, guid: c46c020e6f24e1a43b957187b5e7e93a,
-    type: 3}
-  m_PrefabInstance: {fileID: 3523103089918366145}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1195221486
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,11 +1193,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1195221490}
     m_Modifications:
-    - target: {fileID: 275067896084342767, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_Name
-      value: MinimapSprite
-      objectReference: {fileID: 0}
     - target: {fileID: 370396440552804932, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1339,11 +1328,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4141193912134748855, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4935394929591358164, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_Name
@@ -1354,21 +1338,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6630884662820169134, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_Maskable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7439247498470722205, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: _roomContainer
-      value: 
-      objectReference: {fileID: 809893926}
-    - target: {fileID: 7439247498470722205, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: _globalContainer
-      value: 
-      objectReference: {fileID: 3523103089918366146}
     - target: {fileID: 7466757397175711825, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1398,11 +1367,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7688108729564693026, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_Name
-      value: MinimapPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 7752872242616346037, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
@@ -1439,12 +1403,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3523103089918366148}
   m_SourcePrefab: {fileID: 100100000, guid: c46c020e6f24e1a43b957187b5e7e93a, type: 3}
---- !u!224 &3523103089918366146 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6026885732604517841, guid: c46c020e6f24e1a43b957187b5e7e93a,
-    type: 3}
-  m_PrefabInstance: {fileID: 3523103089918366145}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3523103089918366147 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8251706525914836129, guid: c46c020e6f24e1a43b957187b5e7e93a,

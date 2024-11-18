@@ -102,7 +102,11 @@ public class IntroTutorial : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
-        _ui.FadeToWhite(2f, () => SceneManager.LoadScene("TutorialScene"));
+        _ui.FadeToWhite(2f, () =>
+        {
+            FindObjectOfType<IntroGravity>().ResetPlayer();
+            SceneManager.LoadScene("TutorialScene");
+        });
     }
 
     void ShowText(string t)

@@ -99,6 +99,7 @@ namespace Map
             else Instance = this;
 
             _uiMan = FindObjectOfType<UIManager>();
+            //Debug
             FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
 
             ConnectionMaterial = FindObjectOfType<LightingManager>().GetConnectionMaterial(CurrentNodeInfo.Biome);

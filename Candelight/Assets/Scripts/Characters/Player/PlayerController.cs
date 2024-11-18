@@ -221,7 +221,7 @@ namespace Player
         {
             if (_isFirstPerson)
             {
-                _fpOrientation = Mathf.Clamp(_fpOrientation + delta[1] * _mouseSens * Time.deltaTime * 10f, -60f, 60f);
+                _fpOrientation = Mathf.Clamp(_fpOrientation + delta[1] * _mouseSens * Time.deltaTime * 10f, -50f, 50f);
                 _camMan.GetActiveCam().transform.rotation = Quaternion.Euler(-_fpOrientation, 0f, 0f);
             }
         }

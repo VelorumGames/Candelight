@@ -14,20 +14,26 @@ public class IntroGravity : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
+                FindObjectOfType<PlayerController>().SetMove(false);
+
                 _cf = other.gameObject.AddComponent<ConstantForce>();
                 _cf.force = new Vector3(0f, -500f, 0f);
 
                 _cf.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
                 _active = false;
+
+                GetComponentInChildren<ParticleSystem>().Play();
             }
         }
     }
 
-    private void OnDisable()
+    public void ResetPlayer()
     {
         if (_cf != null)
         {
+            FindObjectOfType<PlayerController>().SetMove(true);
             _cf.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+            _cf.force = new Vector3(0f, 0f, 0f);
             Destroy(_cf);
         }
     }

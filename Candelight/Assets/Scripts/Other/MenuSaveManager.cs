@@ -3,6 +3,7 @@ using Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using World;
 
 public class MenuSaveManager : MonoBehaviour
@@ -56,5 +57,7 @@ public class MenuSaveManager : MonoBehaviour
         SaveSystem.PlayerData.Score = World.CompletedNodes;
 
         World.LoadedInfo = false;
+
+        SceneManager.LoadScene("WorldScene");
     }
 }
