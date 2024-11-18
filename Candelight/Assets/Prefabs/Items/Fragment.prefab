@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7421459588325345504}
   - component: {fileID: 2373010511799239208}
   - component: {fileID: 5220943791180373713}
+  - component: {fileID: -6178029230080043238}
   m_Layer: 0
   m_Name: Fragment
   m_TagString: Untagged
@@ -82,6 +83,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.75
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6178029230080043238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3511583418104216482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66d7ccd7729c5a042ac6f06749b4f473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3796252869533005280
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +157,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 53057aaafb190f24f89162dfd0b5d8b3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

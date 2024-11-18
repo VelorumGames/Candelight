@@ -38,6 +38,7 @@ public abstract class AController : MonoBehaviour
 
     protected bool CanMove = true;
 
+    public event Action<float, float> OnDamage; //Primer float: el dano; Segundo float: la vida restante
     public event Action<AController> OnDeath;
 
     protected void Start()
@@ -46,6 +47,11 @@ public abstract class AController : MonoBehaviour
     }
 
     #region Damage & Effects
+
+    protected void CallDamageEvent(float dam, float health)
+    {
+        if (OnDamage != null) OnDamage(dam, health);
+    }
 
     public abstract void RecieveDamage(float damage);
 
@@ -99,6 +105,10 @@ public abstract class AController : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Se desplaza a un personaje en una direccion
+    /// </summary>
+    /// <param name="direction"></param>
     public void OnMove(Vector2 direction)
     {
         if (CanMove)
@@ -109,6 +119,11 @@ public abstract class AController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Se desplaza a un personaje hacia un objetivo
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
     protected IEnumerator MoveTowards(Transform target)
     {
         Vector3 direction;
@@ -120,6 +135,12 @@ public abstract class AController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Se desplaza al personaje hacia un objetivo pero deja de intentar aproximarse pasado un tiempo
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="timeOut"></param>
+    /// <returns></returns>
     protected IEnumerator MoveTowards(Vector3 target, float timeOut)
     {
         float outTime = 0;
@@ -133,7 +154,11 @@ public abstract class AController : MonoBehaviour
         }
     }
 
-    public Vector3 GetOrientation() => Orientation;
+    public Vector3 GetOrientation()
+    {
+        //Debug.Log("ORIENTATION: " + Orientation);
+        return Orientation.normalized;
+    }
 
     public void SetMove(bool b) => CanMove = b;
 

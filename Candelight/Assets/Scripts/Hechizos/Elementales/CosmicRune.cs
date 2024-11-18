@@ -7,6 +7,9 @@ namespace Hechizos.Elementales
 {
     public class CosmicRune : AElementalRune
     {
+        float _pullFactor = 1f;
+        float _pushFactor = 1f;
+
         public CosmicRune(Mage m) : base(m)
         {
             Name = "Cosmic";
@@ -26,7 +29,7 @@ namespace Hechizos.Elementales
             //Atrae al enemigo
             if (target.TryGetComponent<EnemyController>(out var cont))
             {
-                cont.Push(200f, - (target.position - MageManager.GetPlayerTarget().position));
+                cont.Push(200f * _pullFactor, - (target.position - MageManager.GetPlayerTarget().position));
             }
         }
         public override void ProjectileEnd(Transform target)
@@ -44,7 +47,7 @@ namespace Hechizos.Elementales
             //Repele al enemigo
             if (target.TryGetComponent<EnemyController>(out var cont))
             {
-                cont.Push(100f, target.position - MageManager.GetPlayerTarget().position);
+                cont.Push(100f * _pushFactor, target.position - MageManager.GetPlayerTarget().position);
             }
         }
 
@@ -58,7 +61,7 @@ namespace Hechizos.Elementales
             //Repele al enemigo
             if (target.TryGetComponent<EnemyController>(out var cont))
             {
-                cont.Push(300f, target.position - MageManager.GetPlayerTarget().position);
+                cont.Push(300f * _pushFactor, target.position - MageManager.GetPlayerTarget().position);
             }
         }
 
@@ -67,7 +70,16 @@ namespace Hechizos.Elementales
         {
 
         }
+        public override IEnumerator BuffReset(Transform target)
+        {
+            yield return new WaitForSeconds(_buffDuration);
 
+        }
+
+        public void AddPullFactor(float p) => _pullFactor += p;
+        public void RemovePullFactor(float p) => _pullFactor -= p;
+        public void AddPushFactor(float p) => _pushFactor += p;
+        public void RemovePushFactor(float p) => _pushFactor -= p;
 
     }
 

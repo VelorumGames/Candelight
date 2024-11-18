@@ -17,7 +17,8 @@ namespace Controls
         Level,
         World,
         Dialogue,
-        UI
+        UI,
+        Intro
     }
 
     public enum ESpellInstruction
@@ -40,14 +41,17 @@ namespace Controls
         InputActionMap _levelMap;
         InputActionMap _dialogueMap;
         InputActionMap _uiMap;
+        InputActionMap _introMap;
 
         DialogueUI _dialogue;
 
         InputAction _move;
+        InputAction _introMove;
         InputAction _choosePath;
         InputAction _element;
         InputAction _spell;
         InputAction _look;
+        InputAction _introLook;
 
         CameraManager _camMan;
         
@@ -150,6 +154,14 @@ namespace Controls
             next.performed += NextDialogueBlock;
             InputAction dialoguePause = _dialogueMap.FindAction("Pause");
             dialoguePause.performed += _cont.OnPause;
+
+            //Intro
+            _introMap = Input.FindActionMap("Intro");
+
+            _introMove = _introMap.FindAction("Move");
+            InputAction introPause = _introMap.FindAction("Pause");
+            introPause.performed += _cont.OnPause;
+            _introLook = _introMap.FindAction("Look");
         }
 
         public void LoadControls(EControlMap map)
@@ -170,6 +182,9 @@ namespace Controls
                     break;
                 case EControlMap.UI:
                     _currentMap = _uiMap;
+                    break;
+                case EControlMap.Intro:
+                    _currentMap = _introMap;
                     break;
             }
             //Debug.Log("Mapa colocado: " + _currentMap);
@@ -200,11 +215,16 @@ namespace Controls
         {
             if (_cont)
             {
+                if (_introMove.IsPressed()) _cont.OnMove(_introMove.ReadValue<Vector2>());
+
                 if (_move.IsPressed()) _cont.OnMove(_move.ReadValue<Vector2>());
                 else _cont.OnStopMove();
+
                 if (_choosePath.IsPressed()) _cont.OnChoosePath(_choosePath.ReadValue<Vector2>());
 
                 if (_look.enabled) _cont.OnLook(_look.ReadValue<Vector2>());
+
+                if (_introLook.enabled) _cont.OnFirstPersonLook(_introLook.ReadValue<Vector2>());
             }
         }
 

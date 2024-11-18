@@ -44,6 +44,8 @@ namespace Hechizos
 
         private void Update()
         {
+            //Debug.Log("Vel: " + GetComponent<Rigidbody>().velocity);
+
             if (OnUpdate != null) OnUpdate(Target);
         }
 
@@ -183,6 +185,8 @@ namespace Hechizos
         {
             _trails[(int)element].gameObject.SetActive(true);
         }
+
+        
 
         public void ResetTrail()
         {

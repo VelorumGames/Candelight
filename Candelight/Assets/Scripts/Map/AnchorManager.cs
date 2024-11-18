@@ -91,6 +91,8 @@ namespace Map
             _active = Random.value < 0.5f;
             if (_active && _map.CanCreateRoom()) SpawnRoom();
             else StartCoroutine(DelayedRoomCreation());
+
+            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 0);
         }
 
         private void Update()
@@ -103,6 +105,9 @@ namespace Map
             //    Debug.DrawRay(transform.position + 0.44f * transform.forward, _auxDirRight * _map.MediumThreshold, Color.yellow);
             //    Debug.DrawRay(transform.position + (_map.MediumThreshold * transform.forward - _map.SmallThreshold * transform.right), _map.SmallThreshold * transform.right, Color.blue);
             //}
+            //Debug.DrawRay(transform.position, transform.position + _map.MediumThreshold * transform.forward, Color.blue);
+            //Debug.DrawRay(transform.position + _map.MediumThreshold * transform.forward, transform.right * _map.SmallThreshold, Color.red);
+            //Debug.DrawRay(transform.position + _map.MediumThreshold * transform.forward, );
         }
 
         /// <summary>
@@ -131,7 +136,9 @@ namespace Map
             if (Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
                 Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirRight, out _auxRhit, _map.MediumThreshold, ~_mask) && _auxRhit.transform.parent.parent != transform.parent) maxSize -= 1;
             //Debug.Log($"Colisiona con {_hit.transform.name}");
+            //Debug.Log("Prev MAX_SIZE: " + maxSize);
             if (Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold)) maxSize = -1;
+            //Debug.Log(Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold));
             if (maxSize == -1) return;
 
             ERoomSize size = (ERoomSize)Random.Range(0, maxSize + 1);
@@ -499,12 +506,14 @@ namespace Map
         {
             GetComponent<Collider>().enabled = false;
             _sprite.SetActive(false);
+            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 0);
 
             if (!_room.AvailableAnchors.Contains(this)) _room.AvailableAnchors.Add(this);
         }
 
         public void CloseAnchor()
         {
+            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 1);
             GetComponent<Collider>().enabled = true;
             _sprite.SetActive(true);
         }

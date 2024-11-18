@@ -7,6 +7,8 @@ using System.Data;
 using Player;
 using UI;
 using SpellInteractuable;
+using Cameras;
+using UnityEngine.SceneManagement;
 
 namespace Hechizos
 {
@@ -18,21 +20,26 @@ namespace Hechizos
         static List<AElementalRune> _activeElements = new List<AElementalRune>(); // Propiedad que mantiene el elemento activo (o plural) del mago
 
         PlayerController _cont;
+        CameraManager _cam;
 
         public GameObject[] Projectiles;
         GameObject _lastProjectile;
         [SerializeField] float _projectileSpeed;
+        [SerializeField] float _projectileSpeedFactor = 1f;
         public GameObject Explosion;
         public GameObject Melee;
 
         int _numProjectiles = 1;
-        int _extraParallelProjectiles = 1;
+        bool _extraProjs;
 
         List<EElements> _trailElements = new List<EElements>();
 
         private void OnEnable()
         {
             _cont = FindObjectOfType<PlayerController>();
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
         private void Awake()
@@ -43,6 +50,16 @@ namespace Hechizos
             ARune.RegisterMage(this);
 
             DontDestroyOnLoad(gameObject);
+        }
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            _cam = FindObjectOfType<CameraManager>();
+        }
+
+        void OnSceneUnloaded(Scene scene)
+        {
+
         }
 
         #region Active Elements
@@ -134,12 +151,7 @@ namespace Hechizos
         {
             Debug.Log("Se instancia proyectil");
 
-            _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
-            _lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
-            while (_lastProjectile.activeInHierarchy)
-            {
-                _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
-            }
+            _lastProjectile = GetAvailableProjectile();
 
             StartCoroutine(DelayedProjectile(numProj * 0.5f)); //NumProj es el numero del proyectil
 
@@ -149,17 +161,68 @@ namespace Hechizos
         IEnumerator DelayedProjectile(float time)
         {
             yield return new WaitForSeconds(time);
-            _lastProjectile.SetActive(true);
             
-            foreach(var trailEl in _trailElements)
+            if (_extraProjs) //Si se lanzan tres
             {
-                if (IsElementActive(trailEl)) _lastProjectile.GetComponent<Projectile>().ShowTrail(trailEl);
+                GameObject[] projs = new GameObject[3];
+                projs[0] = _lastProjectile;
+                projs[1] = GetAvailableProjectile();
+                projs[2] = GetAvailableProjectile();
+
+                int count = 0;
+                foreach(var proj in projs)
+                {
+                    proj.SetActive(true);
+
+                    foreach (var trailEl in _trailElements)
+                    {
+                        if (IsElementActive(trailEl)) proj.GetComponent<Projectile>().ShowTrail(trailEl);
+                    }
+
+                    proj.transform.position = _cont.transform.position;
+                    Vector3 orientation = _cont.GetOrientation();
+                    if (count == 0) orientation = Quaternion.AngleAxis(30f, Vector3.up) * orientation;
+                    else if (count == 1) orientation = Quaternion.AngleAxis(-30f, Vector3.up) * orientation;
+                    proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * orientation.normalized, ForceMode.Impulse);
+
+                    count++;
+                    yield return null;
+                }
+
+                _cam.Shake(10f, 0.2f, 0.5f);
+                yield return null;
             }
+            else //Si solo se lanza un proyectil
+            {
+                _lastProjectile.SetActive(true);
 
-            _lastProjectile.transform.position = _cont.transform.position;
-            _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _cont.GetOrientation(), ForceMode.Impulse);
+                foreach (var trailEl in _trailElements)
+                {
+                    if (IsElementActive(trailEl)) _lastProjectile.GetComponent<Projectile>().ShowTrail(trailEl);
+                }
 
-            yield return null;
+                _lastProjectile.transform.position = _cont.transform.position;
+                //Debug.Log("FUERZA: " + _projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation());
+
+                _lastProjectile.GetComponent<Rigidbody>().maxLinearVelocity = _projectileSpeed * _projectileSpeedFactor * 0.1f;
+                _lastProjectile.GetComponent<Rigidbody>().AddRelativeForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
+
+                _cam.Shake(6f, 0.1f, 0.4f);
+
+                yield return null;
+            }
+        }
+
+        GameObject GetAvailableProjectile()
+        {
+            GameObject proj = null;
+            proj = Projectiles[Random.Range(0, Projectiles.Length)];
+            proj.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
+            while (proj.activeInHierarchy)
+            {
+                proj = Projectiles[Random.Range(0, Projectiles.Length)];
+            }
+            return proj;
         }
 
         public GameObject SpawnProjectileWithRandomDirection()
@@ -175,6 +238,8 @@ namespace Hechizos
             _lastProjectile.transform.position = _cont.transform.position;
             _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)), ForceMode.Impulse);
 
+            _cam.Shake(5f, 0.4f, 0.5f);
+
             return _lastProjectile;
         }
 
@@ -183,14 +248,24 @@ namespace Hechizos
         public GameObject SpawnExplosion()
         {
             GameObject expl = Instantiate(Explosion);
+            expl.GetComponent<Explosion>().RegisterTypes(_activeElements.ToArray());
             expl.transform.position = _cont.transform.position;
+
+            _cam.Shake(20f, 0.2f, 1f);
+
             return expl;
         }
 
         public GameObject SpawnMelee()
         {
             GameObject mel = Instantiate(Melee);
+            mel.GetComponent<Melee>().RegisterTypes(_activeElements.ToArray());
             mel.transform.position = _cont.transform.position;
+
+            mel.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * 0.15f * _cont.GetOrientation(), ForceMode.Impulse);
+
+            _cam.Shake(2f, 0.1f, 0.3f);
+
             return mel;
         }
 
@@ -243,8 +318,7 @@ namespace Hechizos
 
         public int GetNumSpells() => _numProjectiles;
 
-        public void AddExtraParallelSpellThrow(int num) => _extraParallelProjectiles += num;
-        public void ResetExtraParallelSpellThrows() => _extraParallelProjectiles = 1;
+        public void SetExtraProjectiles(bool b) => _extraProjs = b;
 
         public void ShowTrail(EElements elem)
         {
@@ -279,6 +353,19 @@ namespace Hechizos
             }
 
             return false;
+        }
+
+        public void SetExtraProjSpeed(float speed) => _projectileSpeedFactor = speed;
+
+        public void ManageBuffReset(IEnumerator func)
+        {
+            StartCoroutine(func);
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
     }
 }

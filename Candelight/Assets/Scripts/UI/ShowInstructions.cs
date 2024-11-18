@@ -1,5 +1,6 @@
 using Controls;
 using Hechizos;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,9 +11,12 @@ namespace UI
     public class ShowInstructions : MonoBehaviour
     {
         [SerializeField] Sprite[] _instrSprites;
-        [SerializeField] Sprite[] _elementSprites;
+        [SerializeField] Image[] _elementSprites;
+        [SerializeField] Image[] _orbSprites;
         [SerializeField] Image[] _imgs;
-        [SerializeField] Image[] _elements;
+        [SerializeField] RectTransform _elementContainer;
+        [SerializeField] RectTransform[] _masks;
+        List<RectTransform> _elementTransforms = new List<RectTransform>();
         int _current;
 
         bool _activeCoroutine;
@@ -28,38 +32,68 @@ namespace UI
             ResetElements();
             if (Mage.Instance != null)
             {
-                for (int i = 0; i < Mage.Instance.GetActiveElements().Count; i++)
+                ResetElements();
+                _orbSprites[Math.Clamp(Mage.Instance.GetActiveElements().Count - 1, 0, 1)].gameObject.SetActive(true);
+
+                foreach (var activeEl in Mage.Instance.GetActiveElements())
                 {
-                    _elements[i].gameObject.SetActive(true);
-                    ARune rune = Mage.Instance.GetActiveElements()[i];
-                    switch (rune.Name)
+                    switch (activeEl.Name)
                     {
                         case "Fire":
-                            _elements[i].sprite = _elementSprites[0];
+                            _elementSprites[0].gameObject.SetActive(true);
+                            _elementTransforms.Add(_elementSprites[0].GetComponent<RectTransform>());
                             break;
                         case "Electric":
-                            _elements[i].sprite = _elementSprites[1];
+                            _elementSprites[1].gameObject.SetActive(true);
+                            _elementTransforms.Add(_elementSprites[1].GetComponent<RectTransform>());
                             break;
                         case "Cosmic":
-                            _elements[i].sprite = _elementSprites[2];
+                            _elementSprites[2].gameObject.SetActive(true);
+                            _elementTransforms.Add(_elementSprites[2].GetComponent<RectTransform>());
                             break;
                         case "Phantom":
-                            _elements[i].sprite = _elementSprites[3];
+                            _elementSprites[3].gameObject.SetActive(true);
+                            _elementTransforms.Add(_elementSprites[3].GetComponent<RectTransform>());
                             break;
                         default:
-                            Debug.Log("ERROR: No se ha encontrado ningun sprite con este nombre: " + rune.Name);
+                            Debug.Log("ERROR: No se ha encontrado ningun sprite con este nombre: " + activeEl.Name);
                             break;
                     }
+                }
+
+                switch (_elementTransforms.Count)
+                {
+                    case 1:
+                        _elementTransforms[0].SetParent(_masks[0]);
+                        _masks[0].gameObject.SetActive(true);
+                        break;
+                    case 2:
+                        _elementTransforms[0].SetParent(_masks[1]);
+                        _elementTransforms[1].SetParent(_masks[2]);
+                        _masks[1].gameObject.SetActive(true);
+                        _masks[2].gameObject.SetActive(true);
+                        break;
+                    case 3:
+                        _elementTransforms[0].SetParent(_masks[3]);
+                        _elementTransforms[1].SetParent(_masks[4]);
+                        _elementTransforms[2].SetParent(_masks[5]);
+                        _masks[3].gameObject.SetActive(true);
+                        _masks[4].gameObject.SetActive(true);
+                        _masks[5].gameObject.SetActive(true);
+                        break;
                 }
             }
         }
 
         public void ResetElements()
         {
-            foreach (var i in _elements)
+            foreach (var orb in _orbSprites) orb.gameObject.SetActive(false);
+            foreach (var el in _elementSprites) el.gameObject.SetActive(false);
+            foreach (var m in _masks) m.gameObject.SetActive(false);
+            if (_elementTransforms.Count > 0)
             {
-                i.sprite = null;
-                i.gameObject.SetActive(false);
+                foreach (var el in _elementTransforms) el.SetParent(_elementContainer);
+                _elementTransforms.Clear();
             }
         }
 

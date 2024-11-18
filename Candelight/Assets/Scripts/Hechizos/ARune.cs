@@ -3,6 +3,7 @@ using Hechizos.DeForma;
 using Hechizos.Elementales;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Hechizos
@@ -69,7 +70,6 @@ namespace Hechizos
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -216,10 +216,12 @@ namespace Hechizos
 
         public void Activate() => Activated = true;
         public bool IsActivated() => Activated;
-        public static void Activate(ESpellInstruction[] chain)
+        public static void Activate(ESpellInstruction[] chain, out ARune rune)
         {
+            rune = null;
+
             Debug.Log("Se busca el hechizo con cadena: " + InstructionsToString(chain) + $"({Spells.Keys.Count})");
-            if (FindUnactiveSpell(chain, out var rune))
+            if (FindUnactiveSpell(chain, out rune))
             {
                 Debug.Log("Se activa el hechizo: " + rune.Name);
                 rune.Activate();
@@ -252,6 +254,18 @@ namespace Hechizos
             return false;
         }
 
-        public void SetExtraElement(bool b) => _extraElement = b;
+        public static void SetExtraElement(bool b) => _extraElement = b;
+
+        public string GetInstructionsToString()
+        {
+            string instrs = "";
+            foreach(var i in Instructions)
+            {
+                instrs += i.ToString();
+            }
+            return instrs;
+        }
+
+        public ESpellInstruction[] GetInstructions() => Instructions.ToArray();
     }
 }

@@ -2,6 +2,7 @@ using Items;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using World;
 
@@ -12,13 +13,16 @@ namespace Enemy
         public EnemyInfo Info;
         [SerializeField] EnemyModifiers _modifier;
         PlayerController _player;
+        UIManager _uiMan;
 
         public GameObject Fragment;
 
-        float _fragDropRate;
+        float _fragDropRate = 0.5f;
 
         private void Awake()
         {
+            _uiMan = FindObjectOfType<UIManager>();
+
             _rb = GetComponent<Rigidbody>();
             Orientation = transform.forward;
         }
@@ -38,11 +42,12 @@ namespace Enemy
         private void OnEnable()
         {
             OnDeath += SpawnFragments;
+            OnDamage += _uiMan.EnemyDamageFeedback;
         }
 
         public void SpawnFragments(AController _)
         {
-            Inventory.Instance.SpawnFragments(Random.Range(Info.MinFragments, Info.MaxFragments), _fragDropRate * _modifier.FragDropMod, transform);
+            FindObjectOfType<Inventory>().SpawnFragments(Random.Range(Info.MinFragments, Info.MaxFragments), _fragDropRate * _modifier.FragDropMod, transform);
 
             //int num = Random.Range(Info.MinFragments, Info.MaxFragments);
             //Debug.Log($"{gameObject.name} suelta {num} fragmentos");
@@ -61,6 +66,7 @@ namespace Enemy
             //Debug.Log($"Enemigo {gameObject.name} recibe {damage} de dano");
 
             CurrentHP -= damage;
+            CallDamageEvent(damage, CurrentHP/MaxHP);
         }
 
         public new void OnMove(Vector2 direction)
@@ -114,6 +120,7 @@ namespace Enemy
         private void OnDisable()
         {
             OnDeath -= SpawnFragments;
+            OnDamage -= _uiMan.EnemyDamageFeedback;
         }
     }
 }

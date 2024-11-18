@@ -9,6 +9,7 @@ namespace Hechizos.Elementales
     public class PhantomRune : AElementalRune
     {
         int _maxSpellsOnExplosion = 5;
+        float _slowness = 0.5f;
 
         public PhantomRune(Mage m) : base(m)
         {
@@ -36,7 +37,7 @@ namespace Hechizos.Elementales
             //Ralentiza al enemigo
             if (target.TryGetComponent<EnemyController>(out var cont))
             {
-                cont.Slow(0.5f, 3f);
+                cont.Slow(_slowness, 3f);
             }
         }
         public override void ProjectileEnd(Transform target)
@@ -85,13 +86,22 @@ namespace Hechizos.Elementales
         //Potenciador fantasmal
         public override void BuffActivation(Transform target)
         {
-
+            MageManager.SetExtraProjSpeed(_buffedSpeed);
+            MageManager.ManageBuffReset(BuffReset(target));
+        }
+        public override IEnumerator BuffReset(Transform target)
+        {
+            yield return new WaitForSeconds(_buffDuration);
+            MageManager.SetExtraProjSpeed(1);
         }
 
         public void SetMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion = n;
         public void AddMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion += n;
         public void RemoveMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion -= n;
         public int GetMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion;
+
+        public void AddSlowness(float slow) => _slowness /= slow;
+        public void RemoveSlowness(float slow) => _slowness *= slow;
 
     }
 }

@@ -9,7 +9,7 @@ namespace Dialogues
     public class DialogueBlock : ScriptableObject
     {
         public Sprite icon;
-        public string text;
+        [TextArea(15,30)] public string text;
         public GameObject item;
         public bool RandomItem;
         public DialogueBlock nextBlock;

@@ -16,6 +16,7 @@ namespace Visual
         [Space(7)]
         [SerializeField] Material _dGround;
         [SerializeField] Material _dConnection;
+        [SerializeField] Material _dSkybox;
 
         [Space(20)]
         [Header("Temeria Settings")]
@@ -24,6 +25,7 @@ namespace Visual
         [Space(7)]
         [SerializeField] Material _tGround;
         [SerializeField] Material _tConnection;
+        [SerializeField] Material _tSkybox;
 
         [Space(20)]
         [Header("Idria Settings")]
@@ -32,6 +34,7 @@ namespace Visual
         [Space(7)]
         [SerializeField] Material _iGround;
         [SerializeField] Material _iConnection;
+        [SerializeField] Material _iSkybox;
 
 
         private void Start()
@@ -47,6 +50,8 @@ namespace Visual
                     RenderSettings.fogColor = _dFog;
                     RenderSettings.fogEndDistance = _dFogDistance;
 
+                    RenderSettings.skybox = _dSkybox;
+
                     _ground.material = _dGround;
 
                     break;
@@ -54,12 +59,16 @@ namespace Visual
                     RenderSettings.fogColor = _tFog;
                     RenderSettings.fogEndDistance = _tFogDistance;
 
+                    RenderSettings.skybox = _tSkybox;
+
                     _ground.material = _tGround;
 
                     break;
                 case EBiome.Idria:
                     RenderSettings.fogColor = _iFog;
                     RenderSettings.fogEndDistance = _iFogDistance;
+
+                    RenderSettings.skybox = _iSkybox;
 
                     _ground.material = _iGround;
 

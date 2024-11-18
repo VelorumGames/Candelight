@@ -8,9 +8,10 @@ namespace Menu
 {
     public class PlayGame : MonoBehaviour
     {
+        public bool PlayDirectly;
         public void InitializeGame()
         {
-            SceneManager.LoadScene("WorldScene");
+            SceneManager.LoadScene(PlayDirectly ? "WorldScene" : "IntroScene");
             ARune.CreateAllRunes(FindObjectOfType<Mage>());
         }
     }

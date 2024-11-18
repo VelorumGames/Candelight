@@ -29,5 +29,10 @@ namespace World
         }
 
         public event Action<float> OnCandleChanged;
+
+
+        //SAVE INFO
+        public List<int> CompletedIds = new List<int>();
+        public bool LoadedInfo;
     }
 }

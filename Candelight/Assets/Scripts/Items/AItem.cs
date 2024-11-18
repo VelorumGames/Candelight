@@ -12,6 +12,7 @@ namespace Items
     {
         public ItemInfo Data;
 
+        public bool IsNew = true;
         protected bool IsActivated = false;
              
         private void Start()
