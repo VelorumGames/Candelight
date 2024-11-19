@@ -4,8 +4,10 @@ using SpellInteractuable;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using TMPro;
 using UnityEngine;
+using Player;
 
 namespace Hechizos
 {
@@ -31,6 +33,8 @@ namespace Hechizos
         [SerializeField] Material[] _secMaterials;
         [SerializeField] TrailRenderer[] _trails;
 
+        public bool AffectsPlayer;
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
@@ -51,17 +55,34 @@ namespace Hechizos
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Enemy"))
+            if (!AffectsPlayer) 
             {
-                Target = other.transform.parent;
-                if (OnImpact != null) OnImpact(Target);
-
-                if (Target.TryGetComponent<EnemyController>(out var enemy))
+                if (other.CompareTag("Enemy"))
                 {
-                    enemy.RecieveDamage(Damage);
-                }
+                    Target = other.transform.parent;
+                    if (OnImpact != null) OnImpact(Target);
 
+                    if (Target.TryGetComponent<EnemyController>(out var enemy))
+                    {
+                        enemy.RecieveDamage(Damage);
+                    }
+                }
+            } 
+            else
+            {
+                if(other.CompareTag("Player"))
+                {
+                    Target = other.transform.parent;
+                    if (OnImpact != null) OnImpact(Target);
+
+                    if (Target.TryGetComponent<PlayerController>(out var player))
+                    {
+                        player.RecieveDamage(Damage);
+                    }
+                }
             }
+
+            
         }
 
         public void FollowTarget(Transform _)
