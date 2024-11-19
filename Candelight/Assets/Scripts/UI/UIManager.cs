@@ -47,10 +47,13 @@ namespace UI
         public Image RedFilter;
         public Image WhiteFilter;
         Volume _vol;
+        float _spellTimeScale = 0.5f;
+        float _prevTimeScale = 1f;
 
         ShowInstructions _showInstr;
         CameraManager _camMan;
         PlayerController _player;
+        InputManager _input;
 
         Coroutine _timeFreeze;
 
@@ -66,11 +69,19 @@ namespace UI
             _showInstr = FindObjectOfType<ShowInstructions>();
             _camMan = FindObjectOfType<CameraManager>();
             _player = FindObjectOfType<PlayerController>();
+            _input = FindObjectOfType<InputManager>();
         }
 
         private void OnEnable()
         {
             if (_player != null) _player.OnDamage += PlayerDamageFeedback;
+            if (_input != null)
+            {
+                _input.OnStartElementMode += EnterSpellModeFeedback;
+                _input.OnExitElementMode += ExitSpellModeFeedback;
+                _input.OnStartShapeMode += EnterSpellModeFeedback;
+                _input.OnExitShapeMode += ExitSpellModeFeedback;
+            }
         }
 
         private void OnGUI()
@@ -111,16 +122,19 @@ namespace UI
 
         private void Update()
         {
-            _chains = "";
-            foreach(var rune in ARune.Spells.Keys)
+            if (ARune.MageManager != null)
             {
-                if (ARune.FindSpell(rune, out var spell)) _chains += $"{spell.Name}: {ARune.InstructionsToString(rune)}\n";
-            }
+                _chains = "";
+                foreach (var rune in ARune.Spells.Keys)
+                {
+                    if (ARune.FindSpell(rune, out var spell)) _chains += $"{spell.Name}: {ARune.InstructionsToString(rune)}\n";
+                }
 
-            _elements = "";
-            foreach(var el in ARune.MageManager.GetActiveElements())
-            {
-                _elements += $"{el.Name} ";
+                _elements = "";
+                foreach (var el in ARune.MageManager.GetActiveElements())
+                {
+                    _elements += $"{el.Name} ";
+                }
             }
         }
 
@@ -231,10 +245,10 @@ namespace UI
 
         public void OnUIBack(InputAction.CallbackContext ctx)
         {
-            Debug.Log("Se intenta hacia atras: " + _windows.Count);
+            //Debug.Log("Se intenta hacia atras: " + _windows.Count);
             if (_windows.TryPop(out var window))
             {
-                Debug.Log("Hacia atras: " + _windows.Count);
+                //Debug.Log("Hacia atras: " + _windows.Count);
                 window.SetActive(false);
 
                 if (_windows.Count == 0) FindObjectOfType<InputManager>().LoadPreviousControls();
@@ -246,7 +260,7 @@ namespace UI
             window.SetActive(true);
             _windows.Push(window);
 
-            if (_windows.Count == 1) FindObjectOfType<InputManager>().LoadControls(EControlMap.UI);
+            if (_windows.Count == 1) FindObjectOfType<InputManager>()?.LoadControls(EControlMap.UI);
         }
 
         public void LoadUIWindow(GameObject window, string key)
@@ -328,11 +342,29 @@ namespace UI
             Time.timeScale = oScale;
         }
 
+        void EnterSpellModeFeedback()
+        {
+            _prevTimeScale = Time.timeScale;
+            Time.timeScale = _spellTimeScale;
+        }
+
+        void ExitSpellModeFeedback()
+        {
+            Time.timeScale = _prevTimeScale;
+        }
+
         #endregion
 
         private void OnDisable()
         {
             if (_player != null) _player.OnDamage -= PlayerDamageFeedback;
+            if (_input != null)
+            {
+                _input.OnStartElementMode -= EnterSpellModeFeedback;
+                _input.OnExitElementMode -= ExitSpellModeFeedback;
+                _input.OnStartShapeMode -= EnterSpellModeFeedback;
+                _input.OnExitShapeMode -= ExitSpellModeFeedback;
+            }
         }
     }
 }

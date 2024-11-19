@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UI;
 using UnityEngine;
+using World;
 
 namespace Scoreboard
 {
@@ -16,6 +17,8 @@ namespace Scoreboard
 
         [SerializeField] TextMeshProUGUI[] _bestPlayers;
         [SerializeField] TextMeshProUGUI[] _surroundingPlayers;
+
+        [SerializeField] WorldInfo _world;
 
         CameraManager _cam;
         UIManager _ui;
@@ -32,7 +35,8 @@ namespace Scoreboard
         {
             if (SaveSystem.ScoreboardIntro)
             {
-                _ui.FadeFromWhite(1f);
+                if (_world.CompletedNodes > 0) _ui.FadeFromWhite(3f);
+                else _ui.FadeFromBlack(3f);
             }
         }
 
@@ -47,15 +51,19 @@ namespace Scoreboard
             SpawnStars(data);
             LoadBestPlayers(data);
 
-            int index = 0;
-
-            foreach (var d in data)
+            if (SaveSystem.PlayerData != null)
             {
-                if (d.Name == SaveSystem.PlayerData.Name) break;
-                index++;
-            }
+                int index = 0;
 
-            if (data.Length > 3 && index >= 3) LoadSurroundingPlayers(index, data);
+                foreach (var d in data)
+                {
+                    if (d.Name == SaveSystem.PlayerData.Name) break;
+                    index++;
+                }
+
+                if (data.Length > 3 && index >= 3) LoadSurroundingPlayers(index, data);
+            }
+            else Debug.LogWarning("ERROR: No se han encontrado datos del jugador en el sistema");
         }
 
         void SpawnStars(UserData[] data)

@@ -1,7 +1,9 @@
+using DG.Tweening;
 using Items;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UI;
 using UnityEngine;
 using World;
@@ -66,7 +68,22 @@ namespace Enemy
             //Debug.Log($"Enemigo {gameObject.name} recibe {damage} de dano");
 
             CurrentHP -= damage;
+            ShowDamage(damage);
             CallDamageEvent(damage, CurrentHP/MaxHP);
+        }
+
+        void ShowDamage(float damage)
+        {
+            GameObject dam = new GameObject();
+            TextMeshPro damText = dam.AddComponent<TextMeshPro>();
+
+            GameObject damGO = Instantiate(dam);
+            damGO.transform.position = transform.position;
+            float target = damGO.transform.position.y + 2f;
+            damGO.transform.DOMoveY(target, 1f).Play();
+
+            damText.text = $"-{damage}";
+            damText.DOFade(0f, 1f).Play().OnComplete(() => Destroy(damGO));
         }
 
         public new void OnMove(Vector2 direction)

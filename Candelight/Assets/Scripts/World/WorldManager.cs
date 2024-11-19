@@ -65,6 +65,7 @@ namespace World
             if (!World.World)
             {
                 World.CompletedNodes = 0;
+                World.MAX_NODES = MaxNodes;
                 DontDestroyOnLoad(_worldParent.gameObject);
             }
 
@@ -99,7 +100,7 @@ namespace World
             }
             try
             {
-                MovePlayerToLastNode(CurrentNodeInfo.Node.transform);
+                MovePlayerToNode(CurrentNodeInfo.Node.transform);
             }
             catch (System.Exception e)
             {
@@ -169,10 +170,12 @@ namespace World
             {
                 if (node.TryGetComponent<NodeManager>(out var nodeMan) && nodeMan.StartNodeCheck())
                 {
-                    GameObject _startNode = node;
                     nodeMan.Text.text += " START";
                     nodeMan.SetState(ENodeState.Explored);
                     CurrentNodeInfo.Node = nodeMan; //Marcamos este como nodo inicial
+
+                    MovePlayerToNode(node.transform);
+
                     return;
                 }
             }
@@ -187,7 +190,7 @@ namespace World
             }
         }
 
-        void MovePlayerToLastNode(Transform node)
+        void MovePlayerToNode(Transform node)
         {
             _player.transform.position = new Vector3(node.position.x, _player.transform.position.y, node.position.z);
         }
@@ -239,7 +242,7 @@ namespace World
 
         void LoadNextScene()
         {
-            _player.transform.position = new Vector3(999f, 999f, 999f);
+            _player.transform.position = new Vector3(999f, _player.transform.position.y, 999f);
             World.World.SetActive(false);
             switch (CurrentNodeInfo.LevelTypes[0])
             {

@@ -19,6 +19,11 @@ namespace UI
             _world.OnCandleChanged += UpdateCandle;
         }
 
+        private void Start()
+        {
+            UpdateCandle(_world.Candle);
+        }
+
         void UpdateCandle(float candle)
         {
             float rem = candle / _world.MAX_CANDLE;

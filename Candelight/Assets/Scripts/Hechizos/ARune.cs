@@ -214,7 +214,11 @@ namespace Hechizos
             return str;
         }
 
-        public void Activate() => Activated = true;
+        public void Activate()
+        {
+            if (MageManager != null) MageManager.RuneActivation(this);
+            Activated = true;
+        }
         public bool IsActivated() => Activated;
         public static void Activate(ESpellInstruction[] chain, out ARune rune)
         {

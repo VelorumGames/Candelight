@@ -115,7 +115,7 @@ namespace UI
 
         public void ResetSprites()
         {
-            Debug.Log("Reseteo sprites");
+            //Debug.Log("Reseteo sprites");
             _current = 0;
 
             foreach (var i in _imgs)

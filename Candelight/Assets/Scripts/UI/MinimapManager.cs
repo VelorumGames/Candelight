@@ -14,6 +14,9 @@ namespace UI
         [SerializeField] Transform _globalContainer;
         Dictionary<int, GameObject> _minimapRooms = new Dictionary<int, GameObject>();
 
+        float _movement = 15f;
+        bool _lerping;
+
         /// <summary>
         /// Al crearse una habitacion, se crea su correspondiente indicacion en el minimapa
         /// </summary>
@@ -22,8 +25,15 @@ namespace UI
             //Debug.Log($"ID: {id} para offset {offset}");
 
             GameObject newRoom = Instantiate(MinimapRoomPrefabs[(int)type], _roomContainer);
-            if (type != ERoomType.Start) newRoom.SetActive(false); //Desactivamos las salas para ir mostrandolas a medida que avanza el jugador
             newRoom.GetComponent<RectTransform>().localPosition = offset;
+
+            if (type != ERoomType.Start) newRoom.SetActive(false); //Desactivamos las salas para ir mostrandolas a medida que avanza el jugador
+            else
+            {
+                _roomContainer.GetComponent<RectTransform>().localPosition = -offset + new Vector2(0f, 30f);
+                _minimapPlayer.GetComponent<RectTransform>().position = newRoom.GetComponent<RectTransform>().position;
+            }
+            
             _minimapRooms.Add(id, newRoom);
         }
 
@@ -38,25 +48,28 @@ namespace UI
 
         public void ShowPlayerInRoom(int id)
         {
-            if (!_minimapRooms[id].activeInHierarchy) _minimapRooms[id].SetActive(true);
-            _minimapPlayer.GetComponent<RectTransform>().localPosition = _minimapRooms[id].GetComponent<RectTransform>().localPosition;
-
-            //DOTween.To(() => _globalContainer.GetComponent<RectTransform>().localPosition, x => _globalContainer.GetComponent<RectTransform>().localPosition = x, -_minimapPlayer.GetComponent<RectTransform>().localPosition, 1f);
-            StopAllCoroutines();
-            StartCoroutine(MinimapLerp(_globalContainer.GetComponent<RectTransform>().localPosition, -_minimapPlayer.GetComponent<RectTransform>().localPosition, 1f));
-            //_globalContainer.GetComponent<RectTransform>().localPosition = -_minimapPlayer.GetComponent<RectTransform>().localPosition;
-        }
-
-        IEnumerator MinimapLerp(Vector3 start, Vector3 end, float time)
-        {
-            float h = 0;
-            while (h < 1)
+            if (!_lerping)
             {
-                _globalContainer.GetComponent<RectTransform>().localPosition = Vector3.Lerp(start, end, h);
-                h += Time.deltaTime / time;
-                yield return null;
+                if (!_minimapRooms[id].activeInHierarchy) _minimapRooms[id].SetActive(true);
+
+                //Pillamos la posicion previa del player
+                Vector3 prevPos = _minimapPlayer.GetComponent<RectTransform>().position;
+
+                //Pibe teletransportado
+                _minimapPlayer.GetComponent<RectTransform>().position = _minimapRooms[id].GetComponent<RectTransform>().position;
+
+                //Pillamos la posicion del mapa actual
+                Vector3 target = _globalContainer.GetComponent<RectTransform>().position;
+                Vector3 offset = _minimapPlayer.GetComponent<RectTransform>().position - prevPos;
+
+                //Debug.Log($"X: {offset.x}; Y: {offset.y}");
+
+                if (offset.x == 0 && offset.y == 0) return;
+
+                _lerping = true;
+                target += offset.x == 0 ? new Vector3(0f, offset.y > 0 ? -_movement : _movement, 0f) : new Vector3(offset.x > 0 ? -_movement : _movement, 0f, 0f);
+                _globalContainer.GetComponent<RectTransform>().DOMove(target, 1f).Play().OnComplete(() => _lerping = false);
             }
-            _globalContainer.GetComponent<RectTransform>().localPosition = end;
         }
     }
 }

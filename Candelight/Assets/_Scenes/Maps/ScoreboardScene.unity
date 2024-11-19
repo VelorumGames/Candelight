@@ -857,6 +857,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7801891630685271295, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7801891630685271295, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7801891630685271295, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7801891630685271295, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1942,7 +1962,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 0
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -3237,6 +3257,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8919936307003200458, guid: 9d91f55930095cc4daa8e16bbe7dc80b,
         type: 3}
+    - target: {fileID: 1032415217209227533, guid: d23c0a79112fc0b4da6376ee2de8b984,
+        type: 3}
+      propertyPath: _world
+      value: 
+      objectReference: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90,
+        type: 2}
     - target: {fileID: 1032415217209227533, guid: d23c0a79112fc0b4da6376ee2de8b984,
         type: 3}
       propertyPath: StarsContainer

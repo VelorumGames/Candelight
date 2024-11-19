@@ -1,7 +1,9 @@
 using Controls;
 using Hechizos;
+using Hechizos.Elementales;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +12,9 @@ namespace Map
     public class RuneHint : MonoBehaviour
     {
         ESpellInstruction[] _rune;
+        [SerializeField] ParticleSystemRenderer _particles;
+        [SerializeField] Material[] _runeMats;
+
         [SerializeField] Sprite[] _hintSprites;
 
         [SerializeField] string _runeToFind;
@@ -39,9 +44,13 @@ namespace Map
                     if (chain.Length <= maxComplexity && !ARune.Spells[chain].IsActivated())
                     {
                         runes.Add(chain);
+                        LoadParticles(ARune.Spells[chain]);
+                        break;
                     }
                 }
                 Debug.Log(runes.Count);
+                
+
                 return runes.Count > 0 ? runes[Random.Range(0, runes.Count)] : null;
             }
         }
@@ -60,5 +69,7 @@ namespace Map
                 hint.transform.localPosition = new Vector3((_offset * count - _offset * (_rune.Length - 1 - count++)) * 0.5f, 0f, -0.03f);
             }
         }
+
+        void LoadParticles(ARune rune) => _particles.sharedMaterial = _runeMats[rune is AElementalRune ? 0 : 1];
     }
 }

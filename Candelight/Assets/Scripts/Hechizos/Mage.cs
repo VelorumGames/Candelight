@@ -34,6 +34,8 @@ namespace Hechizos
 
         List<EElements> _trailElements = new List<EElements>();
 
+        public event System.Action<ARune> OnNewRuneActivation;
+
         private void OnEnable()
         {
             _cont = FindObjectOfType<PlayerController>();
@@ -353,6 +355,11 @@ namespace Hechizos
             }
 
             return false;
+        }
+
+        public void RuneActivation(ARune rune)
+        {
+            if (OnNewRuneActivation != null) OnNewRuneActivation(rune);
         }
 
         public void SetExtraProjSpeed(float speed) => _projectileSpeedFactor = speed;

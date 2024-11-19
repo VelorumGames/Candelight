@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -24,7 +25,9 @@ namespace UI
             _trans = GetComponent<RectTransform>();
             _oPos = _trans.localPosition;
 
-            _scale = _trans.DOScale(0.5f * Vector3.one, _animTime).SetAutoKill(false);
+            float oScale = _trans.localScale.x;
+
+            _scale = _trans.DOScale(oScale, _animTime).SetAutoKill(false).OnPlay(() => GetComponent<Image>().SetNativeSize());
             _move = _trans.DOLocalMove(_oPos, _animTime).SetAutoKill(false);
             _rotate = _trans.DOLocalRotate(new Vector3(0f, 0f, 0f), _animTime).SetAutoKill(false);
         }
@@ -37,6 +40,7 @@ namespace UI
             _trans.localRotation = Quaternion.Euler(Random.Range(-_initialRotRange, _initialRotRange), Random.Range(-_initialRotRange, _initialRotRange), Random.Range(-_initialRotRange, _initialRotRange));
 
             _scale.Restart();
+            _scale.Pause();
             _scale.Play();
             _move.Restart();
             _move.Play();

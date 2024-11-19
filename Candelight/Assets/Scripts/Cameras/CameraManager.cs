@@ -1,4 +1,5 @@
 using Cinemachine;
+using Controls;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,10 +25,14 @@ namespace Cameras
         Tween _spellTween;
         Tween _resetSpellTween;
 
+        InputManager _input;
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            _input = FindObjectOfType<InputManager>();
 
             DOTween.defaultAutoPlay = AutoPlay.None;
             _spellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f).SetAutoKill(false);
@@ -41,6 +46,17 @@ namespace Cameras
         private void Start()
         {
             SetActiveCamera(InitialCam, 0f);
+        }
+
+        private void OnEnable()
+        {
+            if (_input != null)
+            {
+                _input.OnStartElementMode += EnterSpellMode;
+                _input.OnExitElementMode += ExitSpellMode;
+                _input.OnStartShapeMode += EnterSpellMode;
+                _input.OnExitShapeMode += ExitSpellMode;
+            }
         }
 
         public void SetActiveCamera(CinemachineVirtualCamera newCam)
@@ -184,5 +200,16 @@ namespace Cameras
         }
 
         public float GetCurrentBlendTime() => _brain.m_DefaultBlend.m_Time;
+
+        private void OnDisable()
+        {
+            if (_input != null)
+            {
+                _input.OnStartElementMode -= EnterSpellMode;
+                _input.OnExitElementMode -= ExitSpellMode;
+                _input.OnStartShapeMode -= EnterSpellMode;
+                _input.OnExitShapeMode -= ExitSpellMode;
+            }
+        }
     }
 }
