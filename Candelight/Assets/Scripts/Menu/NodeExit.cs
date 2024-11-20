@@ -19,7 +19,11 @@ namespace Menu
         public void ReturnToWorld()
         {
             FindObjectOfType<Inventory>().LooseItemsOnNodeExit();
-            _ui.ShowWarning(() => _ui.FadeToBlack(1f, () => SceneManager.LoadScene("WorldManager")), "¿Estás seguro de que quieres regresar? Perderás los artefactos que hayas ganado en esta zona.");
+            _ui.ShowWarning(() => _ui.FadeToBlack(1f, () =>
+            {
+                FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
+                SceneManager.LoadScene("WorldManager");
+            }), "¿Estás seguro de que quieres regresar? Perderás los artefactos que hayas ganado en esta zona.");
         }
     }
 }

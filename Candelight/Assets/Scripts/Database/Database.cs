@@ -1,12 +1,7 @@
 using Proyecto26;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using static System.Net.WebRequestMethods;
 
 public static class Database
 {
@@ -60,7 +55,7 @@ public static class Database
         yield return new WaitUntil(() => Completed);
     }
 
-    public static IEnumerator SendUserData(UserData data)
+    public static IEnumerator SendUserData(ScoreData data)
     {
         if (_names == null) _names = new UserNames();
 
@@ -97,14 +92,14 @@ public static class Database
 }
 
 [Serializable]
-public class UserData
+public class ScoreData
 {
     public string Name;
     public int Score;
     public float posX;
     public float posY;
 
-    public UserData(string n, int sc, float pX, float pY)
+    public ScoreData(string n, int sc, float pX, float pY)
     {
         Name = n;
         Score = sc;
@@ -113,3 +108,15 @@ public class UserData
     }
 }
 
+[Serializable]
+public class UserData
+{
+    public string Name;
+    public string Password;
+
+    public UserData(string name, string pass)
+    {
+        Name = name;
+        Password = pass;
+    }
+}

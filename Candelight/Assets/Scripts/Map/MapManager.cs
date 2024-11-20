@@ -240,13 +240,15 @@ namespace Map
             rooms.Remove(startRoom);
             startRoom.RoomType = ERoomType.Start;
             startRoom.IdText.text += " START";
+            startRoom.gameObject.name = "START ROOM";
             _uiMan.UpdateMinimapRoom(startRoom.GetID(), ERoomType.Start);
-            _player.transform.position = startRoom.transform.position + 1f * Vector3.up;
+            _player.transform.position = startRoom.GetRandomSpawnPoint().position + 0.5f * Vector3.up;
 
             ARoom endRoom = rooms[Random.Range(rooms.Count / 2, rooms.Count)];
             rooms.Remove(endRoom);
             endRoom.RoomType = ERoomType.Exit;
             endRoom.IdText.text += " EXIT";
+            endRoom.gameObject.name = "EXIT ROOM";
             _uiMan.UpdateMinimapRoom(endRoom.GetID(), ERoomType.Exit);
             endRoom.RemoveEntities(); //Eliminamos los enemigos o npcs que pueda haber en la sala de salida
             GameObject torch = Instantiate(EndTorch, endRoom.transform);
@@ -259,6 +261,7 @@ namespace Map
                 rooms.Remove(runeRoom);
                 runeRoom.RoomType = ERoomType.Rune;
                 runeRoom.IdText.text += " RUNE";
+                runeRoom.gameObject.name = "RUNE ROOM";
                 _uiMan.UpdateMinimapRoom(runeRoom.GetID(), ERoomType.Rune);
 
                 runeRoom.ActivateRuneRoom();
@@ -270,6 +273,7 @@ namespace Map
         /// </summary>
         public void EndLevel()
         {
+            FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
             if (CurrentNodeInfo.CurrentLevel < CurrentNodeInfo.Levels - 1) //Si no es el ultimo nivel todavia
             {
                 //Se apunta a la siguiente seed y se elije un tipo de nivel al que ir

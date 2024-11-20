@@ -67,12 +67,14 @@ namespace Hechizos.Elementales
         //Potenciador de fuego
         public override void BuffActivation(Transform target)
         {
-
+            AddDamageFactor(0.25f);
+            MageManager.ManageBuff(true, BuffReset(target));
         }
         public override IEnumerator BuffReset(Transform target)
         {
             yield return new WaitForSeconds(_buffDuration);
-
+            AddDamageFactor(-0.25f);
+            MageManager.ManageResetBuff();
         }
 
     }

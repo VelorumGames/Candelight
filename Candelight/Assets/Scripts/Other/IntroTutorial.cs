@@ -104,6 +104,7 @@ public class IntroTutorial : MonoBehaviour
 
         _ui.FadeToWhite(2f, () =>
         {
+            FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
             FindObjectOfType<IntroGravity>().ResetPlayer();
             SceneManager.LoadScene("TutorialScene");
         });

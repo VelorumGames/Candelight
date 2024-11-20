@@ -9,6 +9,7 @@ using UI;
 using Cameras;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using BehaviourAPI.Core.Actions;
 
 namespace Controls
 {
@@ -57,6 +58,11 @@ namespace Controls
         
 
         float _spellTimeScale = 0.75f;
+
+        public event System.Action OnStartElementMode;
+        public event System.Action OnExitElementMode;
+        public event System.Action OnStartShapeMode;
+        public event System.Action OnExitShapeMode;
 
         private void OnEnable()
         {
@@ -173,18 +179,33 @@ namespace Controls
             {
                 case EControlMap.Level:
                     _currentMap = _levelMap;
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.Confined;
                     break;
                 case EControlMap.World:
                     _currentMap = _worldMap;
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.Confined;
                     break;
                 case EControlMap.Dialogue:
                     _currentMap = _dialogueMap;
+
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
                     break;
                 case EControlMap.UI:
                     _currentMap = _uiMap;
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.Confined;
                     break;
                 case EControlMap.Intro:
                     _currentMap = _introMap;
+
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
                     break;
             }
             //Debug.Log("Mapa colocado: " + _currentMap);
@@ -237,42 +258,42 @@ namespace Controls
 
         void StartElementMode(InputAction.CallbackContext _)
         {
-            _move.Disable();
-            Time.timeScale = _spellTimeScale;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, _spellTimeScale, 0.2f);
-            _cont.ResetInstructions();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnStartElementMode != null) OnStartElementMode();
 
-            if (_camMan != null) _camMan.EnterSpellMode();
+                _move.Disable();
+            }
         }
 
         void StopElementMode(InputAction.CallbackContext _)
         {
-            _move.Enable();
-            Time.timeScale = 1f;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.1f);
-            _cont.OnChooseElements();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnExitElementMode != null) OnExitElementMode();
 
-            if (_camMan != null) _camMan.ExitSpellMode();
+                _move.Enable();
+            }
         }
 
         void StartSpellMode(InputAction.CallbackContext _)
         {
-            _move.Disable();
-            Time.timeScale = _spellTimeScale;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, _spellTimeScale, 0.2f);
-            _cont.ResetInstructions();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnStartShapeMode != null) OnStartShapeMode();
 
-            if (_camMan != null) _camMan.EnterSpellMode();
+                _move.Disable();
+            }
         }
 
         void StopSpellMode(InputAction.CallbackContext _)
         {
-            _move.Enable();
-            Time.timeScale = 1f;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.1f);
-            _cont.OnSpellLaunch();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnExitShapeMode != null) OnExitShapeMode();
 
-            if (_camMan != null) _camMan.ExitSpellMode();
+                _move.Enable();
+            }
         }
 
         #endregion

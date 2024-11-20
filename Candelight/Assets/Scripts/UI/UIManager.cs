@@ -17,6 +17,7 @@ using Player;
 using Cameras;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEditor.Experimental.GraphView;
 
 namespace UI
 {
@@ -39,18 +40,23 @@ namespace UI
         public GameObject Options;
         public GameObject InventoryNotif;
         public GameObject InventoryUI;
+        public GameObject SpellHalo;
         public Image FadeImage;
         [SerializeField] MinimapManager _minimap;
+        [SerializeField] UIGameState _state;
 
         [Space(10)]
         [Header("FEEDBACK")]
         public Image RedFilter;
         public Image WhiteFilter;
         Volume _vol;
+        float _spellTimeScale = 0.5f;
+        float _prevTimeScale = 1f;
 
         ShowInstructions _showInstr;
         CameraManager _camMan;
         PlayerController _player;
+        InputManager _input;
 
         Coroutine _timeFreeze;
 
@@ -66,11 +72,25 @@ namespace UI
             _showInstr = FindObjectOfType<ShowInstructions>();
             _camMan = FindObjectOfType<CameraManager>();
             _player = FindObjectOfType<PlayerController>();
+            _input = FindObjectOfType<InputManager>();
         }
 
         private void OnEnable()
         {
             if (_player != null) _player.OnDamage += PlayerDamageFeedback;
+            if (_input != null)
+            {
+                _input.OnStartElementMode += EnterSpellModeFeedback;
+                _input.OnExitElementMode += ExitSpellModeFeedback;
+                _input.OnStartShapeMode += EnterSpellModeFeedback;
+                _input.OnExitShapeMode += ExitSpellModeFeedback;
+            }
+        }
+
+        private void Start()
+        {
+            SpellHalo.transform.parent = Camera.main.transform;
+            SpellHalo.SetActive(false);
         }
 
         private void OnGUI()
@@ -111,16 +131,19 @@ namespace UI
 
         private void Update()
         {
-            _chains = "";
-            foreach(var rune in ARune.Spells.Keys)
+            if (ARune.MageManager != null)
             {
-                if (ARune.FindSpell(rune, out var spell)) _chains += $"{spell.Name}: {ARune.InstructionsToString(rune)}\n";
-            }
+                _chains = "";
+                foreach (var rune in ARune.Spells.Keys)
+                {
+                    if (ARune.FindSpell(rune, out var spell)) _chains += $"{spell.Name}: {ARune.InstructionsToString(rune)}\n";
+                }
 
-            _elements = "";
-            foreach(var el in ARune.MageManager.GetActiveElements())
-            {
-                _elements += $"{el.Name} ";
+                _elements = "";
+                foreach (var el in ARune.MageManager.GetActiveElements())
+                {
+                    _elements += $"{el.Name} ";
+                }
             }
         }
 
@@ -145,13 +168,21 @@ namespace UI
         public void ShowValidSpell(AShapeRune spell)
         {
             //Debug.Log("Se mostrara: " + spell);
-            if (spell != null) StartCoroutine(_showInstr.ShowValidInstructions());
+            if (spell != null)
+            {
+                StartCoroutine(_showInstr.ShowValidInstructions());
+                _showInstr.ShowShapeResult(spell);
+            }
             else _showInstr.ResetSprites();
         }
         public void ShowValidElements(AElementalRune[] elements)
         {
             //Debug.Log("Se mostrara: " + elements);
-            if (elements != null) StartCoroutine(_showInstr.ShowValidInstructions());
+            if (elements != null)
+            {
+                StartCoroutine(_showInstr.ShowValidInstructions());
+                _showInstr.ShowElementsResult(elements);
+            }
             else _showInstr.ResetSprites();
         }
 
@@ -231,10 +262,10 @@ namespace UI
 
         public void OnUIBack(InputAction.CallbackContext ctx)
         {
-            Debug.Log("Se intenta hacia atras: " + _windows.Count);
+            //Debug.Log("Se intenta hacia atras: " + _windows.Count);
             if (_windows.TryPop(out var window))
             {
-                Debug.Log("Hacia atras: " + _windows.Count);
+                //Debug.Log("Hacia atras: " + _windows.Count);
                 window.SetActive(false);
 
                 if (_windows.Count == 0) FindObjectOfType<InputManager>().LoadPreviousControls();
@@ -246,7 +277,7 @@ namespace UI
             window.SetActive(true);
             _windows.Push(window);
 
-            if (_windows.Count == 1) FindObjectOfType<InputManager>().LoadControls(EControlMap.UI);
+            if (_windows.Count == 1) FindObjectOfType<InputManager>()?.LoadControls(EControlMap.UI);
         }
 
         public void LoadUIWindow(GameObject window, string key)
@@ -301,13 +332,13 @@ namespace UI
 
         public void PlayerDamageFeedback(float damage, float remHealth)
         {
-            RedFilter.DOFade(remHealth * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play());
+            RedFilter.DOFade((1 / remHealth) * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play());
             _camMan.Shake(5f, 20f, 0.4f);
         }
 
         public void EnemyDamageFeedback(float damage, float remHealth)
         {
-            WhiteFilter.DOFade(remHealth * 0.35f, 0.2f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.2f).Play());
+            WhiteFilter.DOFade(0.35f, 0.1f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.2f).Play());
 
             if (_timeFreeze != null) StopCoroutine(_timeFreeze);
             _timeFreeze = StartCoroutine(FreezeGame(0.2f, remHealth));
@@ -320,19 +351,46 @@ namespace UI
 
         public IEnumerator FreezeGame(float duration, float freezeScale)
         {
-            float oScale = Time.timeScale;
+            //float oScale = Time.timeScale;
             Time.timeScale = 0.3f;
 
             yield return new WaitForSecondsRealtime(duration);
 
-            Time.timeScale = oScale;
+            Time.timeScale = 1;
         }
+
+        void EnterSpellModeFeedback()
+        {
+            _prevTimeScale = Time.timeScale;
+            Time.timeScale = _spellTimeScale;
+
+            SpellHalo.SetActive(true);
+            SpellHalo.transform.localPosition = new Vector3(0f, -0.5f, 0.5f);
+        }
+
+        void ExitSpellModeFeedback()
+        {
+            Time.timeScale = _prevTimeScale;
+
+            SpellHalo.SetActive(false);
+        }
+
+        public void ShowState(EGameState state) => _state.Show(state);
+
+        public void HideState() => _state.Hide();
 
         #endregion
 
         private void OnDisable()
         {
             if (_player != null) _player.OnDamage -= PlayerDamageFeedback;
+            if (_input != null)
+            {
+                _input.OnStartElementMode -= EnterSpellModeFeedback;
+                _input.OnExitElementMode -= ExitSpellModeFeedback;
+                _input.OnStartShapeMode -= EnterSpellModeFeedback;
+                _input.OnExitShapeMode -= ExitSpellModeFeedback;
+            }
         }
     }
 }

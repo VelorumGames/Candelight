@@ -1,3 +1,4 @@
+using BehaviourAPI.Core.Actions;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +25,21 @@ namespace Items
         public GameObject[] LegendaryItemPool;
         public GameObject Fragment;
 
-        [SerializeField] int _totalNumFragments;
+        int m_frags;
+        [SerializeField] int _totalNumFragments
+        {
+            get => m_frags;
+            set
+            {
+                if (value != m_frags)
+                {
+                    if (OnFragmentsChange != null) OnFragmentsChange(m_frags, value);
+                    m_frags = value;
+                    
+                }
+            }
+        }
+        public event System.Action<int, int> OnFragmentsChange;
 
         [Space(20)]
         [Header("===PLAYER INVENTORY===")]

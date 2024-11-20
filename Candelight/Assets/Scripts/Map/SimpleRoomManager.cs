@@ -2,6 +2,7 @@ using Controls;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using World;
@@ -60,6 +61,7 @@ namespace Map
 
         public void EndLevel()
         {
+            FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
             if (CurrentNodeInfo.CurrentLevel < CurrentNodeInfo.Levels - 1) //Si no es el ultimo nivel todavia
             {
                 //Se apunta a la siguiente seed y se elije un tipo de nivel al que ir

@@ -70,13 +70,18 @@ namespace Player
         public event Action<ESpellInstruction> OnNewInstruction;
         public event Action<AShapeRune> OnSpell;
         public event Action<AElementalRune[]> OnElements;
+        public event Action OnRevive;
 
-        [SerializeField] UIManager _UIMan;
+        UIManager _UIMan;
+        InputManager _input;
 
         PlayerParticlesManager _particles;
         [SerializeField] CinemachineVirtualCamera _fpCam;
         bool _isFirstPerson;
         CameraManager _camMan;
+
+        bool _invicible;
+        float _iFrameDuration = 0.5f;
 
         [Space(10)]
         [Header("FIRST PERSON")]
@@ -89,6 +94,11 @@ namespace Player
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
+
+            _input.OnStartElementMode += ResetInstructions;
+            _input.OnExitElementMode += OnChooseElements;
+            _input.OnStartShapeMode += ResetInstructions;
+            _input.OnExitShapeMode += OnSpellLaunch;
         }
 
         private void Awake()
@@ -97,6 +107,7 @@ namespace Player
             _particles = GetComponent<PlayerParticlesManager>();
 
             _mage = FindObjectOfType<Mage>();
+            _input = FindObjectOfType<InputManager>();
 
             DontDestroyOnLoad(gameObject);
         }
@@ -105,7 +116,7 @@ namespace Player
         {
             base.Start();
 
-            _rb.maxLinearVelocity = _maxSpeed;            
+            _rb.maxLinearVelocity = _maxSpeed;
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
@@ -139,21 +150,39 @@ namespace Player
 
         public override void RecieveDamage(float damage)
         {
-            float finalDamage = damage * _candleFactor;
-
-            Debug.Log($"Jugador recibe {damage} de dano -> Se restan {finalDamage} puntos a la vela");
-            
-            float finalHealth = World.Candle - finalDamage;
-
-            if (finalHealth <= 0 && _extraLives > 0) //Se revive al jugador si tiene vidas extras y va a morir
+            if (!_invicible)
             {
-                _extraLives--;
-                finalHealth = 0.25f * World.MAX_CANDLE;
+                _invicible = true;
+                Invoke("ManageIFrames", _iFrameDuration);
+
+                float finalDamage = damage * _candleFactor;
+
+                Debug.Log($"Jugador recibe {damage} de dano -> Se restan {finalDamage} puntos a la vela");
+
+                float finalHealth = World.Candle - finalDamage;
+
+                if (finalHealth <= 0 && _extraLives > 0) //Se revive al jugador si tiene vidas extras y va a morir
+                {
+                    _extraLives--;
+                    finalHealth = 0.25f * World.MAX_CANDLE;
+                }
+
+                CallDamageEvent(finalDamage, finalHealth / World.MAX_CANDLE);
+
+                World.Candle = finalHealth;
             }
+        }
 
-            CallDamageEvent(finalDamage, finalHealth / World.MAX_CANDLE);
+        public void ManageIFrames()
+        {
+            _invicible = false;
+        }
 
-            World.Candle = finalHealth;
+        public void Revive()
+        {
+            Debug.Log("SE REVIVE AL JUGADOR");
+            World.Candle = World.MAX_CANDLE * 0.5f;
+            if (OnRevive != null) OnRevive();
         }
 
         #region Actions
@@ -276,7 +305,7 @@ namespace Player
             if (_bookIsOpen) //Se registra un nuevo elemento
             {
                 ARune.Activate(_instructions.ToArray(), out var rune);
-                if (rune != null) StartCoroutine(_book.ShowResult(rune));
+                if (rune != null) _book.ShowResult(rune);
                 else _book.ResetText();
             }
             else //Se activa un elemento(s)
@@ -295,8 +324,7 @@ namespace Player
             if (_bookIsOpen) //Se registra una nueva forma
             {
                 ARune.Activate(_instructions.ToArray(), out var rune);
-                Debug.Log(rune.Name);
-                if (rune != null) StartCoroutine(_book.ShowResult(rune));
+                if (rune != null) _book.ShowResult(rune);
                 else _book.ResetText();
             }
             else //Se lanza un hechizo
@@ -475,6 +503,11 @@ namespace Player
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
+
+            _input.OnStartElementMode -= ResetInstructions;
+            _input.OnStartElementMode -= OnChooseElements;
+            _input.OnStartShapeMode -= ResetInstructions;
+            _input.OnExitShapeMode -= OnSpellLaunch;
         }
     }
 }

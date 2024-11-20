@@ -546,11 +546,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1f2268184c4104590fd4a67ea66be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _particles: {fileID: 0}
+  _runeMats: []
   _hintSprites:
-  - {fileID: -398820152, guid: b93224021be79cd4a96bedc3f8c0bae0, type: 3}
-  - {fileID: -1518849295, guid: b93224021be79cd4a96bedc3f8c0bae0, type: 3}
-  - {fileID: 1690373910, guid: b93224021be79cd4a96bedc3f8c0bae0, type: 3}
-  - {fileID: 1820456862, guid: b93224021be79cd4a96bedc3f8c0bae0, type: 3}
+  - {fileID: -646648303, guid: d8c6711a4c7ff384c81a20016276b9e6, type: 3}
+  - {fileID: -1444483890, guid: d8c6711a4c7ff384c81a20016276b9e6, type: 3}
+  - {fileID: -951562183, guid: d8c6711a4c7ff384c81a20016276b9e6, type: 3}
+  - {fileID: -1490851472, guid: d8c6711a4c7ff384c81a20016276b9e6, type: 3}
   _runeToFind: Melee
   _offset: 0.5
 --- !u!4 &74996791
@@ -1022,6 +1024,7 @@ GameObject:
   - component: {fileID: 160942423}
   - component: {fileID: 160942422}
   - component: {fileID: 160942421}
+  - component: {fileID: 160942424}
   m_Layer: 0
   m_Name: PostProcessing
   m_TagString: Untagged
@@ -1074,6 +1077,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &160942424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160942420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557ba45f5e1ac194eb00440251d207c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &171937189
 GameObject:
   m_ObjectHideFlags: 0

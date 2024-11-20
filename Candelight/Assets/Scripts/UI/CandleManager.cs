@@ -19,16 +19,22 @@ namespace UI
             _world.OnCandleChanged += UpdateCandle;
         }
 
+        private void Start()
+        {
+            UpdateCandle(_world.Candle);
+        }
+
         void UpdateCandle(float candle)
         {
             float rem = candle / _world.MAX_CANDLE;
-            _topCandle.position = new Vector3(_topCandle.position.x, Mathf.Lerp(_oPos, _finalPos, rem), _topCandle.position.z);
+            _topCandle.localPosition = new Vector3(_topCandle.localPosition.x, Mathf.Lerp(_finalPos, _oPos, rem), _topCandle.localPosition.z);
 
             if (rem >= 0.8f) _topCandle.GetComponent<Image>().sprite = _candleSprites[0];
             else if (rem >= 0.6f) _topCandle.GetComponent<Image>().sprite = _candleSprites[1];
             else if (rem >= 0.4f) _topCandle.GetComponent<Image>().sprite = _candleSprites[2];
             else if (rem >= 0.2f) _topCandle.GetComponent<Image>().sprite = _candleSprites[3];
-            else _topCandle.GetComponent<Image>().sprite = _candleSprites[4];
+            else if (rem > 0f) _topCandle.GetComponent<Image>().sprite = _candleSprites[4];
+            else _topCandle.GetComponent<Image>().sprite = _candleSprites[5];
         }
 
         private void OnDisable()

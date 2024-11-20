@@ -10,8 +10,10 @@ using Hechizos;
 public static class SaveSystem
 {
     public static string path = Application.persistentDataPath + "/player.save";
-    public static UserData PlayerData;
+    public static ScoreData ScoreboardData;
     public static SaveData GameData;
+
+    public static string PlayerName;
 
     public static float StarRange = 10f;
 
@@ -26,9 +28,9 @@ public static class SaveSystem
         stream.Close();
 
         //Subir info a la base de datos
-        Debug.Log("Se guardarán los datos de: " + PlayerData.Name);
+        Debug.Log("Se guardarán los datos de: " + PlayerName);
         //Database.Send($"Players/{PlayerData.Name}", PlayerData);
-        yield return Database.SendUserData(PlayerData);
+        yield return Database.SendUserData(ScoreboardData);
     }
 
     public static IEnumerator Load()
@@ -42,7 +44,7 @@ public static class SaveSystem
             stream.Close();
 
             //Coger info de la base de datos
-            yield return Database.Get<UserData>($"Players/{PlayerData.Name}", GetPlayerData);
+            yield return Database.Get<ScoreData>($"Players/{PlayerName}", GetPlayerData);
 
             GameData = save;
         }
@@ -53,20 +55,37 @@ public static class SaveSystem
         }
     }
 
-    static void GetPlayerData(UserData data)
+    //static bool TryGetPlayerData(ScoreData data)
+    //{
+    //    if (data != null)
+    //    {
+    //        PlayerData = data; //Si se ha encontrado
+    //        return true;
+    //    }
+    //    else //Si no se ha encontrado
+    //    {
+    //        Debug.LogWarning($"ERROR: No se ha encontrado datos del jugador \"{PlayerName}\" en la base de datos");
+    //        return false;
+    //    }
+    //}
+
+    static void GetPlayerData(ScoreData data)
     {
-        if (data != null) PlayerData = data; //Si se ha encontrado
+        if (data != null)
+        {
+            ScoreboardData = data; //Si se ha encontrado
+        }
         else //Si no se ha encontrado
         {
-            Debug.LogWarning($"ERROR: No se ha encontrado datos del jugador \"{PlayerData.Name}\" en la base de datos");
+            Debug.LogWarning($"ERROR: No se ha encontrado datos del jugador \"{PlayerName}\" en la base de datos");
         }
     }
 
     public static void GenerateNewPlayerData(WorldInfo world)
     {
-        PlayerData.Score = world.CompletedNodes;
-        PlayerData.posX = Random.Range(-StarRange, StarRange);
-        PlayerData.posY = Random.Range(-StarRange, StarRange);
+        ScoreboardData.Score = world.CompletedNodes;
+        ScoreboardData.posX = Random.Range(-StarRange, StarRange);
+        ScoreboardData.posY = Random.Range(-StarRange, StarRange);
     }
 
     public static bool RemovePreviousGameData()
@@ -78,6 +97,11 @@ public static class SaveSystem
         }
 
         return false;
+    }
+
+    public static void RestartDataOnDeath()
+    {
+        GameData.RestartOnDeath();
     }
 
     public static bool ExistsPreviousGame() => File.Exists(path);
@@ -100,7 +124,7 @@ public class SaveData
     public int[] UnactiveItems;
     public int Fragments;
     public float Candle;
-    public string[] Runes;
+    public string Runes;
 
     public SaveData(WorldInfo world, Inventory inventory)
     {
@@ -113,13 +137,11 @@ public class SaveData
 
         Candle = world.Candle;
 
-        List<string> runes = new List<string>();
-
+        Runes = "";
         foreach(var r in ARune.Spells.Values)
         {
-            if (r.IsActivated()) runes.Add(r.Name);
+            if (r.IsActivated()) Runes += $"{r.Name},";
         }
-        Runes = runes.ToArray();
     }
 
     int[][] GetInventoryData(Inventory inv)
@@ -142,5 +164,18 @@ public class SaveData
         invData[2][0] = inv.GetFragments();
 
         return invData;
+    }
+
+    public void RestartOnDeath()
+    {
+        ActiveItems = new int[1];
+        ActiveItems[0] = -1;
+
+        UnactiveItems= new int[1];
+        UnactiveItems[0] = -1;
+
+        Fragments = 0;
+        Candle = 100f;
+        Runes = "";
     }
 }

@@ -3,12 +3,13 @@ using Scoreboard;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
 public class DatabaseManager : MonoBehaviour
 {
-    List<UserData> _players = new List<UserData>();
-    UserData _currentUserData;
+    List<ScoreData> _players = new List<ScoreData>();
+    ScoreData _currentUserData;
     UserNames _names;
 
     ScoreboardManager _scoreboard;
@@ -22,22 +23,24 @@ public class DatabaseManager : MonoBehaviour
 
     IEnumerator Start()
     {
+        FindObjectOfType<UIManager>().ShowState(EGameState.Database);
         yield return StartCoroutine(GetAllUsersData());
 
         //Se ordenan los jugadores segun la puntuacion
         _players.Sort(ScoreCompare);
 
         _scoreboard.UpdatePlayers(_players.ToArray());
+        FindObjectOfType<UIManager>().HideState();
     }
 
-    int ScoreCompare(UserData x, UserData y)
+    int ScoreCompare(ScoreData x, ScoreData y)
     {
         if (x.Score == y.Score) return 0;
         else if (x.Score > y.Score) return -1;
         else return 1;
     }
 
-    public IEnumerator SendUserData(UserData data)
+    public IEnumerator SendUserData(ScoreData data)
     {
         //Mandamos la info
         yield return Database.Send($"Players/{data.Name}", data);
@@ -73,13 +76,13 @@ public class DatabaseManager : MonoBehaviour
                 Debug.Log("Se busca la info del jugador: " + name);
 
                 //Tomo los datos de cada jugador
-                yield return Database.Get<UserData>($"Players/{name}", RecieveData);
+                yield return Database.Get<ScoreData>($"Players/{name}", RecieveData);
                 //yield return new WaitUntil(() => Database.Completed);
 
                 //Creo una copia de los datos y lo registro en la lista
                 if (_currentUserData != null)
                 {
-                    UserData newData = new UserData(_currentUserData.Name, _currentUserData.Score, _currentUserData.posX, _currentUserData.posY);
+                    ScoreData newData = new ScoreData(_currentUserData.Name, _currentUserData.Score, _currentUserData.posX, _currentUserData.posY);
 
                     _players.Add(newData);
                 }
@@ -90,7 +93,7 @@ public class DatabaseManager : MonoBehaviour
 
     #region Recieve Functions
 
-    void RecieveData(UserData result)
+    void RecieveData(ScoreData result)
     {
         _currentUserData = result;
     }
