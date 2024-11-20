@@ -1,14 +1,10 @@
+using Enemy;
 using Hechizos;
 using Hechizos.Elementales;
+using Player;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using Player;
-using UnityEditor.Rendering;
 
 namespace Comportamientos.Sombra
 {
@@ -21,7 +17,7 @@ namespace Comportamientos.Sombra
 
         private int _numSombras;
         private int _deaths;
-        private int _sombrasdeaths 
+        public int _sombrasdeaths
         {
             get
             {
@@ -39,21 +35,20 @@ namespace Comportamientos.Sombra
             }
         }
 
+        private List<SombraIndividual> _sombrasIndividualesScripts = new List<SombraIndividual>();
 
-        private GameObject _sombraRing;
+        [SerializeField] GameObject _sombraRing;
 
         [SerializeField] int _numRings = 0;
 
-        private SombraRing ringSombraScript;
-        private SombraIndividual individualSombraScript;
         private ASpell scASpell;
+        [SerializeField] EnemyInfo Info;
 
-        [SerializeField] bool _rightDirection = true;
 
-        [SerializeField] GameObject[] rings;
-        
+        [SerializeField] List<SombraRing> rings = new List<SombraRing>();
 
-        [SerializeField] float approachDist;
+
+        private float approachDist;
 
         [SerializeField] float _timeSpawnNewRing;
         [SerializeField] int maxRings = 3;
@@ -61,8 +56,9 @@ namespace Comportamientos.Sombra
         [SerializeField] float _incrementRingsDistance;
 
         private GameObject _player;
+        private float vel;
 
-       
+
 
 
         //Array Prefabs Anillos
@@ -73,20 +69,32 @@ namespace Comportamientos.Sombra
         private void Awake()
         {
 
-            ringSombraScript = GetComponent<SombraRing>();
-            individualSombraScript = GetComponent<SombraIndividual>();
+
+            _player = FindObjectOfType<PlayerController>().gameObject;
+
+
 
 
         }
 
+        private void Start()
+        {
+            //Cada cierto tiempo se van a ir generando anillos de sombras concentricos
+            Multiplicar();
+        }
+
+        private void Update()
+        {
+            Orbitar();
+        }
 
 
 
         public bool EquipadoFuego() //Devuelve true si el jugador tiene equipado el elemento de fuego entre sus elementos equipados
         {
-            foreach (AElementalRune elem in scASpell.Elements)
+            foreach (AElementalRune elem in ARune.MageManager.GetActiveElements())
             {
-                if (elem.Name == "Phantom")
+                if (elem.Name == "Fire")
                 {
                     return true;
                 }
@@ -99,28 +107,33 @@ namespace Comportamientos.Sombra
         public void Orbitar()
         {
 
-            //Cada cierto tiempo se van a ir generando anillos de sombras concentricos
-            Multiplicar();
+            approachDist = 0.009f * Time.deltaTime + 1f;
+            vel = _rotateVelocity;
 
             //Rotan alrededor del personaje
             //Cada circulo exterior tendra una velocidad menor o mayor de rotacion. Los circulos impares rotan en sentido contrario.
 
-            _rotateVelocity = 30;
 
-            for (int i = 0; i <= rings.Length; i++)
+
+
+            //El circulo o circulos de Sombras se va a ir estrechando
+
+            for (int i = 0; i < rings.Count; i++)
             {
-                if (_numRings % 2 == 0)
-                {
-                    _rightDirection = true;
-                }
-                else
-                {
-                    _rightDirection = false;
-                }
 
-                _rotateVelocity = _rotateVelocity - 5;
+                for (int j = 0; j < rings[i].ScriptsSombras.Length; j++)
+                {
+                    if (rings[i].ScriptsSombras[j] != null)
+                    {
+                        rings[i].ScriptsSombras[j].Approach(approachDist);
+                    }
+                    
+                }
+                
 
-                ringSombraScript.RingOrbitate(_rightDirection, _rotateVelocity);
+                vel -= 2;
+
+                rings[i].RingOrbitate(vel);
 
             }
 
@@ -131,13 +144,13 @@ namespace Comportamientos.Sombra
 
 
 
-            //El circulo o circulos de Sombras se va a ir estrechando
-
-            approachDist = 0.001f * Time.deltaTime;
-            individualSombraScript.Approach(approachDist);
 
 
-            
+
+
+
+
+
 
 
         }
@@ -152,9 +165,15 @@ namespace Comportamientos.Sombra
             //Animacion de enfado
 
             //Las Sombras se alejan
-            approachDist = 2f;
+            
 
-            individualSombraScript.Approach(approachDist);
+
+
+            for (int i = 0; i < _sombrasIndividualesScripts.Count; i++)
+            {
+                _sombrasIndividualesScripts[i].GoAway(2f);
+            }
+
 
 
         }
@@ -162,15 +181,24 @@ namespace Comportamientos.Sombra
         public void Disparar()
         {
             //Un disparo de fuego pero de color negro con borde rojo sale de cada child hacia el jugador
-            individualSombraScript.Shoot();
+           /* for (int i = 0; i < _sombrasIndividualesScripts.Count; i++)
+            {
+                _sombrasIndividualesScripts[i].Shoot();
+            }
+           */
+
         }
 
-        public void AtaqueCuerpoACuerpo() //Funciona por contacto 
+        private void Muerte()
         {
-            //El jugador recibe danno multiplicado por el numero de sombras del circulo
+            foreach (SombraRing ring in rings)
+            {
+                Destroy(ring.gameObject);
+            }
 
-            //Y las Sombras de ese circulo desaparecen
+            Destroy(gameObject);
         }
+
 
         IEnumerator ManageSombraMultiplying()
         {
@@ -179,28 +207,38 @@ namespace Comportamientos.Sombra
             {
                 //Meter aqui la animacion de aparicion de anillo de Sombras:
 
-                if (i == 0)
+
+                // Generar un child en un anillo exterior 
+                GameObject mySombraRing = Instantiate(_sombraRing, _player.transform);
+                _numRings++;
+                _numSombras += mySombraRing.GetComponent<SombraRing>()._numRingSombras;
+                rings.Add(mySombraRing.GetComponent<SombraRing>());
+                // mySombraRing.transform.parent = _player.transform;
+
+
+                foreach (var scSombra in mySombraRing.GetComponent<SombraRing>().ScriptsSombras)
                 {
-                    // Generar un child en un anillo exterior 
-                    _sombraRing = Instantiate(_sombraRing, new Vector3(_player.transform.position.x, _player.transform.position.y, 0), Quaternion.identity);
-                    _numRings++;
-                    _numSombras += ringSombraScript._numRingSombras;
-                    rings.Append(_sombraRing);
-                    
+                    _sombrasIndividualesScripts.Add(scSombra);
+
+                    scSombra._scSombracomportamiento = this;
+
+                    scSombra.transform.localPosition = new Vector3(scSombra.transform.localPosition.x * _ringsDistance * (i+1), scSombra.transform.localPosition.y, scSombra.transform.localPosition.z * _ringsDistance * (i + 1));
+
+                    if (EquipadoFuego())
+                    {
+                        scSombra.GoAway(2f);
+                    }
+                   
+                }
+
+                if (_numRings % 2 == 0)
+                {
+                    mySombraRing.GetComponent<SombraRing>()._rightDirection = true;
                 }
                 else
                 {
-                    // Generar un child en un anillo exterior 
-                    _sombraRing = Instantiate(_sombraRing, new Vector3(_sombraRing.transform.position.x + _ringsDistance, _sombraRing.transform.position.x + _ringsDistance, 0), Quaternion.identity);
-                    _numRings++;
-                    rings.Append(_sombraRing);
-                    _numSombras += ringSombraScript._numRingSombras;
-                    _ringsDistance += _incrementRingsDistance;
-                    
+                    mySombraRing.GetComponent<SombraRing>()._rightDirection = false;
                 }
-
-                //Hacer que sigan constantemente al jugador:
-                _sombraRing.transform.SetParent(_player.transform);
 
 
                 yield return new WaitForSeconds(_timeSpawnNewRing);

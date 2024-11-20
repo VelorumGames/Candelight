@@ -8,6 +8,7 @@ using System.Transactions;
 using TMPro;
 using UnityEngine;
 using Player;
+using Comportamientos.Sombra;
 
 namespace Hechizos
 {
@@ -57,13 +58,24 @@ namespace Hechizos
         {
             if (!AffectsPlayer) 
             {
+                
                 if (other.CompareTag("Enemy"))
                 {
+                   
                     Target = other.transform.parent;
                     if (OnImpact != null) OnImpact(Target);
 
+
+
+
                     if (Target.TryGetComponent<EnemyController>(out var enemy))
                     {
+                        
+                        enemy.RecieveDamage(Damage);
+                    }
+                    else if (other.transform.TryGetComponent<EnemyController>(out enemy))
+                    {
+                      
                         enemy.RecieveDamage(Damage);
                     }
                 }
@@ -72,12 +84,13 @@ namespace Hechizos
             {
                 if(other.CompareTag("Player"))
                 {
-                    Target = other.transform.parent;
+                    Target = other.transform;
                     if (OnImpact != null) OnImpact(Target);
 
                     if (Target.TryGetComponent<PlayerController>(out var player))
                     {
                         player.RecieveDamage(Damage);
+                        Destroy(gameObject);
                     }
                 }
             }

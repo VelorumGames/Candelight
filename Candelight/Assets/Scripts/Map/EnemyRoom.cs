@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class EnemyRoom : ARoom
 {
+    EnemyController[] enemies;
+
     [SerializeField] int _eCount;
     int _enemyCount
     {
@@ -24,11 +26,12 @@ public class EnemyRoom : ARoom
 
     private void OnEnable()
     {
-        EnemyController[] enemies = GetComponentsInChildren<EnemyController>();
+        enemies = GetComponentsInChildren<EnemyController>();
         _enemyCount = enemies.Length;
         foreach (var e in enemies)
         {
             e.OnDeath += NotifyEnemyDeath;
+            e.gameObject.SetActive(false); 
         }
     }
 
@@ -38,6 +41,11 @@ public class EnemyRoom : ARoom
         {
             FindObjectOfType<MapManager>().StartCombat();
             Invoke("CloseAllAnchors", 1f);
+
+            foreach (var e in enemies)
+            {
+                e.gameObject.SetActive(true);
+            }
         }
     }
 

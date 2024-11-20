@@ -19,7 +19,7 @@ namespace Enemy
 
         float _fragDropRate = 0.5f;
 
-        private void Awake()
+        protected void Awake()
         {
             _uiMan = FindObjectOfType<UIManager>();
 

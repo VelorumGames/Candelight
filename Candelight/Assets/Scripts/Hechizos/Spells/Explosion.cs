@@ -28,13 +28,21 @@ namespace Hechizos
 
         private void OnTriggerEnter(Collider other)
         {
+            Debug.Log("Preambulo" + other.gameObject.name );
             if (other.CompareTag("Enemy"))
             {
+                Debug.Log("ENTROOO");
                 Target = other.transform.parent;
                 if (OnImpact != null) OnImpact(Target);
 
+
                 if (Target.TryGetComponent<EnemyController>(out var enemy))
                 {
+                    enemy.RecieveDamage(Damage);
+                } 
+                else if (other.transform.TryGetComponent(out enemy))
+                {
+                    Debug.Log("Wumbo");
                     enemy.RecieveDamage(Damage);
                 }
             }

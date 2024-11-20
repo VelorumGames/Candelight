@@ -1,3 +1,4 @@
+using Enemy;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -10,47 +11,41 @@ namespace Comportamientos.Sombra
     {
         //Variables:
 
-        private float _ringRadius;
+        
 
-         [SerializeField] GameObject[] sombras;
+        [SerializeField] GameObject[] sombras;
+        public SombraIndividual[] ScriptsSombras;
 
         public int _numRingSombras = 0;
+
+        [SerializeField] EnemyInfo Info;
+
+        public bool _rightDirection = true;
 
         // [SerializeField] int _sombrasSpawn;
 
         private void Awake()
         {
-            _ringRadius = 20;
+            _numRingSombras = ScriptsSombras.Length;
         }
 
-        public int CountSombrasInRing()
+
+
+
+        public void RingOrbitate(float _rotateVelocity)
         {
-            for (int i = 0; i < transform.childCount; i++)
+            if (_rightDirection)
             {
-                _numRingSombras++;
-
-            }
-
-            return _numRingSombras;
-        }
-
-        public void RingOrbitate(bool rightDirection, float _rotateVelocity)
-        {
-            if (rightDirection)
-            {
-                transform.Rotate(0f, 0f, _rotateVelocity * Time.deltaTime);
+                transform.Rotate(0f, _rotateVelocity * Time.deltaTime, 0f);
             }
             else
             {
-                transform.Rotate(0f, 0f, -(_rotateVelocity * Time.deltaTime));
+                transform.Rotate(0f, -(_rotateVelocity * Time.deltaTime), 0f);
             }
 
 
 
         }
-
-        public float GetRadius() { return _ringRadius; }
-        public void SetRadius(float rad) { _ringRadius = rad; }
 
     }
 }

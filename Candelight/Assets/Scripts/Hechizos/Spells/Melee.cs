@@ -57,6 +57,10 @@ namespace Hechizos
                 {
                     enemy.RecieveDamage(Damage);
                 }
+                else if (other.transform.TryGetComponent<EnemyController>(out enemy))
+                {
+                    enemy.RecieveDamage(Damage);
+                }
             }
         }
 
