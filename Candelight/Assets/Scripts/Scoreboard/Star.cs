@@ -10,7 +10,7 @@ namespace Scoreboard
     {
         WorldInfo _world;
 
-        UserData _data;
+        ScoreData _data;
         [SerializeField] GameObject _starInfo;
         [SerializeField] TextMeshPro _name;
         [SerializeField] TextMeshPro _score;
@@ -19,7 +19,7 @@ namespace Scoreboard
 
         bool _shown;
 
-        public void LoadData(UserData d)
+        public void LoadData(ScoreData d)
         {
             _data = d;
             _name.text = _data.Name;

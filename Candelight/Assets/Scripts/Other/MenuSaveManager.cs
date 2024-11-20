@@ -1,7 +1,9 @@
+using Hechizos;
 using Items;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using World;
@@ -23,7 +25,7 @@ public class MenuSaveManager : MonoBehaviour
     {
         World.LoadedInfo = true;
 
-        SaveSystem.PlayerData = new UserData(PlayerName, -1, 0f, 0f);
+        SaveSystem.ScoreboardData = new ScoreData(PlayerName, -1, 0f, 0f);
 
         SaveSystem.ScoreboardIntro = false;
 
@@ -54,10 +56,22 @@ public class MenuSaveManager : MonoBehaviour
         World.Candle = data.Candle;
         foreach (var node in data.CompletedNodes) World.CompletedIds.Add(node);
         World.CompletedNodes = World.CompletedIds.Count;
-        SaveSystem.PlayerData.Score = World.CompletedNodes;
+        SaveSystem.ScoreboardData.Score = World.CompletedNodes;
 
         World.LoadedInfo = false;
 
+        data.Runes = "";
+        string[] runeNames = data.Runes.Split(",");
+        int count = 0;
+        foreach(var rune in ARune.Spells.Values)
+        {
+            if (rune.Name == runeNames[count])
+            {
+                count++;
+                rune.Activate();
+            }
+        }
+        FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
         SceneManager.LoadScene("WorldScene");
     }
 }

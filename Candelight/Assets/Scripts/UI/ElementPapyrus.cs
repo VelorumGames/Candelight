@@ -5,13 +5,17 @@ using Hechizos.Elementales;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
     public class ElementPapyrus : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI[] _runeTexts;
+        [SerializeField] Image[] _runeImages;
+        [SerializeField] Sprite[] _runeSprites;
         InputManager _input;
         Mage _mage;
 
@@ -35,6 +39,8 @@ namespace UI
 
         private void Start()
         {
+            ResetRunes();
+
             if (_mage != null) LoadRunes(null);
         }
 
@@ -71,9 +77,33 @@ namespace UI
             {
                 if (spell.IsActivated() && spell is AElementalRune)
                 {
-                    if (i < _runeTexts.Length) _runeTexts[i++].text = $"{spell.Name}: {spell.GetInstructionsToString()}";
+                    if (i < _runeTexts.Length)
+                    {
+                        switch(spell.Name)
+                        {
+                            case "Fire":
+                                _runeImages[i].sprite = _runeSprites[0];
+                                break;
+                            case "Electric":
+                                _runeImages[i].sprite = _runeSprites[1];
+                                break;
+                            case "Cosmic":
+                                _runeImages[i].sprite = _runeSprites[2];
+                                break;
+                            case "Phantom":
+                                _runeImages[i].sprite = _runeSprites[3];
+                                break;
+                        }
+                        _runeTexts[i++].text = $"{spell.GetInstructionsToArrows()}";
+                    }
                 }
             }
+        }
+
+        void ResetRunes()
+        {
+            foreach (var r in _runeImages) r.color = new Color(r.color.r, r.color.g, r.color.b, 0f);
+            foreach (var t in _runeTexts) t.text = "";
         }
 
         private void OnDisable()

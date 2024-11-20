@@ -23,6 +23,8 @@ namespace Hechizos
 
         static bool _extraElement;
 
+        static bool _runesCreated;
+
         public ARune(Mage m, int Complexity, float Difficulty)
         {
             MageManager = m;
@@ -30,7 +32,7 @@ namespace Hechizos
             Spells.Add(Instructions, this);
 
             //Para debuggear:
-            Activate();
+            //Activate();
 
             string instrs = "";
 
@@ -190,16 +192,21 @@ namespace Hechizos
 
         public static void CreateAllRunes(Mage m)
         {
-            new CosmicRune(m);
-            new ElectricRune(m);
-            new PhantomRune(m);
+            if (!_runesCreated)
+            {
+                new CosmicRune(m);
+                new ElectricRune(m);
+                new PhantomRune(m);
 
-            new MeleeRune(m);
-            new ProjectileRune(m);
-            new ExplosionRune(m);
-            new BuffRune(m);
+                new MeleeRune(m);
+                new ProjectileRune(m);
+                new ExplosionRune(m);
+                new BuffRune(m);
 
-            new FireRune(m);
+                new FireRune(m);
+
+                _runesCreated = true;
+            }
         }
 
         public static string InstructionsToString(ESpellInstruction[] chain)
@@ -266,6 +273,30 @@ namespace Hechizos
             foreach(var i in Instructions)
             {
                 instrs += i.ToString();
+            }
+            return instrs;
+        }
+
+        public string GetInstructionsToArrows()
+        {
+            string instrs = "";
+            foreach (var i in Instructions)
+            {
+                switch(i.ToString())
+                {
+                    case "Up":
+                        instrs += "W";
+                        break;
+                    case "Down":
+                        instrs += "S";
+                        break;
+                    case "Right":
+                        instrs += "D";
+                        break;
+                    case "Left":
+                        instrs += "A";
+                        break;
+                }
             }
             return instrs;
         }

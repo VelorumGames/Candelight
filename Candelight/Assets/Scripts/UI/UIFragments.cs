@@ -21,7 +21,7 @@ namespace UI
         {
             _inv = FindObjectOfType<Inventory>();
 
-            _prevPos = _sumText.GetComponent<RectTransform>().position;
+            _prevPos = _sumText.GetComponent<RectTransform>().localPosition;
         }
 
         private void OnEnable()
@@ -37,7 +37,7 @@ namespace UI
 
             _sumText.text = num - prev > 0 ? $"+{num - prev}" : $"-{num - prev}";
             _sumText.DOFade(0f, 1f).Play();
-            _sumText.GetComponent<RectTransform>().DOLocalMoveY(38f, 1f).Play().OnComplete(() => _sumText.GetComponent<RectTransform>().position = _prevPos);
+            _sumText.GetComponent<RectTransform>().DOLocalMoveY(38f, 1f).Play().OnComplete(() => _sumText.GetComponent<RectTransform>().localPosition = _prevPos);
 
             StopAllCoroutines();
             StartCoroutine(ManageFragmentCount(prev, num));
@@ -45,15 +45,18 @@ namespace UI
 
         IEnumerator ManageFragmentCount(int prev, int num)
         {
-            while (num != prev)
+            Debug.Log($"Actual: {prev}; Objetivo: {num}");
+            while (prev != num)
             {
-                _text.text = $"{num}";
+                _text.text = $"{prev}";
 
-                if (num > prev) num++;
-                else num--;
+                if (num > prev) prev++;
+                else prev--;
 
                 yield return new WaitForSeconds(0.2f);
             }
+
+            _text.text = $"{prev}";
 
             yield return new WaitForSeconds(3f);
 

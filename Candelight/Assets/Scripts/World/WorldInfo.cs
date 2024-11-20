@@ -38,10 +38,12 @@ namespace World
                 {
                     m_candle = value;
                     if (OnCandleChanged != null) OnCandleChanged(m_candle);
+                    if (value == 0 && OnPlayerDeath != null) OnPlayerDeath();
                 }
             }
         }
 
+        public event Action OnPlayerDeath;
         public event Action<float> OnCandleChanged;
         public event Action<int> OnCompletedNodesChanged;
 

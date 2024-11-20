@@ -44,6 +44,7 @@ namespace Rest
                 _ui.FadeToWhite(_transitionDuration, Ease.InCirc, () =>
                 {
                     ResetPermanentGameObjects();
+                    _ui.ShowState(EGameState.Loading);
                     SceneManager.LoadScene("ScoreboardScene");
                 });
             }
@@ -53,6 +54,7 @@ namespace Rest
                 _ui.FadeToBlack(_transitionDuration, () =>
                 {
                     ResetPermanentGameObjects();
+                    _ui.ShowState(EGameState.Loading);
                     SceneManager.LoadScene("ScoreboardScene");
                 });
             }
@@ -60,13 +62,14 @@ namespace Rest
 
         IEnumerator SavePlayerData()
         {
-            if (SaveSystem.PlayerData.Score == -1) //Si todavia no se habia guardado playerData
+            if (SaveSystem.ScoreboardData.Score == -1) //Si todavia no se habia guardado playerData
             {
                 Debug.Log("Todavia no se ha modificado PlayerData, asi que se crean datos nuevos");
                 //Se registran los datos
                 SaveSystem.GenerateNewPlayerData(_world);
             }
             SaveSystem.ScoreboardIntro = true;
+            _ui.ShowState(EGameState.Saving);
             yield return StartCoroutine(SaveSystem.Save(new SaveData(_world, FindObjectOfType<Inventory>())));
         }
 

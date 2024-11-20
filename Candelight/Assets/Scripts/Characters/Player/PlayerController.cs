@@ -70,6 +70,7 @@ namespace Player
         public event Action<ESpellInstruction> OnNewInstruction;
         public event Action<AShapeRune> OnSpell;
         public event Action<AElementalRune[]> OnElements;
+        public event Action OnRevive;
 
         UIManager _UIMan;
         InputManager _input;
@@ -97,7 +98,7 @@ namespace Player
             _input.OnStartElementMode += ResetInstructions;
             _input.OnExitElementMode += OnChooseElements;
             _input.OnStartShapeMode += ResetInstructions;
-            _input.OnExitShapeMode += OnChooseElements;
+            _input.OnExitShapeMode += OnSpellLaunch;
         }
 
         private void Awake()
@@ -152,7 +153,7 @@ namespace Player
             if (!_invicible)
             {
                 _invicible = true;
-                Invoke("MangeIFrames", _iFrameDuration);
+                Invoke("ManageIFrames", _iFrameDuration);
 
                 float finalDamage = damage * _candleFactor;
 
@@ -175,6 +176,13 @@ namespace Player
         public void ManageIFrames()
         {
             _invicible = false;
+        }
+
+        public void Revive()
+        {
+            Debug.Log("SE REVIVE AL JUGADOR");
+            World.Candle = World.MAX_CANDLE * 0.5f;
+            if (OnRevive != null) OnRevive();
         }
 
         #region Actions
@@ -297,7 +305,7 @@ namespace Player
             if (_bookIsOpen) //Se registra un nuevo elemento
             {
                 ARune.Activate(_instructions.ToArray(), out var rune);
-                if (rune != null) StartCoroutine(_book.ShowResult(rune));
+                if (rune != null) _book.ShowResult(rune);
                 else _book.ResetText();
             }
             else //Se activa un elemento(s)
@@ -316,8 +324,7 @@ namespace Player
             if (_bookIsOpen) //Se registra una nueva forma
             {
                 ARune.Activate(_instructions.ToArray(), out var rune);
-                Debug.Log(rune.Name);
-                if (rune != null) StartCoroutine(_book.ShowResult(rune));
+                if (rune != null) _book.ShowResult(rune);
                 else _book.ResetText();
             }
             else //Se lanza un hechizo
@@ -500,7 +507,7 @@ namespace Player
             _input.OnStartElementMode -= ResetInstructions;
             _input.OnStartElementMode -= OnChooseElements;
             _input.OnStartShapeMode -= ResetInstructions;
-            _input.OnExitShapeMode -= OnChooseElements;
+            _input.OnExitShapeMode -= OnSpellLaunch;
         }
     }
 }

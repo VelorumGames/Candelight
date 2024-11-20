@@ -1,5 +1,8 @@
 using Controls;
+using DG.Tweening;
 using Hechizos;
+using Hechizos.DeForma;
+using Hechizos.Elementales;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,6 +23,10 @@ namespace UI
         int _current;
 
         bool _activeCoroutine;
+
+        [Space(10)]
+        [SerializeField] Image[] _results;
+        [SerializeField] Sprite[] _spellResults;
 
         private void Start()
         {
@@ -123,7 +130,7 @@ namespace UI
                 if (i != null)
                 {
                     i.gameObject.SetActive(false);
-                    i.color = Color.white;
+                    i.color = i.GetComponent<InstructionUI>().GetColor();
                     i.sprite = null;
                 }
             }
@@ -139,6 +146,97 @@ namespace UI
             yield return new WaitForSeconds(1f);
             _activeCoroutine = false;
             ResetSprites();
+        }
+
+        public void ShowShapeResult(AShapeRune rune)
+        {
+            switch (rune.Name)
+            {
+                case "Melee":
+                    ShowSpellSprite(_results[0], _spellResults[1]);
+                    break;
+                case "Projectile":
+                    ShowSpellSprite(_results[0], _spellResults[0]);
+                    break;
+                case "Explosion":
+                    ShowSpellSprite(_results[0], _spellResults[2]);
+                    break;
+                case "Buff":
+                    ShowSpellSprite(_results[0], _spellResults[3]);
+                    break;
+            }
+        }
+
+        public void ShowElementsResult(AElementalRune[] runes)
+        {
+            switch(runes.Length)
+            {
+                case 1:
+                    switch (runes[0].Name)
+                    {
+                        case "Fire":
+                            ShowSpellSprite(_results[0], _spellResults[4]);
+                            break;
+                        case "Electric":
+                            ShowSpellSprite(_results[0], _spellResults[5]);
+                            break;
+                        case "Cosmic":
+                            ShowSpellSprite(_results[0], _spellResults[6]);
+                            break;
+                        case "Phantom":
+                            ShowSpellSprite(_results[0], _spellResults[7]);
+                            break;
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < runes.Length; i++)
+                    {
+                        switch (runes[i].Name)
+                        {
+                            case "Fire":
+                                ShowSpellSprite(_results[i + 1], _spellResults[4]);
+                                break;
+                            case "Electric":
+                                ShowSpellSprite(_results[i + 1], _spellResults[5]);
+                                break;
+                            case "Cosmic":
+                                ShowSpellSprite(_results[i + 1], _spellResults[6]);
+                                break;
+                            case "Phantom":
+                                ShowSpellSprite(_results[i + 1], _spellResults[7]);
+                                break;
+                        }
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < runes.Length; i++)
+                    {
+                        switch (runes[i].Name)
+                        {
+                            case "Fire":
+                                ShowSpellSprite(_results[i + 3], _spellResults[4]);
+                                break;
+                            case "Electric":
+                                ShowSpellSprite(_results[i + 3], _spellResults[5]);
+                                break;
+                            case "Cosmic":
+                                ShowSpellSprite(_results[i + 3], _spellResults[6]);
+                                break;
+                            case "Phantom":
+                                ShowSpellSprite(_results[i + 3], _spellResults[7]);
+                                break;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        void ShowSpellSprite(Image img, Sprite spr)
+        {
+            img.sprite = spr;
+            img.GetComponent<RectTransform>().DOScale(0.55f, 0.2f).Play().OnComplete(() => img.GetComponent<RectTransform>().DOScale(0.5f, 0.7f).Play().OnComplete(() => 
+                img.GetComponent<RectTransform>().localScale = new Vector3(0.45f, 0.45f, 0.45f)));
+            img.DOFade(1f, 0.2f).Play().OnComplete(() => img.DOFade(0f, 0.7f).Play());
         }
     }
 }

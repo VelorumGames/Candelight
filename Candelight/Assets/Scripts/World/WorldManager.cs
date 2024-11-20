@@ -242,6 +242,7 @@ namespace World
 
         void LoadNextScene()
         {
+            FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
             _player.transform.position = new Vector3(999f, _player.transform.position.y, 999f);
             World.World.SetActive(false);
             switch (CurrentNodeInfo.LevelTypes[0])

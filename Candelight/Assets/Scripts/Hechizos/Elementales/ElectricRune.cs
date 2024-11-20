@@ -66,20 +66,25 @@ namespace Hechizos.Elementales
         //Potenciador electrico
         public override void BuffActivation(Transform target)
         {
-
+            AddDamageFactor(0.25f);
+            MageManager.ManageBuff(true, BuffReset(target));
         }
         public override IEnumerator BuffReset(Transform target)
         {
             yield return new WaitForSeconds(_buffDuration);
+            AddDamageFactor(-0.25f);
+            MageManager.ManageResetBuff();
         }
 
         public void ConstantBuff()
         {
-
+            MageManager.ManageBuff(false, BuffReset(null));
+            AddDamageFactor(0.25f);
         }
         public void ConstantBuffReset()
         {
-
+            AddDamageFactor(-0.25f);
+            MageManager.ManageResetBuff();
         }
     }
 }

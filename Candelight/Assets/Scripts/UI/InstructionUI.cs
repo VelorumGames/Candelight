@@ -20,6 +20,8 @@ namespace UI
         Tween _move;
         Tween _rotate;
 
+        Color _oColor;
+
         private void Awake()
         {
             _trans = GetComponent<RectTransform>();
@@ -30,6 +32,8 @@ namespace UI
             _scale = _trans.DOScale(oScale, _animTime).SetAutoKill(false).OnPlay(() => GetComponent<Image>().SetNativeSize());
             _move = _trans.DOLocalMove(_oPos, _animTime).SetAutoKill(false);
             _rotate = _trans.DOLocalRotate(new Vector3(0f, 0f, 0f), _animTime).SetAutoKill(false);
+
+            _oColor = GetComponent<Image>().color;
         }
 
 
@@ -47,5 +51,7 @@ namespace UI
             _rotate.Restart();
            _rotate.Play();
         }
+
+        public Color GetColor() => _oColor;
     }
 }

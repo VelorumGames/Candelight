@@ -33,6 +33,7 @@ namespace Interactuables
             }
 
             FindObjectOfType<PlayerController>().World.Candle -= 1f * FindObjectOfType<PlayerController>().World.NodeCandleFactor;
+            FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
             SceneManager.LoadScene("WorldScene");
         }
     }

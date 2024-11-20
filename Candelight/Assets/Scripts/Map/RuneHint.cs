@@ -14,17 +14,29 @@ namespace Map
         ESpellInstruction[] _rune;
         [SerializeField] ParticleSystemRenderer _particles;
         [SerializeField] Material[] _runeMats;
+        [SerializeField] Material _runeMaterial;
 
         [SerializeField] Sprite[] _hintSprites;
 
         [SerializeField] string _runeToFind;
+        [SerializeField] Color _runeColor;
 
-        [SerializeField] float _offset;
+        [SerializeField] Vector2 _offset;
+
+        private void Awake()
+        {
+            //Debug
+            ARune.CreateAllRunes(FindObjectOfType<Mage>());
+        }
 
         private void Start()
         {
             _rune = ChooseRune();
-            if (_rune != null) ShowHints();
+            if (_rune != null)
+            {
+                ShowHints();
+            }
+            else gameObject.SetActive(false);
         }
 
         ESpellInstruction[] ChooseRune()
@@ -63,10 +75,13 @@ namespace Map
                 GameObject hint = new GameObject("Rune Hint " + count);
                 hint.transform.parent = transform;
                 SpriteRenderer sprite = hint.AddComponent<SpriteRenderer>();
+                sprite.sharedMaterial = _runeMaterial;
 
                 sprite.sprite = _hintSprites[(int)instr];
+                sprite.transform.localScale = 0.5f * Vector3.one;
+                sprite.color = _runeColor;
 
-                hint.transform.localPosition = new Vector3((_offset * count - _offset * (_rune.Length - 1 - count++)) * 0.5f, 0f, -0.03f);
+                hint.transform.localPosition = new Vector3((_offset.x * count - _offset.x * (_rune.Length - 1 - count++)) * 0.5f, _offset.y, -0.03f);
             }
         }
 

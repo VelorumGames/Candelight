@@ -21,6 +21,7 @@ namespace Hechizos
 
         PlayerController _cont;
         CameraManager _cam;
+        BuffFeedback _buff;
 
         public GameObject[] Projectiles;
         GameObject _lastProjectile;
@@ -39,6 +40,7 @@ namespace Hechizos
         private void OnEnable()
         {
             _cont = FindObjectOfType<PlayerController>();
+            _buff = _cont.GetComponent<BuffFeedback>();
 
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
@@ -364,9 +366,15 @@ namespace Hechizos
 
         public void SetExtraProjSpeed(float speed) => _projectileSpeedFactor = speed;
 
-        public void ManageBuffReset(IEnumerator func)
+        public void ManageBuff(bool canReset, IEnumerator func)
         {
-            StartCoroutine(func);
+            if (canReset) StartCoroutine(func);
+            _buff.LoadBuff();
+        }
+
+        public void ManageResetBuff()
+        {
+            _buff.ResetBuff();
         }
 
         private void OnDisable()

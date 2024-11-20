@@ -17,6 +17,9 @@ namespace Events
 
         [SerializeField] GameObject[] _rewardEvents;
 
+        [Space(10)]
+        [SerializeField] GameObject _healthAltar;
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
@@ -26,6 +29,7 @@ namespace Events
         private void OnEnable()
         {
             MapManager.Instance.OnRoomGenerationEnd += SpawnRewardNPC;
+            MapManager.Instance.OnRoomGenerationEnd += SpawnHealthAltar;
         }
 
         public void GenerateEvent(MapManager map)
@@ -76,13 +80,20 @@ namespace Events
                 ARoom rewardRoom = MapManager.Instance.GetRandomAvailableRoom(true).GetComponent<ARoom>();
                 rewardRoom.IdText.text += " REWARD";
 
-                GameObject rewardNPC = Instantiate(_rewardEvents[Random.Range(0, _rewardEvents.Length)], rewardRoom.GetRandomSpawnPoint());
+                Instantiate(_rewardEvents[Random.Range(0, _rewardEvents.Length)], rewardRoom.GetRandomSpawnPoint());
             }
+        }
+
+        void SpawnHealthAltar()
+        {
+            ARoom healthRoom = MapManager.Instance.GetRandomAvailableRoom(true).GetComponent<ARoom>();
+            Instantiate(_healthAltar, healthRoom.GetRandomSpawnPoint());
         }
 
         private void OnDisable()
         {
             MapManager.Instance.OnRoomGenerationEnd -= SpawnRewardNPC;
+            MapManager.Instance.OnRoomGenerationEnd -= SpawnHealthAltar;
         }
     }
 }

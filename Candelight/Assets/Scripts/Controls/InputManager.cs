@@ -258,50 +258,42 @@ namespace Controls
 
         void StartElementMode(InputAction.CallbackContext _)
         {
-            if (OnStartElementMode != null) OnStartElementMode();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnStartElementMode != null) OnStartElementMode();
 
-            _move.Disable();
-            //Time.timeScale = _spellTimeScale;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, _spellTimeScale, 0.2f);
-            //_cont.ResetInstructions();
-
-            //if (_camMan != null) _camMan.EnterSpellMode();
+                _move.Disable();
+            }
         }
 
         void StopElementMode(InputAction.CallbackContext _)
         {
-            if (OnExitElementMode != null) OnExitElementMode();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnExitElementMode != null) OnExitElementMode();
 
-            _move.Enable();
-            //Time.timeScale = 1f;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.1f);
-            //_cont.OnChooseElements();
-
-            //if (_camMan != null) _camMan.ExitSpellMode();
+                _move.Enable();
+            }
         }
 
         void StartSpellMode(InputAction.CallbackContext _)
         {
-            if (OnStartShapeMode != null) OnStartShapeMode();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnStartShapeMode != null) OnStartShapeMode();
 
-            _move.Disable();
-            //Time.timeScale = _spellTimeScale;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, _spellTimeScale, 0.2f);
-            //_cont.ResetInstructions();
-
-            //if (_camMan != null) _camMan.EnterSpellMode();
+                _move.Disable();
+            }
         }
 
         void StopSpellMode(InputAction.CallbackContext _)
         {
-            if (OnExitShapeMode != null) OnExitShapeMode();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnExitShapeMode != null) OnExitShapeMode();
 
-            _move.Enable();
-            //Time.timeScale = 1f;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.1f);
-            //_cont.OnSpellLaunch();
-
-            //if (_camMan != null) _camMan.ExitSpellMode();
+                _move.Enable();
+            }
         }
 
         #endregion

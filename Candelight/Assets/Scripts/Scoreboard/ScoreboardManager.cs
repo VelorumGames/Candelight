@@ -46,18 +46,19 @@ namespace Scoreboard
             foreach (var p in _surroundingPlayers) p.text = "";
         }
 
-        public void UpdatePlayers(UserData[] data)
+        public void UpdatePlayers(ScoreData[] data)
         {
+            
             SpawnStars(data);
             LoadBestPlayers(data);
 
-            if (SaveSystem.PlayerData != null)
+            if (SaveSystem.ScoreboardData != null)
             {
                 int index = 0;
 
                 foreach (var d in data)
                 {
-                    if (d.Name == SaveSystem.PlayerData.Name) break;
+                    if (d.Name == SaveSystem.ScoreboardData.Name) break;
                     index++;
                 }
 
@@ -66,9 +67,9 @@ namespace Scoreboard
             else Debug.LogWarning("ERROR: No se han encontrado datos del jugador en el sistema");
         }
 
-        void SpawnStars(UserData[] data)
+        void SpawnStars(ScoreData[] data)
         {
-            if (SaveSystem.PlayerData != null)
+            if (SaveSystem.ScoreboardData != null)
             {
                 _stars = new GameObject[data.Length];
                 for (int i = 0; i < data.Length; i++)
@@ -77,7 +78,7 @@ namespace Scoreboard
                     _stars[i].GetComponent<Star>().LoadData(data[i]);
                     _stars[i].transform.localPosition = new Vector2(data[i].posX, data[i].posY);
 
-                    if (data[i].Name == SaveSystem.PlayerData.Name)
+                    if (data[i].Name == SaveSystem.ScoreboardData.Name)
                     {
                         if (SaveSystem.ScoreboardIntro)
                         {
@@ -96,20 +97,20 @@ namespace Scoreboard
             else Debug.LogWarning("ERROR: No se ha encontrado PlayerData en el sistema de guardado.");
         }
 
-        void LoadBestPlayers(UserData[] data)
+        void LoadBestPlayers(ScoreData[] data)
         {
-            if (SaveSystem.PlayerData != null)
+            if (SaveSystem.ScoreboardData != null)
             {
                 for (int i = 0; i < _bestPlayers.Length; i++)
                 {
                     _bestPlayers[i].text = $"{i + 1}. ({data[i].Score} - {data[i].Name})";
-                    if (data[i].Name == SaveSystem.PlayerData.Name) _bestPlayers[i].color = Color.yellow;
+                    if (data[i].Name == SaveSystem.ScoreboardData.Name) _bestPlayers[i].color = Color.yellow;
                 }
             }
             else Debug.LogWarning("ERROR: No se ha encontrado PlayerData en el sistema de guardado.");
         }
 
-        void LoadSurroundingPlayers(int index, UserData[] data)
+        void LoadSurroundingPlayers(int index, ScoreData[] data)
         {
             index -= Math.Clamp(data.Length / 2, 0, 4);
 
@@ -118,7 +119,7 @@ namespace Scoreboard
                 if (index > 0 && index < data.Length)
                 {
                     p.text = $"{index + 1}. ({data[index].Score} - {data[index].Name})";
-                    if (data[index].Name == SaveSystem.PlayerData.Name) p.color = Color.yellow;
+                    if (data[index].Name == SaveSystem.ScoreboardData.Name) p.color = Color.yellow;
                     index++;
                 }
             }

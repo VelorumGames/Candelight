@@ -8,11 +8,11 @@ namespace UI
 {
     public class UISeed : MonoBehaviour
     {
-        WorldInfo _world;
+        [SerializeField] WorldInfo _world;
 
         private void Awake()
         {
-            GetComponent<TextMeshPro>().text = $"Seed: {_world.Seed}";
+            GetComponent<TextMeshProUGUI>().text = $"Seed: {_world.Seed}";
         }
     }
 }
