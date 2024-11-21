@@ -53,7 +53,7 @@ namespace UI
                 if (num > prev) prev++;
                 else prev--;
 
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.05f);
             }
 
             _text.text = $"{prev}";

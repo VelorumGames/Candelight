@@ -307,26 +307,62 @@ namespace Map
         // Se crean BoxColliders. Se altera su center y size para que se adecuen a su correspondiente conexion
         #region Third Stage: Collider Generation
 
+        /// <summary>
+        /// Si la conexion es vertical, se generan dos colliders a ambos lados del camino
+        /// </summary>
+        /// <param name="con"></param>
+        /// <param name="positions"></param>
         void GenerateSimpleCollidersZ(GameObject con, Vector3[] positions)
         {
+            float zReduction = 0.8f;
+
             BoxCollider box1 = con.AddComponent<BoxCollider>();
             BoxCollider box2 = con.AddComponent<BoxCollider>();
+
+            //Se colocan acorde a un offset
             box1.center += _map.ConnectionCollidersOffset * 2f * Vector3.right;
             box2.center -= _map.ConnectionCollidersOffset * 2f * Vector3.right;
-            box1.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
-            box2.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
+            //Se expanden una cantidad que se ha considerado correcta
+            box1.size = new Vector3(box1.size.x, 2f, box1.size.z * zReduction);
+            box2.size = new Vector3(box1.size.x, 2f, box1.size.z * zReduction);
+
+            float deltaCenters = Mathf.Abs(box1.center.x - box2.center.x);
+            float offset = 0;
+            Debug.Log($"Soy {_room.GetID()} con distancia en X: {deltaCenters}");
+            if (deltaCenters > 5f) offset = 1.7f;
+
+            box1.center -= offset * Vector3.right;
+            box2.center += offset * Vector3.right;
         }
 
+        /// <summary>
+        /// Si la conexion es horizontal, se generan dos colliders a ambos lados del camino
+        /// </summary>
+        /// <param name="con"></param>
+        /// <param name="positions"></param>
         void GenerateSimpleCollidersX(GameObject con, Vector3[] positions)
         {
+            float xReduction = 0.8f;
+
             BoxCollider box1 = con.AddComponent<BoxCollider>();
             BoxCollider box2 = con.AddComponent<BoxCollider>();
+            //Se colocan acorde a un offset
             box1.center += _map.ConnectionCollidersOffset * 2f * Vector3.forward;
             box2.center -= _map.ConnectionCollidersOffset * 2f * Vector3.forward;
-            box1.size = new Vector3(box1.size.x * 0.8f, 2f, box1.size.z);
-            box2.size = new Vector3(box1.size.x * 0.8f, 2f, box1.size.z);
+            //Se expanden una cantidad que se ha considerado correcta
+            box1.size = new Vector3(box1.size.x * xReduction, 2f, box1.size.z);
+            box2.size = new Vector3(box1.size.x * xReduction, 2f, box1.size.z);
+
+            float deltaCenters = Mathf.Abs(box1.center.x - box2.center.x);
+            float offset = 0;
+            Debug.Log($"Soy {_room.GetID()} con distancia en X: {deltaCenters}");
+            if (deltaCenters > 5f) offset = 1.55f;
+
+            box1.center -= offset * Vector3.right;
+            box2.center += offset * Vector3.right;
         }
 
+        //Generacion de colliders complejos
         void GenerateComplexColliders(GameObject con, Vector3[] positions, float lineWidth)
         {
             BoxCollider[] boxes = new BoxCollider[4];
@@ -339,17 +375,33 @@ namespace Map
             ExpandColliders(boxes, positions);
         }
 
+        /// <summary>
+        /// Se expanden los colliders en tamano. Cada anchor tiene una direccion y gracias a ella podemos predecir que direccion tendra la conexion (horizontal o vertical).
+        /// 
+        /// </summary>
+        /// <param name="boxes"></param>
+        /// <param name="positions"></param>
         void ExpandColliders(BoxCollider[] boxes, Vector3[] positions)
         {
             Vector2 halfSize;
 
-            switch(_direction)
+            float anchorDeltaX;
+            float anchorDeltaZ;
+            float extraSize;
+
+            switch (_direction)
             {
                 case EAnchorDirection.Forward:
                     CalibrateCollidersZ(boxes, positions);
 
                     halfSize = ExpandHalfSizeZ(boxes, positions[0], positions[3], (int)EColliderOrientation.Z);
-                    boxes[2].size = new Vector3(halfSize[0] * 2f, 2f, halfSize[1] * 2f);
+
+                    anchorDeltaX = Mathf.Abs(positions[0].x - positions[3].x);
+                    if (anchorDeltaX > 4f) extraSize = 0.4f * anchorDeltaX; //Valor exacto en >4f encontrado para 7.47
+                    else if (anchorDeltaX > 2f) extraSize = 0.7f * anchorDeltaX;
+                    else extraSize = 0.9f * anchorDeltaX;
+
+                    boxes[2].size = new Vector3(halfSize[0] * extraSize, 2f, halfSize[1] * 2.1f);
                     
                     break;
 
@@ -357,22 +409,38 @@ namespace Map
                     CalibrateCollidersZ(boxes, positions);
 
                     halfSize = ExpandHalfSizeZ(boxes, positions[0], positions[3], (int)EColliderOrientation.Z);
-                    boxes[2].size = new Vector3(halfSize[0] * 2f, 2f, halfSize[1] * 2f);
+
+                    anchorDeltaX = Mathf.Abs(positions[0].x - positions[3].x);
+                    if (anchorDeltaX > 4f) extraSize = 0.4f * anchorDeltaX; //Valor exacto en >4f encontrado para 7.47
+                    else if (anchorDeltaX > 2f) extraSize = 0.7f * anchorDeltaX;
+                    else extraSize = 0.9f * anchorDeltaX;
+
+                    boxes[2].size = new Vector3(halfSize[0] * extraSize, 2f, halfSize[1] * 2.1f);
 
                     break;
 
                 case EAnchorDirection.Right:
                     CalibrateCollidersX(boxes, positions);
-                    
+
+                    anchorDeltaZ = Mathf.Abs(positions[0].z - positions[3].z);
+                    //Debug.Log($"Soy {_room.GetID()} con distancia en Z: {anchorDeltaZ}");
+                    if (anchorDeltaZ > 4f) extraSize = 0.4f * anchorDeltaZ; //Valor exacto en >4f encontrado para 7.47
+                    else extraSize = 0.9f * anchorDeltaZ;
+
                     halfSize = ExpandHalfSizeX(boxes, positions[0], positions[3], (int)EColliderOrientation.X);
-                    boxes[2].size = new Vector3(halfSize[1] * 2f, 2f, halfSize[0] * 2f);
+                    boxes[2].size = new Vector3(halfSize[1] * 2.1f, 2f, halfSize[0] * extraSize);
                     break;
 
                 case EAnchorDirection.Left:
                     CalibrateCollidersX(boxes, positions);
 
+                    anchorDeltaZ = Mathf.Abs(positions[0].z - positions[3].z);
+                    //Debug.Log($"Soy {_room.GetID()} con distancia en Z: {anchorDeltaZ}");
+                    if (anchorDeltaZ > 4f) extraSize = 0.4f * anchorDeltaZ; //Valor exacto en >4f encontrado para 7.47
+                    else extraSize = 0.9f * anchorDeltaZ;
+
                     halfSize = ExpandHalfSizeX(boxes, positions[0], positions[3], (int)EColliderOrientation.X);
-                    boxes[2].size = new Vector3(halfSize[1] * 2f, 2f, halfSize[0] * 2f);
+                    boxes[2].size = new Vector3(halfSize[1] * 2.1f, 2f, halfSize[0] * extraSize);
                     break;                
             }
 
@@ -381,16 +449,34 @@ namespace Map
 
         void CalibrateCollidersZ(BoxCollider[] boxes, Vector3[] positions)
         {
-            //Colliders exteriores
-            boxes[0].center += new Vector3(_map.ConnectionCollidersOffset * Mathf.Abs(positions[0].x - positions[3].x) * 2f, 0f, 0f);
-            boxes[1].center -= new Vector3(_map.ConnectionCollidersOffset * Mathf.Abs(positions[0].x - positions[3].x) * 2f, 0f, 0f);
-            boxes[0].size = new Vector3(boxes[0].size.x, 2f, boxes[0].size.z * 0.8f);
-            boxes[1].size = new Vector3(boxes[1].size.x, 2f, boxes[1].size.z * 0.8f);
+            //=== COLLIDERS EXTERIORES ===
+
+            //La distancia en el eje X entre ambos anchors.
+            float anchorDeltaX = Mathf.Abs(positions[0].x - positions[3].x);
+            //Debug.Log($"Soy {_room.GetID()} con distancia en X: {anchorDeltaX}");
+
+            //Se elije segun la distancia.
+            // Para deltaX > 4: 1.27f (posicion exacta conseguida en 7.47)
+            // Para deltaX > 3: 1.7f
+            // Para deltaX <= 3: 1.85f (posicion exacta conseguida en 2.056)
+            float extraDist = 0f;
+            if (anchorDeltaX > 4f) extraDist = 1.27f;
+            else if (anchorDeltaX > 3f) extraDist = 1.7f;
+            else if (anchorDeltaX > 2f) extraDist = 1.85f;
+            else extraDist = 2.2f;
+
+            //Para elegir el centro de cada conexion, se toma el valor del offset y se multiplica por la distancia
+            //Cuanto mas lejos esten los anchors en el eje X, mas se alejaran los colliders
+            boxes[0].center += new Vector3(anchorDeltaX * extraDist, 0f, 0f);
+            boxes[1].center -= new Vector3(anchorDeltaX * extraDist, 0f, 0f);
+            boxes[0].size = new Vector3(boxes[0].size.x, 2f, boxes[0].size.z * 0.65f);
+            boxes[1].size = new Vector3(boxes[1].size.x, 2f, boxes[1].size.z * 0.65f);
 
 
-            //Colliders interiores
+            //=== COLLIDERS INTERIORES ===
+
             bool dirCond = (int)_direction % 2 == 0; //Si es 0, es forward o right
-            Vector3 offset = new Vector3(0f, 0f, Mathf.Abs(positions[0].z - positions[3].z) / 4);
+            Vector3 offset = new Vector3(0f, 0f, Mathf.Abs(positions[0].z - positions[3].z) * 0.25f);
 
             boxes[2].center += (dirCond ? -1 : 1) * offset;
             boxes[3].center += (!dirCond ? -1 : 1) * offset;
@@ -440,22 +526,42 @@ namespace Map
 
         void CalibrateCollidersX(BoxCollider[] boxes, Vector3[] positions)
         {
-            //Colliders exteriores
-            boxes[0].center += new Vector3(0f, 0f, _map.ConnectionCollidersOffset * Mathf.Abs(positions[0].z - positions[3].z) * 2f);
-            boxes[1].center -= new Vector3(0f, 0f, _map.ConnectionCollidersOffset * Mathf.Abs(positions[0].z - positions[3].z) * 2f);
+            //=== COLLIDERS EXTERIORES ===
+
+            //La distancia en el eje X entre ambos anchors.
+            float anchorDeltaZ = Mathf.Abs(positions[0].z - positions[3].z);
+            //Debug.Log($"Soy {_room.GetID()} con distancia en Z: {anchorDeltaZ}");
+
+            //La distancia extra se elije segun la distancia.
+            // Para deltaX > 4: 1.27f (posicion exacta conseguida en 7.47)
+            // Para deltaX > 3: 1.7f
+            // Para deltaX <= 3: 1.85f (posicion exacta conseguida en 2.056)
+            float extraDist = 0f;
+            if (anchorDeltaZ > 4f) extraDist = 1.27f;
+            else if (anchorDeltaZ > 3f) extraDist = 1.7f;
+            else if (anchorDeltaZ > 2f) extraDist = 1.85f;
+            else extraDist = 2.2f;
+
+            boxes[0].center += new Vector3(0f, 0f, anchorDeltaZ * extraDist);
+            boxes[1].center -= new Vector3(0f, 0f, anchorDeltaZ * extraDist);
             boxes[0].size = new Vector3(boxes[0].size.x * 0.8f, 2f, boxes[0].size.z);
             boxes[1].size = new Vector3(boxes[1].size.x * 0.8f, 2f, boxes[1].size.z);
 
 
-            //Colliders interiores
+            //=== COLLIDERS INTERIORES ===
+          
             bool dirCond = (int)_direction % 2 == 0; //Si es 0, es forward o right
-            Vector3 offset = new Vector3(Mathf.Abs(positions[0].x - positions[3].x) / 4, 0f, 0f);
+            Vector3 offset = new Vector3(Mathf.Abs(positions[0].x - positions[3].x) * 0.25f, 0f, 0f);
 
             boxes[2].center += (dirCond ? -1 : 1) * offset;
             boxes[3].center += (!dirCond ? -1 : 1) * offset;
             boxes[2].center = new Vector3(boxes[2].center.x, boxes[2].center.y, positions[3].z);
             boxes[3].center = new Vector3(boxes[3].center.x, boxes[3].center.y, positions[0].z);
+
             boxes[2].size = new Vector3(0f, 2f, 0f);
+
+            
+
         }
         Vector2 ExpandHalfSizeX(BoxCollider[] boxes, Vector3 start, Vector3 end, int axis)
         {

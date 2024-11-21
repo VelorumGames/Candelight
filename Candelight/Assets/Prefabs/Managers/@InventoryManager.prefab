@@ -44,23 +44,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa7ba1e8c6c3824cb92f834fd3f1125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  World: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
   CommonItemPool:
   - {fileID: 7554882533741908000, guid: 44b83e1de6cdb484fb01326ca181469d, type: 3}
   - {fileID: 3478661290487487668, guid: 7670c962fbdb837418d8bbd5d84e8b13, type: 3}
+  - {fileID: 7554882533741908000, guid: a0f0952aca4ce1e49b54bd454b99252c, type: 3}
+  - {fileID: 7554882533741908000, guid: e2e18ece6318a544e8b96d167bd42312, type: 3}
+  - {fileID: 7554882533741908000, guid: 64330ad17665af94d8541ed49583c069, type: 3}
+  - {fileID: 7554882533741908000, guid: 3c08cbe142d5ffc4fafd2e1f2e0b8fe9, type: 3}
   RareItemPool:
   - {fileID: 8071471756141701630, guid: 3b48e3ce12b8ace4d8e64307a7b043c8, type: 3}
   - {fileID: 2856536940383296375, guid: 4c65d8ac715422346a2d9459d131827a, type: 3}
   - {fileID: 9047879985867035068, guid: 1940485b17c98e04482072db263e4b5b, type: 3}
+  - {fileID: 9047879985867035068, guid: 59ca787baf416e54d8cbba639069f2bc, type: 3}
+  - {fileID: 9047879985867035068, guid: dc6496430d36757408211e262f6702e2, type: 3}
   EpicItemPool:
   - {fileID: 7093971818238794603, guid: b6541e8f54396ae4f8c072b292ffdce8, type: 3}
+  - {fileID: 7093971818238794603, guid: adddb7fa65d4fc34491c684340abde4f, type: 3}
+  - {fileID: 7093971818238794603, guid: a58181f9fe60c8645ad68fe38fcb96a8, type: 3}
+  - {fileID: 7093971818238794603, guid: e070f617b5626b548be8b41b3046b86f, type: 3}
+  - {fileID: 7093971818238794603, guid: db8f892d6fb8e534e850a79a9397ca2f, type: 3}
   LegendaryItemPool:
   - {fileID: 7837553296072988629, guid: 8fe016e67e95f9c41aec44b0639b39a6, type: 3}
+  - {fileID: 7837553296072988629, guid: 28c54b830a3aac14e8dd97d00379ec0b, type: 3}
+  - {fileID: 7837553296072988629, guid: e01371170c8a0ef43bd4b869ea4cf1ae, type: 3}
+  - {fileID: 7837553296072988629, guid: 86e4d65af44f58d4ebdb98337d8ff17a, type: 3}
   Fragment: {fileID: 3511583418104216482, guid: f4b15eff24eade8458c13b8996bbdd04,
     type: 3}
-  _totalNumFragments: 100
   ItemsList: []
-  ItemsGOList: []
+  UnactiveItems: []
+  ActiveItems: []
   _itemContainer: {fileID: 0}
   Position: {x: -210, y: 100, z: 0}
   Offset: {x: 0, y: -40, z: 0}
-  id: 1

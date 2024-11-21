@@ -261,7 +261,7 @@ namespace Player
 
         public void OnSpellInstruction(ESpellInstruction instr)
         {
-            if (CanMove)
+            if (CanMove && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 //Debug.Log("Se ha registrado la instruccion " + instr);
                 if (_bookIsOpen)
@@ -355,7 +355,7 @@ namespace Player
 
         public void OnBook(InputAction.CallbackContext _)
         {
-            if (!_isFirstPerson && _book)
+            if (!_isFirstPerson && _book && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (_bookIsOpen)
                 {

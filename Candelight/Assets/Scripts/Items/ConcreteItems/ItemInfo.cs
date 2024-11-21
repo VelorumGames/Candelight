@@ -10,6 +10,7 @@ namespace Items.ConcreteItems
         public int Id;
         public string Name;
         public string Description;
+        public string SubDescription;
         public Sprite ItemSprite;
         public int Max;
         public EItemCategory Category;

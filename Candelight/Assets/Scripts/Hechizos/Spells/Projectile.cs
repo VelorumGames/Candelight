@@ -65,17 +65,12 @@ namespace Hechizos
                     Target = other.transform.parent;
                     if (OnImpact != null) OnImpact(Target);
 
-
-
-
                     if (Target.TryGetComponent<EnemyController>(out var enemy))
                     {
-                        
                         enemy.RecieveDamage(Damage);
                     }
-                    else if (other.transform.TryGetComponent<EnemyController>(out enemy))
+                    else if (other.transform.TryGetComponent(out enemy))
                     {
-                      
                         enemy.RecieveDamage(Damage);
                     }
                 }
@@ -134,13 +129,6 @@ namespace Hechizos
                 runes = new AElementalRune[1];
                 runes[0] = oldRune;
             }
-
-            //foreach (var r in runes)
-            //{
-            //    _name.text += $"{r.Name} ";
-            //}
-            //
-            //Debug.Log("Se registran los tipos: " + _name.text);
 
             switch(runes[0].Name)
             {
