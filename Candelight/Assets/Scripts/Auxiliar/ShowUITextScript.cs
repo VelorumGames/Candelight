@@ -14,12 +14,23 @@ namespace Auxiliar
 		bool _showingText = false;
 		[SerializeField] float _speed;
 
-		private void Awake()
+		[SerializeField] GameObject _next;
+
+		public event Action OnTextStart;
+		public event Action OnTextComplete;
+
+        private void Awake()
 		{
 			_textComponent = GetComponent<TextMeshProUGUI>();
 		}
 
-		private void Start()
+        private void OnEnable()
+        {
+			OnTextStart += HideNextIcon;
+			OnTextComplete += ShowNextIcon;
+        }
+
+        private void Start()
 		{
 			_speed /= 10f;
 			_textComponent.text = "";
@@ -42,6 +53,8 @@ namespace Auxiliar
 			_showingText = true;
 
 			yield return new WaitForSeconds(0.5f);
+
+			if (OnTextStart != null) OnTextStart();
 
 			var numCharsRevealed = 0;
 			while (numCharsRevealed < _originalText.Length)
@@ -76,7 +89,7 @@ namespace Auxiliar
 				}
 			}
 			_showingText = false;
-			yield return null;
+			if (OnTextComplete != null) OnTextComplete();
 		}
 
 		public bool IsShowingText()
@@ -90,5 +103,20 @@ namespace Auxiliar
 			_textComponent.text = _originalText;
 			_showingText = false;
 		}
-	}
+
+		void ShowNextIcon()
+		{
+			if (_next) _next.SetActive(true);
+		}
+        void HideNextIcon()
+		{
+            if (_next) _next.SetActive(false);
+        }
+
+        private void OnDisable()
+        {
+            OnTextStart -= HideNextIcon;
+            OnTextComplete -= ShowNextIcon;
+        }
+    }
 }

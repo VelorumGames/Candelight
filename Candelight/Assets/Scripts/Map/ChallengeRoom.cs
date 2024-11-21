@@ -28,7 +28,7 @@ namespace Map
             if (_waveCount < _waves.Length) _waves[_waveCount++].SetActive(true); //Siguiente oleada
             else //Al finalizar el desafio
             {
-                Inventory.Instance.SpawnFragments(_fragReward, 1, GetRandomSpawn());
+                FindObjectOfType<Inventory>().SpawnFragments(_fragReward, 1, GetRandomSpawn());
                 _man.PlaceTorch(GetRandomSpawn());
             }
         }

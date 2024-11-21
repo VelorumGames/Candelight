@@ -18,7 +18,6 @@ namespace Enemy
         UIManager _uiMan;
 
         public GameObject Fragment;
-
         float _fragDropRate = 0.5f;
 
         protected void Awake()

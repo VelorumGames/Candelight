@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UI;
+using UI.Window;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,7 @@ namespace Items
 {
     public class Inventory : MonoBehaviour
     {
-        public static Inventory Instance;
+        //public static Inventory Instance;
         UIManager _uiMan;
 
         public WorldInfo World;
@@ -51,6 +52,7 @@ namespace Items
 
         [Space(10)]
         [SerializeField] RectTransform _itemContainer;
+        InventoryWindow _window;
 
         [Space(10)]
         public Vector3 Position; //(-210f, 100f, 0f);
@@ -64,18 +66,25 @@ namespace Items
 
         private void Awake()
         {
-            if (Instance != null) Destroy(gameObject);
-            else Instance = this;
+            //if (Instance != null) Destroy(gameObject);
+            //else Instance = this;
 
             DontDestroyOnLoad(gameObject);
+
+            //Debug
+            AddFragments(100);
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
         {
             _uiMan = FindObjectOfType<UIManager>();
-            if (_uiMan != null) _itemContainer = _uiMan.InventoryUI.GetComponent<RectTransform>();
+            if (_uiMan != null)
+            {
+                _itemContainer = _uiMan.InventoryUI.GetComponent<RectTransform>();
+                _window = _uiMan.InventoryUI.GetComponent<InventoryWindow>();
+            }
 
-            if(scene.name == "WorldScene")
+            if (scene.name == "WorldScene")
             {
                 SecureItems();
             }
@@ -174,12 +183,14 @@ namespace Items
             int count = 0;
             foreach (var item in UnactiveItems)
             {
-                item.GetComponent<RectTransform>().localPosition = Position + count++ * Offset; //Los vectores siempre a la derecha de la multiplicacion
+                //item.GetComponent<RectTransform>().localPosition = Position + count++ * Offset; //Los vectores siempre a la derecha de la multiplicacion
+                _window.ManageItemPosition(item, Position + count++ * Offset, true);
             }
             count = 0;
             foreach (var item in ActiveItems)
             {
-                item.GetComponent<RectTransform>().localPosition = Position + count++ * Offset + new Vector3(300f, 0f, 0f); //Los vectores siempre a la derecha de la multiplicacion
+                //item.GetComponent<RectTransform>().localPosition = Position + count++ * Offset + new Vector3(300f, 0f, 0f); //Los vectores siempre a la derecha de la multiplicacion
+                _window.ManageItemPosition(item, Position + count++ * Offset, false);
             }
         }
 

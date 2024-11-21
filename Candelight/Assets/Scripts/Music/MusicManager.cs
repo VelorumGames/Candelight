@@ -54,6 +54,11 @@ namespace Music
                 _map.OnCombatStart -= StartCombatMusic;
                 _map.OnCombatEnd -= ReturnToExploreMusic;
             }
+
+            ChangeVolumeTo(0, 0f, 0.75f);
+            ChangeVolumeTo(1, 0f, 0.75f);
+            ChangeVolumeTo(2, 0f, 0.75f);
+            ChangeVolumeTo(3, 0f, 0.75f);
         }
 
         public void LoadClip(int id, AudioClip newClip) => _sources[id].clip = newClip;
