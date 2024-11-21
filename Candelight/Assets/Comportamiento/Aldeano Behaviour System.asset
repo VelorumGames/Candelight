@@ -13,8 +13,42 @@ MonoBehaviour:
   m_Name: Aldeano Behaviour System
   m_EditorClassIdentifier: 
   data:
-    graphs: []
+    graphs:
+    - name: AldeanoBT
+      id: da312af4-d037-4a76-a5df-e28ca55a644e
+      graph:
+        rid: 2711454442976444416
+      nodes:
+      - name: InfLoop
+        id: ac5d9ddc-297c-4e41-8670-9f9458851449
+        position: {x: 0, y: 0}
+        node:
+          rid: 2711454442976444417
+        references: []
+        parentIds: []
+        childIds:
+        - 999b607f-cac3-4119-abc3-e34354195ef1
+      - name: Sequencer
+        id: 999b607f-cac3-4119-abc3-e34354195ef1
+        position: {x: 0, y: 200}
+        node:
+          rid: 2711454442976444418
+        references: []
+        parentIds:
+        - ac5d9ddc-297c-4e41-8670-9f9458851449
+        childIds: []
     pushPerceptions: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 2711454442976444416
+      type: {class: BehaviourTree, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2711454442976444417
+      type: {class: LoopNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        Iterations: -1
+    - rid: 2711454442976444418
+      type: {class: SequencerNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        IsRandomized: 0
