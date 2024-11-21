@@ -683,6 +683,114 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mixer: {fileID: 24100000, guid: f6317272d0ee82c459c96664b6a5b4e6, type: 2}
+--- !u!1001 &1159450380
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4923557249468801383, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923557249468801383, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923557249468801383, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923557249468801383, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923557249468801383, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923557249468801383, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923557249468801383, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923557249468801383, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923557249468801383, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923557249468801383, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841421913427160153, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: managedReferences[2711454442976444424]
+      value: BehaviourAPI.UnityToolkit.GUIDesigner.Framework BehaviourAPI.UnityToolkit.GUIDesigner.Framework.SimpleAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841421913427160153, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: managedReferences[2711454442976444425]
+      value: BehaviourAPI.UnityToolkit.GUIDesigner.Framework BehaviourAPI.UnityToolkit.GUIDesigner.Framework.SimpleAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841421913427160153, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: managedReferences[2711454442976444424].method.methodName
+      value: setRandomTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841421913427160153, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: managedReferences[2711454442976444425].method.methodName
+      value: move
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841421913427160153, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: managedReferences[2711454442976444424].method.componentName
+      value: NPCActions
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841421913427160153, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: managedReferences[2711454442976444425].method.componentName
+      value: NPCActions
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841421913427160153, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: data.graphs.Array.data[0].nodes.Array.data[2].references.Array.data[0].value
+      value: 2711454442976444425
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841421913427160153, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: data.graphs.Array.data[0].nodes.Array.data[3].references.Array.data[0].value
+      value: 2711454442976444424
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236912090910218455, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_Name
+      value: NPC
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a0e54595dc4fedc42a8dc12149af4bbc, type: 3}
 --- !u!1 &1195221486
 GameObject:
   m_ObjectHideFlags: 0
@@ -2476,3 +2584,4 @@ SceneRoots:
   - {fileID: 1582230287}
   - {fileID: 1466411327}
   - {fileID: 217573059}
+  - {fileID: 1159450380}
