@@ -58,7 +58,7 @@ namespace Music
                         break;
                     case "CalmScene":
                         _music.PlayMusic(0);
-                        _music.ChangeVolumeTo(3, 0.3f, 10f);
+                        _music.ChangeVolumeFrom(3, 0f, 0.3f, 10f);
                         _music.PlayMusic(3);
                         break;
                 }

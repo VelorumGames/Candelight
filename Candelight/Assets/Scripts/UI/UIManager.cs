@@ -40,6 +40,7 @@ namespace UI
         public GameObject Options;
         public GameObject InventoryNotif;
         public GameObject InventoryUI;
+        public GameObject FragmentHalo;
         public GameObject SpellHalo;
         public Image FadeImage;
         [SerializeField] MinimapManager _minimap;
@@ -57,6 +58,7 @@ namespace UI
         CameraManager _camMan;
         PlayerController _player;
         InputManager _input;
+        Inventory _inv;
 
         Coroutine _timeFreeze;
 
@@ -73,6 +75,7 @@ namespace UI
             _camMan = FindObjectOfType<CameraManager>();
             _player = FindObjectOfType<PlayerController>();
             _input = FindObjectOfType<InputManager>();
+            _inv = FindObjectOfType<Inventory>();
         }
 
         private void OnEnable()
@@ -85,12 +88,19 @@ namespace UI
                 _input.OnStartShapeMode += EnterSpellModeFeedback;
                 _input.OnExitShapeMode += ExitSpellModeFeedback;
             }
+            if (_inv)
+            {
+                _inv.OnFragmentsChange += ShowFragmentHalo;
+            }
         }
 
         private void Start()
         {
             SpellHalo.transform.parent = Camera.main.transform;
             SpellHalo.SetActive(false);
+
+            FragmentHalo.transform.parent = Camera.main.transform;
+            FragmentHalo.SetActive(false);
         }
 
         private void OnGUI()
@@ -375,6 +385,15 @@ namespace UI
             SpellHalo.SetActive(false);
         }
 
+        void ShowFragmentHalo(int prev, int num)
+        {
+            FragmentHalo.transform.localPosition = new Vector3(0.55f, -0.55f, 0.5f);
+            FragmentHalo.SetActive(true);
+            Invoke("ResetHalo", 3f);
+        }
+
+        public void ResetHalo() => FragmentHalo.SetActive(false);
+
         public void ShowState(EGameState state) => _state.Show(state);
 
         public void HideState() => _state.Hide();
@@ -390,6 +409,10 @@ namespace UI
                 _input.OnExitElementMode -= ExitSpellModeFeedback;
                 _input.OnStartShapeMode -= EnterSpellModeFeedback;
                 _input.OnExitShapeMode -= ExitSpellModeFeedback;
+            }
+            if (_inv)
+            {
+                _inv.OnFragmentsChange -= ShowFragmentHalo;
             }
         }
     }

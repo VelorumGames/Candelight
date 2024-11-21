@@ -123,6 +123,17 @@ namespace Items
             }
         }
 
+        public bool FindItem(string name, out int count)
+        {
+            count = 0;
+            foreach (var item in ItemsList)
+            {
+                if (item.GetComponent<AItem>().Data.Name == name) count++;
+            }
+
+            return count > 0;
+        }
+
         public void AddItem(GameObject item)
         {
             Debug.Log("Nuevo objeto en el inventario: " + item.name);

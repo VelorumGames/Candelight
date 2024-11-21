@@ -8,6 +8,7 @@ using Controls;
 using Player;
 using Items;
 using World;
+using System;
 
 namespace Dialogues
 {
@@ -34,6 +35,9 @@ namespace Dialogues
         Image _spriteRend;
 
         Inventory _inventory;
+
+        public event Action OnDialogueStart;
+        public event Action OnDialogueEnd;
 
         private void Awake()
         {
@@ -102,6 +106,8 @@ namespace Dialogues
 
             _dialogueUI.SetActive(true);
 
+            if(OnDialogueStart != null) OnDialogueStart();
+
             _active = true;
             _cont.UnloadInteraction();
             FindObjectOfType<InputManager>().LoadControls(EControlMap.Dialogue);
@@ -131,6 +137,7 @@ namespace Dialogues
         {
             _active = false;
             FindObjectOfType<InputManager>().LoadPreviousControls();
+            if (OnDialogueEnd != null) OnDialogueEnd();
 
             _text.text = "";
 

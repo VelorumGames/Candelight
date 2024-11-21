@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UI;
+using Music;
 
 namespace World
 {
@@ -52,6 +53,7 @@ namespace World
         [Space(10)]
         public WorldInfo World;
         public NodeInfo CurrentNodeInfo;
+        [SerializeField] AudioClip _worldMusic;
 
         private void Awake()
         {
@@ -81,6 +83,9 @@ namespace World
         private void Start()
         {
             FindObjectOfType<UIManager>().FadeFromBlack(2f);
+
+            FindObjectOfType<MusicManager>().PlayMusic(0, _worldMusic);
+            FindObjectOfType<MusicManager>().ChangeVolumeFrom(0, 0f, 0.5f, 2f);
 
             CurrentNodeInfo.CurrentLevel = 0;
 

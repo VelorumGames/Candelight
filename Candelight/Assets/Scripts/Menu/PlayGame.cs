@@ -14,7 +14,7 @@ namespace Menu
 
         private void Awake()
         {
-            _ui = GetComponent<UIManager>();
+            _ui = FindObjectOfType<UIManager>();
         }
 
         public void InitializeGame()

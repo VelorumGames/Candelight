@@ -195,7 +195,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 672.7, y: 18.3}
+  m_AnchoredPosition: {x: 829.9, y: 18.3}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7960169956882293290
@@ -318,7 +318,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: awawawa
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7c6406cb7b6d03d4996ecb974b0c6837, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -382,7 +382,7 @@ MonoBehaviour:
   m_margin: {x: -2.7277222, y: 11.060673, z: -60.21292, w: 32.202156}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &5048752796592720285
@@ -410,6 +410,7 @@ GameObject:
   - component: {fileID: 652506590634533540}
   - component: {fileID: 8227562602351759735}
   - component: {fileID: 1214612160376091054}
+  - component: {fileID: 3115897315299624140}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -474,6 +475,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3115897315299624140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6182165245206044890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca61360a10ad49e4c8ed04beb009dd3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _endFade: 0.8
+  _duration: 1
 --- !u!1 &6212764297969200324
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,7 +579,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1131872755535967878
 RectTransform:
   m_ObjectHideFlags: 0

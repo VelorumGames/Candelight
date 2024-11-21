@@ -2,6 +2,7 @@ using Dialogues;
 using Map;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using World;
 
@@ -12,10 +13,18 @@ namespace Events
         public static CalmEventManager Instance;
 
         MapManager _map;
-        [SerializeField] GameObject[] _eventEndings;
+
+        [SerializeField] GameObject[] _durniaEventEndings;
+        [SerializeField] GameObject[] _temeriaEventEndings;
+        [SerializeField] GameObject[] _idriaEventEndings;
+
+        GameObject[] _eventEndings;
         GameObject _currentEvent;
 
-        [SerializeField] GameObject[] _rewardEvents;
+        [SerializeField] GameObject[] _durniaRewards;
+        [SerializeField] GameObject[] _temeriaRewards;
+        [SerializeField] GameObject[] _idriaRewards;
+        GameObject[] _rewardEvents;
 
         [Space(10)]
         [SerializeField] GameObject _healthAltar;
@@ -30,6 +39,25 @@ namespace Events
         {
             MapManager.Instance.OnRoomGenerationEnd += SpawnRewardNPC;
             MapManager.Instance.OnRoomGenerationEnd += SpawnHealthAltar;
+        }
+
+        private void Start()
+        {
+            switch (GetComponent<MapManager>().CurrentNodeInfo.Biome)
+            {
+                case EBiome.Durnia:
+                    _eventEndings = _durniaEventEndings;
+                    _rewardEvents = _durniaRewards;
+                    break;
+                case EBiome.Temeria:
+                    _eventEndings = _temeriaEventEndings;
+                    _rewardEvents = _temeriaRewards;
+                    break;
+                case EBiome.Idria:
+                    _eventEndings = _idriaEventEndings;
+                    _rewardEvents = _idriaRewards;
+                    break;
+            }
         }
 
         public void GenerateEvent(MapManager map)
