@@ -13,8 +13,555 @@ MonoBehaviour:
   m_Name: Hombre de Cobre Behaviour System
   m_EditorClassIdentifier: 
   data:
-    graphs: []
+    graphs:
+    - name: CopperManFSMLvel1
+      id: 8e05ed4d-db61-420a-986d-93b17e16c6f9
+      graph:
+        rid: 2703473077673525248
+      nodes:
+      - name: Angry
+        id: 856e1ef4-14ca-4636-8c7e-80cd633ce010
+        position: {x: 1162, y: 441}
+        node:
+          rid: 2703473077673525250
+        references:
+        - fieldName: Action
+          value:
+            rid: 2703473077673525252
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 8f542a5c-6d6e-41a8-9746-d8476eb3b623
+        childIds:
+        - c8eaef1e-6839-4bf1-8b4e-30d6ffcf818f
+      - name: Calm
+        id: 5d819166-4a49-4481-9524-ce397ed438fc
+        position: {x: 524, y: 439}
+        node:
+          rid: 2703473077673525249
+        references:
+        - fieldName: Action
+          value:
+            rid: 2703473077673525251
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - c8eaef1e-6839-4bf1-8b4e-30d6ffcf818f
+        childIds:
+        - 8f542a5c-6d6e-41a8-9746-d8476eb3b623
+      - name: CalmToAngryTransition
+        id: 8f542a5c-6d6e-41a8-9746-d8476eb3b623
+        position: {x: 822, y: 240}
+        node:
+          rid: 2703473077673525253
+        references:
+        - fieldName: Perception
+          value:
+            rid: 2703473077673525256
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - fieldName: Action
+          value:
+            rid: -2
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 5d819166-4a49-4481-9524-ce397ed438fc
+        childIds:
+        - 856e1ef4-14ca-4636-8c7e-80cd633ce010
+      - name: AngryToCalmTransition
+        id: c8eaef1e-6839-4bf1-8b4e-30d6ffcf818f
+        position: {x: 853, y: 623}
+        node:
+          rid: 2703473077673525254
+        references:
+        - fieldName: Perception
+          value:
+            rid: 2703473077673525257
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - fieldName: Action
+          value:
+            rid: -2
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 856e1ef4-14ca-4636-8c7e-80cd633ce010
+        childIds:
+        - 5d819166-4a49-4481-9524-ce397ed438fc
+    - name: CopperManFSCalmBTLevel2
+      id: 5e62cf47-e11d-4858-9183-2ba87cb036d0
+      graph:
+        rid: 2703473077673525258
+      nodes:
+      - name: InfiniteLoop
+        id: 46ac9756-94c2-486f-86ce-a81722712720
+        position: {x: 929, y: 51}
+        node:
+          rid: 2703473077673525259
+        references: []
+        parentIds: []
+        childIds:
+        - b2502b00-4f2f-4d8d-9db3-254ebb1b2a3d
+      - name: Move
+        id: 22d8485c-0b12-4bc0-8828-508606b22341
+        position: {x: 1106, y: 395}
+        node:
+          rid: 2703473077673525263
+        references:
+        - fieldName: Action
+          value:
+            rid: 2703473077673525267
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - b2502b00-4f2f-4d8d-9db3-254ebb1b2a3d
+        childIds: []
+      - name: SelectorNode
+        id: b2502b00-4f2f-4d8d-9db3-254ebb1b2a3d
+        position: {x: 928, y: 187}
+        node:
+          rid: 2703473077673525264
+        references: []
+        parentIds:
+        - 46ac9756-94c2-486f-86ce-a81722712720
+        childIds:
+        - 22d8485c-0b12-4bc0-8828-508606b22341
+        - 3b9306e3-3fd5-4cfa-841b-dde8fa346108
+      - name: MeleAttack
+        id: 91605929-a30f-4412-a088-43b7a42d1c17
+        position: {x: 760, y: 614}
+        node:
+          rid: 2703473077673525268
+        references:
+        - fieldName: Action
+          value:
+            rid: 2703473077673525271
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 3b9306e3-3fd5-4cfa-841b-dde8fa346108
+        childIds: []
+      - name: PlayerAtRange
+        id: 3b9306e3-3fd5-4cfa-841b-dde8fa346108
+        position: {x: 756, y: 388}
+        node:
+          rid: 2703473077673525269
+        references:
+        - fieldName: Perception
+          value:
+            rid: 2703473077673525270
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - b2502b00-4f2f-4d8d-9db3-254ebb1b2a3d
+        childIds:
+        - 91605929-a30f-4412-a088-43b7a42d1c17
+    - name: CopperManAngryBTLevel2
+      id: c8bfd457-9771-48df-98f8-edf4cd135201
+      graph:
+        rid: 2703473077673525272
+      nodes:
+      - name: InitineLoop
+        id: 0cfa5df6-9702-43fe-8207-3ed288a12a93
+        position: {x: 962, y: 72}
+        node:
+          rid: 2703473077673525273
+        references: []
+        parentIds: []
+        childIds:
+        - af47da35-bbf7-4565-a379-4486ef79e4b9
+      - name: SelectorNode
+        id: af47da35-bbf7-4565-a379-4486ef79e4b9
+        position: {x: 962, y: 216}
+        node:
+          rid: 2703473077673525274
+        references: []
+        parentIds:
+        - 0cfa5df6-9702-43fe-8207-3ed288a12a93
+        childIds:
+        - 3e30ae9a-6d38-4fac-a8ef-72364d3e62f7
+        - 4d293e54-7ec8-42f4-870d-7e9a084faea8
+        - 43f9dd35-bb88-4d93-9f28-68bd6bf6adb8
+      - name: PlayerNear
+        id: 3e30ae9a-6d38-4fac-a8ef-72364d3e62f7
+        position: {x: 712, y: 408}
+        node:
+          rid: 2703473077673525275
+        references:
+        - fieldName: Perception
+          value:
+            rid: 2703473077673525276
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - af47da35-bbf7-4565-a379-4486ef79e4b9
+        childIds:
+        - 2f262f32-463d-491d-827b-67fce415c77a
+      - name: CanFlee
+        id: 2f262f32-463d-491d-827b-67fce415c77a
+        position: {x: 711, y: 604}
+        node:
+          rid: 2703473077673525277
+        references:
+        - fieldName: Perception
+          value:
+            rid: 2703473077673525278
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 3e30ae9a-6d38-4fac-a8ef-72364d3e62f7
+        childIds:
+        - e92d541c-44ed-4cad-899d-f645f976ee08
+      - name: Flee
+        id: e92d541c-44ed-4cad-899d-f645f976ee08
+        position: {x: 711, y: 793}
+        node:
+          rid: 2703473077673525279
+        references:
+        - fieldName: Action
+          value:
+            rid: 2703473077673525280
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 2f262f32-463d-491d-827b-67fce415c77a
+        childIds: []
+      - name: PlayerAtRange
+        id: 4d293e54-7ec8-42f4-870d-7e9a084faea8
+        position: {x: 969, y: 417}
+        node:
+          rid: 2703473077673525281
+        references:
+        - fieldName: Perception
+          value:
+            rid: 2703473077673525282
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - af47da35-bbf7-4565-a379-4486ef79e4b9
+        childIds:
+        - f3b021f6-b5a8-496f-bbe2-acd16500ddf6
+      - name: RangedAttack
+        id: f3b021f6-b5a8-496f-bbe2-acd16500ddf6
+        position: {x: 969, y: 614}
+        node:
+          rid: 2703473077673525283
+        references:
+        - fieldName: Action
+          value:
+            rid: 2703473077673525284
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 4d293e54-7ec8-42f4-870d-7e9a084faea8
+        childIds: []
+      - name: Move
+        id: 43f9dd35-bb88-4d93-9f28-68bd6bf6adb8
+        position: {x: 1241, y: 428}
+        node:
+          rid: 2703473077673525285
+        references:
+        - fieldName: Action
+          value:
+            rid: 2703473077673525286
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - af47da35-bbf7-4565-a379-4486ef79e4b9
+        childIds: []
     pushPerceptions: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 2703473077673525248
+      type: {class: FSM, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data: 
+    - rid: 2703473077673525249
+      type: {class: State, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data: 
+    - rid: 2703473077673525250
+      type: {class: State, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data: 
+    - rid: 2703473077673525251
+      type: {class: SubgraphAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        ExecuteOnLoop: 1
+        InterruptOptions: 2
+        subgraphId: 5e62cf47-e11d-4858-9183-2ba87cb036d0
+    - rid: 2703473077673525252
+      type: {class: SubgraphAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        ExecuteOnLoop: 1
+        InterruptOptions: 2
+        subgraphId: c8bfd457-9771-48df-98f8-edf4cd135201
+    - rid: 2703473077673525253
+      type: {class: StateTransition, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data:
+        StatusFlags: 0
+    - rid: 2703473077673525254
+      type: {class: StateTransition, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data:
+        StatusFlags: 0
+    - rid: 2703473077673525256
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: CalmToAngryTransitionInit
+        check:
+          componentName: 
+          methodName: CalmToAngryTransitionCheck
+        reset:
+          componentName: 
+          methodName: CalmToAngryTransitionReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2703473077673525257
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: AngryToCalmTransitionInit
+        check:
+          componentName: 
+          methodName: AngryToCalmTransitionCheck
+        reset:
+          componentName: 
+          methodName: AngryToCalmTransitionReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2703473077673525258
+      type: {class: BehaviourTree, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525259
+      type: {class: LoopNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        Iterations: -1
+    - rid: 2703473077673525263
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525264
+      type: {class: SelectorNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        IsRandomized: 0
+    - rid: 2703473077673525267
+      type: {class: CustomAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        start:
+          componentName: 
+          methodName: MoveStart
+        update:
+          componentName: 
+          methodName: MoveUpdate
+        stop:
+          componentName: 
+          methodName: MoveStop
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2703473077673525268
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525269
+      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525270
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: PlayerAtRangeInit
+        check:
+          componentName: 
+          methodName: PlayerAtRangeCheck
+        reset:
+          componentName: 
+          methodName: PlayerAtRangeReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2703473077673525271
+      type: {class: CustomAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        start:
+          componentName: 
+          methodName: MeleAttackStart
+        update:
+          componentName: 
+          methodName: MeleAttackUpdate
+        stop:
+          componentName: 
+          methodName: MeleAttackStop
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2703473077673525272
+      type: {class: BehaviourTree, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525273
+      type: {class: LoopNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        Iterations: -1
+    - rid: 2703473077673525274
+      type: {class: SelectorNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        IsRandomized: 0
+    - rid: 2703473077673525275
+      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525276
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: PlayerNearInit
+        check:
+          componentName: 
+          methodName: PlayerNearCheck
+        reset:
+          componentName: 
+          methodName: PlayerNearReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2703473077673525277
+      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525278
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: CanFleeInit
+        check:
+          componentName: 
+          methodName: CanFleeCheck
+        reset:
+          componentName: 
+          methodName: CanFleeReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2703473077673525279
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525280
+      type: {class: CustomAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        start:
+          componentName: 
+          methodName: FleeStart
+        update:
+          componentName: 
+          methodName: FleeUpdate
+        stop:
+          componentName: 
+          methodName: FleeStop
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2703473077673525281
+      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525282
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: PlayerAtRangeInit
+        check:
+          componentName: 
+          methodName: PlayerAtRangeCheck
+        reset:
+          componentName: 
+          methodName: PlayerAtRangeReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2703473077673525283
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525284
+      type: {class: CustomAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        start:
+          componentName: 
+          methodName: RangedAttackStart
+        update:
+          componentName: 
+          methodName: RangedAttackUpdate
+        stop:
+          componentName: 
+          methodName: RangedAttackStop
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2703473077673525285
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2703473077673525286
+      type: {class: CustomAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        start:
+          componentName: 
+          methodName: MoveStart
+        update:
+          componentName: 
+          methodName: MoveUpdate
+        stop:
+          componentName: 
+          methodName: MoveStop
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
