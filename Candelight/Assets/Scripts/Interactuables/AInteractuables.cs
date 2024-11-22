@@ -1,4 +1,5 @@
 using Player;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +9,16 @@ namespace Interactuables
     public abstract class AInteractuables : MonoBehaviour
     {
         public Transform NotificationTransform;
+
+        public event Action OnTrigger;
+        public event Action OnInteraction;
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                
-                other.GetComponentInParent<PlayerController>().LoadInteraction(Interaction, NotificationTransform);
+                if (OnTrigger != null) OnTrigger();
+                other.GetComponentInParent<PlayerController>().LoadInteraction(EventInteraction, NotificationTransform);
             }
         }
 
@@ -24,6 +29,12 @@ namespace Interactuables
                 
                 other.GetComponentInParent<PlayerController>().UnloadInteraction();
             }
+        }
+
+        void EventInteraction()
+        {
+            if (OnInteraction != null) OnInteraction();
+            Interaction();
         }
 
         public abstract void Interaction();

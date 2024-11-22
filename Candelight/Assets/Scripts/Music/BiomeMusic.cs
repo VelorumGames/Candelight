@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using World;
 
 namespace Music
@@ -23,10 +24,7 @@ namespace Music
         private void Awake()
         {
             _music = FindObjectOfType<MusicManager>();
-        }
 
-        private void Start()
-        {
             LoadMusic(CurrentNodeInfo.Biome);
         }
 
@@ -49,8 +47,18 @@ namespace Music
                         Debug.LogWarning("ERROR: No se ha cargado correctamente la musica. No se ha procesado el bioma " + biome.ToString());
                         break;
                 }
-                _music.PlayMusic(0);
-                _music.PlayMusicAtRandom(10f, 20f);
+                switch(SceneManager.GetActiveScene().name)
+                {
+                    case "LevelScene":
+                        _music.PlayMusic(0);
+                        _music.PlayMusicAtRandom(10f, 20f);
+                        break;
+                    case "CalmScene":
+                        _music.PlayMusic(0);
+                        _music.ChangeVolumeFrom(3, 0f, 0.3f, 10f);
+                        _music.PlayMusic(3);
+                        break;
+                }
 
             }
         }

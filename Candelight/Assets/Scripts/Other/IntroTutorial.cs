@@ -256,7 +256,7 @@ public class IntroTutorial : MonoBehaviour
 
     void GetRuneString()
     {
-        if (ARune.FindSpell("Fire", out var fireSpell))
+        if (ARune.FindSpell(Upgrades.StartElement.ToString(), out var fireSpell))
         {
             _runeInstructions = fireSpell.GetInstructionsToString();
         }

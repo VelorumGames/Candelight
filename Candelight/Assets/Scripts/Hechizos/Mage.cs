@@ -247,8 +247,6 @@ namespace Hechizos
             return _lastProjectile;
         }
 
-        
-
         public GameObject SpawnExplosion()
         {
             GameObject expl = Instantiate(Explosion);
@@ -258,6 +256,17 @@ namespace Hechizos
             _cam.Shake(20f, 0.2f, 1f);
 
             return expl;
+        }
+
+        public void SpawnCustomExplosion(Transform location, AElementalRune element, float range)
+        {
+            GameObject expl = Instantiate(Explosion);
+            expl.transform.position = location.position;
+            expl.transform.localScale *= range;
+            AElementalRune[] runes = new AElementalRune[1];
+            runes[0] = element;
+            expl.GetComponent<Explosion>().RegisterTypes(runes);
+            _cam.Shake(10f, 0.2f, 1f);
         }
 
         public GameObject SpawnMelee()

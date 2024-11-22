@@ -8,5 +8,6 @@ namespace Dialogues
     public class Dialogue : ScriptableObject
     {
         public DialogueBlock initialDialogueBlock;
+        public bool Loop;
     }
 }

@@ -40,6 +40,7 @@ namespace UI
         public GameObject Options;
         public GameObject InventoryNotif;
         public GameObject InventoryUI;
+        public GameObject FragmentHalo;
         public GameObject SpellHalo;
         public Image FadeImage;
         [SerializeField] MinimapManager _minimap;
@@ -57,6 +58,7 @@ namespace UI
         CameraManager _camMan;
         PlayerController _player;
         InputManager _input;
+        Inventory _inv;
 
         Coroutine _timeFreeze;
 
@@ -73,6 +75,7 @@ namespace UI
             _camMan = FindObjectOfType<CameraManager>();
             _player = FindObjectOfType<PlayerController>();
             _input = FindObjectOfType<InputManager>();
+            _inv = FindObjectOfType<Inventory>();
         }
 
         private void OnEnable()
@@ -85,17 +88,24 @@ namespace UI
                 _input.OnStartShapeMode += EnterSpellModeFeedback;
                 _input.OnExitShapeMode += ExitSpellModeFeedback;
             }
+            if (_inv)
+            {
+                _inv.OnFragmentsChange += ShowFragmentHalo;
+            }
         }
 
         private void Start()
         {
             SpellHalo.transform.parent = Camera.main.transform;
             SpellHalo.SetActive(false);
+
+            FragmentHalo.transform.parent = Camera.main.transform;
+            FragmentHalo.SetActive(false);
         }
 
         private void OnGUI()
         {
-            GUI.Label(new Rect(10, 40, 200, 70), $"FPS: {CalculateFPS(1.0f / Time.deltaTime)}\nCandle (Nodes left): {_candle}\nCurrent Node: {ActualNodeName}\nNext Node: {NextNodeName}");
+            GUI.Label(new Rect(10, 40, 200, 70), $"FPS: {CalculateFPS(1.0f / Time.deltaTime)/*}\nCandle (Nodes left): {_candle}\nCurrent Node: {ActualNodeName}\nNext Node: {NextNodeName*/}");
             if (SceneManager.GetActiveScene().name == "LevelScene" || SceneManager.GetActiveScene().name == "CalmScene")
             {
                 if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<MapManager>().EndLevel();
@@ -109,7 +119,7 @@ namespace UI
                 if (GUI.Button(new Rect(350, 40, 150, 20), "REMOVE DATA")) SaveSystem.RemovePreviousGameData();
             }
             //if (GUI.Button(new Rect(500, 40, 150, 20), "CALM SCENE")) SceneManager.LoadScene("CalmScene");
-            if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM")) Inventory.Instance.AddItem(Inventory.Instance.GetRandomItem(EItemCategory.Rare));
+            if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM")) FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(EItemCategory.Rare));
             if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
             GUI.Label(new Rect(10, 140, 200, 500), $"Current elements: {_elements}\nActive runes:\n{_chains}");
         }
@@ -332,31 +342,36 @@ namespace UI
 
         public void PlayerDamageFeedback(float damage, float remHealth)
         {
-            RedFilter.DOFade((1 / remHealth) * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play());
+            RedFilter.DOFade((1 / remHealth) * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play()).SetUpdate(true);
             _camMan.Shake(5f, 20f, 0.4f);
         }
 
         public void EnemyDamageFeedback(float damage, float remHealth)
         {
-            WhiteFilter.DOFade(0.35f, 0.1f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.2f).Play());
+            WhiteFilter.DOFade(0.05f, 0.1f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.2f).Play()).SetUpdate(true);
 
-            if (_timeFreeze != null) StopCoroutine(_timeFreeze);
-            _timeFreeze = StartCoroutine(FreezeGame(0.2f, remHealth));
+            //if (_timeFreeze != null) StopCoroutine(_timeFreeze);
+            _timeFreeze = StartCoroutine(FreezeGame(0.25f, remHealth));
         }
 
         public void WinCombat()
         {
-            WhiteFilter.DOFade(0.5f, 0.3f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.3f).Play());
+            WhiteFilter.DOFade(0.3f, 0.3f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.3f).Play()).SetUpdate(true);
         }
 
         public IEnumerator FreezeGame(float duration, float freezeScale)
         {
             //float oScale = Time.timeScale;
-            Time.timeScale = 0.3f;
+            Time.timeScale = 0.1f;
 
             yield return new WaitForSecondsRealtime(duration);
 
             Time.timeScale = 1;
+
+            //Por si acaso
+            yield return new WaitForSecondsRealtime(1f);
+
+            if (Time.timeScale != 1) Time.timeScale = 1;
         }
 
         void EnterSpellModeFeedback()
@@ -375,6 +390,15 @@ namespace UI
             SpellHalo.SetActive(false);
         }
 
+        void ShowFragmentHalo(int prev, int num)
+        {
+            FragmentHalo.transform.localPosition = new Vector3(0.5f, -0.5f, 0.5f);
+            FragmentHalo.SetActive(true);
+            Invoke("ResetHalo", 3f);
+        }
+
+        public void ResetHalo() => FragmentHalo.SetActive(false);
+
         public void ShowState(EGameState state) => _state.Show(state);
 
         public void HideState() => _state.Hide();
@@ -390,6 +414,10 @@ namespace UI
                 _input.OnExitElementMode -= ExitSpellModeFeedback;
                 _input.OnStartShapeMode -= EnterSpellModeFeedback;
                 _input.OnExitShapeMode -= ExitSpellModeFeedback;
+            }
+            if (_inv)
+            {
+                _inv.OnFragmentsChange -= ShowFragmentHalo;
             }
         }
     }

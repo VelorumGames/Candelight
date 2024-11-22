@@ -33,7 +33,7 @@ namespace Events
         {
             enemy.OnDeath -= RegisterEnemyDeath;
 
-            if (_count++ >= _enemies.Length)
+            if (++_count >= _enemies.Length)
             {
                 FindObjectOfType<ExploreEventManager>().LoadEventResult(World.EEventSolution.Completed);
                 _npc.ChangeDialogue(_completedDialogue);

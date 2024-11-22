@@ -108,6 +108,7 @@ MonoBehaviour:
   - {fileID: -690508944204351324}
   - {fileID: 6918141394676003615}
   - {fileID: -2166706565820325665}
+  - {fileID: 9000707342628877030}
 --- !u!114 &6918141394676003615
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -136,3 +137,43 @@ MonoBehaviour:
   saturation:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &9000707342628877030
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdfbdbb87d3286943a057f7791b43141, type: 3}
+  m_Name: ChannelMixer
+  m_EditorClassIdentifier: 
+  active: 1
+  redOutRedIn:
+    m_OverrideState: 0
+    m_Value: 100
+  redOutGreenIn:
+    m_OverrideState: 1
+    m_Value: 5
+  redOutBlueIn:
+    m_OverrideState: 0
+    m_Value: 0
+  greenOutRedIn:
+    m_OverrideState: 0
+    m_Value: 0
+  greenOutGreenIn:
+    m_OverrideState: 0
+    m_Value: 100
+  greenOutBlueIn:
+    m_OverrideState: 0
+    m_Value: 0
+  blueOutRedIn:
+    m_OverrideState: 1
+    m_Value: 5
+  blueOutGreenIn:
+    m_OverrideState: 1
+    m_Value: 35
+  blueOutBlueIn:
+    m_OverrideState: 1
+    m_Value: 100

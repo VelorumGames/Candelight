@@ -2,6 +2,7 @@ using Dialogues;
 using Map;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using World;
 
@@ -12,10 +13,18 @@ namespace Events
         public static CalmEventManager Instance;
 
         MapManager _map;
-        [SerializeField] GameObject[] _eventEndings;
-        GameObject _currentEvent;
 
-        [SerializeField] GameObject[] _rewardEvents;
+        [SerializeField] GameObject[] _durniaEventEndings;
+        [SerializeField] GameObject[] _temeriaEventEndings;
+        [SerializeField] GameObject[] _idriaEventEndings;
+
+        GameObject[] _eventEndings;
+        GameObject _currentEvent;
+        [Space(10)]
+        [SerializeField] GameObject[] _durniaRewards;
+        [SerializeField] GameObject[] _temeriaRewards;
+        [SerializeField] GameObject[] _idriaRewards;
+        GameObject[] _rewardEvents;
 
         [Space(10)]
         [SerializeField] GameObject _healthAltar;
@@ -24,6 +33,8 @@ namespace Events
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            _map = GetComponent<MapManager>();
         }
 
         private void OnEnable()
@@ -32,39 +43,119 @@ namespace Events
             MapManager.Instance.OnRoomGenerationEnd += SpawnHealthAltar;
         }
 
-        public void GenerateEvent(MapManager map)
+        private void Start()
         {
-            _map = map;
-
+            switch (_map.CurrentNodeInfo.Biome)
+            {
+                case EBiome.Durnia:
+                    _eventEndings = _durniaEventEndings;
+                    _rewardEvents = _durniaRewards;
+                    break;
+                case EBiome.Temeria:
+                    _eventEndings = _temeriaEventEndings;
+                    _rewardEvents = _temeriaRewards;
+                    break;
+                case EBiome.Idria:
+                    _eventEndings = _idriaEventEndings;
+                    _rewardEvents = _idriaRewards;
+                    break;
+            }
+        }
+        
+        public void GenerateEvent()
+        {
             Debug.Log("Se genera evento");
             ARoom room = _map.GetRandomAvailableRoom(true).GetComponent<ARoom>();
             room.RoomType = ERoomType.Event;
             room.IdText.text += " EVENT";
             room.gameObject.name = "Event Room";
 
-            switch (_map.CurrentNodeInfo.EventID)
+            switch(_map.CurrentNodeInfo.Biome)
             {
-                case 0: //Test
-                    _currentEvent = Instantiate(_eventEndings[0], room.GetRandomSpawnPoint());
-                    break;
-                case 1: //Honor Herido
-                    switch(GetEventSolution())
+                // === DURNIA ===
+                case EBiome.Durnia:
+                    switch (_map.CurrentNodeInfo.EventID)
                     {
-                        case EEventSolution.Ignored:
-                            _currentEvent = Instantiate(_eventEndings[1], room.GetRandomSpawnPoint());
+                        /*case 0: //Sepultado
+                            _currentEvent = Instantiate(_eventEndings[0], room.GetRandomSpawnPoint());
+                            break;*/
+                        case 1: //Honor Herido
+                            switch (GetEventSolution())
+                            {
+                                case EEventSolution.Ignored:
+                                    _currentEvent = Instantiate(_eventEndings[1], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Failed:
+                                    _currentEvent = Instantiate(_eventEndings[1], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Completed:
+                                    _currentEvent = Instantiate(_eventEndings[2], room.GetRandomSpawnPoint());
+                                    break;
+                            }
                             break;
-                        case EEventSolution.Failed:
-                            _currentEvent = Instantiate(_eventEndings[1], room.GetRandomSpawnPoint());
+                        case 2: //Mr Bombastic
+                            switch (GetEventSolution())
+                            {
+                                case EEventSolution.Ignored:
+                                    _currentEvent = Instantiate(_eventEndings[3], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Completed:
+                                    _currentEvent = Instantiate(_eventEndings[4], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.AltCompleted:
+                                    _currentEvent = Instantiate(_eventEndings[5], room.GetRandomSpawnPoint());
+                                    break;
+                            }
                             break;
-                        case EEventSolution.Completed:
-                            _currentEvent = Instantiate(_eventEndings[2], room.GetRandomSpawnPoint());
+                        default:
+                            Debug.Log("No se generara ningun evento para este nodo");
                             break;
                     }
                     break;
-                case 2: //Mr Bombastic
+
+                // === TEMERIA ===
+                case EBiome.Temeria:
+                    switch (_map.CurrentNodeInfo.EventID)
+                    {
+                        case 0: //Monstruo Prisionero
+                            switch (GetEventSolution())
+                            {
+                                case EEventSolution.Ignored:
+                                    _currentEvent = Instantiate(_eventEndings[0], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Failed:
+                                    _currentEvent = Instantiate(_eventEndings[1], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Completed:
+                                    _currentEvent = Instantiate(_eventEndings[2], room.GetRandomSpawnPoint());
+                                    break;
+                            }
+                            break;
+                        case 1: //Sepultado
+                            switch (GetEventSolution())
+                            {
+                                case EEventSolution.Ignored:
+                                    _currentEvent = Instantiate(_eventEndings[3], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Failed:
+                                    _currentEvent = Instantiate(_eventEndings[4], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Completed:
+                                    _currentEvent = Instantiate(_eventEndings[5], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.AltCompleted:
+                                    _currentEvent = Instantiate(_eventEndings[6], room.GetRandomSpawnPoint());
+                                    break;
+                            }
+                            break;
+                        default:
+                            Debug.Log("No se generara ningun evento para este nodo");
+                            break;
+                    }
                     break;
-                default:
-                    Debug.Log("No se generara ningun evento para este nodo");
+
+                // === IDRIA ===
+                case EBiome.Idria:
                     break;
             }
 

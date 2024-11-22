@@ -7,6 +7,9 @@ namespace Hechizos.Elementales
 {
     public class FireRune : AElementalRune
     {
+        bool _bombEffect;
+        int _count = 0;
+
         public FireRune(Mage m) : base(m)
         {
             Name = "Fire";
@@ -29,6 +32,11 @@ namespace Hechizos.Elementales
             if (target.TryGetComponent<EnemyController>(out var cont))
             {
                 cont.RecieveTemporalDamage(Damage * 0.25f, 5, 1f);
+            }
+
+            if (_bombEffect)
+            {
+                MageManager.SpawnCustomExplosion(target, this, _count * 0.3f);
             }
         }
         public override void ProjectileEnd(Transform target)
@@ -75,6 +83,14 @@ namespace Hechizos.Elementales
             yield return new WaitForSeconds(_buffDuration);
             AddDamageFactor(-0.25f);
             MageManager.ManageResetBuff();
+        }
+
+        public void SetExplosionOnImpact(bool b)
+        {
+            if (b) _count++;
+            else _count--;
+
+            _bombEffect = _count > 0;
         }
 
     }
