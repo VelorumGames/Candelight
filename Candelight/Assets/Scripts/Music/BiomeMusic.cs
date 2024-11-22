@@ -24,7 +24,10 @@ namespace Music
         private void Awake()
         {
             _music = FindObjectOfType<MusicManager>();
+        }
 
+        private void Start()
+        {
             LoadMusic(CurrentNodeInfo.Biome);
         }
 

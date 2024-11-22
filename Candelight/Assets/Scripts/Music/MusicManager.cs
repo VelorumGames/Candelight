@@ -90,6 +90,7 @@ namespace Music
                         _sources[i].clip = clips[i];
                         ChangeVolumeTo(i, startVolumes[i], 1f);
                     }
+
                 }
             }
             else Debug.LogWarning("ERROR: No se pueden cargar las canciones porque no coincide el tamano del array");
