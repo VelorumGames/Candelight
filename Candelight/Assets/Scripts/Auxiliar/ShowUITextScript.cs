@@ -14,12 +14,23 @@ namespace Auxiliar
 		bool _showingText = false;
 		[SerializeField] float _speed;
 
-		private void Awake()
+		[SerializeField] GameObject _next;
+
+		public event Action OnTextStart;
+		public event Action OnTextComplete;
+
+        private void Awake()
 		{
 			_textComponent = GetComponent<TextMeshProUGUI>();
 		}
 
-		private void Start()
+        private void OnEnable()
+        {
+			OnTextStart += HideNextIcon;
+			OnTextComplete += ShowNextIcon;
+        }
+
+        private void Start()
 		{
 			_speed /= 10f;
 			_textComponent.text = "";
@@ -38,45 +49,47 @@ namespace Auxiliar
 
 		IEnumerator RevealText(string s)
 		{
-			_originalText = s;
+            _originalText = s;
 			_showingText = true;
 
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSecondsRealtime(0.5f);
+
+            if (OnTextStart != null) OnTextStart();
 
 			var numCharsRevealed = 0;
 			while (numCharsRevealed < _originalText.Length)
 			{
-				while (_originalText[numCharsRevealed] == ' ')
+				while (_originalText[numCharsRevealed] == ' ' && numCharsRevealed < _originalText.Length - 1)
 					++numCharsRevealed;
 
 				++numCharsRevealed;
 				_textComponent.text = _originalText.Substring(0, numCharsRevealed);
 
-				yield return new WaitForSeconds(0.025f / _speed);
+				yield return new WaitForSecondsRealtime(0.025f / _speed);
 
 				switch (_originalText[numCharsRevealed - 1])
 				{
 					case ',':
-						yield return new WaitForSeconds(0.08f / _speed);
+						yield return new WaitForSecondsRealtime(0.08f / _speed);
 						break;
 					case '.':
-						yield return new WaitForSeconds(0.2f / _speed);
+						yield return new WaitForSecondsRealtime(0.2f / _speed);
 						break;
 					case '?':
 						if (_originalText.Length > numCharsRevealed)
 						{
-							if (_originalText[numCharsRevealed] != '!') yield return new WaitForSeconds(0.2f / _speed);
+							if (_originalText[numCharsRevealed] != '!') yield return new WaitForSecondsRealtime(0.2f / _speed);
 						}
 						break;
 					case '!':
-						yield return new WaitForSeconds(0.2f / _speed);
+						yield return new WaitForSecondsRealtime(0.2f / _speed);
 						break;
 					default:
 						break;
 				}
 			}
 			_showingText = false;
-			yield return null;
+			if (OnTextComplete != null) OnTextComplete();
 		}
 
 		public bool IsShowingText()
@@ -90,5 +103,20 @@ namespace Auxiliar
 			_textComponent.text = _originalText;
 			_showingText = false;
 		}
-	}
+
+		void ShowNextIcon()
+		{
+			if (_next) _next.SetActive(true);
+		}
+        void HideNextIcon()
+		{
+            if (_next) _next.SetActive(false);
+        }
+
+        private void OnDisable()
+        {
+            OnTextStart -= HideNextIcon;
+            OnTextComplete -= ShowNextIcon;
+        }
+    }
 }

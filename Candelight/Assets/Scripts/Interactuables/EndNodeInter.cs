@@ -17,7 +17,7 @@ namespace Interactuables
         {
             Debug.Log("Se completa el nodo");
             FindObjectOfType<PlayerController>().SetMove(false);
-            UIManager.Instance.FadeToWhite(2f);
+            UIManager.Instance.FadeToWhite(2f, null);
             DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 90f, 2f).OnComplete(FinishScene);            
         }
 
@@ -33,6 +33,7 @@ namespace Interactuables
             }
 
             FindObjectOfType<PlayerController>().World.Candle -= 1f * FindObjectOfType<PlayerController>().World.NodeCandleFactor;
+            FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
             SceneManager.LoadScene("WorldScene");
         }
     }

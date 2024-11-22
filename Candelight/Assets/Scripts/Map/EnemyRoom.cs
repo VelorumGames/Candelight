@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class EnemyRoom : ARoom
 {
+    EnemyController[] enemies;
+
     [SerializeField] int _eCount;
     int _enemyCount
     {
@@ -24,11 +26,12 @@ public class EnemyRoom : ARoom
 
     private void OnEnable()
     {
-        EnemyController[] enemies = GetComponentsInChildren<EnemyController>();
+        enemies = GetComponentsInChildren<EnemyController>();
         _enemyCount = enemies.Length;
         foreach (var e in enemies)
         {
             e.OnDeath += NotifyEnemyDeath;
+            e.gameObject.SetActive(false); 
         }
     }
 
@@ -38,6 +41,11 @@ public class EnemyRoom : ARoom
         {
             FindObjectOfType<MapManager>().StartCombat();
             Invoke("CloseAllAnchors", 1f);
+
+            foreach (var e in enemies)
+            {
+                e.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -51,8 +59,11 @@ public class EnemyRoom : ARoom
     {
         foreach (var anchor in AvailableAnchors)
         {
-            anchor.CloseAnchor();
-            anchor.GetComponent<SI_AnchorBarrier>().Activate(true);
+            if (anchor != null)
+            {
+                anchor.CloseAnchor();
+                anchor.GetComponent<SI_AnchorBarrier>().Activate(true);
+            }
         }
     }
 
@@ -61,8 +72,11 @@ public class EnemyRoom : ARoom
         Debug.Log($"Se abriran {AvailableAnchors.Count} anchors");
         foreach (var anchor in AvailableAnchors)
         {
-            anchor.OpenAnchor();
-            anchor.GetComponent<SI_AnchorBarrier>().Activate(false);
+            if (anchor != null)
+            {
+                anchor.OpenAnchor();
+                anchor.GetComponent<SI_AnchorBarrier>().Activate(false);
+            }
         }
     }
 

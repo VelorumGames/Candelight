@@ -9,6 +9,7 @@ using UI;
 using Cameras;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using BehaviourAPI.Core.Actions;
 
 namespace Controls
 {
@@ -17,7 +18,8 @@ namespace Controls
         Level,
         World,
         Dialogue,
-        UI
+        UI,
+        Intro
     }
 
     public enum ESpellInstruction
@@ -40,19 +42,27 @@ namespace Controls
         InputActionMap _levelMap;
         InputActionMap _dialogueMap;
         InputActionMap _uiMap;
+        InputActionMap _introMap;
 
         DialogueUI _dialogue;
 
         InputAction _move;
+        InputAction _introMove;
         InputAction _choosePath;
         InputAction _element;
         InputAction _spell;
         InputAction _look;
+        InputAction _introLook;
 
         CameraManager _camMan;
         
 
         float _spellTimeScale = 0.75f;
+
+        public event System.Action OnStartElementMode;
+        public event System.Action OnExitElementMode;
+        public event System.Action OnStartShapeMode;
+        public event System.Action OnExitShapeMode;
 
         private void OnEnable()
         {
@@ -150,6 +160,14 @@ namespace Controls
             next.performed += NextDialogueBlock;
             InputAction dialoguePause = _dialogueMap.FindAction("Pause");
             dialoguePause.performed += _cont.OnPause;
+
+            //Intro
+            _introMap = Input.FindActionMap("Intro");
+
+            _introMove = _introMap.FindAction("Move");
+            InputAction introPause = _introMap.FindAction("Pause");
+            introPause.performed += _cont.OnPause;
+            _introLook = _introMap.FindAction("Look");
         }
 
         public void LoadControls(EControlMap map)
@@ -157,21 +175,87 @@ namespace Controls
             //Debug.Log("Mapa previo: " + _currentMap);
             _prevControls = _currentMap;
             if (_currentMap != null) _currentMap.Disable();
+
             switch(map)
             {
                 case EControlMap.Level:
                     _currentMap = _levelMap;
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.Confined;
                     break;
                 case EControlMap.World:
                     _currentMap = _worldMap;
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.Confined;
                     break;
                 case EControlMap.Dialogue:
                     _currentMap = _dialogueMap;
+
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
                     break;
                 case EControlMap.UI:
                     _currentMap = _uiMap;
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.Confined;
+                    break;
+                case EControlMap.Intro:
+                    _currentMap = _introMap;
+
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
                     break;
             }
+            //Debug.Log("Mapa colocado: " + _currentMap);
+            _currentMap.Enable();
+            CurrentControls = _currentMap.name;
+        }
+
+        public void LoadControls(InputActionMap map)
+        {
+            //Debug.Log("Mapa previo: " + _currentMap);
+            _prevControls = _currentMap;
+            if (_currentMap != null) _currentMap.Disable();
+
+            if (map == _levelMap)
+            {
+                _currentMap = _levelMap;
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else if (map == _worldMap)
+            {
+                _currentMap = _worldMap;
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else if (map == _dialogueMap)
+            {
+                _currentMap = _dialogueMap;
+
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else if (map == _uiMap)
+            {
+                _currentMap = _uiMap;
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else if (map == _introMap)
+            {
+                _currentMap = _introMap;
+
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else Debug.LogWarning("ERROR: No se han cargado bien los controles");
             //Debug.Log("Mapa colocado: " + _currentMap);
             _currentMap.Enable();
             CurrentControls = _currentMap.name;
@@ -181,12 +265,14 @@ namespace Controls
         {
             if (_prevControls != null)
             {
-                Debug.Log("Controles antiguos: " + _currentMap.name);
-                _currentMap.Disable();
-                _currentMap = _prevControls;
-                Debug.Log("Controles actuales: " + _currentMap.name);
-                _currentMap.Enable();
-                CurrentControls = _currentMap.name;
+                //Debug.Log("Controles antiguos: " + _currentMap.name);
+                //_currentMap.Disable();
+                //_currentMap = _prevControls;
+                //Debug.Log("Controles actuales: " + _currentMap.name);
+                //_currentMap.Enable();
+                //CurrentControls = _currentMap.name;
+
+                LoadControls(_prevControls);
             }
         }
 
@@ -200,11 +286,16 @@ namespace Controls
         {
             if (_cont)
             {
+                if (_introMove.IsPressed()) _cont.OnMove(_introMove.ReadValue<Vector2>());
+
                 if (_move.IsPressed()) _cont.OnMove(_move.ReadValue<Vector2>());
                 else _cont.OnStopMove();
+
                 if (_choosePath.IsPressed()) _cont.OnChoosePath(_choosePath.ReadValue<Vector2>());
 
                 if (_look.enabled) _cont.OnLook(_look.ReadValue<Vector2>());
+
+                if (_introLook.enabled) _cont.OnFirstPersonLook(_introLook.ReadValue<Vector2>());
             }
         }
 
@@ -217,42 +308,42 @@ namespace Controls
 
         void StartElementMode(InputAction.CallbackContext _)
         {
-            _move.Disable();
-            Time.timeScale = _spellTimeScale;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, _spellTimeScale, 0.2f);
-            _cont.ResetInstructions();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnStartElementMode != null) OnStartElementMode();
 
-            if (_camMan != null) _camMan.EnterSpellMode();
+                _move.Disable();
+            }
         }
 
         void StopElementMode(InputAction.CallbackContext _)
         {
-            _move.Enable();
-            Time.timeScale = 1f;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.1f);
-            _cont.OnChooseElements();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnExitElementMode != null) OnExitElementMode();
 
-            if (_camMan != null) _camMan.ExitSpellMode();
+                _move.Enable();
+            }
         }
 
         void StartSpellMode(InputAction.CallbackContext _)
         {
-            _move.Disable();
-            Time.timeScale = _spellTimeScale;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, _spellTimeScale, 0.2f);
-            _cont.ResetInstructions();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnStartShapeMode != null) OnStartShapeMode();
 
-            if (_camMan != null) _camMan.EnterSpellMode();
+                _move.Disable();
+            }
         }
 
         void StopSpellMode(InputAction.CallbackContext _)
         {
-            _move.Enable();
-            Time.timeScale = 1f;
-            //DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.1f);
-            _cont.OnSpellLaunch();
+            if (SceneManager.GetActiveScene().name != "CalmScene")
+            {
+                if (OnExitShapeMode != null) OnExitShapeMode();
 
-            if (_camMan != null) _camMan.ExitSpellMode();
+                _move.Enable();
+            }
         }
 
         #endregion

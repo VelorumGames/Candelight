@@ -21,6 +21,7 @@ namespace Hechizos
 
         PlayerController _cont;
         CameraManager _cam;
+        BuffFeedback _buff;
 
         public GameObject[] Projectiles;
         GameObject _lastProjectile;
@@ -34,9 +35,12 @@ namespace Hechizos
 
         List<EElements> _trailElements = new List<EElements>();
 
+        public event System.Action<ARune> OnNewRuneActivation;
+
         private void OnEnable()
         {
             _cont = FindObjectOfType<PlayerController>();
+            _buff = _cont.GetComponent<BuffFeedback>();
 
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
@@ -202,7 +206,10 @@ namespace Hechizos
                 }
 
                 _lastProjectile.transform.position = _cont.transform.position;
-                _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
+                //Debug.Log("FUERZA: " + _projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation());
+
+                _lastProjectile.GetComponent<Rigidbody>().maxLinearVelocity = _projectileSpeed * _projectileSpeedFactor * 0.1f;
+                _lastProjectile.GetComponent<Rigidbody>().AddRelativeForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
 
                 _cam.Shake(6f, 0.1f, 0.4f);
 
@@ -240,23 +247,35 @@ namespace Hechizos
             return _lastProjectile;
         }
 
-        
-
         public GameObject SpawnExplosion()
         {
             GameObject expl = Instantiate(Explosion);
             expl.GetComponent<Explosion>().RegisterTypes(_activeElements.ToArray());
             expl.transform.position = _cont.transform.position;
 
-            _cam.Shake(10f, 0.2f, 1f);
+            _cam.Shake(20f, 0.2f, 1f);
 
             return expl;
+        }
+
+        public void SpawnCustomExplosion(Transform location, AElementalRune element, float range)
+        {
+            GameObject expl = Instantiate(Explosion);
+            expl.transform.position = location.position;
+            expl.transform.localScale *= range;
+            AElementalRune[] runes = new AElementalRune[1];
+            runes[0] = element;
+            expl.GetComponent<Explosion>().RegisterTypes(runes);
+            _cam.Shake(10f, 0.2f, 1f);
         }
 
         public GameObject SpawnMelee()
         {
             GameObject mel = Instantiate(Melee);
+            mel.GetComponent<Melee>().RegisterTypes(_activeElements.ToArray());
             mel.transform.position = _cont.transform.position;
+
+            mel.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * 0.15f * _cont.GetOrientation(), ForceMode.Impulse);
 
             _cam.Shake(2f, 0.1f, 0.3f);
 
@@ -349,11 +368,22 @@ namespace Hechizos
             return false;
         }
 
+        public void RuneActivation(ARune rune)
+        {
+            if (OnNewRuneActivation != null) OnNewRuneActivation(rune);
+        }
+
         public void SetExtraProjSpeed(float speed) => _projectileSpeedFactor = speed;
 
-        public void ManageBuffReset(IEnumerator func)
+        public void ManageBuff(bool canReset, IEnumerator func)
         {
-            StartCoroutine(func);
+            if (canReset) StartCoroutine(func);
+            _buff.LoadBuff();
+        }
+
+        public void ManageResetBuff()
+        {
+            _buff.ResetBuff();
         }
 
         private void OnDisable()

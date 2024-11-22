@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b93224021be79cd4a96bedc3f8c0bae0
+guid: d8c6711a4c7ff384c81a20016276b9e6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -106,6 +106,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -114,9 +127,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 16
-        height: 16
+        y: 10
+        width: 32
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,8 +137,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 860a3523173e81d4496cbb06575437d8
-      internalID: -398820152
+      spriteID: b61ff3386a6361642aedf81fa373c6d7
+      internalID: -646648303
       vertices: []
       indices: 
       edges: []
@@ -134,10 +147,10 @@ TextureImporter:
       name: instrucciones_1
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 16
+        x: 32
+        y: 10
+        width: 32
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,8 +158,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 32b93642c6efec641bc7bed709896934
-      internalID: 1690373910
+      spriteID: cabc18aba24095a4183b3139a2a4f551
+      internalID: -951562183
       vertices: []
       indices: 
       edges: []
@@ -155,10 +168,10 @@ TextureImporter:
       name: instrucciones_2
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 16
+        x: 64
+        y: 10
+        width: 32
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +179,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0002cbae5be5bf54cb9051288dd20d4f
-      internalID: -1518849295
+      spriteID: dd7f0d6881b89da41b1119042a180597
+      internalID: -1444483890
       vertices: []
       indices: 
       edges: []
@@ -176,10 +189,10 @@ TextureImporter:
       name: instrucciones_3
       rect:
         serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 16
+        x: 96
+        y: 10
+        width: 32
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,8 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9eaa43b7b3fae494a9f8c3f6208b5922
-      internalID: 1820456862
+      spriteID: b6ebfb973f6dfe747ad552c8fb633b44
+      internalID: -1490851472
       vertices: []
       indices: 
       edges: []
@@ -196,7 +209,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 845643fe6c9deab4db8d0522dd05455f
     internalID: 0
     vertices: []
     indices: 
@@ -204,10 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      instrucciones_0: -398820152
-      instrucciones_1: 1690373910
-      instrucciones_2: -1518849295
-      instrucciones_3: 1820456862
+      instrucciones_0: -646648303
+      instrucciones_1: -951562183
+      instrucciones_2: -1444483890
+      instrucciones_3: -1490851472
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

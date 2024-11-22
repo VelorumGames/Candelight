@@ -4,7 +4,9 @@ using Map;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Interactuables
 {
@@ -19,15 +21,26 @@ namespace Interactuables
 
         void TryEndLevel()
         {
-            MapManager map = FindObjectOfType<MapManager>();
-            if (map != null)
+            if (SceneManager.GetActiveScene().name == "TutorialScene")
             {
-                map.EndLevel();
+                FindObjectOfType<UIManager>().FadeToBlack(3f, () =>
+                {
+                    SceneManager.LoadScene("WorldScene");
+                    FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
+                });
             }
             else
-            {
-                SimpleRoomManager simpleMap = FindObjectOfType<SimpleRoomManager>();
-                simpleMap.EndLevel();
+            {   
+                MapManager map = FindObjectOfType<MapManager>();
+                if (map != null)
+                {
+                    FindObjectOfType<UIManager>().FadeToBlack(1f, map.EndLevel);
+                }
+                else
+                {
+                    SimpleRoomManager simpleMap = FindObjectOfType<SimpleRoomManager>();
+                    FindObjectOfType<UIManager>().FadeToBlack(1f, simpleMap.EndLevel);
+                }
             }
         }
     }

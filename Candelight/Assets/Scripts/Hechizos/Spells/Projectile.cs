@@ -4,8 +4,11 @@ using SpellInteractuable;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using TMPro;
 using UnityEngine;
+using Player;
+using Comportamientos.Sombra;
 
 namespace Hechizos
 {
@@ -31,6 +34,8 @@ namespace Hechizos
         [SerializeField] Material[] _secMaterials;
         [SerializeField] TrailRenderer[] _trails;
 
+        public bool AffectsPlayer;
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
@@ -44,22 +49,50 @@ namespace Hechizos
 
         private void Update()
         {
+            //Debug.Log("Vel: " + GetComponent<Rigidbody>().velocity);
+
             if (OnUpdate != null) OnUpdate(Target);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Enemy"))
+            if (!AffectsPlayer) 
             {
-                Target = other.transform.parent;
-                if (OnImpact != null) OnImpact(Target);
-
-                if (Target.TryGetComponent<EnemyController>(out var enemy))
+                
+                if (other.CompareTag("Enemy"))
                 {
-                    enemy.RecieveDamage(Damage);
-                }
+                   
+                    Target = other.transform.parent;
 
+                    if (Target.TryGetComponent<EnemyController>(out var enemy))
+                    {
+                        enemy.RecieveDamage(Damage);
+                    }
+                    else if (other.transform.TryGetComponent(out enemy))
+                    {
+                        enemy.RecieveDamage(Damage);
+                    }
+
+                    if (OnImpact != null) OnImpact(Target);
+                }
+            } 
+            else
+            {
+                if(other.CompareTag("Player"))
+                {
+                    Target = other.transform;
+
+                    if (Target.TryGetComponent<PlayerController>(out var player))
+                    {
+                        player.RecieveDamage(Damage);
+                        Destroy(gameObject);
+                    }
+
+                    if (OnImpact != null) OnImpact(Target);
+                }
             }
+
+            
         }
 
         public void FollowTarget(Transform _)
@@ -98,13 +131,6 @@ namespace Hechizos
                 runes = new AElementalRune[1];
                 runes[0] = oldRune;
             }
-
-            //foreach (var r in runes)
-            //{
-            //    _name.text += $"{r.Name} ";
-            //}
-            //
-            //Debug.Log("Se registran los tipos: " + _name.text);
 
             switch(runes[0].Name)
             {
@@ -183,6 +209,8 @@ namespace Hechizos
         {
             _trails[(int)element].gameObject.SetActive(true);
         }
+
+        
 
         public void ResetTrail()
         {

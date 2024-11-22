@@ -23,8 +23,9 @@ Material:
   m_Name: SpriteMaterial
   m_Shader: {fileID: -6465566751694194690, guid: b196d95f6bfbaa44cb669de27e3adabb,
     type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
+  m_Parent: {fileID: -876546973899608171, guid: b196d95f6bfbaa44cb669de27e3adabb,
+    type: 3}
+  m_ModifiedSerializedProperties: 2
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -38,29 +39,13 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_Lightmaps:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 25f2f5bb21e852649b2f56796cc4859a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DitherSize: 2
-    - _MaxDistance: 6.83
-    - _MinDistance: 4.07
+    - _DitherSize: 4
     - _QueueControl: 0
-    - _QueueOffset: 0
     - _SeeThroughDistance: 4
-    m_Colors:
-    - _MainColor: {r: 1, g: 1, b: 1, a: 0}
+    m_Colors: []
   m_BuildTextureStacks: []

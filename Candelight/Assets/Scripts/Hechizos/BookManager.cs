@@ -3,6 +3,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -47,7 +48,7 @@ namespace Hechizos
             {
                 ResetText();
                 _prevCam = _camMan.GetActiveCam();
-                _camMan.SetActiveCamera(_bookCam);
+                _camMan.SetActiveCamera(_bookCam, 0.5f);
             }
         }
 
@@ -58,17 +59,22 @@ namespace Hechizos
 
         public void ResetText() => _text.text = "";
 
-        public IEnumerator ShowResult(ARune rune)
+        public void ShowResult(ARune rune)
         {
-            _result.text = rune.Name;
-            yield return new WaitForSeconds(1.5f);
-            ResetText();
-            _result.text = "";
+            FindObjectOfType<ManageBookSpell>().Show(rune);
         }
+
+        //public IEnumerator ShowResult(ARune rune)
+        //{
+        //    _result.text = rune.Name;
+        //    yield return new WaitForSeconds(1.5f);
+        //    ResetText();
+        //    _result.text = "";
+        //}
 
         private void OnDisable()
         {
-            if (_camMan != null) _camMan.SetActiveCamera(_prevCam);
+            if (_camMan != null) _camMan.SetActiveCamera(_prevCam, 1f);
         }
     }
 }

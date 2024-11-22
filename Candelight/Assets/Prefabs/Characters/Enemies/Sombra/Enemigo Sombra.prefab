@@ -1,0 +1,312 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3141882965148256342
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6410817661220233396}
+  - component: {fileID: 1340495139001228999}
+  - component: {fileID: 7006071325176093907}
+  - component: {fileID: 741896529425989701}
+  m_Layer: 0
+  m_Name: Enemigo Sombra
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6410817661220233396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3141882965148256342}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1340495139001228999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3141882965148256342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf12bb175342f694aa2c1cdc4db01709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotateVelocity: 25
+  _sombraRing: {fileID: 3057553021119711497, guid: 05c6dd190bafee24c856cc32ecb86a13,
+    type: 3}
+  _numRings: 1
+  Info: {fileID: 11400000, guid: 869fc67e790c83342bd60545e41b196e, type: 2}
+  _rightDirection: 0
+  rings: []
+  _timeSpawnNewRing: 6
+  maxRings: 3
+  _ringsDistance: 1
+  _incrementRingsDistance: 2
+--- !u!114 &7006071325176093907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3141882965148256342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7033c32493b38240a6a2c47736ac9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  executeOnLoop: 0
+  interruptOptions: 0
+  _eventHandler:
+    debugStatusChanges: 0
+    identifier: 
+  data:
+    graphs:
+    - name: Sombra Comportamiento FSM
+      id: ef7810c2-6eb5-41e2-8ac2-59902f4b1c08
+      graph:
+        rid: 3862667213671497728
+      nodes:
+      - name: Orbitar
+        id: 7d9db916-b5e4-4641-9a6d-754a7814a74e
+        position: {x: 541, y: 151}
+        node:
+          rid: 3862667213671497729
+        references:
+        - fieldName: Action
+          value:
+            rid: 3862667213671497746
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 8e30008e-865d-415e-be98-1496709da7ff
+        childIds:
+        - 090a5a8a-2231-45db-acdc-4e48b61557ff
+      - name: Disparar Proyectiles
+        id: 85d1bc2e-4dcb-4460-acb9-d46e3be00e80
+        position: {x: 1157, y: 167}
+        node:
+          rid: 3862667213671497730
+        references:
+        - fieldName: Action
+          value:
+            rid: 3862667213671497739
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 090a5a8a-2231-45db-acdc-4e48b61557ff
+        childIds:
+        - 8e30008e-865d-415e-be98-1496709da7ff
+      - name: EquipadoFuego
+        id: 090a5a8a-2231-45db-acdc-4e48b61557ff
+        position: {x: 858, y: -45}
+        node:
+          rid: 3862667213671497731
+        references:
+        - fieldName: Perception
+          value:
+            rid: 3862667213671497734
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - fieldName: Action
+          value:
+            rid: -2
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 7d9db916-b5e4-4641-9a6d-754a7814a74e
+        childIds:
+        - 85d1bc2e-4dcb-4460-acb9-d46e3be00e80
+      - name: Equipadofuego
+        id: 8e30008e-865d-415e-be98-1496709da7ff
+        position: {x: 858, y: 345}
+        node:
+          rid: 3862667213671497735
+        references:
+        - fieldName: Perception
+          value:
+            rid: 3862667213671497736
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - fieldName: Action
+          value:
+            rid: -2
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 85d1bc2e-4dcb-4460-acb9-d46e3be00e80
+        childIds:
+        - 7d9db916-b5e4-4641-9a6d-754a7814a74e
+    - name: Disparar Proyectiles BT
+      id: 153c099d-092a-42d6-9ad3-34f2ac671dea
+      graph:
+        rid: 3862667213671497740
+      nodes:
+      - name: Sequence Disparar Proyectiles
+        id: 39f49637-5af0-4c26-88c6-aca367ff1d34
+        position: {x: 892, y: 92}
+        node:
+          rid: 3862667213671497748
+        references: []
+        parentIds: []
+        childIds:
+        - c3706dc0-89c7-4f75-b67e-32d5052d437d
+        - 05efbefc-29e2-4f9d-aca3-043e8594fc21
+      - name: Alejarse
+        id: c3706dc0-89c7-4f75-b67e-32d5052d437d
+        position: {x: 737, y: 356}
+        node:
+          rid: 3862667213671497749
+        references:
+        - fieldName: Action
+          value:
+            rid: 3862667213671497774
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 39f49637-5af0-4c26-88c6-aca367ff1d34
+        childIds: []
+      - name: Disparar
+        id: 05efbefc-29e2-4f9d-aca3-043e8594fc21
+        position: {x: 1156, y: 349}
+        node:
+          rid: 3862667213671497750
+        references:
+        - fieldName: Action
+          value:
+            rid: 3862667213671497752
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 39f49637-5af0-4c26-88c6-aca367ff1d34
+        childIds: []
+    pushPerceptions: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3862667213671497728
+      type: {class: FSM, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data: 
+    - rid: 3862667213671497729
+      type: {class: State, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data: 
+    - rid: 3862667213671497730
+      type: {class: State, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data: 
+    - rid: 3862667213671497731
+      type: {class: StateTransition, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data:
+        StatusFlags: 2
+    - rid: 3862667213671497734
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: 
+        check:
+          componentName: SombraComportamiento
+          methodName: EquipadoFuego
+        reset:
+          componentName: 
+          methodName: 
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3862667213671497735
+      type: {class: StateTransition, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data:
+        StatusFlags: 4
+    - rid: 3862667213671497736
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: 
+        check:
+          componentName: SombraComportamiento
+          methodName: EquipadoFuego
+        reset:
+          componentName: 
+          methodName: 
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3862667213671497739
+      type: {class: SubgraphAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        ExecuteOnLoop: 0
+        InterruptOptions: 2
+        subgraphId: 153c099d-092a-42d6-9ad3-34f2ac671dea
+    - rid: 3862667213671497740
+      type: {class: BehaviourTree, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3862667213671497746
+      type: {class: SimpleAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        method:
+          componentName: SombraComportamiento
+          methodName: Orbitar
+    - rid: 3862667213671497748
+      type: {class: SequencerNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        IsRandomized: 0
+    - rid: 3862667213671497749
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3862667213671497750
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3862667213671497752
+      type: {class: SimpleAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        method:
+          componentName: SombraComportamiento
+          methodName: Disparar
+    - rid: 3862667213671497774
+      type: {class: SimpleAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        method:
+          componentName: SombraComportamiento
+          methodName: Alejarse
+--- !u!114 &741896529425989701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3141882965148256342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd60943afe41c8447ac5f86c0bad0adf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  executeOnLoop: 1
+  interruptOptions: 0

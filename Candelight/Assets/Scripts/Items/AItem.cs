@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Items 
 {
@@ -12,10 +13,15 @@ namespace Items
     {
         public ItemInfo Data;
 
+        [SerializeField] protected Sprite[] _buttonSprites;
+        Image _img;
+
+        public bool IsNew = true;
         protected bool IsActivated = false;
              
         private void Start()
         {
+            _img = GetComponent<Image>();
             GetComponentInChildren<TextMeshProUGUI>().text = Data.Name;
         }
 
@@ -30,28 +36,35 @@ namespace Items
 
         public void SetActivation()  // Funcion preparada para llamarse con un boton/clic dependiendo de la interfaz
         {
+            Inventory inv = FindObjectOfType<Inventory>();
+
             if (IsActivated)
             {
                 IsActivated = false;
                 ResetProperty();
-                Inventory.Instance.AddFragments((int)Data.Category);
+                inv.AddFragments((int)Data.Category);
 
-                Inventory.Instance.ActiveItems.Remove(gameObject);
-                Inventory.Instance.UnactiveItems.Add(gameObject);
-                Inventory.Instance.RelocateItems();
+                inv.ActiveItems.Remove(gameObject);
+                inv.UnactiveItems.Add(gameObject);
+                inv.RelocateItems();
+
+                _img.sprite = _buttonSprites[0];
             }
-            else if (Inventory.Instance.GetFragments() >= (int)Data.Category)
+            else if (inv.GetFragments() >= (int)Data.Category)
             {
                 IsActivated = true;
                 ApplyProperty();
-                Inventory.Instance.AddFragments(-(int)Data.Category);
+                inv.AddFragments(-(int)Data.Category);
 
-                Inventory.Instance.UnactiveItems.Remove(gameObject);
-                Inventory.Instance.ActiveItems.Add(gameObject);
-                Inventory.Instance.RelocateItems();
+                inv.UnactiveItems.Remove(gameObject);
+                inv.ActiveItems.Add(gameObject);
+                inv.RelocateItems();
+
+                _img.sprite = _buttonSprites[1];
             } 
             else
-            {               
+            {
+                Debug.Log("[INFO] NO SE HA PODIDO ACTIVAR EL ITEM");
                 //Annadir efecto visual que indique que no se ha podido activar el item porque no se tiene el numero de fragmentos necesarios
             }
             
