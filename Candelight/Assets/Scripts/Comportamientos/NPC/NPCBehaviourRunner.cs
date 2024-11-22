@@ -25,10 +25,10 @@ public class NPCBehaviourRunner : BehaviourRunner
 		SimpleAction ObjetivoRandom_action = new SimpleAction();
 		ObjetivoRandom_action.action = m_NPCActions.setRandomTarget;
 		LeafNode ObjetivoRandom = AldeanoBT.CreateLeafNode(ObjetivoRandom_action);
-		
+
 		ConditionNode EstaEnObjetivo = AldeanoBT.CreateDecorator<ConditionNode>(ObjetivoRandom);
-		
-		SimpleAction Moverse_action = new SimpleAction();
+
+        SimpleAction Moverse_action = new SimpleAction();
 		Moverse_action.action = m_NPCActions.move;
 		LeafNode Moverse = AldeanoBT.CreateLeafNode(Moverse_action);
 		

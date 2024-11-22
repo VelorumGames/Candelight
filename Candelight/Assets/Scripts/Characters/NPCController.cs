@@ -27,8 +27,6 @@ public class NPCController : MonoBehaviour
     private new void Start()
     {
         _player = FindObjectOfType<PlayerController>();
-
-        //StartCoroutine(DebugAI());
     }
 
     public IEnumerator Move(Vector3 target)

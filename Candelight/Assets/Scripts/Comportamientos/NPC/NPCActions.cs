@@ -27,7 +27,7 @@ public class NPCActions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        currentPos = transform.position;
     }
 
     public bool isPlayerClose()
