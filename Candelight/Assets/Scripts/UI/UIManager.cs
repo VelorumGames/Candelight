@@ -105,7 +105,7 @@ namespace UI
 
         private void OnGUI()
         {
-            GUI.Label(new Rect(10, 40, 200, 70), $"FPS: {CalculateFPS(1.0f / Time.deltaTime)}\nCandle (Nodes left): {_candle}\nCurrent Node: {ActualNodeName}\nNext Node: {NextNodeName}");
+            GUI.Label(new Rect(10, 40, 200, 70), $"FPS: {CalculateFPS(1.0f / Time.deltaTime)/*}\nCandle (Nodes left): {_candle}\nCurrent Node: {ActualNodeName}\nNext Node: {NextNodeName*/}");
             if (SceneManager.GetActiveScene().name == "LevelScene" || SceneManager.GetActiveScene().name == "CalmScene")
             {
                 if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<MapManager>().EndLevel();
@@ -342,31 +342,36 @@ namespace UI
 
         public void PlayerDamageFeedback(float damage, float remHealth)
         {
-            RedFilter.DOFade((1 / remHealth) * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play());
+            RedFilter.DOFade((1 / remHealth) * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play()).SetUpdate(true);
             _camMan.Shake(5f, 20f, 0.4f);
         }
 
         public void EnemyDamageFeedback(float damage, float remHealth)
         {
-            WhiteFilter.DOFade(0.35f, 0.1f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.2f).Play());
+            WhiteFilter.DOFade(0.05f, 0.1f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.2f).Play()).SetUpdate(true);
 
-            if (_timeFreeze != null) StopCoroutine(_timeFreeze);
-            _timeFreeze = StartCoroutine(FreezeGame(0.2f, remHealth));
+            //if (_timeFreeze != null) StopCoroutine(_timeFreeze);
+            _timeFreeze = StartCoroutine(FreezeGame(0.25f, remHealth));
         }
 
         public void WinCombat()
         {
-            WhiteFilter.DOFade(0.5f, 0.3f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.3f).Play());
+            WhiteFilter.DOFade(0.3f, 0.3f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.3f).Play()).SetUpdate(true);
         }
 
         public IEnumerator FreezeGame(float duration, float freezeScale)
         {
             //float oScale = Time.timeScale;
-            Time.timeScale = 0.3f;
+            Time.timeScale = 0.1f;
 
             yield return new WaitForSecondsRealtime(duration);
 
             Time.timeScale = 1;
+
+            //Por si acaso
+            yield return new WaitForSecondsRealtime(1f);
+
+            if (Time.timeScale != 1) Time.timeScale = 1;
         }
 
         void EnterSpellModeFeedback()
@@ -387,7 +392,7 @@ namespace UI
 
         void ShowFragmentHalo(int prev, int num)
         {
-            FragmentHalo.transform.localPosition = new Vector3(0.55f, -0.55f, 0.5f);
+            FragmentHalo.transform.localPosition = new Vector3(0.5f, -0.5f, 0.5f);
             FragmentHalo.SetActive(true);
             Invoke("ResetHalo", 3f);
         }

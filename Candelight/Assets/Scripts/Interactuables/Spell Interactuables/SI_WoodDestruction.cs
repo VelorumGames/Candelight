@@ -12,17 +12,19 @@ namespace SpellInteractuable
     {
         [SerializeField] DialogueAgent _npc;
         [SerializeField] Dialogue _newDialogue;
+        ExploreEventManager _event;
 
-        private void Start()
+        private void Awake()
         {
-            FindObjectOfType<ExploreEventManager>().LoadEventResult(EEventSolution.Ignored);
+            _event = FindObjectOfType<ExploreEventManager>();
         }
 
         protected override void ApplyInteraction(ASpell spell)
         {
-            ExploreEventManager.Instance.LoadEventResult(EEventSolution.Completed);
+            _event.LoadEventResult(EEventSolution.Completed);
             _npc.ChangeDialogue(_newDialogue);
-            Destroy(gameObject);
+            _npc.StartDialogue();
+            gameObject.SetActive(false);
         }
     }
 }

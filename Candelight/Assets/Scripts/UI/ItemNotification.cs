@@ -20,7 +20,7 @@ namespace UI
 
         private void OnEnable()
         {
-            GetComponent<RectTransform>().DOLocalMove(new Vector3(-300f, 0f, 0f), _startDuration).OnComplete(() => Invoke("ResetNotification", _duration)).Play();
+            GetComponent<RectTransform>().DOLocalMove(new Vector3(-300f, 0f, 0f), _startDuration).OnComplete(() => Invoke("ResetNotification", _duration)).Play().SetUpdate(true);
         }
 
         public void LoadItemInfo(ItemInfo data)
@@ -32,7 +32,7 @@ namespace UI
 
         void ResetNotification()
         {
-            GetComponent<RectTransform>().DOLocalMove(new Vector3(-1000f, 0f, 0f), _startDuration).OnComplete(() => gameObject.SetActive(false)).Play();
+            GetComponent<RectTransform>().DOLocalMove(new Vector3(-1000f, 0f, 0f), _startDuration).OnComplete(() => gameObject.SetActive(false)).Play().SetUpdate(true);
         }
     }
 }

@@ -31,8 +31,6 @@ namespace Hechizos
             if (other.CompareTag("Enemy"))
             {
                 Target = other.transform.parent;
-                if (OnImpact != null) OnImpact(Target);
-
 
                 if (Target.TryGetComponent<EnemyController>(out var enemy))
                 {
@@ -42,6 +40,8 @@ namespace Hechizos
                 {
                     enemy.RecieveDamage(Damage);
                 }
+
+                if (OnImpact != null) OnImpact(Target);
             }
         }
 

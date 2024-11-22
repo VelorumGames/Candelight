@@ -134,6 +134,41 @@ namespace Items
             return count > 0;
         }
 
+        public bool FindItem(string name, out AItem item)
+        {
+            item = null;
+            foreach (var it in ItemsList)
+            {
+                if (it.GetComponent<AItem>().Data.Name == name)
+                {
+                    item = it.GetComponent<AItem>();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool RemoveItem(string name)
+        {
+            if (FindItem(name, out AItem item))
+            {
+                if (ActiveItems.Contains(item.gameObject))
+                {
+                    ActiveItems.Remove(item.gameObject);
+                }
+                else if (UnactiveItems.Contains(item.gameObject))
+                {
+                    UnactiveItems.Remove(item.gameObject);
+                }
+                ItemsList.Remove(item.gameObject);
+
+                return true;
+            }
+
+            return false;
+        }
+
         public void AddItem(GameObject item)
         {
             Debug.Log("Nuevo objeto en el inventario: " + item.name);

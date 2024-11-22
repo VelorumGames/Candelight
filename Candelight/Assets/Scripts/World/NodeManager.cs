@@ -19,7 +19,6 @@ namespace World
     {
         Undiscovered,
         Explored,
-        Incompleted,
         Completed
     }
     public enum EEventSolution

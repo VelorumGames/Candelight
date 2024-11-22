@@ -100,6 +100,7 @@ namespace UI
                                 _runeImages[i].sprite = _runeSprites[3];
                                 break;
                         }
+                        _runeImages[i].color = new Color(_runeImages[i].color.r, _runeImages[i].color.g, _runeImages[i].color.b, 1f);
                         _runeTexts[i++].text = $"{spell.GetInstructionsToArrows()}";
                     }
                 }

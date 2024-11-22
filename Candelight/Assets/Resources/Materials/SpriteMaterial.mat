@@ -21,9 +21,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SpriteMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 874c4f9965f6ade489183cca278200af,
+  m_Shader: {fileID: -6465566751694194690, guid: b196d95f6bfbaa44cb669de27e3adabb,
     type: 3}
-  m_Parent: {fileID: 2100000, guid: fcdd8bc52b5b4054c8079e4e0d394c55, type: 2}
+  m_Parent: {fileID: -876546973899608171, guid: b196d95f6bfbaa44cb669de27e3adabb,
+    type: 3}
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -36,10 +37,15 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 25f2f5bb21e852649b2f56796cc4859a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DitherSize: 2
+    - _DitherSize: 4
+    - _QueueControl: 0
     - _SeeThroughDistance: 4
     m_Colors: []
   m_BuildTextureStacks: []

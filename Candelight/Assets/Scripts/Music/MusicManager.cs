@@ -181,14 +181,22 @@ namespace Music
 
         void StartDialogueMusic()
         {
-            ChangeVolumeTo(1, 0.2f, 1f);
-            ChangeVolumeTo(2, 0.2f, 1f);
+            for (int i = 1; i < 4; i++)
+            {
+                if (GetCurrentVolume(i) > 0.2f) ChangeVolumeTo(i, 0.2f, 1f);
+            }
+            //ChangeVolumeTo(1, 0.2f, 1f);
+            //ChangeVolumeTo(2, 0.2f, 1f);
         }
 
         void EndDialogueMusic()
         {
-            ChangeVolumeTo(1, 0.5f, 1f);
-            ChangeVolumeTo(2, 0.5f, 1f);
+            for (int i = 1; i < 4; i++)
+            {
+                if (GetCurrentVolume(i) < 0.3f) ChangeVolumeTo(i, 0.5f, 1f);
+            }
+            //ChangeVolumeTo(1, 0.5f, 1f);
+            //ChangeVolumeTo(2, 0.5f, 1f);
         }
 
         private void OnDisable()

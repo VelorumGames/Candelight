@@ -383,12 +383,16 @@ namespace Player
                 //Comparamos con que nodo conectado al actual esta mas cerca y consideramos ese como la decision del jugador
                 float minDist = 9999f;
                 GameObject closest = null;
-                Debug.Log($"Para el current node hay {_currentNode.ConnectedNodes.Count} nodos conectados");
+                //Debug.Log($"Para el current node hay {_currentNode.ConnectedNodes.Count} nodos conectados");
                 foreach (var node in _currentNode.ConnectedNodes)
                 {
-                    Debug.Log($"1: {node != _currentNode.gameObject}");
-                    Debug.Log($"2: {node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered} ({node.GetComponent<NodeManager>().GetNodeData().State})");
-                    if (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered)
+                    //Debug.Log($"1: {node != _currentNode.gameObject}");
+                    //Debug.Log($"2: {node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered} ({node.GetComponent<NodeManager>().GetNodeData().State})");
+
+
+
+                    if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completed) ||
+                        (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completed && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Explored) )
                     {
                         float dist = Vector3.Distance(_pathChooser.transform.position, node.transform.position);
                         if (dist < minDist)

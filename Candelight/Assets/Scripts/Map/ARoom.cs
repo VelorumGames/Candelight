@@ -26,10 +26,13 @@ namespace Map
 
         [SerializeField] Transform _runeTransform;
         [SerializeField] Transform[] _spawnPoints;
+        public AnchorManager[] Anchors;
 
         Vector2 _minimapOffset;
 
         public List<AnchorManager> AvailableAnchors = new List<AnchorManager>();
+        public event System.Action OnPlayerEnter;
+        public event System.Action OnPlayerExit;
 
         protected void Awake()
         {
@@ -64,12 +67,34 @@ namespace Map
         public void SetMinimapOffset(Vector2 offset) => _minimapOffset = offset;
         public Vector2 GetMinimapOffset() => _minimapOffset;
 
+        public ARoom[] GetAdyacentRooms()
+        {
+            List<ARoom> rooms = new List<ARoom>();
+            if (Anchors.Length > 0)
+            {
+                foreach (var anchor in Anchors)
+                {
+                    rooms.Add(anchor.ConnectedAnchor.GetRoom());
+                }
+            }
+            return rooms.ToArray();
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
                 _uiMan.ShowMinimapRoom(ID);
                 OnPlayerTrigger();
+                if (OnPlayerEnter != null) OnPlayerEnter();
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                if (OnPlayerEnter != null) OnPlayerExit();
             }
         }
 

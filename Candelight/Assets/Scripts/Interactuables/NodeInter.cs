@@ -7,11 +7,23 @@ namespace Interactuables
 {
     public class NodeInter : AInteractuables
     {
+        private void OnEnable()
+        {
+            OnTrigger += Register;
+        }
+
         public override void Interaction()
         {
-            GetComponent<NodeManager>().SetState(ENodeState.Incompleted);
+            //GetComponent<NodeManager>().SetState(ENodeState.Incompleted);
             WorldManager.Instance.SetCurrentNode(GetComponent<NodeManager>());
             WorldManager.Instance.LoadNode();
+        }
+
+        void Register() => WorldManager.Instance.SetCurrentNode(GetComponent<NodeManager>());
+
+        private void OnDisable()
+        {
+            OnTrigger -= Register;
         }
     }
 }
