@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 7779664076070700909}
   - component: {fileID: 7566546573828897371}
   - component: {fileID: 2932335460151449510}
-  - component: {fileID: 7188715517407499380}
   - component: {fileID: 7841421913427160153}
   - component: {fileID: 1950387162726131189}
   - component: {fileID: 6406908477006106967}
@@ -133,6 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Reward: 0
+  RandomDialogue: 0
   Dialogue: {fileID: 0}
 --- !u!114 &2932335460151449510
 MonoBehaviour:
@@ -147,19 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NotificationTransform: {fileID: 6227411872310699139}
---- !u!114 &7188715517407499380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8236912090910218455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cde85e3786e298469f9a4f2d0148f31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RandomizePosition: 0
 --- !u!114 &7841421913427160153
 MonoBehaviour:
   m_ObjectHideFlags: 0
