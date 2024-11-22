@@ -192,18 +192,7 @@ MonoBehaviour:
         references: []
         parentIds: []
         childIds:
-        - 0f5c7162-a466-4fa6-b1f4-3df14bbe8ac6
-      - name: Sequence
-        id: 0f5c7162-a466-4fa6-b1f4-3df14bbe8ac6
-        position: {x: 0, y: 200}
-        node:
-          rid: 2711454442976444421
-        references: []
-        parentIds:
-        - c9ed8593-c54b-45c8-a946-739e31198446
-        childIds:
-        - 6ff43084-3ee5-4fdf-8cdb-f96b57a1486e
-        - e0687386-81bb-4fea-9662-8269d4b799da
+        - 47a58454-1ce4-4fad-9bd4-da1852dcbad0
       - name: Moverse
         id: e0687386-81bb-4fea-9662-8269d4b799da
         position: {x: 150, y: 400}
@@ -212,32 +201,69 @@ MonoBehaviour:
         references:
         - fieldName: Action
           value:
-            rid: -2
+            rid: 2711454456336875523
           fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
             Culture=neutral, PublicKeyToken=null
         parentIds:
-        - 0f5c7162-a466-4fa6-b1f4-3df14bbe8ac6
+        - 47a58454-1ce4-4fad-9bd4-da1852dcbad0
         childIds: []
       - name: ObjetivoRandom
         id: 6ff43084-3ee5-4fdf-8cdb-f96b57a1486e
-        position: {x: -150, y: 400}
+        position: {x: -150, y: 600}
         node:
           rid: 2711454442976444423
         references:
         - fieldName: Action
           value:
-            rid: -2
+            rid: 2711454456336875522
           fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
             Culture=neutral, PublicKeyToken=null
         parentIds:
-        - 0f5c7162-a466-4fa6-b1f4-3df14bbe8ac6
+        - 31aad993-13cb-434d-bc77-158b014e7e4b
+        childIds: []
+      - name: EstaEnObjetivo
+        id: 31aad993-13cb-434d-bc77-158b014e7e4b
+        position: {x: -150, y: 400}
+        node:
+          rid: 2711454456336875520
+        references:
+        - fieldName: Perception
+          value:
+            rid: 2711454456336875521
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 47a58454-1ce4-4fad-9bd4-da1852dcbad0
+        childIds:
+        - 6ff43084-3ee5-4fdf-8cdb-f96b57a1486e
+      - name: Sequence
+        id: 47a58454-1ce4-4fad-9bd4-da1852dcbad0
+        position: {x: 0, y: 200}
+        node:
+          rid: 2711454456336875525
+        references: []
+        parentIds:
+        - c9ed8593-c54b-45c8-a946-739e31198446
+        childIds:
+        - 31aad993-13cb-434d-bc77-158b014e7e4b
+        - e0687386-81bb-4fea-9662-8269d4b799da
+      - name: JugadorCerca
+        id: e07a7ce5-cafe-4755-aaa7-d20fb5088efb
+        position: {x: -341.6, y: 184}
+        node:
+          rid: 2711454456336875526
+        references:
+        - fieldName: Perception
+          value:
+            rid: 2711454456336875527
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        parentIds: []
         childIds: []
     pushPerceptions: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 2711454442976444419
       type: {class: BehaviourTree, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
       data: 
@@ -245,16 +271,74 @@ MonoBehaviour:
       type: {class: LoopNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
       data:
         Iterations: -1
-    - rid: 2711454442976444421
-      type: {class: SequencerNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
-      data:
-        IsRandomized: 0
     - rid: 2711454442976444422
       type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
       data: 
     - rid: 2711454442976444423
       type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
       data: 
+    - rid: 2711454456336875520
+      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2711454456336875521
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: 
+        check:
+          componentName: NPCActions
+          methodName: hasArrived
+        reset:
+          componentName: 
+          methodName: 
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 2711454456336875522
+      type: {class: SimpleAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        method:
+          componentName: NPCActions
+          methodName: setRandomTarget
+    - rid: 2711454456336875523
+      type: {class: SimpleAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        method:
+          componentName: NPCActions
+          methodName: move
+    - rid: 2711454456336875525
+      type: {class: SequencerNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        IsRandomized: 0
+    - rid: 2711454456336875526
+      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 2711454456336875527
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: 
+        check:
+          componentName: NPCActions
+          methodName: isPlayerClose
+        reset:
+          componentName: 
+          methodName: 
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
 --- !u!114 &1950387162726131189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838da71807f79784880e321cbb4b6422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0
+  _speed: 5
 --- !u!1 &9209046907135373598
 GameObject:
   m_ObjectHideFlags: 0
