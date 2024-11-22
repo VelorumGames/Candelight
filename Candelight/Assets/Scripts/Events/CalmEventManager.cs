@@ -59,7 +59,7 @@ namespace Events
                     break;
             }
         }
-
+        
         public void GenerateEvent(MapManager map)
         {
             _map = map;

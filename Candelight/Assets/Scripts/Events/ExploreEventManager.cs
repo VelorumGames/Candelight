@@ -60,7 +60,7 @@ namespace Events
                 case 2: //Mr Bombastic
                     //Si ya tiene 3 bombas en el inventario, pasar EventID a -1 y no generar el evento
                     Debug.Log("EL JUGADOR YA TIENE 3 BOMBAS ASI QUE SE DESACTIVA EL EVENTO");
-                    if (FindObjectOfType<Inventory>().FindItem("Bomba de Pólvora", out var n) && n >= 3)
+                    if (FindObjectOfType<Inventory>().FindItem("Bomba de Pólvora", out int n) && n >= 3)
                     {
                         _map.CurrentNodeInfo.EventID = -1;
                         return;

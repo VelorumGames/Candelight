@@ -94,13 +94,14 @@ namespace Dialogues
             else
             {
                 EndDialogue();
-                if (_currentBlock.nextDialogue != null) _currentAgent.ChangeDialogue(_currentBlock.nextDialogue);
+                if (_currentBlock.nextDialogue != null && _currentAgent != null) _currentAgent.ChangeDialogue(_currentBlock.nextDialogue);
                 else if (_onEndDialogue != null) _onEndDialogue();
             }
         }
 
         public void StartDialogue(DialogueBlock block, DialogueAgent ag)
         {
+            Time.timeScale = 0f;
             _onEndDialogue = null;
             _currentAgent = ag;
 
@@ -116,6 +117,7 @@ namespace Dialogues
         }
         public void StartDialogue(DialogueBlock block, DialogueAgent ag, System.Action endAction)
         {
+            Time.timeScale = 0f;
             _currentAgent = ag;
 
             _dialogueUI.SetActive(true);
@@ -128,6 +130,21 @@ namespace Dialogues
 
             LoadBlockInfo(block);
         }
+        public void StartDialogueWithAction(DialogueBlock block, DialogueAgent ag, System.Action action)
+        {
+            Time.timeScale = 0f;
+            _currentAgent = ag;
+
+            _dialogueUI.SetActive(true);
+
+            _active = true;
+            _cont.UnloadInteraction();
+            FindObjectOfType<InputManager>().LoadControls(EControlMap.Dialogue);
+
+            if (action != null) action();
+
+            LoadBlockInfo(block);
+        }
         public void Next()
         {
             if (_showUIText.IsShowingText()) _showUIText.Interrupt();
@@ -135,6 +152,8 @@ namespace Dialogues
         }
         public void EndDialogue()
         {
+            Time.timeScale = 1f;
+
             _active = false;
             FindObjectOfType<InputManager>().LoadPreviousControls();
             if (OnDialogueEnd != null) OnDialogueEnd();

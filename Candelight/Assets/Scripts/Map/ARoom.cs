@@ -30,6 +30,8 @@ namespace Map
         Vector2 _minimapOffset;
 
         public List<AnchorManager> AvailableAnchors = new List<AnchorManager>();
+        public event System.Action OnPlayerEnter;
+        public event System.Action OnPlayerExit;
 
         protected void Awake()
         {
@@ -70,6 +72,15 @@ namespace Map
             {
                 _uiMan.ShowMinimapRoom(ID);
                 OnPlayerTrigger();
+                if (OnPlayerEnter != null) OnPlayerEnter();
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                if (OnPlayerEnter != null) OnPlayerExit();
             }
         }
 
