@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Player;
-using static UnityEditor.Experimental.GraphView.GraphView;
 using System.Threading;
 
 public class NPCActions : MonoBehaviour
@@ -28,7 +27,7 @@ public class NPCActions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currentPos = transform.position;
+
     }
 
     public bool isPlayerClose()
@@ -55,6 +54,7 @@ public class NPCActions : MonoBehaviour
 
     public void move()
     {
-        controller.Move(target);
+        Debug.Log("Entro en rama mover");
+        StartCoroutine(controller.Move(target));
     }
 }

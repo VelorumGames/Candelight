@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 7841421913427160153}
   - component: {fileID: 1950387162726131189}
   - component: {fileID: 6406908477006106967}
+  - component: {fileID: 4897671874186543454}
   m_Layer: 0
   m_Name: NPC
   m_TagString: NPC
@@ -117,7 +118,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &7566546573828897371
 MonoBehaviour:
@@ -154,7 +155,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8236912090910218455}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7033c32493b38240a6a2c47736ac9c0, type: 3}
   m_Name: 
@@ -234,19 +235,6 @@ MonoBehaviour:
         childIds:
         - 31aad993-13cb-434d-bc77-158b014e7e4b
         - e0687386-81bb-4fea-9662-8269d4b799da
-      - name: JugadorCerca
-        id: e07a7ce5-cafe-4755-aaa7-d20fb5088efb
-        position: {x: -341.6, y: 184}
-        node:
-          rid: 2711454456336875526
-        references:
-        - fieldName: Perception
-          value:
-            rid: 2711454456336875527
-          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
-            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        parentIds: []
-        childIds: []
     pushPerceptions: []
   references:
     version: 2
@@ -304,28 +292,6 @@ MonoBehaviour:
       type: {class: SequencerNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
       data:
         IsRandomized: 0
-    - rid: 2711454456336875526
-      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
-      data: 
-    - rid: 2711454456336875527
-      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
-        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
-      data:
-        init:
-          componentName: 
-          methodName: 
-        check:
-          componentName: NPCActions
-          methodName: isPlayerClose
-        reset:
-          componentName: 
-          methodName: 
-        pause:
-          componentName: 
-          methodName: 
-        unpause:
-          componentName: 
-          methodName: 
 --- !u!114 &1950387162726131189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,7 +316,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838da71807f79784880e321cbb4b6422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
+  _speed: 2
+--- !u!114 &4897671874186543454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8236912090910218455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 589e90c0ea6005043a8f29a162f65eca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  executeOnLoop: 1
+  interruptOptions: 0
+  m_NPCActions: {fileID: 1950387162726131189}
 --- !u!1 &9209046907135373598
 GameObject:
   m_ObjectHideFlags: 0
