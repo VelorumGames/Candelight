@@ -15,6 +15,8 @@ namespace Events
         public Dialogue CompletedDialogue;
         public Dialogue FarDialogue;
 
+        ExploreEventManager _event;
+
         ARoom _room;
 
         bool _completed;
@@ -23,6 +25,7 @@ namespace Events
         {
             _inv = FindObjectOfType<Inventory>();
             _agent = GetComponent<DialogueAgent>();
+            _event = FindObjectOfType<ExploreEventManager>();
 
             _room = transform.parent.parent.parent.parent.GetComponent<ARoom>();
             //NPC -> Evento -> SP -> SP Container -> Sala
@@ -39,7 +42,7 @@ namespace Events
             if (_inv.FindItem("Bomba de Pólvora", out AItem item) && (int)item.Data.Category <= _inv.GetFragments())
             {
                 _agent.ChangeDialogue(FailDialogue);
-                FindObjectOfType<ExploreEventManager>().LoadEventResult(World.EEventSolution.Failed);
+                _event.LoadEventResult(World.EEventSolution.Failed);
                 Invoke("StartFailDialogue", 2f);
             }
             else
@@ -60,7 +63,7 @@ namespace Events
 
         void SetCompleted()
         {
-            FindObjectOfType<ExploreEventManager>().LoadEventResult(World.EEventSolution.Completed);
+            _event.LoadEventResult(World.EEventSolution.Completed);
             _completed = true;
             _inv.RemoveItem("Bomba de Pólvora");
         }
@@ -81,7 +84,7 @@ namespace Events
 
         private void OnDisable()
         {
-            if (!_completed) FindObjectOfType<ExploreEventManager>().LoadEventResult(World.EEventSolution.AltCompleted);
+            if (!_completed) _event.LoadEventResult(World.EEventSolution.AltCompleted);
             _room.OnPlayerExit -= LoadFarDialogue;
         }
     }

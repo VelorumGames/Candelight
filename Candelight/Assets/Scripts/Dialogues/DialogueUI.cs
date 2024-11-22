@@ -161,6 +161,7 @@ namespace Dialogues
             _active = false;
             FindObjectOfType<InputManager>().LoadPreviousControls();
             if (OnDialogueEnd != null) OnDialogueEnd();
+            if (_onEndDialogue != null) _onEndDialogue();
 
             _text.text = "";
 

@@ -37,8 +37,9 @@ namespace Dialogues
                     _dialogueUI.StartDialogueWithAction(Dialogue, this, _startAction);
                     _startAction = null;
                 }
-                else
+                else if (_endAction != null)
                 {
+                    Debug.Log("Se ejecuta dialogo con accion final");
                     _dialogueUI.StartDialogue(Dialogue, this, _endAction);
                     _endAction = null;
                 }
@@ -58,7 +59,11 @@ namespace Dialogues
             Dialogue = newDialogue;
         }
 
-        public void LoadActionOnEnd(Action act) => _endAction = act;
+        public void LoadActionOnEnd(Action act)
+        {
+            Debug.Log("CARGAMOS ACCION");
+            _endAction = act;
+        }
         public void LoadActionOnStart(Action act) => _startAction = act;
     }
 }
