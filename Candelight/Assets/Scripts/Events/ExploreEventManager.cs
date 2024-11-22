@@ -20,15 +20,22 @@ namespace Events
         GameObject[] _events;
         GameObject _currentEvent;
 
+        Inventory _inv;
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            _inv = FindObjectOfType<Inventory>();
+            _map = GetComponent<MapManager>();
         }
 
         private void Start()
         {
-            switch(GetComponent<MapManager>().CurrentNodeInfo.Biome)
+            LoadEventResult(EEventSolution.Ignored);
+
+            switch(_map.CurrentNodeInfo.Biome)
             {
                 case EBiome.Durnia:
                     _events = _durniaEvents;
@@ -42,34 +49,67 @@ namespace Events
             }
         }
 
-        public void GenerateEvent(MapManager map)
+        public void GenerateEvent()
         {
-            Debug.Log("Se inicia generacion de evento con ID: " + map.CurrentNodeInfo.EventID);
-            _map = map;
+            Debug.Log("Se inicia generacion de evento con ID: " + _map.CurrentNodeInfo.EventID);
 
             ARoom room = _map.GetRandomAvailableRoom(true).GetComponent<ARoom>();
 
-            switch (_map.CurrentNodeInfo.EventID)
+            switch(GetComponent<MapManager>().CurrentNodeInfo.Biome)
             {
-                case 0:
-                    _currentEvent = Instantiate(_events[0], room.GetRandomSpawnPoint());
-                    break;
-                case 1: //Honor Herido
-                    _currentEvent = Instantiate(_events[1], room.GetRandomSpawnPoint());
-                    break;
-                case 2: //Mr Bombastic
-                    //Si ya tiene 3 bombas en el inventario, pasar EventID a -1 y no generar el evento
-                    Debug.Log("EL JUGADOR YA TIENE 3 BOMBAS ASI QUE SE DESACTIVA EL EVENTO");
-                    if (FindObjectOfType<Inventory>().FindItem("Bomba de Pólvora", out int n) && n >= 3)
+                // === DURNIA ===
+                case EBiome.Durnia:
+                    switch (_map.CurrentNodeInfo.EventID)
                     {
-                        _map.CurrentNodeInfo.EventID = -1;
-                        return;
-                    }
+                        /*case 0: //Sepultado
+                            _currentEvent = Instantiate(_events[0], room.GetRandomSpawnPoint());
+                            break;*/
+                        case 1: //Honor Herido
+                            _currentEvent = Instantiate(_events[1], room.GetRandomSpawnPoint());
+                            break;
+                        case 2: //Mr Bombastic
+                            //Si ya tiene 3 bombas en el inventario, pasar EventID a -1 y no generar el evento
+                            if (_inv.FindItem("Bomba de Pólvora", out int n) && n >= 3)
+                            {
+                                Debug.Log("EL JUGADOR YA TIENE 3 BOMBAS ASI QUE SE DESACTIVA EL EVENTO");
+                                _map.CurrentNodeInfo.EventID = -1;
+                                return;
+                            }
 
-                    _currentEvent = Instantiate(_events[2], room.GetRandomSpawnPoint());
+                            _currentEvent = Instantiate(_events[2], room.GetRandomSpawnPoint());
+                            break;
+                        default:
+                            Debug.Log("No se generara ningun evento para este nodo");
+                            break;
+                    }
                     break;
-                default:
-                    Debug.Log("No se generara ningun evento para este nodo");
+
+                // === TEMERIA ===
+                case EBiome.Temeria:
+                    switch (_map.CurrentNodeInfo.EventID)
+                    {
+                        case 0: //Monstruo prisionero
+                            //Si ya tiene 3 munecas en el inventario, pasar EventID a -1 y no generar el evento
+                            if (_inv.FindItem("Muñeca de Temerio", out int n) && n >= 3)
+                            {
+                                Debug.Log("EL JUGADOR YA TIENE 3 MUÑECAS ASI QUE SE DESACTIVA EL EVENTO");
+                                _map.CurrentNodeInfo.EventID = -1;
+                                return;
+                            }
+
+                            if (!(room is EnemyRoom)) _currentEvent = Instantiate(_events[0], room.GetRandomSpawnPoint());
+                            break;
+                        case 1: //Sepultado
+                            _currentEvent = Instantiate(_events[1], room.GetRandomSpawnPoint());
+                            break;
+                        default:
+                            Debug.Log("No se generara ningun evento para este nodo");
+                            break;
+                    }
+                    break;
+
+                // === IDRIA ===
+                case EBiome.Idria:
                     break;
             }
 

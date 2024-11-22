@@ -26,6 +26,7 @@ namespace Map
 
         [SerializeField] Transform _runeTransform;
         [SerializeField] Transform[] _spawnPoints;
+        public AnchorManager[] Anchors;
 
         Vector2 _minimapOffset;
 
@@ -65,6 +66,19 @@ namespace Map
 
         public void SetMinimapOffset(Vector2 offset) => _minimapOffset = offset;
         public Vector2 GetMinimapOffset() => _minimapOffset;
+
+        public ARoom[] GetAdyacentRooms()
+        {
+            List<ARoom> rooms = new List<ARoom>();
+            if (Anchors.Length > 0)
+            {
+                foreach (var anchor in Anchors)
+                {
+                    rooms.Add(anchor.ConnectedAnchor.GetRoom());
+                }
+            }
+            return rooms.ToArray();
+        }
 
         private void OnTriggerEnter(Collider other)
         {

@@ -14,11 +14,15 @@ namespace Enemy
     {
         public EnemyInfo Info;
         [SerializeField] EnemyModifiers _modifier;
+        [SerializeField] GameObject _damagePrefab;
         PlayerController _player;
         UIManager _uiMan;
 
         public GameObject Fragment;
         float _fragDropRate = 0.5f;
+
+        bool _invicible;
+        float _iFrameDuration = 0.5f;
 
         protected void Awake()
         {
@@ -64,25 +68,38 @@ namespace Enemy
 
         public override void RecieveDamage(float damage)
         {
-            //Debug.Log($"Enemigo {gameObject.name} recibe {damage} de dano");
+            if (!_invicible)
+            {
+                //Debug.Log($"Enemigo {gameObject.name} recibe {damage} de dano");
 
-            CurrentHP -= damage;
-            ShowDamage(damage);
-            CallDamageEvent(damage, CurrentHP/MaxHP);
+                CurrentHP -= damage;
+                ShowDamage(damage);
+                CallDamageEvent(damage, CurrentHP / MaxHP);
+
+                _invicible = true;
+                Invoke("ManageIFrames", _iFrameDuration);
+                
+            }
+        }
+
+        public void ManageIFrames()
+        {
+            _invicible = false;
         }
 
         void ShowDamage(float damage)
         {
-            GameObject dam = new GameObject();
-            TextMeshPro damText = dam.AddComponent<TextMeshPro>();
+            GameObject dam = Instantiate(_damagePrefab);
+            TextMeshPro damText = dam.GetComponent<TextMeshPro>();
 
-            GameObject damGO = Instantiate(dam);
-            damGO.transform.position = transform.position;
-            float target = damGO.transform.position.y + 2f;
-            damGO.transform.DOMoveY(target, 1f).Play();
+            //GameObject damGO = Instantiate(dam);
+            dam.transform.position = transform.position;
+            float target = dam.transform.position.y + 2f;
+            dam.transform.DOMoveY(target, 1f).Play();
 
             damText.text = $"-{damage}";
-            damText.DOFade(0f, 1f).Play().OnComplete(() => Destroy(damGO));
+            damText.DOFade(0f, 1f).Play().OnComplete(() => Destroy(dam));
+            dam.transform.DOLocalMoveY(5f, 1f).Play();
         }
 
         public new void OnMove(Vector2 direction)

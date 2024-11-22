@@ -348,10 +348,10 @@ namespace UI
 
         public void EnemyDamageFeedback(float damage, float remHealth)
         {
-            WhiteFilter.DOFade(0.35f, 0.1f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.2f).Play());
+            WhiteFilter.DOFade(0.005f, 0.05f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.1f).Play());
 
-            if (_timeFreeze != null) StopCoroutine(_timeFreeze);
-            _timeFreeze = StartCoroutine(FreezeGame(0.2f, remHealth));
+            //if (_timeFreeze != null) StopCoroutine(_timeFreeze);
+            _timeFreeze = StartCoroutine(FreezeGame(0.15f, remHealth));
         }
 
         public void WinCombat()
@@ -362,11 +362,16 @@ namespace UI
         public IEnumerator FreezeGame(float duration, float freezeScale)
         {
             //float oScale = Time.timeScale;
-            Time.timeScale = 0.3f;
+            Time.timeScale = 0.1f;
 
             yield return new WaitForSecondsRealtime(duration);
 
             Time.timeScale = 1;
+
+            //Por si acaso
+            yield return new WaitForSecondsRealtime(1f);
+
+            if (Time.timeScale != 1) Time.timeScale = 1;
         }
 
         void EnterSpellModeFeedback()
@@ -387,7 +392,7 @@ namespace UI
 
         void ShowFragmentHalo(int prev, int num)
         {
-            FragmentHalo.transform.localPosition = new Vector3(0.55f, -0.55f, 0.5f);
+            FragmentHalo.transform.localPosition = new Vector3(0.5f, -0.5f, 0.5f);
             FragmentHalo.SetActive(true);
             Invoke("ResetHalo", 3f);
         }

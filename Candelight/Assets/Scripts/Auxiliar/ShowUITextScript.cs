@@ -49,12 +49,12 @@ namespace Auxiliar
 
 		IEnumerator RevealText(string s)
 		{
-			_originalText = s;
+            _originalText = s;
 			_showingText = true;
 
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSecondsRealtime(0.5f);
 
-			if (OnTextStart != null) OnTextStart();
+            if (OnTextStart != null) OnTextStart();
 
 			var numCharsRevealed = 0;
 			while (numCharsRevealed < _originalText.Length)
@@ -65,24 +65,24 @@ namespace Auxiliar
 				++numCharsRevealed;
 				_textComponent.text = _originalText.Substring(0, numCharsRevealed);
 
-				yield return new WaitForSeconds(0.025f / _speed);
+				yield return new WaitForSecondsRealtime(0.025f / _speed);
 
 				switch (_originalText[numCharsRevealed - 1])
 				{
 					case ',':
-						yield return new WaitForSeconds(0.08f / _speed);
+						yield return new WaitForSecondsRealtime(0.08f / _speed);
 						break;
 					case '.':
-						yield return new WaitForSeconds(0.2f / _speed);
+						yield return new WaitForSecondsRealtime(0.2f / _speed);
 						break;
 					case '?':
 						if (_originalText.Length > numCharsRevealed)
 						{
-							if (_originalText[numCharsRevealed] != '!') yield return new WaitForSeconds(0.2f / _speed);
+							if (_originalText[numCharsRevealed] != '!') yield return new WaitForSecondsRealtime(0.2f / _speed);
 						}
 						break;
 					case '!':
-						yield return new WaitForSeconds(0.2f / _speed);
+						yield return new WaitForSecondsRealtime(0.2f / _speed);
 						break;
 					default:
 						break;

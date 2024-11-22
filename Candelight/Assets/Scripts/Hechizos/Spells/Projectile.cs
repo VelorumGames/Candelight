@@ -63,7 +63,6 @@ namespace Hechizos
                 {
                    
                     Target = other.transform.parent;
-                    if (OnImpact != null) OnImpact(Target);
 
                     if (Target.TryGetComponent<EnemyController>(out var enemy))
                     {
@@ -73,6 +72,8 @@ namespace Hechizos
                     {
                         enemy.RecieveDamage(Damage);
                     }
+
+                    if (OnImpact != null) OnImpact(Target);
                 }
             } 
             else
@@ -80,13 +81,14 @@ namespace Hechizos
                 if(other.CompareTag("Player"))
                 {
                     Target = other.transform;
-                    if (OnImpact != null) OnImpact(Target);
 
                     if (Target.TryGetComponent<PlayerController>(out var player))
                     {
                         player.RecieveDamage(Damage);
                         Destroy(gameObject);
                     }
+
+                    if (OnImpact != null) OnImpact(Target);
                 }
             }
 

@@ -9842,10 +9842,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3486557483265283610}
     m_Modifications:
+    - target: {fileID: 63771801215417856, guid: 92d45c9acb27b8a48b080edc15c6fdab,
+        type: 3}
+      propertyPath: _duration
+      value: 0.65
+      objectReference: {fileID: 0}
     - target: {fileID: 329052346164857725, guid: 92d45c9acb27b8a48b080edc15c6fdab,
         type: 3}
       propertyPath: m_Name
       value: '@DialogueManager'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147045642126212132, guid: 92d45c9acb27b8a48b080edc15c6fdab,
+        type: 3}
+      propertyPath: _duration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048752796592720285, guid: 92d45c9acb27b8a48b080edc15c6fdab,
+        type: 3}
+      propertyPath: _speed
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5808296100706147067, guid: 92d45c9acb27b8a48b080edc15c6fdab,
         type: 3}

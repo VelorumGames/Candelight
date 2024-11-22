@@ -7,7 +7,7 @@ namespace Enemy
     public class HealthBar : MonoBehaviour
     {
         EnemyController _enemy;
-        Transform _mask;
+        [SerializeField] Transform _mask;
 
         float _oPos;
         float _endPos = 0.342f;
@@ -26,7 +26,7 @@ namespace Enemy
 
         void UpdateHealthBar(float dam, float rem)
         {
-            _mask.localPosition = new Vector3(Mathf.Lerp(_oPos, _endPos, rem), _mask.localPosition.y, _mask.localPosition.z);
+            _mask.localPosition = new Vector3(Mathf.Lerp(_endPos, _oPos, rem), _mask.localPosition.y, _mask.localPosition.z);
         }
 
         private void OnDisable()

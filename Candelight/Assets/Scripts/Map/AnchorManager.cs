@@ -40,6 +40,7 @@ namespace Map
 
         bool _active;
         public bool Connected;
+        public AnchorManager ConnectedAnchor;
 
         GameObject _connectionMesh;
 
@@ -72,6 +73,8 @@ namespace Map
 
             _mask = gameObject.layer;
         }
+
+        public ARoom GetRoom() => _room;
 
         //==== GENERACION DEL NIVEL ====
         //PRIMERA FASE:
@@ -150,10 +153,10 @@ namespace Map
             Vector2 minimapOffset = MinimapOffsetChooser();
 
             //Generamos la nueva sala y encontramos su anclaje
-            AnchorManager obj = LocateObjectiveAnchor(_map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, minimapOffset, size));
+            ConnectedAnchor = LocateObjectiveAnchor(_map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, minimapOffset, size));
 
             //Suponiendo que existe el anclaje (en caso contrario, llevaria una referencia a si mismo para evitar errores), generamos la malla para la transicion entre ambos
-            _connectionMesh = GenerateMesh(obj);
+            _connectionMesh = GenerateMesh(ConnectedAnchor);
             SetUVToWorld uvScript = _connectionMesh.AddComponent<SetUVToWorld>();
             uvScript.MaterialToUse = _map.ConnectionMaterial;
             transform.localPosition -= 0.01f * transform.up;

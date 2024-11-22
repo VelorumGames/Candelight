@@ -31,8 +31,8 @@ namespace Hechizos
             Instructions = CreateInstructionChain(Complexity, Difficulty);
             Spells.Add(Instructions, this);
 
-            //Para debuggear:
-            //Activate();
+            //Debug. Deberia estar desactivado
+            Activate();
 
             string instrs = "";
 

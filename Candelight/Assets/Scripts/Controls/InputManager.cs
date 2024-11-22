@@ -175,6 +175,7 @@ namespace Controls
             //Debug.Log("Mapa previo: " + _currentMap);
             _prevControls = _currentMap;
             if (_currentMap != null) _currentMap.Disable();
+
             switch(map)
             {
                 case EControlMap.Level:
@@ -213,16 +214,65 @@ namespace Controls
             CurrentControls = _currentMap.name;
         }
 
+        public void LoadControls(InputActionMap map)
+        {
+            //Debug.Log("Mapa previo: " + _currentMap);
+            _prevControls = _currentMap;
+            if (_currentMap != null) _currentMap.Disable();
+
+            if (map == _levelMap)
+            {
+                _currentMap = _levelMap;
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else if (map == _worldMap)
+            {
+                _currentMap = _worldMap;
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else if (map == _dialogueMap)
+            {
+                _currentMap = _dialogueMap;
+
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else if (map == _uiMap)
+            {
+                _currentMap = _uiMap;
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else if (map == _introMap)
+            {
+                _currentMap = _introMap;
+
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else Debug.LogWarning("ERROR: No se han cargado bien los controles");
+            //Debug.Log("Mapa colocado: " + _currentMap);
+            _currentMap.Enable();
+            CurrentControls = _currentMap.name;
+        }
+
         public void LoadPreviousControls()
         {
             if (_prevControls != null)
             {
-                Debug.Log("Controles antiguos: " + _currentMap.name);
-                _currentMap.Disable();
-                _currentMap = _prevControls;
-                Debug.Log("Controles actuales: " + _currentMap.name);
-                _currentMap.Enable();
-                CurrentControls = _currentMap.name;
+                //Debug.Log("Controles antiguos: " + _currentMap.name);
+                //_currentMap.Disable();
+                //_currentMap = _prevControls;
+                //Debug.Log("Controles actuales: " + _currentMap.name);
+                //_currentMap.Enable();
+                //CurrentControls = _currentMap.name;
+
+                LoadControls(_prevControls);
             }
         }
 

@@ -72,7 +72,7 @@ namespace Dialogues
                         _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Rare);
                         break;
                     case EBiome.Idria:
-                        _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Epic);
+                        _currentBlock.item = _inventory.GetRandomItem(UnityEngine.Random.value < 0.75f ? EItemCategory.Epic : EItemCategory.Legendary);
                         break;
                     default:
                         Debug.Log("ERROR: Bioma no detectado correctamente. Se defaultea item a common.");
