@@ -13,12 +13,16 @@ public class NPCActions : MonoBehaviour
     Vector3 target, currentPos;
     Vector2 direction;
 
+    int count;
+
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
         controller = GetComponent<NPCController>();
-        currentPos = player.transform.position;
+        //currentPos = player.transform.position;
+        target = currentPos;
+        count = 0;
     }
 
     // Update is called once per frame
@@ -32,9 +36,19 @@ public class NPCActions : MonoBehaviour
         return false;
     }
 
+    public bool hasArrived()
+    {
+        if(currentPos == target || count >= 500)
+        {
+            return true;
+        }
+        count++;
+        return false;
+    }
+
     public void setRandomTarget()
     {
-        Vector3 randomPos = new Vector3(Random.Range(-20.0f, 20.0f), Random.Range(-20.0f, 20.0f), Random.Range(-20.0f, 20.0f));
+        Vector3 randomPos = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f));
         target = currentPos + randomPos;
         Debug.Log("Nuevo objetivo: " + target.x + ", " + target.z);
     }

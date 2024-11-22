@@ -33,7 +33,7 @@ public class NPCController : MonoBehaviour
 
     public void Move(Vector3 target)
     {
-        MoveTowards(target, 5.0f);
+        MoveTowards(target, 10.0f);
     }
 
     public void OnMove(Vector2 direction)
