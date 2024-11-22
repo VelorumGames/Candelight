@@ -45,7 +45,7 @@ namespace UI
 
         IEnumerator ManageFragmentCount(int prev, int num)
         {
-            Debug.Log($"Actual: {prev}; Objetivo: {num}");
+            //Debug.Log($"Actual: {prev}; Objetivo: {num}");
             while (prev != num)
             {
                 _text.text = $"{prev}";

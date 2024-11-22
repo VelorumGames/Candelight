@@ -1,4 +1,5 @@
 using Dialogues;
+using Map;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,15 +14,18 @@ namespace Events
 
         private void Start()
         {
-            Agent.LoadActionOnEnd(() => StartCoroutine(ManageCinematic()));
+            Agent.GetComponent<PlayDialogueInRoom>().LoadEndAction(() => StartCoroutine(ManageCinematic()));
         }
 
         public void NextDialogue()
         {
-            if (count <= Dialogues.Length - 1) Agent.LoadActionOnEnd(() => StartCoroutine(ManageCinematic()));
+            if (count < Dialogues.Length)
+            {
+                Agent.LoadActionOnEnd(() => StartCoroutine(ManageCinematic()));
 
-            Agent.ChangeDialogue(Dialogues[count++]);
-            Agent.StartDialogue();
+                Agent.ChangeDialogue(Dialogues[count++]);
+                Agent.StartDialogue();
+            }
         }
 
         IEnumerator ManageCinematic()

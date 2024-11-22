@@ -24,7 +24,7 @@ public class NPCController : MonoBehaviour
         Orientation = transform.forward;
     }
 
-    private new void Start()
+    private void Start()
     {
         _player = FindObjectOfType<PlayerController>();
 
@@ -35,7 +35,7 @@ public class NPCController : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log("Me estoy moviendo");
+            //Debug.Log("Me estoy moviendo");
             yield return StartCoroutine(MoveTowards(target, 10.0f));
             yield return new WaitForSeconds(1f);
         }

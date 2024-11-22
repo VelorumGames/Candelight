@@ -32,7 +32,7 @@ namespace Hechizos
             Spells.Add(Instructions, this);
 
             //Debug. Deberia estar desactivado
-            Activate();
+            Activate(true);
 
             string instrs = "";
 
@@ -192,7 +192,7 @@ namespace Hechizos
 
         public static void CreateAllRunes(Mage m)
         {
-            if (!_runesCreated)
+            if (!_runesCreated) //Si no se han creado previamente
             {
                 new CosmicRune(m);
                 new ElectricRune(m);
@@ -206,6 +206,13 @@ namespace Hechizos
                 new FireRune(m);
 
                 _runesCreated = true;
+            }
+            else //Si se han creado ya antes, resetearlas
+            {
+                foreach(var rune in Spells.Values)
+                {
+                    if (rune.Name != "Fire") rune.Activate(false);
+                }
             }
         }
 
@@ -221,10 +228,10 @@ namespace Hechizos
             return str;
         }
 
-        public void Activate()
+        public void Activate(bool b)
         {
-            if (MageManager != null) MageManager.RuneActivation(this);
-            Activated = true;
+            if (b && MageManager != null) MageManager.RuneActivation(this);
+            Activated = b;
         }
         public bool IsActivated() => Activated;
         public static void Activate(ESpellInstruction[] chain, out ARune rune)
@@ -235,7 +242,7 @@ namespace Hechizos
             if (FindUnactiveSpell(chain, out rune))
             {
                 Debug.Log("Se activa el hechizo: " + rune.Name);
-                rune.Activate();
+                rune.Activate(true);
             }
         }
 

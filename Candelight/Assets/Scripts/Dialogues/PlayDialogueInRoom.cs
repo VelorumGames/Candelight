@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
+using System;
 
 namespace Map
 {
@@ -10,6 +11,8 @@ namespace Map
     {
         [SerializeField] Dialogue _dialogue;
         ARoom _room;
+
+        Action _endAction;
 
         private void Awake()
         {
@@ -23,8 +26,20 @@ namespace Map
 
         void PlayDialogue()
         {
-            FindObjectOfType<DialogueUI>().StartDialogue(_dialogue, GetComponent<DialogueAgent>());
+            if (_endAction != null)
+            {
+                FindObjectOfType<DialogueUI>().StartDialogue(_dialogue, GetComponent<DialogueAgent>(), _endAction);
+            }
+            else
+            {
+                FindObjectOfType<DialogueUI>().StartDialogue(_dialogue, GetComponent<DialogueAgent>());
+            }
             _room.OnPlayerEnter -= PlayDialogue;
+        }
+
+        public void LoadEndAction(Action act)
+        {
+            _endAction = act;
         }
 
         private void OnDisable()

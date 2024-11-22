@@ -23,6 +23,11 @@ namespace Events
 
         private void OnEnable()
         {
+            _agent.LoadActionOnEnd(PrepareFailState);
+        }
+
+        void PrepareFailState()
+        {
             _room.OnPlayerExit += SetFailState;
         }
 

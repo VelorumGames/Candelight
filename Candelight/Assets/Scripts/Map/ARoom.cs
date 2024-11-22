@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UI;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Map
 {
@@ -94,7 +95,7 @@ namespace Map
         {
             if (other.CompareTag("Player"))
             {
-                if (OnPlayerEnter != null) OnPlayerExit();
+                if (OnPlayerExit != null) OnPlayerExit();
             }
         }
 

@@ -71,8 +71,8 @@ namespace Items
 
             DontDestroyOnLoad(gameObject);
 
-            //Debug
-            AddFragments(100);
+            //Debug. Deberia estar desactivado
+            //AddFragments(100);
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
@@ -162,11 +162,22 @@ namespace Items
                     UnactiveItems.Remove(item.gameObject);
                 }
                 ItemsList.Remove(item.gameObject);
+                RelocateItems();
 
                 return true;
             }
+            RelocateItems();
 
             return false;
+        }
+
+        public void ResetInventory()
+        {
+            ItemsList.Clear();
+            ActiveItems.Clear();
+            UnactiveItems.Clear();
+
+            _totalNumFragments = 0;
         }
 
         public void AddItem(GameObject item)
@@ -174,31 +185,52 @@ namespace Items
             Debug.Log("Nuevo objeto en el inventario: " + item.name);
             if(MaxCheck(item.GetComponent<AItem>()))
             {
-                ItemsList.Add(item);
                 _uiMan.ShowItemNotification(item.GetComponent<AItem>());
                 //ItemsList.Add(item.GetComponent<AItem>());
 
-                //GameObject itemButton = Instantiate(item, _itemContainer);
+                GameObject button = Instantiate(item, _itemContainer);
+                UnactiveItems.Add(button);
+                ItemsList.Add(button);
                 //itemButton.GetComponent<RectTransform>().localPosition = Position + (ItemsList.Count - 1) * Offset; //Los vectores siempre a la derecha de la multiplicacion
             }
+
+            RelocateItems();
         }
 
         public bool LoadItems()
         {
             //Cada vez que se abra el inventario, se cargaran los datos almacenados en este script (en caso de ser necesarios)
-            foreach(var item in ItemsList)
-            {
-                GameObject itemButton = Instantiate(item, _itemContainer);
-                if (itemButton.GetComponent<AItem>().IsActive()) ActiveItems.Add(itemButton);
-                else UnactiveItems.Add(itemButton);
-
-                item.GetComponent<AItem>().IsNew = false;
-                //itemButton.GetComponent<RectTransform>().localPosition = Position + (ItemsList.Count - 1) * Offset; //Los vectores siempre a la derecha de la multiplicacion
-            }
-
-            RelocateItems();
-
+            //foreach(var item in ItemsList)
+            //{
+            //    GameObject itemButton = Instantiate(item, _itemContainer);
+            //    if (itemButton.GetComponent<AItem>().IsActive()) ActiveItems.Add(itemButton);
+            //    else UnactiveItems.Add(itemButton);
+            //
+            //    //item.GetComponent<AItem>().IsNew = false;
+            //    //itemButton.GetComponent<RectTransform>().localPosition = Position + (ItemsList.Count - 1) * Offset; //Los vectores siempre a la derecha de la multiplicacion
+            //}
+            //
+            //RelocateItems();
+            //
             return true;
+        }
+
+        public void UnloadItems()
+        {
+            //foreach(var item in ActiveItems) Destroy(item.gameObject);
+            //foreach(var item in UnactiveItems) Destroy(item.gameObject);
+            //ActiveItems.Clear();
+            //UnactiveItems.Clear();
+            //
+            //foreach (var item in ItemsList)
+            //{
+            //    GameObject itemButton = Instantiate(item, _itemContainer);
+            //    if (itemButton.GetComponent<AItem>().IsActive()) ActiveItems.Add(itemButton);
+            //    else UnactiveItems.Add(itemButton);
+            //
+            //    //item.GetComponent<AItem>().IsNew = false;
+            //    //itemButton.GetComponent<RectTransform>().localPosition = Position + (ItemsList.Count - 1) * Offset; //Los vectores siempre a la derecha de la multiplicacion
+            //}
         }
 
         public void LooseItemsOnNodeExit()
@@ -216,12 +248,6 @@ namespace Items
         public void SecureItems()
         {
             foreach (var item in ItemsList) item.GetComponent<AItem>().IsNew = false;
-        }
-
-        public void UnloadItems()
-        {
-            ActiveItems.Clear();
-            UnactiveItems.Clear();
         }
 
         public void RelocateItems()

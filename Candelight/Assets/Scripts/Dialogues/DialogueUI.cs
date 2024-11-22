@@ -102,7 +102,6 @@ namespace Dialogues
         public void StartDialogue(Dialogue dial, DialogueAgent ag)
         {
             Time.timeScale = 0f;
-            _onEndDialogue = null;
             _currentAgent = ag;
 
             _dialogueUI.SetActive(true);
@@ -162,6 +161,7 @@ namespace Dialogues
             FindObjectOfType<InputManager>().LoadPreviousControls();
             if (OnDialogueEnd != null) OnDialogueEnd();
             if (_onEndDialogue != null) _onEndDialogue();
+            _onEndDialogue = null;
 
             _text.text = "";
 

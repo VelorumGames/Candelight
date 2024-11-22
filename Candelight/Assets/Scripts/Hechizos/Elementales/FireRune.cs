@@ -14,7 +14,7 @@ namespace Hechizos.Elementales
         {
             Name = "Fire";
             Damage = 100f;
-            Activate();
+            Activate(true);
             m.SetInitialElement(this);
         }
 

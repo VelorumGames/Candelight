@@ -113,6 +113,8 @@ namespace Events
                     break;
             }
 
+            if (_currentEvent != null) _currentEvent.transform.localScale *= 0.5f;
+
             room.RoomType = ERoomType.Event;
             room.IdText.text += " EVENT";
             room.gameObject.name = "Event Room";
