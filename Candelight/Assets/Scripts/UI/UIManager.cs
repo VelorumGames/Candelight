@@ -342,21 +342,21 @@ namespace UI
 
         public void PlayerDamageFeedback(float damage, float remHealth)
         {
-            RedFilter.DOFade((1 / remHealth) * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play());
+            RedFilter.DOFade((1 / remHealth) * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play()).SetUpdate(true);
             _camMan.Shake(5f, 20f, 0.4f);
         }
 
         public void EnemyDamageFeedback(float damage, float remHealth)
         {
-            WhiteFilter.DOFade(0.005f, 0.05f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.1f).Play());
+            WhiteFilter.DOFade(0.05f, 0.1f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.2f).Play()).SetUpdate(true);
 
             //if (_timeFreeze != null) StopCoroutine(_timeFreeze);
-            _timeFreeze = StartCoroutine(FreezeGame(0.15f, remHealth));
+            _timeFreeze = StartCoroutine(FreezeGame(0.25f, remHealth));
         }
 
         public void WinCombat()
         {
-            WhiteFilter.DOFade(0.5f, 0.3f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.3f).Play());
+            WhiteFilter.DOFade(0.3f, 0.3f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.3f).Play()).SetUpdate(true);
         }
 
         public IEnumerator FreezeGame(float duration, float freezeScale)

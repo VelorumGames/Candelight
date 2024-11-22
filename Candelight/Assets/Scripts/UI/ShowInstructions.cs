@@ -141,7 +141,7 @@ namespace UI
             _activeCoroutine = true;
             foreach (var i in _imgs)
             {
-                i.color = Color.red;
+                i.color = Color.yellow;
             }
             yield return new WaitForSeconds(1f);
             _activeCoroutine = false;

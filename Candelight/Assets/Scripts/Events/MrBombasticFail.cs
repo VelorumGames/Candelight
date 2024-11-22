@@ -25,6 +25,7 @@ namespace Events
             _agent = GetComponent<DialogueAgent>();
 
             _room = transform.parent.parent.parent.parent.GetComponent<ARoom>();
+            //NPC -> Evento -> SP -> SP Container -> Sala
         }
 
         private void Start()
@@ -34,6 +35,7 @@ namespace Events
 
         void CheckEventState()
         {
+            Debug.Log("HE LLEGADO");
             if (_inv.FindItem("Bomba de Pólvora", out AItem item) && (int)item.Data.Category <= _inv.GetFragments())
             {
                 _agent.ChangeDialogue(FailDialogue);
@@ -42,7 +44,6 @@ namespace Events
             }
             else
             {
-                //NPC -> Evento -> SP -> SP Container -> Sala
                 _room.OnPlayerExit += LoadFarDialogue;
                 StartCoroutine(CheckForItemActivation(item));
             }
@@ -50,7 +51,9 @@ namespace Events
 
         IEnumerator CheckForItemActivation(AItem item)
         {
+            Debug.Log("ESPERANDO");
             yield return new WaitUntil(() => item.IsActive());
+            Debug.Log("ACTIVADO");
             _agent.ChangeDialogue(CompletedDialogue);
             _agent.LoadActionOnStart(SetCompleted);
         }

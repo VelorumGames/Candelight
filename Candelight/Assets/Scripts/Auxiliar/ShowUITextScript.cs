@@ -59,7 +59,7 @@ namespace Auxiliar
 			var numCharsRevealed = 0;
 			while (numCharsRevealed < _originalText.Length)
 			{
-				while (_originalText[numCharsRevealed] == ' ')
+				while (_originalText[numCharsRevealed] == ' ' && numCharsRevealed < _originalText.Length - 1)
 					++numCharsRevealed;
 
 				++numCharsRevealed;

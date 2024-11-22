@@ -159,14 +159,15 @@ namespace Map
 
         void EventCheck()
         {
+            //Debug. Las condiciones deben estar sin comentar
+
             //Si el penultimo nivel es de exploracion, generamos el evento que corresponda
-            //DEBUG
-            if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 2 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration && TryGetComponent<ExploreEventManager>(out var eventMan))
+            if (/*CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 2 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration &&*/ TryGetComponent<ExploreEventManager>(out var eventMan))
             {
                 eventMan.GenerateEvent();
             }
             //Si es el ultimo nivel y es de calma, generamos el evento que corresponda
-            else if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 1 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Calm && TryGetComponent<CalmEventManager>(out var calmEventMan))
+            else if (/*CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 1 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Calm &&*/ TryGetComponent<CalmEventManager>(out var calmEventMan))
             {
                 calmEventMan.GenerateEvent();
             }

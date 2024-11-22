@@ -912,113 +912,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: EpicItemPool.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: RareItemPool.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: CommonItemPool.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: EpicItemPool.Array.data[1]
-      value: 
-      objectReference: {fileID: 7093971818238794603, guid: adddb7fa65d4fc34491c684340abde4f,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: EpicItemPool.Array.data[2]
-      value: 
-      objectReference: {fileID: 7093971818238794603, guid: a58181f9fe60c8645ad68fe38fcb96a8,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: EpicItemPool.Array.data[3]
-      value: 
-      objectReference: {fileID: 7093971818238794603, guid: e070f617b5626b548be8b41b3046b86f,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: EpicItemPool.Array.data[4]
-      value: 
-      objectReference: {fileID: 7093971818238794603, guid: db8f892d6fb8e534e850a79a9397ca2f,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: RareItemPool.Array.data[3]
-      value: 
-      objectReference: {fileID: 9047879985867035068, guid: 59ca787baf416e54d8cbba639069f2bc,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: RareItemPool.Array.data[4]
-      value: 
-      objectReference: {fileID: 9047879985867035068, guid: dc6496430d36757408211e262f6702e2,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: CommonItemPool.Array.data[2]
-      value: 
-      objectReference: {fileID: 7554882533741908000, guid: a0f0952aca4ce1e49b54bd454b99252c,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: CommonItemPool.Array.data[3]
-      value: 
-      objectReference: {fileID: 7554882533741908000, guid: e2e18ece6318a544e8b96d167bd42312,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: CommonItemPool.Array.data[4]
-      value: 
-      objectReference: {fileID: 7554882533741908000, guid: 64330ad17665af94d8541ed49583c069,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: CommonItemPool.Array.data[5]
-      value: 
-      objectReference: {fileID: 7554882533741908000, guid: 3c08cbe142d5ffc4fafd2e1f2e0b8fe9,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: LegendaryItemPool.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: LegendaryItemPool.Array.data[1]
-      value: 
-      objectReference: {fileID: 7837553296072988629, guid: 28c54b830a3aac14e8dd97d00379ec0b,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: LegendaryItemPool.Array.data[2]
-      value: 
-      objectReference: {fileID: 7837553296072988629, guid: e01371170c8a0ef43bd4b869ea4cf1ae,
-        type: 3}
-    - target: {fileID: 2559672463626533261, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: LegendaryItemPool.Array.data[3]
-      value: 
-      objectReference: {fileID: 7837553296072988629, guid: 86e4d65af44f58d4ebdb98337d8ff17a,
-        type: 3}
     - target: {fileID: 6482137554786697748, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
         type: 3}
       propertyPath: m_Name
       value: '@InventoryManager'
-      objectReference: {fileID: 0}
-    - target: {fileID: 6482137554786697748, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7647890071012408320, guid: eb1fcfbe51c0ed341ba42d33d9b52d56,
         type: 3}
@@ -1721,16 +1618,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1195221490}
     m_Modifications:
-    - target: {fileID: 493849975543231199, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3243245981315682083, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3486557483265283610, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_Pivot.x

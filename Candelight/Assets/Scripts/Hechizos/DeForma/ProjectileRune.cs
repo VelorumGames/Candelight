@@ -46,9 +46,7 @@ namespace Hechizos.DeForma
 
                 float avDam = 0;
                 foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
-                Debug.Log("AAAAAAAAAAA: " + avDam);
                 avDam /= MageManager.GetActiveElements().Count;
-                Debug.Log($"AAAAAAAAAAA total ({MageManager.GetActiveElements().Count}): " + avDam);
                 proj.Damage = avDam;
             }
         }

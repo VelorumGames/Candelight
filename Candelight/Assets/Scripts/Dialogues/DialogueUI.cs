@@ -99,7 +99,7 @@ namespace Dialogues
             }
         }
 
-        public void StartDialogue(DialogueBlock block, DialogueAgent ag)
+        public void StartDialogue(Dialogue dial, DialogueAgent ag)
         {
             Time.timeScale = 0f;
             _onEndDialogue = null;
@@ -113,14 +113,16 @@ namespace Dialogues
             _cont.UnloadInteraction();
             FindObjectOfType<InputManager>().LoadControls(EControlMap.Dialogue);
 
-            LoadBlockInfo(block);
+            LoadBlockInfo(dial.initialDialogueBlock);
         }
-        public void StartDialogue(DialogueBlock block, DialogueAgent ag, System.Action endAction)
+        public void StartDialogue(Dialogue dial, DialogueAgent ag, System.Action endAction)
         {
             Time.timeScale = 0f;
             _currentAgent = ag;
 
             _dialogueUI.SetActive(true);
+
+            if (OnDialogueStart != null) OnDialogueStart();
 
             _active = true;
             _cont.UnloadInteraction();
@@ -128,14 +130,16 @@ namespace Dialogues
 
             _onEndDialogue = endAction;
 
-            LoadBlockInfo(block);
+            LoadBlockInfo(dial.initialDialogueBlock);
         }
-        public void StartDialogueWithAction(DialogueBlock block, DialogueAgent ag, System.Action action)
+        public void StartDialogueWithAction(Dialogue dial, DialogueAgent ag, System.Action action)
         {
             Time.timeScale = 0f;
             _currentAgent = ag;
 
             _dialogueUI.SetActive(true);
+
+            if (OnDialogueStart != null) OnDialogueStart();
 
             _active = true;
             _cont.UnloadInteraction();
@@ -143,7 +147,7 @@ namespace Dialogues
 
             if (action != null) action();
 
-            LoadBlockInfo(block);
+            LoadBlockInfo(dial.initialDialogueBlock);
         }
         public void Next()
         {

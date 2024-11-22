@@ -31,17 +31,19 @@ namespace Dialogues
         {
             if (Dialogue != null)
             {
-                if (_endAction == null && _startAction == null) _dialogueUI.StartDialogue(Dialogue.initialDialogueBlock, this);
+                if (_endAction == null && _startAction == null) _dialogueUI.StartDialogue(Dialogue, this);
                 else if (_startAction != null)
                 {
-                    _dialogueUI.StartDialogueWithAction(Dialogue.initialDialogueBlock, this, _startAction);
+                    _dialogueUI.StartDialogueWithAction(Dialogue, this, _startAction);
                     _startAction = null;
                 }
                 else
                 {
-                    _dialogueUI.StartDialogue(Dialogue.initialDialogueBlock, this, _endAction);
+                    _dialogueUI.StartDialogue(Dialogue, this, _endAction);
                     _endAction = null;
                 }
+
+                if (!Dialogue.Loop) Dialogue = null;
 
                 //TODO
                 //Vamos a probar a ver si esto funciona bien

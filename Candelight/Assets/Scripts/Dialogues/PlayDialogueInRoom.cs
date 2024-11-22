@@ -23,7 +23,7 @@ namespace Map
 
         void PlayDialogue()
         {
-            FindObjectOfType<DialogueUI>().StartDialogue(_dialogue.initialDialogueBlock, GetComponent<DialogueAgent>());
+            FindObjectOfType<DialogueUI>().StartDialogue(_dialogue, GetComponent<DialogueAgent>());
             _room.OnPlayerEnter -= PlayDialogue;
         }
 
