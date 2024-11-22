@@ -28,12 +28,17 @@ public class NPCController : MonoBehaviour
     {
         _player = FindObjectOfType<PlayerController>();
 
-        StartCoroutine(DebugAI());
+        //StartCoroutine(DebugAI());
     }
 
-    public void Move(Vector3 target)
+    public IEnumerator Move(Vector3 target)
     {
-        MoveTowards(target, 10.0f);
+        while (true)
+        {
+            Debug.Log("Me estoy moviendo");
+            yield return StartCoroutine(MoveTowards(target, 10.0f));
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     public void OnMove(Vector2 direction)
