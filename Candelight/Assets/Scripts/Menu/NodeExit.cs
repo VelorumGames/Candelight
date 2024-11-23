@@ -18,12 +18,24 @@ namespace Menu
 
         public void ReturnToWorld()
         {
+            Debug.Log("AAAA");
+
+            _ui.ShowWarning(ManageReturn, "¿Estás seguro de que quieres regresar? Perderás los artefactos que hayas ganado en esta zona.");
+        }
+
+        void ManageReturn()
+        {
+            Debug.Log("BBBB");
+            _ui.FadeToBlack(1f, LoseItems);
+        }
+
+        void LoseItems()
+        {
+            Debug.Log("CCCC");
+
             FindObjectOfType<Inventory>().LooseItemsOnNodeExit();
-            _ui.ShowWarning(() => _ui.FadeToBlack(1f, () =>
-            {
-                FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
-                SceneManager.LoadScene("WorldManager");
-            }), "¿Estás seguro de que quieres regresar? Perderás los artefactos que hayas ganado en esta zona.");
+            _ui.ShowState(EGameState.Loading);
+            SceneManager.LoadScene("WorldScene");
         }
     }
 }

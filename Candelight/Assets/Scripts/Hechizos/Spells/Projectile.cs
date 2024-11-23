@@ -64,7 +64,7 @@ namespace Hechizos
                    
                     Target = other.transform.parent;
 
-                    if (Target.TryGetComponent<EnemyController>(out var enemy))
+                    if (Target != null && Target.TryGetComponent<EnemyController>(out var enemy))
                     {
                         enemy.RecieveDamage(Damage);
                     }
@@ -85,7 +85,7 @@ namespace Hechizos
                     if (Target.TryGetComponent<PlayerController>(out var player))
                     {
                         player.RecieveDamage(Damage);
-                        Destroy(gameObject);
+                        gameObject.SetActive(false);
                     }
 
                     if (OnImpact != null) OnImpact(Target);

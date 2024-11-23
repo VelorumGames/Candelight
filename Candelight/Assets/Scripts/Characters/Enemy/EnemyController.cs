@@ -15,7 +15,7 @@ namespace Enemy
         public EnemyInfo Info;
         [SerializeField] EnemyModifiers _modifier;
         [SerializeField] GameObject _damagePrefab;
-        PlayerController _player;
+        protected PlayerController Player;
         UIManager _uiMan;
 
         public GameObject Fragment;
@@ -30,12 +30,12 @@ namespace Enemy
 
             _rb = GetComponent<Rigidbody>();
             Orientation = transform.forward;
+
+            Player = FindObjectOfType<PlayerController>();
         }
 
-        private new void Start()
+        protected new void Start()
         {
-            _player = FindObjectOfType<PlayerController>();
-
             MaxHP = Info.BaseHP;
             gameObject.name = $"Enemigo {Info.name}";
 
@@ -139,10 +139,10 @@ namespace Enemy
                 if (Random.value < 0.5f) yield return StartCoroutine(MoveTowards(target, 5f));
                 else
                 {
-                    if (Vector3.Distance(transform.position, _player.transform.position) < 5f)
+                    if (Vector3.Distance(transform.position, Player.transform.position) < 5f)
                     {
                         //Debug.Log("Enemigo va a atacar");
-                        yield return StartCoroutine(MoveTowards(_player.transform));
+                        yield return StartCoroutine(MoveTowards(Player.transform));
                         OnAttack();
                         yield return new WaitForSeconds(1f);
                     }

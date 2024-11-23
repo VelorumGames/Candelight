@@ -14,7 +14,7 @@ namespace Hechizos.Elementales
         {
             Name = "Fire";
             Damage = 100f;
-            Activate();
+            Activate(true);
             m.SetInitialElement(this);
         }
 
@@ -29,7 +29,7 @@ namespace Hechizos.Elementales
         public override void ProjectileImpact(Transform target)
         {
             //Queda haciendo dano durante cierto tiempo
-            if (target.TryGetComponent<EnemyController>(out var cont))
+            if (target != null && target.TryGetComponent<EnemyController>(out var cont))
             {
                 cont.RecieveTemporalDamage(Damage * 0.25f, 5, 1f);
             }

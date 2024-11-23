@@ -1,4 +1,5 @@
 using Dialogues;
+using Map;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,13 +13,15 @@ namespace Events
 
         private void Start()
         {
-            GetComponent<DialogueAgent>().LoadActionOnEnd(BossLeave);
+            GetComponent<PlayDialogueInRoom>().LoadEndAction(BossLeave);
         }
 
         void BossLeave()
         {
             Debug.Log("SE MARCHA LA JEFA");
-            gameObject.SetActive(false);
+
+            StartCoroutine(GetComponent<NPCController>().ExitRoom());
+
             Subordinate.ChangeDialogue(NewDialogue);
             Subordinate.GetComponent<Collider>().enabled = true;
         }

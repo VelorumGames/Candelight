@@ -99,7 +99,7 @@ namespace Scoreboard
 
         void LoadBestPlayers(ScoreData[] data)
         {
-            if (SaveSystem.ScoreboardData != null)
+            if (SaveSystem.ScoreboardData != null && data.Length >= _bestPlayers.Length)
             {
                 for (int i = 0; i < _bestPlayers.Length; i++)
                 {

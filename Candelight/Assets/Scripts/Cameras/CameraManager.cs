@@ -4,6 +4,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Cameras
@@ -46,6 +47,13 @@ namespace Cameras
         private void Start()
         {
             SetActiveCamera(InitialCam, 0f);
+
+            _noise = InitialCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            if (_noise != null)
+            {
+                _noise.m_AmplitudeGain = 0f;
+                _noise.m_FrequencyGain = 0f;
+            }
         }
 
         private void OnEnable()

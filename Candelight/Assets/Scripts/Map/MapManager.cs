@@ -31,8 +31,9 @@ namespace Map
             set
             {
                 m_rooms = value;
-                if (m_rooms >= _maxRooms) //Si se ha terminado la generacion de habitaciones
+                if (_rooms.Count >= _maxRooms) //Si se ha terminado la generacion de habitaciones
                 {
+                    _available = false;
                     if (OnRoomGenerationEnd != null) OnRoomGenerationEnd();
                 }
             }
@@ -89,6 +90,7 @@ namespace Map
         public event System.Action OnCombatEnd;
 
         bool _inCombat;
+        bool _available = true;
 
         private void Awake()
         {
@@ -147,7 +149,7 @@ namespace Map
             }
             else _maxRooms = 5;
 
-            if (_maxRooms > 0) RegisterNewRoom(-1, new Vector3(), new Vector2(), ERoomSize.Medium);
+            if (_maxRooms > 0) NotifyNewRoom(RegisterNewRoom(-1, new Vector3(), new Vector2(), ERoomSize.Medium), new Vector2());
         }
 
         private void OnEnable()
@@ -159,6 +161,8 @@ namespace Map
 
         void EventCheck()
         {
+            
+
             //Debug. Las condiciones deben estar sin comentar
 
             //Si el penultimo nivel es de exploracion, generamos el evento que corresponda
@@ -177,7 +181,11 @@ namespace Map
         /// Comprueba si se ha alcanzado el maximo de habitaciones que permite el nivel
         /// </summary>
         /// <returns></returns>
-        public bool CanCreateRoom() => _currentRooms < _maxRooms;
+        public bool CanCreateRoom()
+        {
+            //Debug.Log($"COUNT: {_rooms.Count} (< {_maxRooms}) && finished: {_available}:: {_rooms.Count < _maxRooms && _available}");
+            return _rooms.Count < _maxRooms && _available;
+        }
 
         /// <summary>
         /// Se crea una nueva habitacion y se registra en los datos del mapa
@@ -188,7 +196,7 @@ namespace Map
         /// <returns></returns>
         public GameObject RegisterNewRoom(int originalRoomID, Vector3 position, Vector2 minimapOffset, ERoomSize size)
         {
-            //Debug.Log($"Se crea nueva habitacion ({_rooms.Count}) de tamano {size} conectada con habitacion {originalRoomID}");
+            //Debug.Log($"Se crea nueva habitacion ({_rooms.Count}) (c_rooms: {_currentRooms}) de tamano {size} conectada con habitacion {originalRoomID}");
             _roomGraph.Add(new List<int>());
 
             if (originalRoomID != -1)
@@ -216,15 +224,38 @@ namespace Map
                     break;
             }
             _rooms.Add(room);
-            room.gameObject.name = "ROOM " + _currentRooms;
-            _rooms[_rooms.Count - 1].GetComponent<ARoom>().SetID(_currentRooms);
+            room.gameObject.name = $"ROOM {_rooms.Count - 1}";
+            _rooms[_rooms.Count - 1].GetComponent<ARoom>().SetID(_rooms.Count - 1);
+            //Debug.Log("Hemos introducido como id: " + _currentRooms);
+            //Debug.Log("EL ID DEBERIA SER: " + _rooms[_rooms.Count - 1].GetComponent<ARoom>().GetID());
 
             //Gestion del minimapa
-            room.GetComponent<ARoom>().SetMinimapOffset(minimapOffset);
-            _uiMan.RegisterMinimapRoom(_currentRooms, minimapOffset, room.GetComponent<ARoom>().RoomType);
+            //room.GetComponent<ARoom>().SetMinimapOffset(minimapOffset);
+            //_uiMan.RegisterMinimapRoom(_currentRooms, minimapOffset, room.GetComponent<ARoom>().RoomType);
+
+            //string s = "";
+            //int count = 0;
+            //foreach (var r in _rooms)
+            //{
+            //    s += $"({count++}, {r.GetComponent<ARoom>().GetID()}), ";
+            //}
+            //Debug.Log(s);
+
+            //_currentRooms++;
+
+            //AQUI HAY PROBLEMA
+
+
+            return _rooms[_rooms.Count - 1];
+        }
+
+        public void NotifyNewRoom(GameObject newRoom, Vector2 minimapOffset)
+        {
+            //Gestion del minimapa
+            newRoom.GetComponent<ARoom>().SetMinimapOffset(minimapOffset);
+            _uiMan.RegisterMinimapRoom(newRoom.GetComponent<ARoom>().GetID(), minimapOffset, newRoom.GetComponent<ARoom>().RoomType);
 
             _currentRooms++;
-            return _rooms[_rooms.Count - 1];
         }
 
         /// <summary>
@@ -239,6 +270,7 @@ namespace Map
             //Elegimos una sala de entrada y otra de salida y las descartamos
             ARoom startRoom = rooms[Random.Range(0, rooms.Count / 2)];
             rooms.Remove(startRoom);
+            _rooms.Remove(startRoom.gameObject);
             startRoom.RoomType = ERoomType.Start;
             startRoom.IdText.text += " START";
             startRoom.gameObject.name = "START ROOM";
@@ -247,6 +279,7 @@ namespace Map
 
             ARoom endRoom = rooms[Random.Range(rooms.Count / 2, rooms.Count)];
             rooms.Remove(endRoom);
+            _rooms.Remove(endRoom.gameObject);
             endRoom.RoomType = ERoomType.Exit;
             endRoom.IdText.text += " EXIT";
             endRoom.gameObject.name = "EXIT ROOM";
@@ -260,6 +293,7 @@ namespace Map
             {
                 ARoom runeRoom = rooms[Random.Range(rooms.Count / 2, rooms.Count)];
                 rooms.Remove(runeRoom);
+                _rooms.Remove(runeRoom.gameObject);
                 runeRoom.RoomType = ERoomType.Rune;
                 runeRoom.IdText.text += " RUNE";
                 runeRoom.gameObject.name = "RUNE ROOM";

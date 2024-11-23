@@ -32,7 +32,7 @@ namespace Hechizos
             {
                 Target = other.transform.parent;
 
-                if (Target.TryGetComponent<EnemyController>(out var enemy))
+                if (Target != null && Target.TryGetComponent<EnemyController>(out var enemy))
                 {
                     enemy.RecieveDamage(Damage);
                 } 

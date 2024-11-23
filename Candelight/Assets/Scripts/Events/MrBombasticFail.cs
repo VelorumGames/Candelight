@@ -18,6 +18,7 @@ namespace Events
         ExploreEventManager _event;
 
         ARoom _room;
+        AItem _bomb;
 
         bool _completed;
 
@@ -38,25 +39,23 @@ namespace Events
 
         void CheckEventState()
         {
-            Debug.Log("HE LLEGADO");
-            if (_inv.FindItem("Bomba de Pólvora", out AItem item) && (int)item.Data.Category <= _inv.GetFragments())
+            //Debug.Log($"HE LLEGADO: {_inv.FindItem("Bomba de Pólvora", out _bomb)} && {(int)_bomb.Data.Category > _inv.GetFragments()} ({(int)_bomb.Data.Category} > {_inv.GetFragments()})");
+            if (_inv.FindItem("Bomba de Pólvora", out _bomb) && (int)_bomb.Data.Category > _inv.GetFragments())
             {
-                _agent.ChangeDialogue(FailDialogue);
-                _event.LoadEventResult(World.EEventSolution.Failed);
-                Invoke("StartFailDialogue", 2f);
+                Invoke("StartFailDialogue", 1.5f);
             }
             else
             {
                 _room.OnPlayerExit += LoadFarDialogue;
-                StartCoroutine(CheckForItemActivation(item));
+                StartCoroutine(CheckForItemActivation(_bomb));
             }
         }
 
         IEnumerator CheckForItemActivation(AItem item)
         {
-            Debug.Log("ESPERANDO");
+            //Debug.Log("ESPERANDO: " + _bomb.gameObject.name);
             yield return new WaitUntil(() => item.IsActive());
-            Debug.Log("ACTIVADO");
+            //Debug.Log("ACTIVADO");
             _agent.ChangeDialogue(CompletedDialogue);
             _agent.LoadActionOnStart(SetCompleted);
         }
@@ -68,18 +67,22 @@ namespace Events
             _inv.RemoveItem("Bomba de Pólvora");
         }
 
-        public void StartFailDialogue() => _agent.StartDialogue();
+        public void StartFailDialogue()
+        {
+            _agent.ChangeDialogue(FailDialogue);
+            _agent.StartDialogue();
+            
+            _event.LoadEventResult(World.EEventSolution.Failed);
+        }
 
         void LoadFarDialogue()
         {
-            StopAllCoroutines();
-
             _agent.ChangeDialogue(FarDialogue);
             _agent.StartDialogue();
             _room.OnPlayerExit -= LoadFarDialogue;
 
             //Si lo activa y entonces sale del rango, tenemos que volver a estar pendientes de si le da el item o no
-            if (_inv.FindItem("Bomba de Pólvora", out AItem item)) StartCoroutine(CheckForItemActivation(item));
+            //if (_inv.FindItem("Bomba de Pólvora", out AItem item)) StartCoroutine(CheckForItemActivation(item));
         }
 
         private void OnDisable()

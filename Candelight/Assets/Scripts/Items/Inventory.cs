@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using World;
+using static UnityEditor.Progress;
 
 namespace Items
 {
@@ -46,12 +47,12 @@ namespace Items
         [Header("===PLAYER INVENTORY===")]
         [Space(10)]
         //public List<AItem> ItemsList = new List<AItem>();
-        public List<GameObject> ItemsList = new List<GameObject>();
+        //public List<GameObject> ItemsList = new List<GameObject>();
+        //public List<AItem> ConstantItemsList = new List<AItem>();
         public List<GameObject> UnactiveItems = new List<GameObject>();
         public List<GameObject> ActiveItems = new List<GameObject>();
 
         [Space(10)]
-        [SerializeField] RectTransform _itemContainer;
         InventoryWindow _window;
 
         [Space(10)]
@@ -66,13 +67,10 @@ namespace Items
 
         private void Awake()
         {
-            //if (Instance != null) Destroy(gameObject);
-            //else Instance = this;
-
             DontDestroyOnLoad(gameObject);
 
-            //Debug
-            AddFragments(100);
+            //Debug. Deberia estar desactivado
+            //AddFragments(100);
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
@@ -80,8 +78,20 @@ namespace Items
             _uiMan = FindObjectOfType<UIManager>();
             if (_uiMan != null)
             {
-                _itemContainer = _uiMan.InventoryUI.GetComponent<RectTransform>();
                 _window = _uiMan.InventoryUI.GetComponent<InventoryWindow>();
+            }
+
+            if (UnactiveItems.Count == 0 && ActiveItems.Count == 0)
+            {
+                AItem[] allItems = FindObjectsOfType<AItem>();
+
+                //Debug.Log($"Se han encontrado {allItems.Length} items");
+
+                foreach (var item in allItems)
+                {
+                    if (item.IsActive()) ActiveItems.Add(item.gameObject);
+                    else UnactiveItems.Add(item.gameObject);
+                }
             }
 
             if (scene.name == "WorldScene")
@@ -92,7 +102,8 @@ namespace Items
 
         void OnSceneUnloaded(Scene scene)
         {
-            
+            ActiveItems.Clear();
+            UnactiveItems.Clear();
         }
 
         public void AddFragments(int numFragments)
@@ -104,10 +115,7 @@ namespace Items
         
         public void ApplyAllItems()
         {
-            foreach (var item in ItemsList)
-            {
-                item.GetComponent<AItem>().ApplyItem();
-            }
+            foreach (var item in ActiveItems) item.GetComponent<AItem>().ApplyItem();
         }
 
         public void SpawnFragments(int num, float probability, Transform location)
@@ -126,7 +134,11 @@ namespace Items
         public bool FindItem(string name, out int count)
         {
             count = 0;
-            foreach (var item in ItemsList)
+            foreach (var item in ActiveItems)
+            {
+                if (item.GetComponent<AItem>().Data.Name == name) count++;
+            }
+            foreach (var item in UnactiveItems)
             {
                 if (item.GetComponent<AItem>().Data.Name == name) count++;
             }
@@ -137,7 +149,15 @@ namespace Items
         public bool FindItem(string name, out AItem item)
         {
             item = null;
-            foreach (var it in ItemsList)
+            foreach (var it in ActiveItems)
+            {
+                if (it.GetComponent<AItem>().Data.Name == name)
+                {
+                    item = it.GetComponent<AItem>();
+                    return true;
+                }
+            }
+            foreach (var it in UnactiveItems)
             {
                 if (it.GetComponent<AItem>().Data.Name == name)
                 {
@@ -153,6 +173,9 @@ namespace Items
         {
             if (FindItem(name, out AItem item))
             {
+
+                _uiMan.ShowRemoveItemNotification(item);
+
                 if (ActiveItems.Contains(item.gameObject))
                 {
                     ActiveItems.Remove(item.gameObject);
@@ -161,12 +184,19 @@ namespace Items
                 {
                     UnactiveItems.Remove(item.gameObject);
                 }
-                ItemsList.Remove(item.gameObject);
 
+                Destroy(item.gameObject);
                 return true;
             }
-
             return false;
+        }
+
+        public void ResetInventory()
+        {
+            ActiveItems.Clear();
+            UnactiveItems.Clear();
+
+            _totalNumFragments = 0;
         }
 
         public void AddItem(GameObject item)
@@ -174,54 +204,55 @@ namespace Items
             Debug.Log("Nuevo objeto en el inventario: " + item.name);
             if(MaxCheck(item.GetComponent<AItem>()))
             {
-                ItemsList.Add(item);
                 _uiMan.ShowItemNotification(item.GetComponent<AItem>());
-                //ItemsList.Add(item.GetComponent<AItem>());
 
-                //GameObject itemButton = Instantiate(item, _itemContainer);
-                //itemButton.GetComponent<RectTransform>().localPosition = Position + (ItemsList.Count - 1) * Offset; //Los vectores siempre a la derecha de la multiplicacion
+                GameObject button = Instantiate(item);
+                UnactiveItems.Add(button);
             }
         }
 
-        public bool LoadItems()
+        public void LoadItems() => RelocateItems();
+
+        public void UnloadItems()
         {
-            //Cada vez que se abra el inventario, se cargaran los datos almacenados en este script (en caso de ser necesarios)
-            foreach(var item in ItemsList)
+            foreach (var item in ActiveItems)
             {
-                GameObject itemButton = Instantiate(item, _itemContainer);
-                if (itemButton.GetComponent<AItem>().IsActive()) ActiveItems.Add(itemButton);
-                else UnactiveItems.Add(itemButton);
-
-                item.GetComponent<AItem>().IsNew = false;
-                //itemButton.GetComponent<RectTransform>().localPosition = Position + (ItemsList.Count - 1) * Offset; //Los vectores siempre a la derecha de la multiplicacion
+                item.GetComponent<RectTransform>().SetParent(null);
+                DontDestroyOnLoad(item.gameObject);
             }
-
-            RelocateItems();
-
-            return true;
+            foreach (var item in UnactiveItems)
+            {
+                item.GetComponent<RectTransform>().SetParent(null);
+                DontDestroyOnLoad(item.gameObject);
+            }
         }
 
         public void LooseItemsOnNodeExit()
         {
             //El jugador perdera el progreso del inventario al salirse del nodo 
-            ActiveItems.RemoveAll(item =>
-            {
-                if (item.GetComponent<AItem>().IsNew) item.GetComponent<AItem>().SetActivation();
-                return item.GetComponent<AItem>().IsNew;
-            });
+            foreach (var item in ActiveItems) if (item.GetComponent<AItem>().IsNew) Destroy(item.gameObject);
+            foreach (var item in UnactiveItems) if (item.GetComponent<AItem>().IsNew) Destroy(item.gameObject);
 
-            UnactiveItems.RemoveAll(item => item.GetComponent<AItem>().IsNew);
+            ActiveItems.Clear();
+            UnactiveItems.Clear();
         }
 
         public void SecureItems()
         {
-            foreach (var item in ItemsList) item.GetComponent<AItem>().IsNew = false;
-        }
-
-        public void UnloadItems()
-        {
-            ActiveItems.Clear();
-            UnactiveItems.Clear();
+            foreach (var item in ActiveItems)
+            {
+                if (item != null)
+                {
+                    item.GetComponent<AItem>().IsNew = false;
+                }
+            }
+            foreach (var item in UnactiveItems)
+            {
+                if (item != null)
+                {
+                    item.GetComponent<AItem>().IsNew = false;
+                }
+            }
         }
 
         public void RelocateItems()
@@ -243,7 +274,11 @@ namespace Items
         bool MaxCheck(AItem item)
         {
             int num = 0;
-            foreach(var i in ItemsList)
+            foreach(var i in ActiveItems)
+            {
+                if (i.GetComponent<AItem>().Data.Name == item.Data.Name) num++;
+            }
+            foreach (var i in UnactiveItems)
             {
                 if (i.GetComponent<AItem>().Data.Name == item.Data.Name) num++;
             }
@@ -277,14 +312,16 @@ namespace Items
 
             foreach (var id in activeItems)
             {
-                GameObject item = SearchForItem(id);
+                GameObject item = Instantiate(SearchForItem(id));
                 ActiveItems.Add(item);
                 item.GetComponent<AItem>().SetActivation();
             }
 
             foreach (var id in unactiveItems)
             {
-                UnactiveItems.Add(SearchForItem(id));
+                GameObject item = Instantiate(SearchForItem(id));
+                Debug.Log("Se ha encontrado el item: " + item.name);
+                UnactiveItems.Add(item);
             }
 
             _totalNumFragments = fragments;
@@ -292,6 +329,7 @@ namespace Items
 
         GameObject SearchForItem(int id)
         {
+            Debug.Log("Busco item con id: " + id);
             foreach (var item in CommonItemPool)
             {
                 if (item.GetComponent<AItem>().Data.Id == id) return item;

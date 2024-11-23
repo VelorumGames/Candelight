@@ -60,8 +60,6 @@ namespace Map
                         break;
                     }
                 }
-                Debug.Log(runes.Count);
-                
 
                 return runes.Count > 0 ? runes[Random.Range(0, runes.Count)] : null;
             }

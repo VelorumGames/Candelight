@@ -159,7 +159,13 @@ namespace Events
                     break;
             }
 
-            if (_currentEvent != null) _currentEvent.transform.position = room.GetRandomSpawnPoint().position;
+            
+
+            if (_currentEvent != null)
+            {
+                _currentEvent.transform.localScale *= 0.5f;
+                _currentEvent.transform.position = room.GetRandomSpawnPoint().position;
+            }
         }
 
         public EEventSolution GetEventSolution() => _map.CurrentNodeInfo.EventSolution;

@@ -1,3 +1,4 @@
+using Animations;
 using Enemy;
 using Hechizos;
 using Hechizos.Elementales;
@@ -41,7 +42,6 @@ namespace Comportamientos.Sombra
 
         [SerializeField] int _numRings = 0;
 
-        private ASpell scASpell;
         [SerializeField] EnemyInfo Info;
 
 
@@ -58,22 +58,15 @@ namespace Comportamientos.Sombra
         private GameObject _player;
         private float vel;
 
-
-
+        List<SombraAnimation> _anims = new List<SombraAnimation>();
 
         //Array Prefabs Anillos
-
 
         //Array de GameObject de los anillos instanciados
 
         private void Awake()
         {
-
-
             _player = FindObjectOfType<PlayerController>().gameObject;
-
-
-
 
         }
 
@@ -87,7 +80,6 @@ namespace Comportamientos.Sombra
         {
             Orbitar();
         }
-
 
 
         public bool EquipadoFuego() //Devuelve true si el jugador tiene equipado el elemento de fuego entre sus elementos equipados
@@ -112,10 +104,6 @@ namespace Comportamientos.Sombra
 
             //Rotan alrededor del personaje
             //Cada circulo exterior tendra una velocidad menor o mayor de rotacion. Los circulos impares rotan en sentido contrario.
-
-
-
-
             //El circulo o circulos de Sombras se va a ir estrechando
 
             for (int i = 0; i < rings.Count; i++)
@@ -137,22 +125,7 @@ namespace Comportamientos.Sombra
 
             }
 
-
-
             //Si hacen contacto con colisiones de la sala, las atraviesan pero su sprite se vuelve mas transparente o de otro color (o una animacion en el que se vuelven negras)
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
         public void Multiplicar()
@@ -165,17 +138,11 @@ namespace Comportamientos.Sombra
             //Animacion de enfado
 
             //Las Sombras se alejan
-            
-
-
 
             for (int i = 0; i < _sombrasIndividualesScripts.Count; i++)
             {
                 _sombrasIndividualesScripts[i].GoAway(2f);
             }
-
-
-
         }
 
         public void Disparar()
@@ -219,6 +186,7 @@ namespace Comportamientos.Sombra
                 foreach (var scSombra in mySombraRing.GetComponent<SombraRing>().ScriptsSombras)
                 {
                     _sombrasIndividualesScripts.Add(scSombra);
+                    _anims.Add(scSombra.GetComponent<SombraAnimation>());
 
                     scSombra._scSombracomportamiento = this;
 
@@ -241,8 +209,25 @@ namespace Comportamientos.Sombra
                 }
 
 
-                yield return new WaitForSeconds(_timeSpawnNewRing);
+                yield return new WaitForSeconds(_timeSpawnNewRing - 2f);
 
+                if (_anims.Count > 0)
+                {
+                    foreach(var anim in _anims)
+                    {
+                        anim.ChangeToDivide();
+                    }
+                }
+
+                yield return new WaitForSeconds(2f);
+
+                if (_anims.Count > 0)
+                {
+                    foreach (var anim in _anims)
+                    {
+                        anim.ChangeToIdle();
+                    }
+                }
             }
 
         }

@@ -108,7 +108,7 @@ namespace Map
             //    Debug.DrawRay(transform.position + 0.44f * transform.forward, _auxDirRight * _map.MediumThreshold, Color.yellow);
             //    Debug.DrawRay(transform.position + (_map.MediumThreshold * transform.forward - _map.SmallThreshold * transform.right), _map.SmallThreshold * transform.right, Color.blue);
             //}
-            //Debug.DrawRay(transform.position, transform.position + _map.MediumThreshold * transform.forward, Color.blue);
+            Debug.DrawRay(transform.position, _map.MediumThreshold * transform.forward, Color.blue);
             //Debug.DrawRay(transform.position + _map.MediumThreshold * transform.forward, transform.right * _map.SmallThreshold, Color.red);
             //Debug.DrawRay(transform.position + _map.MediumThreshold * transform.forward, );
         }
@@ -139,9 +139,8 @@ namespace Map
             if (Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
                 Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirRight, out _auxRhit, _map.MediumThreshold, ~_mask) && _auxRhit.transform.parent.parent != transform.parent) maxSize -= 1;
             //Debug.Log($"Colisiona con {_hit.transform.name}");
-            //Debug.Log("Prev MAX_SIZE: " + maxSize);
-            if (Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold)) maxSize = -1;
-            //Debug.Log(Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold));
+            if (Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold * 0.75f)) maxSize = -1;
+            //Debug.Log(Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold * 0.75f));
             if (maxSize == -1) return;
 
             ERoomSize size = (ERoomSize)Random.Range(0, maxSize + 1);
@@ -153,7 +152,9 @@ namespace Map
             Vector2 minimapOffset = MinimapOffsetChooser();
 
             //Generamos la nueva sala y encontramos su anclaje
-            ConnectedAnchor = LocateObjectiveAnchor(_map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, minimapOffset, size));
+            GameObject newRoom = _map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, minimapOffset, size);
+            ConnectedAnchor = LocateObjectiveAnchor(newRoom);
+            _map.NotifyNewRoom(newRoom, minimapOffset);
 
             //Suponiendo que existe el anclaje (en caso contrario, llevaria una referencia a si mismo para evitar errores), generamos la malla para la transicion entre ambos
             _connectionMesh = GenerateMesh(ConnectedAnchor);
@@ -220,18 +221,47 @@ namespace Map
         AnchorManager LocateObjectiveAnchor(GameObject room)
         {
             AnchorManager[] anchors = room.GetComponentsInChildren<AnchorManager>();
-            float minDist = 9999;
-            AnchorManager obj = this; //Pongo this en vez de null para que no de problemas en caso de fallo horrible dios no lo quiera
-            foreach (var a in anchors)
+            //float minDist = 9999f;
+            //AnchorManager obj = this; //Pongo this en vez de null para que no de problemas en caso de fallo horrible dios no lo quiera
+            //foreach (var a in anchors)
+            //{
+            //    float dist = Vector3.Distance(transform.position, a.transform.position);
+            //    if (dist < minDist)
+            //    {
+            //        minDist = dist;
+            //        obj = a;
+            //    }
+            //}
+
+            switch(_direction)
             {
-                float dist = Vector3.Distance(transform.position, a.transform.position);
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    obj = a;
-                }
+                case EAnchorDirection.Forward:
+                    foreach (var a in anchors)
+                    {
+                        if (a.GetDirection() == EAnchorDirection.Backward) return a;
+                    }
+                    break;
+                case EAnchorDirection.Backward:
+                    foreach (var a in anchors)
+                    {
+                        if (a.GetDirection() == EAnchorDirection.Forward) return a;
+                    }
+                    break;
+                case EAnchorDirection.Left:
+                    foreach (var a in anchors)
+                    {
+                        if (a.GetDirection() == EAnchorDirection.Right) return a;
+                    }
+                    break;
+                case EAnchorDirection.Right:
+                    foreach (var a in anchors)
+                    {
+                        if (a.GetDirection() == EAnchorDirection.Left) return a;
+                    }
+                    break;
             }
-            return obj;
+
+            return this;
         }
 
         /// <summary>
@@ -295,9 +325,9 @@ namespace Map
             BoxCollider baseCol = meshGO.AddComponent<BoxCollider>();
             baseCol.center = new Vector3(baseCol.center.x, 0f, baseCol.center.z);
 
-            //Debug.Log($"({_room.GetID()}) Diferencia en X: {positions[0].x - positions[3].x} < 0.3f; Diferencia en Z: {positions[0].z - positions[3].z} < 0.3f");
-            if (Mathf.Abs(positions[0].x - positions[3].x) < 1.5f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
-            else if (Mathf.Abs(positions[0].z - positions[3].z) < 1.5f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
+            //Debug.Log($"({_room.GetID()}) Diferencia en X: {positions[0].x - positions[3].x}");
+            if (Mathf.Abs(positions[0].x - positions[3].x) < 1.4f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
+            else if (Mathf.Abs(positions[0].z - positions[3].z) < 1.4f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
             else GenerateComplexColliders(meshGO, positions, line.endWidth);
 
             return meshGO;
@@ -331,7 +361,7 @@ namespace Map
 
             float deltaCenters = Mathf.Abs(box1.center.x - box2.center.x);
             float offset = 0;
-            Debug.Log($"Soy {_room.GetID()} con distancia en X: {deltaCenters}");
+            //Debug.Log($"Soy {_room.GetID()} con distancia en X: {deltaCenters}");
             if (deltaCenters > 5f) offset = 1.7f;
 
             box1.center -= offset * Vector3.right;
@@ -358,7 +388,7 @@ namespace Map
 
             float deltaCenters = Mathf.Abs(box1.center.x - box2.center.x);
             float offset = 0;
-            Debug.Log($"Soy {_room.GetID()} con distancia en X: {deltaCenters}");
+            //Debug.Log($"Soy {_room.GetID()} con distancia en X: {deltaCenters}");
             if (deltaCenters > 5f) offset = 1.55f;
 
             box1.center -= offset * Vector3.right;
@@ -626,5 +656,7 @@ namespace Map
             GetComponent<Collider>().enabled = true;
             _sprite.SetActive(true);
         }
+
+        public EAnchorDirection GetDirection() => _direction;
     }
 }

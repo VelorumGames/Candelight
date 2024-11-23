@@ -98,7 +98,8 @@ namespace Controls
             _uiMap = Input.FindActionMap("UI");
 
             InputAction back = _uiMap.FindAction("Back");
-            back.performed += FindObjectOfType<UIManager>().OnUIBack;
+            UIManager _ui = FindObjectOfType<UIManager>();
+            if (_ui != null) back.performed += _ui.OnUIBack;
         }
 
         void OnSceneUnloaded(Scene scene)

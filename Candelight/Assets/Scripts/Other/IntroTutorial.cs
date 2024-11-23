@@ -21,6 +21,8 @@ public class IntroTutorial : MonoBehaviour
     public Image[] FireRunes;
     public Image Element;
 
+    public Sprite[] SymbolSprites;
+
     public TextMeshProUGUI DramaticText;
     public TextMeshProUGUI InstrText;
     public string _playerInstructions;
@@ -70,8 +72,8 @@ public class IntroTutorial : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
-        ShowText("F");
-        yield return new WaitUntil(() => Keyboard.current.fKey.isPressed);
+        ShowText("[ B ]");
+        yield return new WaitUntil(() => Keyboard.current.bKey.isPressed);
         HideText();
 
         yield return new WaitForSeconds(0.5f);
@@ -80,11 +82,11 @@ public class IntroTutorial : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        yield return StartCoroutine(SpellTest());
+        yield return StartCoroutine(SpellTest2());
 
         yield return new WaitForSeconds(1f);
 
-        ShowText("SPACE\nW A S D");
+        ShowText("[ W, A, S, D ]");
         GetRuneString();
         ActivateInstructionsText();
         yield return StartCoroutine(ShowSpell());
@@ -125,6 +127,22 @@ public class IntroTutorial : MonoBehaviour
     }
 
     void ManageEnterSpell()
+    {
+        if (Keyboard.current.spaceKey.isPressed)
+        {
+            _spellTime += Time.deltaTime;
+            Element.color = new Color(1f, 1f, 1f, 0.5f * _spellTime / _maxSpellTime);
+        }
+        else
+        {
+            _spellTime = 0f;
+            if (Element.color.a > 0) Element.DOFade(0f, 0.1f);
+        }
+
+        if (_spellTime >= _maxSpellTime) _spellModeTest = true;
+    }
+
+    void ManageEnterSpell2()
     {
         if (Keyboard.current.spaceKey.isPressed)
         {
@@ -197,7 +215,10 @@ public class IntroTutorial : MonoBehaviour
 
     IEnumerator SpellTest()
     {
-        ShowText("SPACE");
+        ShowText("[ ESPACIO ]");
+
+        Element.sprite = SymbolSprites[0];
+
         _spellModeTest = false;
         _spellTime = 0;
         while (!_spellModeTest)
@@ -206,6 +227,30 @@ public class IntroTutorial : MonoBehaviour
             yield return null;
         }
         yield return new WaitUntil(() => !Keyboard.current.spaceKey.isPressed);
+        HideText();
+        Element.color = new Color(1f, 1f, 1f, 1f);
+        Element.DOFade(0f, 1f).Play();
+        float oScale = Element.GetComponent<RectTransform>().localScale.x;
+        Element.GetComponent<RectTransform>().DOScale(1.2f * oScale, 0.1f).Play().OnComplete(() => Element.GetComponent<RectTransform>().DOScale(0.8f * oScale, 1f).Play());
+        yield return new WaitUntil(() => !Keyboard.current.spaceKey.isPressed);
+
+        //Debug.Log("SPELL TEST COMPLETADO");
+    }
+
+    IEnumerator SpellTest2()
+    {
+        ShowText("[ SHIFT ]");
+
+        Element.sprite = SymbolSprites[1];
+
+        _spellModeTest = false;
+        _spellTime = 0;
+        while (!_spellModeTest)
+        {
+            ManageEnterSpell2();
+            yield return null;
+        }
+        yield return new WaitUntil(() => !Keyboard.current.shiftKey.isPressed);
         HideText();
         Element.color = new Color(1f, 1f, 1f, 1f);
         Element.DOFade(0f, 1f).Play();

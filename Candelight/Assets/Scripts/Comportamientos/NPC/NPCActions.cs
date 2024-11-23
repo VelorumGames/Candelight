@@ -22,6 +22,9 @@ public class NPCActions : MonoBehaviour
         //currentPos = player.transform.position;
         target = currentPos;
         count = 0;
+
+        setRandomTarget();
+        move();
     }
 
     // Update is called once per frame
@@ -49,12 +52,12 @@ public class NPCActions : MonoBehaviour
     {
         Vector3 randomPos = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f));
         target = currentPos + randomPos;
-        Debug.Log("Nuevo objetivo: " + target.x + ", " + target.z);
+        //Debug.Log("Nuevo objetivo: " + target.x + ", " + target.z);
     }
 
     public void move()
     {
-        Debug.Log("Entro en rama mover");
+        //Debug.Log("Entro en rama mover");
         StartCoroutine(controller.Move(target));
     }
 }

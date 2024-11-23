@@ -9,7 +9,7 @@ namespace Hechizos.DeForma
     {
         float NewDamageFactor = 1f;
         public event Action<Transform> OnBuffActivation;
-        public BuffRune(Mage m) : base(m, 6, 0.5f)
+        public BuffRune(Mage m) : base(m, 6, 1f)
         {
             Name = "Buff";
         }

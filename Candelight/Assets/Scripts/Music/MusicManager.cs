@@ -85,8 +85,12 @@ namespace Music
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    _sources[i].clip = clips[i];
-                    ChangeVolumeTo(i, startVolumes[i], 1f);
+                    if (clips[i] != null && startVolumes != null)
+                    {
+                        _sources[i].clip = clips[i];
+                        ChangeVolumeTo(i, startVolumes[i], 1f);
+                    }
+
                 }
             }
             else Debug.LogWarning("ERROR: No se pueden cargar las canciones porque no coincide el tamano del array");
@@ -147,12 +151,12 @@ namespace Music
         public void ChangeVolumeFrom(int id, float startVolume, float endVolume, float time)
         {
             _sources[id].volume = startVolume;
-            _sources[id].DOFade(endVolume, time).Play();
+            _sources[id].DOFade(endVolume, time).Play().SetUpdate(true);
         }
 
         public void ChangeVolumeTo(int id, float endVolume, float time)
         {
-            _sources[id].DOFade(endVolume, time).Play();
+            _sources[id].DOFade(endVolume, time).Play().SetUpdate(true);
         }
 
         public float GetCurrentVolume(int id) => _sources[id].volume;
@@ -183,7 +187,12 @@ namespace Music
         {
             for (int i = 1; i < 4; i++)
             {
-                if (GetCurrentVolume(i) > 0.2f) ChangeVolumeTo(i, 0.2f, 1f);
+                Debug.Log($"Compruebo volumen en {i}: {GetCurrentVolume(i)}");
+                if (GetCurrentVolume(i) > 0.15f)
+                {
+                    Debug.Log($"Se baja la musica {i}");
+                    ChangeVolumeTo(i, 0.15f, 1f);
+                }
             }
             //ChangeVolumeTo(1, 0.2f, 1f);
             //ChangeVolumeTo(2, 0.2f, 1f);
@@ -193,7 +202,7 @@ namespace Music
         {
             for (int i = 1; i < 4; i++)
             {
-                if (GetCurrentVolume(i) < 0.3f) ChangeVolumeTo(i, 0.5f, 1f);
+                if (GetCurrentVolume(i) < 0.3f && GetCurrentVolume(i) > 0.1f) ChangeVolumeTo(i, 0.5f, 2f);
             }
             //ChangeVolumeTo(1, 0.5f, 1f);
             //ChangeVolumeTo(2, 0.5f, 1f);

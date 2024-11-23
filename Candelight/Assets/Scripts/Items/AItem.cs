@@ -18,7 +18,12 @@ namespace Items
 
         public bool IsNew = true;
         protected bool IsActivated = false;
-             
+
+        private void Awake()
+        {
+            DontDestroyOnLoad(this);
+        }
+
         private void Start()
         {
             _img = GetComponent<Image>();
@@ -72,6 +77,11 @@ namespace Items
         }
 
         public bool IsActive() => IsActivated;
+
+        private void OnDisable()
+        {
+            
+        }
     }
 
     public enum EItemCategory

@@ -10,11 +10,11 @@ public class MovePillar : MonoBehaviour
 
     private void Awake()
     {
-        _oPos = transform.position;
+        _oPos = transform.localPosition;
     }
 
     private void Update()
     {
-        transform.position = new Vector3(_oPos.x, _oPos.y + Mathf.PingPong(Time.time * _speed, _range), _oPos.z);
+        transform.localPosition = new Vector3(_oPos.x, _oPos.y + Mathf.PingPong(Time.time * _speed, _range), _oPos.z);
     }
 }

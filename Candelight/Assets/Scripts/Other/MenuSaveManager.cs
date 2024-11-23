@@ -68,7 +68,7 @@ public class MenuSaveManager : MonoBehaviour
             if (rune.Name == runeNames[count])
             {
                 count++;
-                rune.Activate();
+                rune.Activate(true);
             }
         }
         FindObjectOfType<UIManager>().ShowState(EGameState.Loading);

@@ -1,20 +1,26 @@
 using Hechizos;
+using Items;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using World;
 
 namespace Menu
 {
     public class PlayGame : MonoBehaviour
     {
+        [SerializeField] WorldInfo _world;
+        Inventory _inv;
+
         public bool PlayDirectly;
         UIManager _ui;
 
         private void Awake()
         {
             _ui = FindObjectOfType<UIManager>();
+            _inv = FindObjectOfType<Inventory>();
         }
 
         public void InitializeGame()
@@ -32,8 +38,14 @@ namespace Menu
         void StartGame()
         {
             FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
-            SceneManager.LoadScene(PlayDirectly ? "WorldScene" : "IntroScene");
+
+            _world.Candle = _world.MAX_CANDLE;
+            _world.CompletedIds.Clear();
+            _inv.ResetInventory();
+
             ARune.CreateAllRunes(FindObjectOfType<Mage>());
+
+            SceneManager.LoadScene(PlayDirectly ? "WorldScene" : "IntroScene");
         }
     }
 }
