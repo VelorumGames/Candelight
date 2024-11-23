@@ -1,4 +1,5 @@
 using Dialogues;
+using Map;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,13 +13,15 @@ namespace Events
 
         private void Start()
         {
-            GetComponent<DialogueAgent>().LoadActionOnEnd(SubLeave);
+            GetComponent<PlayDialogueInRoom>().LoadEndAction(SubLeave);
         }
 
         void SubLeave()
         {
             Debug.Log("SE MARCHA EL SUBORDINADO");
-            Subordinate.SetActive(false);
+
+            StartCoroutine(Subordinate.GetComponent<NPCController>().ExitRoom());
+
             GetComponent<DialogueAgent>().ChangeDialogue(NewDialogue);
         }
     }

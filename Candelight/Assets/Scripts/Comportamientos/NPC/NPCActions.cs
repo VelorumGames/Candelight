@@ -22,6 +22,9 @@ public class NPCActions : MonoBehaviour
         //currentPos = player.transform.position;
         target = currentPos;
         count = 0;
+
+        setRandomTarget();
+        move();
     }
 
     // Update is called once per frame

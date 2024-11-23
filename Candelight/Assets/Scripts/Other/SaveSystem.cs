@@ -55,20 +55,6 @@ public static class SaveSystem
         }
     }
 
-    //static bool TryGetPlayerData(ScoreData data)
-    //{
-    //    if (data != null)
-    //    {
-    //        PlayerData = data; //Si se ha encontrado
-    //        return true;
-    //    }
-    //    else //Si no se ha encontrado
-    //    {
-    //        Debug.LogWarning($"ERROR: No se ha encontrado datos del jugador \"{PlayerName}\" en la base de datos");
-    //        return false;
-    //    }
-    //}
-
     static void GetPlayerData(ScoreData data)
     {
         if (data != null)
@@ -110,15 +96,6 @@ public static class SaveSystem
 [System.Serializable]
 public class SaveData
 {
-    //La seed no hace falta guardarla
-
-    //Tengo que tener:
-    // Nodos completados: Array con ids [DONE]
-    // Los objetos (cuáles activados y cuáles desactivados): Dos arrays con int [DONE]
-    // Los fragmentos: int
-    // La vida restante: float
-    // Las runas desbloqueadas: Array con strings
-
     public int[] CompletedNodes;
     public int[] ActiveItems;
     public int[] UnactiveItems;
@@ -128,12 +105,25 @@ public class SaveData
 
     public SaveData(WorldInfo world, Inventory inventory)
     {
+        Debug.Log("GUARDANDO DATOS");
+
         CompletedNodes = world.CompletedIds.ToArray();
 
         int[][] invData = GetInventoryData(inventory);
         ActiveItems = invData[0];
         UnactiveItems = invData[1];
         Fragments = invData[2][0];
+
+        string s = "ITEMS ACTIVOS: " + ActiveItems.Length;
+        foreach (var id in ActiveItems) s += $"\n- {id}";
+        s += "\nITEMS INACTIVOS: " + UnactiveItems.Length;
+        foreach (var id in UnactiveItems)
+        {
+            Debug.Log("Meto item: " + id);
+            s += $"\n- {id}";
+        }
+        s += $"\nFRAGMENTOS: {Fragments}";
+        Debug.Log(s);
 
         Candle = world.Candle;
 

@@ -214,7 +214,7 @@ namespace UI
 
         public void FadeToBlack(float duration, Action onEnd)
         {
-            if (FadeImage != null) FadeImage.DOColor(Color.black, duration).Play().OnComplete(() => onEnd());
+            if (FadeImage != null) FadeImage.DOColor(Color.black, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
         }
 
         public void FadeFromBlack(float duration) //Esto puede lanzar excepcion si el jugador cambia de escena demasiado rapido. Por ahora el safe mode lo mantiene a raya, pero hay que solucionarlo
@@ -222,7 +222,7 @@ namespace UI
             if (FadeImage != null)
             {
                 FadeImage.color = new Color(0f, 0f, 0f, 1f);
-                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play();
+                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
             }
         }
 
@@ -238,7 +238,7 @@ namespace UI
 
             if (FadeImage != null)
             {
-                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play();
+                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
 
                 yield return null;
             }
@@ -247,13 +247,13 @@ namespace UI
         public void FadeToWhite(float duration, Ease ease, Action onEnd)
         {
             FadeImage.color = new Color(1f, 1f, 1f, 0f);
-            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetEase(ease);
+            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetEase(ease).SetUpdate(true);
         }
 
         public void FadeToWhite(float duration, Action onEnd)
         {
             FadeImage.color = new Color(1f, 1f, 1f, 0f);
-            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd());
+            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
         }
 
         public void FadeFromWhite(float duration)
@@ -261,7 +261,7 @@ namespace UI
             if (FadeImage != null)
             {
                 FadeImage.color = new Color(1f, 1f, 1f, 1f);
-                FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration).Play();
+                FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration).Play().SetUpdate(true);
             }
         }
 
@@ -283,9 +283,12 @@ namespace UI
             if (_windows.TryPop(out var window))
             {
                 //Debug.Log("Hacia atras: " + _windows.Count);
-                window.SetActive(false);
+                if (window != null)
+                {
+                    window.SetActive(false);
 
-                if (_windows.Count == 0) FindObjectOfType<InputManager>().LoadPreviousControls();
+                    if (_windows.Count == 0) FindObjectOfType<InputManager>().LoadPreviousControls();
+                }
             }
         }
 
