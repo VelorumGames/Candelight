@@ -27,8 +27,17 @@ namespace Animations
             Anim.SetFloat("yOrientation", -_orToPlayer.z);
         }
 
-        public void ChangeToIdle() => Anim.SetTrigger("Idle");
-        public void ChangeToDivide() => Anim.SetTrigger("Divide");
-        public void ChangeToShoot() => Anim.SetTrigger("Shoot");
+        public void ChangeToIdle()
+        {
+            if (Anim != null) Anim.SetTrigger("Idle");
+        }
+        public void ChangeToDivide()
+        {
+            if (Anim != null) Anim.SetTrigger("Divide");
+        }
+        public void ChangeToShoot()
+        {
+            if (Anim != null) Anim.SetTrigger("Shoot");
+        }
     }
 }
