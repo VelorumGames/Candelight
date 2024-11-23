@@ -9,7 +9,7 @@ namespace Hechizos.DeForma
     {
         public event Action<Transform> OnMeleeActivation;
         public event Action<Transform> OnMeleeImpact;
-        public MeleeRune(Mage m) : base(m, 2, 0.5f)
+        public MeleeRune(Mage m) : base(m, 2, 0.1f)
         {
             Name = "Melee";
             //Activate();

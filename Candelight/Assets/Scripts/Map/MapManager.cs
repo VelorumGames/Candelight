@@ -102,7 +102,7 @@ namespace Map
 
             _uiMan = FindObjectOfType<UIManager>();
             //Debug. Debe estar activado
-            FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
+            //FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
 
             ConnectionMaterial = FindObjectOfType<LightingManager>().GetConnectionMaterial(CurrentNodeInfo.Biome);
 

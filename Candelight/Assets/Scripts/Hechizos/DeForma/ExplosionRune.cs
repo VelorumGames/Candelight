@@ -9,7 +9,7 @@ namespace Hechizos.DeForma
     {
         public event Action<Transform> OnExplosionActivation;
         public event Action<Transform> OnExplosionImpact;
-        public ExplosionRune(Mage m) : base(m, 5, 1f)
+        public ExplosionRune(Mage m) : base(m, 4, 1f)
         {
             Name = "Explosion";
         }

@@ -4,6 +4,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Cameras
@@ -50,8 +51,8 @@ namespace Cameras
             _noise = InitialCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
             if (_noise != null)
             {
-                _originalAmp = 0f;
-                _originalFrec = 0f;
+                _noise.m_AmplitudeGain = 0f;
+                _noise.m_FrequencyGain = 0f;
             }
         }
 
