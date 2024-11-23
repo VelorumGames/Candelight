@@ -139,9 +139,8 @@ namespace Map
             if (Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
                 Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirRight, out _auxRhit, _map.MediumThreshold, ~_mask) && _auxRhit.transform.parent.parent != transform.parent) maxSize -= 1;
             //Debug.Log($"Colisiona con {_hit.transform.name}");
-            Debug.Log("Prev MAX_SIZE: " + maxSize);
             if (Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold * 0.75f)) maxSize = -1;
-            Debug.Log(Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold * 0.75f));
+            //Debug.Log(Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold * 0.75f));
             if (maxSize == -1) return;
 
             ERoomSize size = (ERoomSize)Random.Range(0, maxSize + 1);
@@ -153,7 +152,6 @@ namespace Map
             Vector2 minimapOffset = MinimapOffsetChooser();
 
             //Generamos la nueva sala y encontramos su anclaje
-            Debug.Log("GENERO NUEVA HABITACION");
             GameObject newRoom = _map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, minimapOffset, size);
             ConnectedAnchor = LocateObjectiveAnchor(newRoom);
             _map.NotifyNewRoom(newRoom, minimapOffset);

@@ -85,7 +85,7 @@ namespace Hechizos
                     if (Target.TryGetComponent<PlayerController>(out var player))
                     {
                         player.RecieveDamage(Damage);
-                        Destroy(gameObject);
+                        gameObject.SetActive(false);
                     }
 
                     if (OnImpact != null) OnImpact(Target);

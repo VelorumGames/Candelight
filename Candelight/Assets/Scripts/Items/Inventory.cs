@@ -153,6 +153,9 @@ namespace Items
         {
             if (FindItem(name, out AItem item))
             {
+
+                _uiMan.ShowRemoveItemNotification(item);
+
                 if (ActiveItems.Contains(item.gameObject))
                 {
                     ActiveItems.Remove(item.gameObject);

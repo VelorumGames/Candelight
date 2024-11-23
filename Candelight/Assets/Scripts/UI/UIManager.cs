@@ -39,6 +39,7 @@ namespace UI
         public GameObject Warning;
         public GameObject Options;
         public GameObject InventoryNotif;
+        public GameObject RemoveInventoryNotif;
         public GameObject InventoryUI;
         public GameObject FragmentHalo;
         public GameObject SpellHalo;
@@ -161,6 +162,12 @@ namespace UI
         {
             InventoryNotif.SetActive(true);
             InventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
+        }
+
+        public void ShowRemoveItemNotification(AItem item)
+        {
+            RemoveInventoryNotif.SetActive(true);
+            RemoveInventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
         }
 
         public void RegisterCandle(float candle)

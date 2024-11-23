@@ -46,6 +46,9 @@ namespace Cameras
         private void Start()
         {
             SetActiveCamera(InitialCam, 0f);
+
+            _noise.m_AmplitudeGain = 0f;
+            _noise.m_FrequencyGain = 0f;
         }
 
         private void OnEnable()

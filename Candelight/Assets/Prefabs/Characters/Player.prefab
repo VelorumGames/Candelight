@@ -11263,6 +11263,7 @@ GameObject:
   - component: {fileID: 4715108597507093666}
   - component: {fileID: 6447444333478689420}
   - component: {fileID: 3223736346054269937}
+  - component: {fileID: 7087351922851796308}
   m_Layer: 6
   m_Name: Selector
   m_TagString: Untagged
@@ -11313,7 +11314,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: bbcd436b0b88c8f42896b75195418e24, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11335,3 +11336,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7087351922851796308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9146836588861706532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b5793588a50a1143ada43e49e41dfaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _range: 0.2
+  _speed: 0.5

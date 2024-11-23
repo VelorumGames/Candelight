@@ -30,7 +30,6 @@ namespace Map
             get => m_rooms;
             set
             {
-                Debug.Log("AAAAAAAAA: " + _rooms.Count);
                 m_rooms = value;
                 if (_rooms.Count >= _maxRooms) //Si se ha terminado la generacion de habitaciones
                 {
@@ -184,7 +183,7 @@ namespace Map
         /// <returns></returns>
         public bool CanCreateRoom()
         {
-            Debug.Log($"COUNT: {_rooms.Count} (< {_maxRooms}) && finished: {_available}:: {_rooms.Count < _maxRooms && _available}");
+            //Debug.Log($"COUNT: {_rooms.Count} (< {_maxRooms}) && finished: {_available}:: {_rooms.Count < _maxRooms && _available}");
             return _rooms.Count < _maxRooms && _available;
         }
 

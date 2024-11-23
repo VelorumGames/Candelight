@@ -43,7 +43,8 @@ namespace UI.Window
         public void Hide()
         {
             _action = null;
-            gameObject.SetActive(false);
+
+            FindObjectOfType<UIManager>().Back();
         }
 
         public void Execute()
