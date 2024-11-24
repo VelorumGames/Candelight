@@ -8,6 +8,7 @@ using Controls;
 using Player;
 using Items;
 using World;
+using System;
 
 namespace Dialogues
 {
@@ -29,9 +30,14 @@ namespace Dialogues
 
         PlayerController _cont;
 
+        System.Action _onEndDialogue;
+
         Image _spriteRend;
 
         Inventory _inventory;
+
+        public event Action OnDialogueStart;
+        public event Action OnDialogueEnd;
 
         private void Awake()
         {
@@ -54,6 +60,7 @@ namespace Dialogues
 
             _showUIText.ShowText(_currentBlock.text);
             _spriteRend.sprite = _currentBlock.icon;
+            _spriteRend.SetNativeSize();
 
             if (_currentBlock.RandomItem)
             {
@@ -66,7 +73,7 @@ namespace Dialogues
                         _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Rare);
                         break;
                     case EBiome.Idria:
-                        _currentBlock.item = _inventory.GetRandomItem(EItemCategory.Epic);
+                        _currentBlock.item = _inventory.GetRandomItem(UnityEngine.Random.value < 0.75f ? EItemCategory.Epic : EItemCategory.Legendary);
                         break;
                     default:
                         Debug.Log("ERROR: Bioma no detectado correctamente. Se defaultea item a common.");
@@ -88,21 +95,59 @@ namespace Dialogues
             else
             {
                 EndDialogue();
-                if (_currentBlock.nextDialogue != null) _currentAgent.ChangeDialogue(_currentBlock.nextDialogue);
+                if (_currentBlock.nextDialogue != null && _currentAgent != null) _currentAgent.ChangeDialogue(_currentBlock.nextDialogue);
+                else if (_onEndDialogue != null) _onEndDialogue();
             }
         }
 
-        public void StartDialogue(DialogueBlock block, DialogueAgent ag)
+        public void StartDialogue(Dialogue dial, DialogueAgent ag)
         {
+            Time.timeScale = 0f;
             _currentAgent = ag;
 
             _dialogueUI.SetActive(true);
+
+            if(OnDialogueStart != null) OnDialogueStart();
 
             _active = true;
             _cont.UnloadInteraction();
             FindObjectOfType<InputManager>().LoadControls(EControlMap.Dialogue);
 
-            LoadBlockInfo(block);
+            LoadBlockInfo(dial.initialDialogueBlock);
+        }
+        public void StartDialogue(Dialogue dial, DialogueAgent ag, System.Action endAction)
+        {
+            Time.timeScale = 0f;
+            _currentAgent = ag;
+
+            _dialogueUI.SetActive(true);
+
+            if (OnDialogueStart != null) OnDialogueStart();
+
+            _active = true;
+            _cont.UnloadInteraction();
+            FindObjectOfType<InputManager>().LoadControls(EControlMap.Dialogue);
+
+            _onEndDialogue = endAction;
+
+            LoadBlockInfo(dial.initialDialogueBlock);
+        }
+        public void StartDialogueWithAction(Dialogue dial, DialogueAgent ag, System.Action action)
+        {
+            Time.timeScale = 0f;
+            _currentAgent = ag;
+
+            _dialogueUI.SetActive(true);
+
+            if (OnDialogueStart != null) OnDialogueStart();
+
+            _active = true;
+            _cont.UnloadInteraction();
+            FindObjectOfType<InputManager>().LoadControls(EControlMap.Dialogue);
+
+            if (action != null) action();
+
+            LoadBlockInfo(dial.initialDialogueBlock);
         }
         public void Next()
         {
@@ -111,8 +156,13 @@ namespace Dialogues
         }
         public void EndDialogue()
         {
+            Time.timeScale = 1f;
+
             _active = false;
             FindObjectOfType<InputManager>().LoadPreviousControls();
+            if (OnDialogueEnd != null) OnDialogueEnd();
+            if (_onEndDialogue != null) _onEndDialogue();
+            _onEndDialogue = null;
 
             _text.text = "";
 

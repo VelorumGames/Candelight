@@ -1,8 +1,10 @@
 using Cinemachine;
+using Controls;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Cameras
@@ -10,6 +12,8 @@ namespace Cameras
     public class CameraManager : MonoBehaviour
     {
         public static CameraManager Instance;
+
+        CinemachineBrain _brain;
 
         public List<CinemachineVirtualCamera> Cameras = new List<CinemachineVirtualCamera>();
         public CinemachineVirtualCamera InitialCam;
@@ -22,20 +26,45 @@ namespace Cameras
         Tween _spellTween;
         Tween _resetSpellTween;
 
+        InputManager _input;
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
+            _input = FindObjectOfType<InputManager>();
+
             DOTween.defaultAutoPlay = AutoPlay.None;
-            _spellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f).SetAutoKill(false).OnComplete(() => Debug.Log("AAAAAAAA"));
+            _spellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f).SetAutoKill(false);
             _resetSpellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 60f, 0.1f).SetAutoKill(false);
             DOTween.defaultAutoPlay = AutoPlay.All;
+
+            _brain = FindObjectOfType<CinemachineBrain>();
+            _brain.m_DefaultBlend.m_Time = 0f;
         }
 
         private void Start()
         {
-            SetActiveCamera(InitialCam);
+            SetActiveCamera(InitialCam, 0f);
+
+            _noise = GetActiveCam().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            if (_noise != null)
+            {
+                _noise.m_AmplitudeGain = 0f;
+                _noise.m_FrequencyGain = 0f;
+            }
+        }
+
+        private void OnEnable()
+        {
+            if (_input != null)
+            {
+                _input.OnStartElementMode += EnterSpellMode;
+                _input.OnExitElementMode += ExitSpellMode;
+                _input.OnStartShapeMode += EnterSpellMode;
+                _input.OnExitShapeMode += ExitSpellMode;
+            }
         }
 
         public void SetActiveCamera(CinemachineVirtualCamera newCam)
@@ -60,7 +89,32 @@ namespace Cameras
             }
         }
 
+        public void SetActiveCamera(CinemachineVirtualCamera newCam, float blendTime)
+        {
+            if (newCam != _activeCam)
+            {
+                foreach (var c in Cameras)
+                {
+                    if (c == newCam)
+                    {
+                        _brain.m_DefaultBlend.m_Time = blendTime;
+
+                        c.Priority = 1;
+                        if (c != null) _noise = c.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+                        if (_noise != null)
+                        {
+                            _originalAmp = _noise.m_AmplitudeGain;
+                            _originalFrec = _noise.m_FrequencyGain;
+                        }
+                        _activeCam = newCam;
+                    }
+                    else c.Priority = 0;
+                }
+            }
+        }
+
         public void SetActiveCamera(int i) => SetActiveCamera(Cameras[i]);
+        public void SetActiveCamera(int i, float blendTime) => SetActiveCamera(Cameras[i], blendTime);
 
         public CinemachineVirtualCamera GetActiveCam() => _activeCam;
         public int GetActiveCamIndex()
@@ -94,8 +148,18 @@ namespace Cameras
                 _noise.m_FrequencyGain = _originalFrec;
                 //Se cambia el ruido a los nuevos parametros de forma temporal
                 StartCoroutine(ManageShake(amp, frec, time));
+                Invoke("SafeResetNoise", time + 0.5f);
             }
             else Debug.Log("ERROR: Se intenta hacer Shake pero no se ha encontrado ningun noise en la camara: " + _activeCam.gameObject.name);
+        }
+        public void SafeResetNoise()
+        {
+            _noise = GetActiveCam().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            if (_noise != null)
+            {
+                _noise.m_AmplitudeGain = 0f;
+                _noise.m_FrequencyGain = 0f;
+            }
         }
 
         /// <summary>
@@ -151,6 +215,19 @@ namespace Cameras
             _noise.m_AmplitudeGain = iAmp;
             _noise.m_FrequencyGain = iFrec;
             yield return null;
+        }
+
+        public float GetCurrentBlendTime() => _brain.m_DefaultBlend.m_Time;
+
+        private void OnDisable()
+        {
+            if (_input != null)
+            {
+                _input.OnStartElementMode -= EnterSpellMode;
+                _input.OnExitElementMode -= ExitSpellMode;
+                _input.OnStartShapeMode -= EnterSpellMode;
+                _input.OnExitShapeMode -= ExitSpellMode;
+            }
         }
     }
 }

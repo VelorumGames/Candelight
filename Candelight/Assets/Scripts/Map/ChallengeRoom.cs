@@ -1,7 +1,9 @@
 using Items;
+using Music;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Map
 {
@@ -12,15 +14,20 @@ namespace Map
         [SerializeField] int _fragReward;
 
         SimpleRoomManager _man;
+        MusicManager _music;
 
         private void Awake()
         {
             _man = FindObjectOfType<SimpleRoomManager>();
+            _music = FindObjectOfType<MusicManager>();
         }
 
         private void Start()
         {
             SpawnNextWave();
+
+            _music.PlayMusic(2);
+            _music.ChangeVolumeFrom(2, 0f, 0.5f, 3f);
         }
 
         public void SpawnNextWave()
@@ -28,7 +35,9 @@ namespace Map
             if (_waveCount < _waves.Length) _waves[_waveCount++].SetActive(true); //Siguiente oleada
             else //Al finalizar el desafio
             {
-                Inventory.Instance.SpawnFragments(_fragReward, 1, GetRandomSpawn());
+                _music.ChangeVolumeTo(2, 0f, 5f);
+
+                FindObjectOfType<Inventory>().SpawnFragments(_fragReward, 1, GetRandomSpawn());
                 _man.PlaceTorch(GetRandomSpawn());
             }
         }

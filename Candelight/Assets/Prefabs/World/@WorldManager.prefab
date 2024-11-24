@@ -44,17 +44,120 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f158be63bba07a448e41230ccebb1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxNodes: 100
+  MaxNodes: 80
+  NumNodes: 0
   NodePrefab: {fileID: 4733775303896732694, guid: 035f3482a0307f24fb334ffdb5fa809c,
     type: 3}
-  _spawnRange: {x: 20, y: 20}
-  _minDistBetweenNodes: 1
   _worldParent: {fileID: 0}
+  _spawnRange: {x: 45, y: 45}
+  _minDistBetweenNodes: 7
+  DurniaNodeNames:
+  - Ojo de Cuervo
+  - Bosque sin Encantar
+  - "Los Cuatro \xC1rboles"
+  - Fulgor Celestial
+  - La Cuna de las Estrellas
+  - Enclave Verde
+  - "Arboleda del Pr\xF3fugo"
+  - Valle de la Verdad
+  - Bosquecillo Indestructible
+  - Senda de las Luces
+  TemeriaNodeNames:
+  - Grutas del Llanto
+  - Clan del Pueblo Cavernario
+  - "Peque\xF1a Noche Eterna"
+  - Aldea Fragmentada
+  - Minas de Cobre
+  - Musguillo
+  - Roca y Tierra
+  - "Catacumbas Ex\xE1nimes"
+  - Nucleria
+  - Poblado Azul
+  IdriaNodeNames:
+  - "Ef\xEDmeri"
+  - La Gran Biblioteca
+  - Crecentia
+  - Estelaria
+  - Ignisia
+  - Letargaria
+  - "V\xEDlia"
+  - Ciudad de Cobre
+  - Timplumta
+  - Ocasilia
+  DurniaNodeDescriptions:
+  - "Se dice que es el bosque que frecuentaba el cazador m\xE1s astuto de todo Candelight.
+    Todos los h\xE9roes del Alba que acampan aqu\xED aspiran a ser como \xE9l."
+  - "Los antiguos temerios que viv\xEDan aqu\xED estaban cansados de desmentir teor\xEDas
+    sobre la existencia de criaturas m\xE1gicas en sus lindes. Hasta tal punto se
+    cansaron, que pasaron a llamarlo: \u201CEl Bosque sin Encantar\u201D."
+  - "Se dice que siglos atr\xE1s, cuatro clanes que habitaban el bosque se reun\xEDan
+    cada luna llena bajo la copa de cuatro inmensos \xE1rboles. Un d\xEDa, los \xE1rboles
+    aparecieron cortados."
+  - "Es uno de los puntos de encuentro propuesto por los h\xE9roes del Alba para
+    ver el Amanecer del mundo."
+  - "En medio de este bosque hay un claro con forma de medialuna. En un pasado, las
+    parejas se tumbaban en \xE9l para contemplar las estrellas y as\xED desear estar
+    siempre juntos."
+  - "Permanece verde todo el a\xF1o, incluso en los meses m\xE1s fr\xEDos. Cuando
+    el calor en otros lugares de Candelight empieza a escasear, se puede ver en el
+    horizonte enormes bandadas de p\xE1jaros aterrizando sobre las frondosas copas."
+  - "Los h\xE9roes del Alba llevan a\xF1os buscando en este bosque a un temerio,
+    fugitivo de la guerra. Y tanto es el tiempo que llevan busc\xE1ndole, que ya
+    nadie recuerda su rostro."
+  - "Cuando los h\xE9roes del Alba dudan moment\xE1neamente sobre su misi\xF3n, se
+    dirigen al Valle de la Verdad. Aqu\xED habr\xE1 h\xE9roes que les recuerden por
+    qu\xE9 luchan, por qu\xE9 el Alba les necesita. Pues en este valle solo se habla
+    la verdad."
+  - "Todo aquel que intenta talar un \xE1rbol en el Bosquecillo Indestructible se
+    lleva una sorpresa. Y es que hay pilares de fragmentos que han crecido en el
+    interior del tronco de los \xE1rboles."
+  - "A mediados de la guerra, eran pocos durnianos los que se atrev\xEDan a atravesar
+    la Senda de las Luces. Y es que han sido muchos los que han afirmado ver luces
+    flotantes a los costados del camino."
+  TemeriaNodeDescriptions:
+  - Se dice que desde sus profundidades asoma el sonido de un llanto desconsolado.
+    No se sabe si se trata de un monstruo o de un temerio desdichado.
+  - "Un refugio muy unido. Despu\xE9s de todo, fue el que m\xE1s sufri\xF3 de las
+    calamidades de la guerra junto con P\xE9trica."
+  - "Es dif\xEDcil encontrar en ella musgo brillante o setas luminosas, por lo que
+    sus habitantes est\xE1n acostumbrados a vivir en completa oscuridad."
+  - "Se dice que los cristales\_emergieron con tanta rapidez en esta zona que muchas
+    casas quedaron incomunicadas del resto."
+  - "Son las minas de Candelight de las que m\xE1s se saca provecho. Los temerios
+    hacen uso del sistema de t\xFAneles para repartir cobre al resto de las aldeas."
+  - "En los meses m\xE1s c\xE1lidos todas las paredes de la cueva se cubren de musgo
+    brillante. Durante esos meses, los habitantes de Musguillo no pasan hambre."
+  - "La \xFAltima preocupaci\xF3n de la peque\xF1a familia que se instal\xF3 aqu\xED
+    era ponerle un buen nombre al lugar. Tan solo lo describieron r\xE1pidamente,
+    y as\xED se qued\xF3."
+  - "En un pasado fueron un cementerio reservado a los idrianos. Actualmente, no
+    hay tiempo para identificar los cad\xE1veres."
+  - "El asentamiento m\xE1s cercano al n\xFAcleo. El interior de algunas viviendas
+    est\xE1 iluminado por un tenue fulgor azul."
+  - Conforme los pilares han ido creciendo, los habitantes de la aldea han tenido
+    que ir picando a mano uno a uno los fragmentos que amenazaban con atravesar sus
+    casas.
+  IdriaNodeDescriptions:
+  - "Iba a ser un hogar provisional para los que ayudasen a edificar Letargaria.
+    Pero nunca se movieron de aqu\xED."
+  - "Una copia de cada libro de Candelight acababa aqu\xED. Sin importar su procedencia."
+  - La ciudad del progreso...
+  - "Donde se invent\xF3 el primer telescopio."
+  - "Sus habitantes pose\xEDan un talento peculiar."
+  - "Un para\xEDso a medio construir."
+  - "El punto de encuentro de los alquimistas m\xE1s prestigiosos."
+  - Las paredes son de piedra, pero sus gentes de cobre.
+  - "Donde se apuntaban las \u201CNuevas Ideas\u201D. Fue una de las primeras ciudadelas
+    que se qued\xF3 en silencio."
+  - "Aqu\xED se guarda un registro de todos los d\xEDas que hubo en Candelight antes
+    de que llegase la Noche Eterna."
   biomeA: {fileID: 2100000, guid: 1105202954135b14596dde0eb1e34811, type: 2}
   biomeB: {fileID: 2100000, guid: 5341a80d52870354bad2641a3d63a15d, type: 2}
   biomeC: {fileID: 2100000, guid: e5ce778dfa7427349b0a7d3494f0f391, type: 2}
-  _biomeOffset: 0
-  _biomeAThreshold: 0.3
-  _biomeBThreshold: 0.5
+  _biomeOffset: 25.094349
+  _biomeSize: 79.6
+  _biomeAThreshold: 0.34
+  _biomeBThreshold: 0.58
   World: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
   CurrentNodeInfo: {fileID: 11400000, guid: 590e6fd0067b28f4e9bc3585d233a483, type: 2}
+  _worldMusic: {fileID: 8300000, guid: fc7d9fb55773814438c08e38c70862ce, type: 3}

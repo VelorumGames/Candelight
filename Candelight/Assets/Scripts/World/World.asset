@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf153fb8df7959468badb478f098c8e, type: 3}
   m_Name: World
   m_EditorClassIdentifier: 
-  Seed: 1739
+  Seed: 1669
   World: {fileID: 0}
-  CompletedNodes: 0
+  MAX_NODES: 0
   NodeCandleFactor: 1
+  MAX_CANDLE: 100
+  m_candle: 100
+  CompletedIds: 
+  LoadedInfo: 1

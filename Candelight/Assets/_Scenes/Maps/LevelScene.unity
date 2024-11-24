@@ -96,7 +96,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: cb1dafb4f0a741d4683d17337198c83b,
+    type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 251685aa5bf226140b6677341c237b41,
     type: 2}
 --- !u!196 &4
@@ -334,10 +335,10 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 50
+  far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 3.74
+  orthographic size: 1.01
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -432,7 +433,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 0.5
+    m_Time: 0
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -464,8 +465,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fdc8d4b12b5fa148ab5880a4b4c94b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _events:
+  _durniaEvents:
+  - {fileID: 0}
+  - {fileID: 8466426061747607947, guid: b87604c02e7f93f4aa94b9f009b80428, type: 3}
+  - {fileID: 5488207378174727287, guid: 941fcb5f0cbee464fb7e04f804092545, type: 3}
+  _temeriaEvents:
+  - {fileID: 2748539731665009197, guid: 1845ef86f5e9f3a459bbb55ebcf17220, type: 3}
   - {fileID: 7530822801860363967, guid: 24aeecf9003219b49bf8298d23dfdcc9, type: 3}
+  _idriaEvents: []
 --- !u!1 &620055920
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,9 +513,9 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 3.74
+    OrthographicSize: 1.01
     NearClipPlane: 0.3
-    FarClipPlane: 50
+    FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -561,6 +568,8 @@ GameObject:
   m_Component:
   - component: {fileID: 621438920}
   - component: {fileID: 621438919}
+  - component: {fileID: 621438921}
+  - component: {fileID: 621438922}
   m_Layer: 0
   m_Name: PostProcessing
   m_TagString: Untagged
@@ -600,12 +609,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &809893926 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4106319399860328216, guid: c46c020e6f24e1a43b957187b5e7e93a,
-    type: 3}
-  m_PrefabInstance: {fileID: 3523103089918366145}
+--- !u!114 &621438921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621438918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37154afa55f6eca4b8ee480d0ea845db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mixer: {fileID: 24100000, guid: f6317272d0ee82c459c96664b6a5b4e6, type: 2}
+--- !u!114 &621438922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621438918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557ba45f5e1ac194eb00440251d207c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1195221486
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,7 +714,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1195221490
 RectTransform:
@@ -821,15 +849,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PixelRenderCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 4870048946699914461, guid: 33c67062d8c43604ca2a65ab9c6c03bc,
+    - target: {fileID: 2991727818316053482, guid: 33c67062d8c43604ca2a65ab9c6c03bc,
         type: 3}
-      propertyPath: m_Maskable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4870048946699914461, guid: 33c67062d8c43604ca2a65ab9c6c03bc,
-        type: 3}
-      propertyPath: m_RaycastTarget
-      value: 0
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -884,7 +907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 6, z: -7.23}
+  m_FollowOffset: {x: 0, y: 4.8, z: -5.15}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1194,10 +1217,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1195221490}
     m_Modifications:
-    - target: {fileID: 275067896084342767, guid: c46c020e6f24e1a43b957187b5e7e93a,
+    - target: {fileID: 2043384785631716172, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
-      propertyPath: m_Name
-      value: MinimapSprite
+      propertyPath: Active
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3486557483265283610, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
@@ -1299,155 +1322,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4837140164548524455, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4935394929591358164, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_Name
       value: '@UIManager'
-      objectReference: {fileID: 0}
-    - target: {fileID: 6630884662820169134, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_Maskable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7439247498470722205, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: _roomContainer
-      value: 
-      objectReference: {fileID: 809893926}
-    - target: {fileID: 7439247498470722205, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: _globalContainer
-      value: 
-      objectReference: {fileID: 3523103089918366146}
-    - target: {fileID: 7590278775224961567, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7590278775224961567, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7590278775224961567, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7590278775224961567, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7688108729564693026, guid: c46c020e6f24e1a43b957187b5e7e93a,
-        type: 3}
-      propertyPath: m_Name
-      value: MinimapPlayer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c46c020e6f24e1a43b957187b5e7e93a, type: 3}
---- !u!224 &3523103089918366146 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6026885732604517841, guid: c46c020e6f24e1a43b957187b5e7e93a,
-    type: 3}
-  m_PrefabInstance: {fileID: 3523103089918366145}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &4180437494539777463
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3116448592733766415, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: Loop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3472715332669887069, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: Loop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3472715332669887069, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_Volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3517627024999432025, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: Loop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4537814715278273818, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: Loop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5008560839315708731, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_Name
-      value: '@MusicManager'
-      objectReference: {fileID: 0}
-    - target: {fileID: 6543885246255932373, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6543885246255932373, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6543885246255932373, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6543885246255932373, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6543885246255932373, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6543885246255932373, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6543885246255932373, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6543885246255932373, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6543885246255932373, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6543885246255932373, guid: 1536dcea8fe429c4caf664ceacc70638,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1536dcea8fe429c4caf664ceacc70638, type: 3}
 --- !u!1001 &7429367234792288768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1559,7 +1448,7 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: RuneChance
-      value: 0
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -1574,7 +1463,7 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: SmallThreshold
-      value: 36
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -1671,42 +1560,42 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: IdriaLargeRooms.Array.size
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: IdriaSmallRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: DurniaLargeRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: DurniaSmallRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: IdriaMediumRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: DurniaMediumRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: TemeriaLargeRooms.Array.size
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: TemeriaSmallRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -1722,6 +1611,24 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: IdriaLargeRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 02388fc2b83bb4c4e83d4413d98e3ba1,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaLargeRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 6733bf1d5978a6340a66cea93c4ebb72,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaLargeRooms.Array.data[4]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 4fd677b8518f5394881b207ceb3e4fcc,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: IdriaSmallRooms.Array.data[0]
       value: 
       objectReference: {fileID: 3729855312333802389, guid: e6d7b3c01a10dba4a98f5955a6e6e78a,
@@ -1734,8 +1641,20 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: IdriaSmallRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: ee7dd32548dbeab4c8f6f313d5a7a106,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaSmallRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 5fa720fdc1564a84cb25518dc2bef06f,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: TemeriaMediumRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -1751,6 +1670,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: DurniaLargeRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 4f5ca947c532686439c12461e044ba80,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: DurniaLargeRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 0b8322cb5c3b2bd4085d3aefa5a5e470,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: DurniaSmallRooms.Array.data[0]
       value: 
       objectReference: {fileID: 8668900970460633133, guid: 05de7358a7244e24a9f0d118ecc41c17,
@@ -1760,6 +1691,18 @@ PrefabInstance:
       propertyPath: DurniaSmallRooms.Array.data[1]
       value: 
       objectReference: {fileID: 8668900970460633133, guid: 15a5d1fca4a31a8498bfa013b9978855,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: DurniaSmallRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 8668900970460633133, guid: 51e2ad06fedf99c47ad600405638dae9,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: DurniaSmallRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 8668900970460633133, guid: 0b7d8cd33c3df854baf4e3b74581a8af,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -1775,6 +1718,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: IdriaMediumRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: d53d224bd8764d24a93c92963bca8d36,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaMediumRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 11494c1454254e54484e1665b7dd0e5d,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: DurniaMediumRooms.Array.data[0]
       value: 
       objectReference: {fileID: 3729855312333802389, guid: 750a785fff63e684bb1cad178074d1b6,
@@ -1784,6 +1739,18 @@ PrefabInstance:
       propertyPath: DurniaMediumRooms.Array.data[1]
       value: 
       objectReference: {fileID: 3729855312333802389, guid: 0d5d58f967d65e749ad2f242f0f97bc7,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: DurniaMediumRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 195e792ee49bd3e41981350786ceeb4e,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: DurniaMediumRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 2337fcb31fbb5904c9ed09a220634c8c,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -1799,6 +1766,24 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: TemeriaLargeRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 794f0574018b6e640a38bd4458bbf7e5,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaLargeRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 928c22519c8ce4d49b55340af391d716,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaLargeRooms.Array.data[4]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 70f29b317092b434ea320ebdfc94436a,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: TemeriaSmallRooms.Array.data[0]
       value: 
       objectReference: {fileID: 2188563618886970509, guid: 28f3608dd2b77084d8fae86ebadee189,
@@ -1811,6 +1796,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: TemeriaSmallRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 943f39c5accf12544a78183676d68a04,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaSmallRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 7a95797fd46359945b78826fc2094094,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: TemeriaMediumRooms.Array.data[0]
       value: 
       objectReference: {fileID: 2188563618886970509, guid: 02dce584f101ea440b7994c5ed439549,
@@ -1820,6 +1817,18 @@ PrefabInstance:
       propertyPath: TemeriaMediumRooms.Array.data[1]
       value: 
       objectReference: {fileID: 2188563618886970509, guid: e7ff4a7dcf6e4b941a4ab56bbde25438,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaMediumRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: fd1aa983a6452e64cb49ebe037cb15cb,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaMediumRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: d05ffa7e9048300418cde97b7de21f31,
         type: 3}
     - target: {fileID: 3307859510703695798, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -1893,16 +1902,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1568954402014988464, guid: 8a442ddb609d2e94b9c61b92fa386445,
-        type: 3}
-      propertyPath: _dStartVolumes.Array.data[1]
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
         type: 3}
       propertyPath: _ground
       value: 
       objectReference: {fileID: 137178346}
+    - target: {fileID: 6719427425385065564, guid: 8a442ddb609d2e94b9c61b92fa386445,
+        type: 3}
+      propertyPath: _tConnection
+      value: 
+      objectReference: {fileID: 2100000, guid: 3e52f6c6133081546a7f4af38c1f9289, type: 2}
     - target: {fileID: 7150414812206426676, guid: 8a442ddb609d2e94b9c61b92fa386445,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1976,7 +1985,6 @@ SceneRoots:
   - {fileID: 1422702450}
   - {fileID: 8798732836475467870}
   - {fileID: 7429367234792288768}
-  - {fileID: 4180437494539777463}
   - {fileID: 9205013060254341537}
   - {fileID: 9223270}
   - {fileID: 621438920}

@@ -12,16 +12,17 @@ namespace SpellInteractuable
     public class SI_AnchorBarrier : ASpellInteractuable
     {
         [SerializeField] bool _active;
-        int _atCount;
+        [SerializeField] int _atCount;
         [SerializeField] int _attackLimit;
         protected override void ApplyInteraction(ASpell spell)
         {
             if (_active)
             {
-                if(_atCount++ < _attackLimit)
+                if(_atCount++ >= _attackLimit)
                 {
-                    GetComponent<AnchorManager>().OpenAnchor();
-                    _active = false;
+                    //GetComponent<AnchorManager>().OpenAnchor();
+                    //_active = false;
+                    Destroy(gameObject);
                 }
             }
         }

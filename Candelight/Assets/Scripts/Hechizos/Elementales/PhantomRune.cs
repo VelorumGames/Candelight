@@ -14,7 +14,7 @@ namespace Hechizos.Elementales
         public PhantomRune(Mage m) : base(m)
         {
             Name = "Phantom";
-            Damage = 8f;
+            Damage = 10f;
         }
 
         //Proyectil fantasmal
@@ -87,12 +87,15 @@ namespace Hechizos.Elementales
         public override void BuffActivation(Transform target)
         {
             MageManager.SetExtraProjSpeed(_buffedSpeed);
-            MageManager.ManageBuffReset(BuffReset(target));
+            MageManager.ManageBuff(true, BuffReset(target));
+            AddDamageFactor(0.25f);
         }
         public override IEnumerator BuffReset(Transform target)
         {
             yield return new WaitForSeconds(_buffDuration);
             MageManager.SetExtraProjSpeed(1);
+            AddDamageFactor(-0.25f);
+            MageManager.ManageResetBuff();
         }
 
         public void SetMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion = n;

@@ -47,18 +47,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentNodeInfo: {fileID: 11400000, guid: 590e6fd0067b28f4e9bc3585d233a483, type: 2}
   _ground: {fileID: 0}
-  _dFog: {r: 0, g: 0, b: 0, a: 0}
+  _dFog: {r: 0, g: 0, b: 0, a: 1}
   _dFogDistance: 20
   _dGround: {fileID: 2100000, guid: 8ad00bf6e1388bb4e8d9032c74b4ae0e, type: 2}
   _dConnection: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
-  _tFog: {r: 0, g: 0, b: 0, a: 0}
+  _dSkybox: {fileID: 2100000, guid: 3469de3264da43f45bc4eb13c4b376ad, type: 2}
+  _tFog: {r: 0, g: 0, b: 0, a: 1}
   _tFogDistance: 25
   _tGround: {fileID: 2100000, guid: 08384b54316ec2246b05a07bc389e16e, type: 2}
-  _tConnection: {fileID: 2100000, guid: b62e78148e794bb4f967100473bfbc8f, type: 2}
-  _iFog: {r: 0.39607844, g: 0.4117647, b: 0.50980395, a: 0}
+  _tConnection: {fileID: 2100000, guid: 3e52f6c6133081546a7f4af38c1f9289, type: 2}
+  _tSkybox: {fileID: 2100000, guid: 2055f62958ddc534795c703ba4c33bbd, type: 2}
+  _iFog: {r: 0.39607844, g: 0.4117647, b: 0.50980395, a: 1}
   _iFogDistance: 12
   _iGround: {fileID: 2100000, guid: d7259ebd48478f84d931cfd06a70fcae, type: 2}
   _iConnection: {fileID: 2100000, guid: 684e5d4f4149a8049a232ccf54115c5f, type: 2}
+  _iSkybox: {fileID: 2100000, guid: 2e21ab7926f242949a0ca4bd193449a9, type: 2}
 --- !u!114 &1568954402014988464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,7 +81,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2c735e0f67403be4bbd6824d40291894, type: 3}
   _dStartVolumes:
   - 0.5
-  - 0
+  - 0.5
   - 0
   - 0
   _temeriaMusic:

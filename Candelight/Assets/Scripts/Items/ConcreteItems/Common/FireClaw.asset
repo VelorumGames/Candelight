@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f338d1c783ab14cb238934043b0280, type: 3}
   m_Name: FireClaw
   m_EditorClassIdentifier: 
+  Id: 2
   Name: Zarpa de fuego
-  Description: 
+  Description: "El impacto de los hechizos de fuego hace un 5% m\xE1s de da\xF1o."
+  SubDescription: "Se la quitaron a un gato chamuscado. \xC9ste ten\xEDa flores azules
+    por todo su cuerpo y sus garras segu\xEDan en llamas."
+  ItemSprite: {fileID: 21300000, guid: d6f49bac4779d114ca22ec992d74fdee, type: 3}
   Max: 99
   Category: 4

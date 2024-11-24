@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f338d1c783ab14cb238934043b0280, type: 3}
   m_Name: DawnsProtectionSpphere
   m_EditorClassIdentifier: 
+  Id: 13
   Name: "Esfera de Protecci\xF3n del Alba"
-  Description: 
+  Description: "Recibes un 15% menos de da\xF1o de los ataques enemigos."
+  SubDescription: "Las armaduras est\xE1n reservadas para los miembros del Alba.
+    En su defecto, puedes tener esta esfera."
+  ItemSprite: {fileID: 21300000, guid: cb9a527cbac681e4b8dbef0d9fe12ab2, type: 3}
   Max: 1
   Category: 10

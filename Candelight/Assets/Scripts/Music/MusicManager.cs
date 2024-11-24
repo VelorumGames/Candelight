@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Map;
+using Dialogues;
 
 namespace Music
 {
@@ -18,6 +19,9 @@ namespace Music
         bool _randomMusic;
 
         MapManager _map;
+        DialogueUI _dial;
+
+        bool _inCombat;
 
         private void OnEnable()
         {
@@ -45,6 +49,13 @@ namespace Music
                 _map.OnCombatStart += StartCombatMusic;
                 _map.OnCombatEnd += ReturnToExploreMusic;
             }
+
+            _dial = FindObjectOfType<DialogueUI>();
+            if (_dial)
+            {
+                _dial.OnDialogueStart += StartDialogueMusic;
+                _dial.OnDialogueEnd += EndDialogueMusic;
+            }
         }
 
         void OnSceneUnload(Scene scene)
@@ -54,6 +65,17 @@ namespace Music
                 _map.OnCombatStart -= StartCombatMusic;
                 _map.OnCombatEnd -= ReturnToExploreMusic;
             }
+
+            if (_dial)
+            {
+                _dial.OnDialogueStart -= StartDialogueMusic;
+                _dial.OnDialogueEnd -= EndDialogueMusic;
+            }
+
+            ChangeVolumeTo(0, 0f, 0.75f);
+            ChangeVolumeTo(1, 0f, 0.75f);
+            ChangeVolumeTo(2, 0f, 0.75f);
+            ChangeVolumeTo(3, 0f, 0.75f);
         }
 
         public void LoadClip(int id, AudioClip newClip) => _sources[id].clip = newClip;
@@ -63,8 +85,12 @@ namespace Music
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    _sources[i].clip = clips[i];
-                    ChangeVolumeTo(i, startVolumes[i], 1f);
+                    if (clips[i] != null && startVolumes != null)
+                    {
+                        _sources[i].clip = clips[i];
+                        ChangeVolumeTo(i, startVolumes[i], 1f);
+                    }
+
                 }
             }
             else Debug.LogWarning("ERROR: No se pueden cargar las canciones porque no coincide el tamano del array");
@@ -94,11 +120,18 @@ namespace Music
             {
                 yield return new WaitForSeconds(Random.Range(minTime, maxTime));
 
+                _sources[1].loop = _inCombat;
+                _sources[2].loop = _inCombat;
+
                 if (!_sources[1].isPlaying)
                 {
                     _sources[1].Play();
                     _sources[2].Play();
+
+                    ChangeVolumeTo(1, 0.5f, 10f);
                 }
+
+                yield return new WaitUntil(() => !_sources[1].isPlaying);
             }
         }
 
@@ -108,6 +141,8 @@ namespace Music
             if (!_sources[id].isPlaying) _sources[id].Play();
         }
 
+        public void SetLooping(int id, bool b) => _sources[id].loop = b;
+
         public void StopMusic(int id)
         {
             if (_sources[id].isPlaying) _sources[id].Stop();
@@ -116,18 +151,20 @@ namespace Music
         public void ChangeVolumeFrom(int id, float startVolume, float endVolume, float time)
         {
             _sources[id].volume = startVolume;
-            _sources[id].DOFade(endVolume, time).Play();
+            _sources[id].DOFade(endVolume, time).Play().SetUpdate(true);
         }
 
         public void ChangeVolumeTo(int id, float endVolume, float time)
         {
-            _sources[id].DOFade(endVolume, time).Play();
+            _sources[id].DOFade(endVolume, time).Play().SetUpdate(true);
         }
 
         public float GetCurrentVolume(int id) => _sources[id].volume;
 
         void StartCombatMusic()
         {
+            _inCombat = true;
+
             if (!_randomMusic) //Si no esta sonando ya la musica de exploracion
             {
                 _sources[1].Play();
@@ -140,8 +177,35 @@ namespace Music
 
         void ReturnToExploreMusic()
         {
+            _inCombat = false;
+
             ChangeVolumeTo(1, 0.5f, 2f);
             ChangeVolumeTo(2, 0f, 2f);
+        }
+
+        void StartDialogueMusic()
+        {
+            for (int i = 1; i < 4; i++)
+            {
+                Debug.Log($"Compruebo volumen en {i}: {GetCurrentVolume(i)}");
+                if (GetCurrentVolume(i) > 0.15f)
+                {
+                    Debug.Log($"Se baja la musica {i}");
+                    ChangeVolumeTo(i, 0.15f, 1f);
+                }
+            }
+            //ChangeVolumeTo(1, 0.2f, 1f);
+            //ChangeVolumeTo(2, 0.2f, 1f);
+        }
+
+        void EndDialogueMusic()
+        {
+            for (int i = 1; i < 4; i++)
+            {
+                if (GetCurrentVolume(i) < 0.3f && GetCurrentVolume(i) > 0.1f) ChangeVolumeTo(i, 0.5f, 2f);
+            }
+            //ChangeVolumeTo(1, 0.5f, 1f);
+            //ChangeVolumeTo(2, 0.5f, 1f);
         }
 
         private void OnDisable()

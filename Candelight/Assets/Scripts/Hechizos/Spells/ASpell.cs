@@ -12,7 +12,9 @@ namespace Hechizos
 
         protected void OnEnable()
         {
+            
             Elements = Mage.Instance.GetActiveElements().ToArray();
+
         }
 
     }

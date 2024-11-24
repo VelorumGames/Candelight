@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f338d1c783ab14cb238934043b0280, type: 3}
   m_Name: InvisibleLamp
   m_EditorClassIdentifier: 
+  Id: 3
   Name: Candil Invisible
-  Description: 
+  Description: La vela se agota un 5% menos cada vez que enciendes una Gran Pira.
+  SubDescription: "Como el viento es invisible, lo mejor para frenarlo es algo que
+    tambi\xE9n sea invisible."
+  ItemSprite: {fileID: 21300000, guid: 411fc430f9f53a540ba31cfc94a28400, type: 3}
   Max: 99
   Category: 4

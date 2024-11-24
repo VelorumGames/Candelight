@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f338d1c783ab14cb238934043b0280, type: 3}
   m_Name: EtherealShoes
   m_EditorClassIdentifier: 
+  Id: 1
   Name: "Zapatos Et\xE9reos"
-  Description: 
+  Description: "Si la vela tiene m\xE1s de la mitad vida, tu velocidad aumenta un
+    10%."
+  SubDescription: "La gente no se extra\xF1a porque te vea correr descalzo, sino
+    porque vas m\xE1s r\xE1pido."
+  ItemSprite: {fileID: 21300000, guid: 1dbb6552b463bc147b63d5bdb1980add, type: 3}
   Max: 1
   Category: 4

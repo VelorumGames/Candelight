@@ -19,5 +19,14 @@ namespace Hechizos.DeForma
         // Este método lanzará el hechizo basado en los elementos activos
         public abstract void ThrowSpell();
 
+        protected float GetTotalDamage()
+        {
+            float avDam = 0;
+            foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
+            avDam /= MageManager.GetActiveElements().Count;
+            if (MageManager.GetActiveElements().Count > 1) avDam *= 0.75f;
+            return avDam;
+        }
+
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UI;
+using Music;
 
 namespace World
 {
@@ -52,6 +53,7 @@ namespace World
         [Space(10)]
         public WorldInfo World;
         public NodeInfo CurrentNodeInfo;
+        [SerializeField] AudioClip _worldMusic;
 
         private void Awake()
         {
@@ -65,6 +67,7 @@ namespace World
             if (!World.World)
             {
                 World.CompletedNodes = 0;
+                World.MAX_NODES = MaxNodes;
                 DontDestroyOnLoad(_worldParent.gameObject);
             }
 
@@ -80,6 +83,9 @@ namespace World
         private void Start()
         {
             FindObjectOfType<UIManager>().FadeFromBlack(2f);
+
+            FindObjectOfType<MusicManager>().PlayMusic(0, _worldMusic);
+            FindObjectOfType<MusicManager>().ChangeVolumeFrom(0, 0f, 0.5f, 2f);
 
             CurrentNodeInfo.CurrentLevel = 0;
 
@@ -99,7 +105,7 @@ namespace World
             }
             try
             {
-                MovePlayerToLastNode(CurrentNodeInfo.Node.transform);
+                MovePlayerToNode(CurrentNodeInfo.Node.transform);
             }
             catch (System.Exception e)
             {
@@ -118,6 +124,7 @@ namespace World
             {
                 //Genero un nodo y lo coloco en una posicion aleatoria
                 GameObject node = Instantiate(NodePrefab, _worldParent);
+                node.GetComponent<NodeManager>().Id = id;
                 node.transform.position = new Vector3(Random.Range(-_spawnRange.x, _spawnRange.x), 0, Random.Range(-_spawnRange.y, _spawnRange.y));
 
                 //Check de distancia minima
@@ -159,6 +166,7 @@ namespace World
             }
 
             GenerateStart();
+            if (!World.LoadedInfo) LoadPreviousGame();
         }
 
         public void GenerateStart()
@@ -167,17 +175,27 @@ namespace World
             {
                 if (node.TryGetComponent<NodeManager>(out var nodeMan) && nodeMan.StartNodeCheck())
                 {
-                    GameObject _startNode = node;
                     nodeMan.Text.text += " START";
                     nodeMan.SetState(ENodeState.Explored);
                     CurrentNodeInfo.Node = nodeMan; //Marcamos este como nodo inicial
+
+                    MovePlayerToNode(node.transform);
+
                     return;
                 }
             }
             Debug.LogWarning("ERROR: No se ha encontrado ningun nodo de entrada valido");
         }
 
-        void MovePlayerToLastNode(Transform node)
+        void LoadPreviousGame()
+        {
+            foreach(var id in World.CompletedIds)
+            {
+                _nodes[id].GetComponent<NodeManager>().SetState(ENodeState.Completed);
+            }
+        }
+
+        void MovePlayerToNode(Transform node)
         {
             _player.transform.position = new Vector3(node.position.x, _player.transform.position.y, node.position.z);
         }
@@ -224,8 +242,15 @@ namespace World
         /// </summary>
         public void LoadNode()
         {
+            FindObjectOfType<UIManager>().FadeToBlack(1f, LoadNextScene);
+        }
+
+        void LoadNextScene()
+        {
+            FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
+            _player.transform.position = new Vector3(999f, _player.transform.position.y, 999f);
             World.World.SetActive(false);
-            switch(CurrentNodeInfo.LevelTypes[0])
+            switch (CurrentNodeInfo.LevelTypes[0])
             {
                 case ELevel.Exploration:
                     SceneManager.LoadScene("LevelScene");

@@ -3,6 +3,7 @@ using Hechizos.DeForma;
 using Hechizos.Elementales;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Hechizos
@@ -22,14 +23,16 @@ namespace Hechizos
 
         static bool _extraElement;
 
+        static bool _runesCreated;
+
         public ARune(Mage m, int Complexity, float Difficulty)
         {
             MageManager = m;
             Instructions = CreateInstructionChain(Complexity, Difficulty);
             Spells.Add(Instructions, this);
 
-            //Para debuggear:
-            Activate();
+            //Debug. Deberia estar desactivado
+            //Activate(true);
 
             string instrs = "";
 
@@ -69,7 +72,6 @@ namespace Hechizos
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -141,7 +143,7 @@ namespace Hechizos
         {
             int found = 0;
             int num = System.Math.Clamp(chain.Length / 2, 0, _extraElement ? 3 : 2);  //2 Es la complejidad de cada elemento
-            Debug.Log($"Deberia haber {num} elementos en esta cadena: " + InstructionsToString(chain));
+            //Debug.Log($"Deberia haber {num} elementos en esta cadena: " + InstructionsToString(chain));
             elements = new AElementalRune[num];
 
             if (chain.Length < 2) return false;
@@ -157,7 +159,7 @@ namespace Hechizos
                 }
                 catch (System.IndexOutOfRangeException e)
                 {
-                    Debug.Log("ERROR: Fallo al dividir subcadenas: " + e);
+                    Debug.LogWarning("ERROR: Fallo al dividir subcadenas: " + e);
                     return false;
                 }
 
@@ -190,16 +192,28 @@ namespace Hechizos
 
         public static void CreateAllRunes(Mage m)
         {
-            new CosmicRune(m);
-            new ElectricRune(m);
-            new PhantomRune(m);
+            if (!_runesCreated) //Si no se han creado previamente
+            {
+                new CosmicRune(m);
+                new ElectricRune(m);
+                new PhantomRune(m);
 
-            new MeleeRune(m);
-            new ProjectileRune(m);
-            new ExplosionRune(m);
-            new BuffRune(m);
+                new MeleeRune(m);
+                new ProjectileRune(m);
+                new ExplosionRune(m);
+                new BuffRune(m);
 
-            new FireRune(m);
+                new FireRune(m);
+
+                _runesCreated = true;
+            }
+            else //Si se han creado ya antes, resetearlas
+            {
+                foreach(var rune in Spells.Values)
+                {
+                    if (rune.Name != "Fire") rune.Activate(false);
+                }
+            }
         }
 
         public static string InstructionsToString(ESpellInstruction[] chain)
@@ -214,15 +228,21 @@ namespace Hechizos
             return str;
         }
 
-        public void Activate() => Activated = true;
-        public bool IsActivated() => Activated;
-        public static void Activate(ESpellInstruction[] chain)
+        public void Activate(bool b)
         {
+            Activated = b;
+            if (b && MageManager != null) MageManager.RuneActivation(this);
+        }
+        public bool IsActivated() => Activated;
+        public static void Activate(ESpellInstruction[] chain, out ARune rune)
+        {
+            rune = null;
+
             Debug.Log("Se busca el hechizo con cadena: " + InstructionsToString(chain) + $"({Spells.Keys.Count})");
-            if (FindUnactiveSpell(chain, out var rune))
+            if (FindUnactiveSpell(chain, out rune))
             {
                 Debug.Log("Se activa el hechizo: " + rune.Name);
-                rune.Activate();
+                rune.Activate(true);
             }
         }
 
@@ -253,5 +273,41 @@ namespace Hechizos
         }
 
         public static void SetExtraElement(bool b) => _extraElement = b;
+
+        public string GetInstructionsToString()
+        {
+            string instrs = "";
+            foreach(var i in Instructions)
+            {
+                instrs += i.ToString();
+            }
+            return instrs;
+        }
+
+        public string GetInstructionsToArrows()
+        {
+            string instrs = "";
+            foreach (var i in Instructions)
+            {
+                switch(i.ToString())
+                {
+                    case "Up":
+                        instrs += "W";
+                        break;
+                    case "Down":
+                        instrs += "S";
+                        break;
+                    case "Right":
+                        instrs += "D";
+                        break;
+                    case "Left":
+                        instrs += "A";
+                        break;
+                }
+            }
+            return instrs;
+        }
+
+        public ESpellInstruction[] GetInstructions() => Instructions.ToArray();
     }
 }

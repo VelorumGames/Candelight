@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f338d1c783ab14cb238934043b0280, type: 3}
   m_Name: ShootingStarDust
   m_EditorClassIdentifier: 
+  Id: 5
   Name: Polvo de estrella fugaz
-  Description: 
+  Description: Aumenta un 5% tu velocidad.
+  SubDescription: "A cada mota de polvo estelar se le ha adherido un peque\xF1o fragmento.
+    \xA1Qu\xE9 paciencia!"
+  ItemSprite: {fileID: 21300000, guid: 9dd3d7d69edcc834a8221852707690c1, type: 3}
   Max: 99
   Category: 4

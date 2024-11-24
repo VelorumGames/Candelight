@@ -12,8 +12,12 @@ namespace UI
 
         private void Awake()
         {
-            _box = FindObjectOfType<NodeInfoBox>();
             _node = GetComponent<NodeManager>();
+        }
+
+        private void OnEnable()
+        {
+            _box = FindObjectOfType<NodeInfoBox>();
         }
 
         private void OnTriggerEnter(Collider other)

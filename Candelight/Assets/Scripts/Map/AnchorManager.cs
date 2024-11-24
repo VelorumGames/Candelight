@@ -40,6 +40,7 @@ namespace Map
 
         bool _active;
         public bool Connected;
+        public AnchorManager ConnectedAnchor;
 
         GameObject _connectionMesh;
 
@@ -73,6 +74,8 @@ namespace Map
             _mask = gameObject.layer;
         }
 
+        public ARoom GetRoom() => _room;
+
         //==== GENERACION DEL NIVEL ====
         //PRIMERA FASE:
         // Cada habitacion posee anclajes. Los anclajes tienen probabilidad de activarse al instante o ser ralentizados por un delay
@@ -91,6 +94,8 @@ namespace Map
             _active = Random.value < 0.5f;
             if (_active && _map.CanCreateRoom()) SpawnRoom();
             else StartCoroutine(DelayedRoomCreation());
+
+            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 0);
         }
 
         private void Update()
@@ -103,6 +108,9 @@ namespace Map
             //    Debug.DrawRay(transform.position + 0.44f * transform.forward, _auxDirRight * _map.MediumThreshold, Color.yellow);
             //    Debug.DrawRay(transform.position + (_map.MediumThreshold * transform.forward - _map.SmallThreshold * transform.right), _map.SmallThreshold * transform.right, Color.blue);
             //}
+            //Debug.DrawRay(transform.position, _map.MediumThreshold * transform.forward, Color.blue);
+            //Debug.DrawRay(transform.position + _map.MediumThreshold * transform.forward, transform.right * _map.SmallThreshold, Color.red);
+            //Debug.DrawRay(transform.position + _map.MediumThreshold * transform.forward, );
         }
 
         /// <summary>
@@ -126,12 +134,13 @@ namespace Map
             //Averiguamos el tamano maximo 
             int maxSize = Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _raycastDirection, out _hit, _map.MediumThreshold, ~_mask) ? _hit.distance < _map.SmallThreshold ? _hit.distance < _map.RoomSeparation ? -1 : 0 : 1 : 2;
             //Debug.Log($"Tamano original: {maxSize} (Distancia libre: {_hit.distance})");
-            if (_hit.transform != null) Debug.Log($"Soy {gameObject.name} ({transform.parent.gameObject.name}) y he colisionado con {_hit.transform.gameObject.name} ({_hit.transform.parent.gameObject.name})");
+            //if (_hit.transform != null) Debug.Log($"Soy {gameObject.name} ({transform.parent.gameObject.name}) y he colisionado con {_hit.transform.gameObject.name} ({_hit.transform.parent.gameObject.name})");
             
             if (Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirLeft, out _auxLhit, _map.MediumThreshold, ~_mask) && _auxLhit.transform.parent.parent != transform.parent ||
                 Physics.Raycast(transform.position + MapManager.Instance.AnchorCastOrigin * transform.forward, _auxDirRight, out _auxRhit, _map.MediumThreshold, ~_mask) && _auxRhit.transform.parent.parent != transform.parent) maxSize -= 1;
             //Debug.Log($"Colisiona con {_hit.transform.name}");
-            if (Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold)) maxSize = -1;
+            if (Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold * 0.75f)) maxSize = -1;
+            //Debug.Log(Physics.CheckSphere(transform.position + _map.MediumThreshold * transform.forward, _map.SmallThreshold * 0.75f));
             if (maxSize == -1) return;
 
             ERoomSize size = (ERoomSize)Random.Range(0, maxSize + 1);
@@ -143,10 +152,12 @@ namespace Map
             Vector2 minimapOffset = MinimapOffsetChooser();
 
             //Generamos la nueva sala y encontramos su anclaje
-            AnchorManager obj = LocateObjectiveAnchor(_map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, minimapOffset, size));
+            GameObject newRoom = _map.RegisterNewRoom(_room.GetID(), transform.position + localOffset, minimapOffset, size);
+            ConnectedAnchor = LocateObjectiveAnchor(newRoom);
+            _map.NotifyNewRoom(newRoom, minimapOffset);
 
             //Suponiendo que existe el anclaje (en caso contrario, llevaria una referencia a si mismo para evitar errores), generamos la malla para la transicion entre ambos
-            _connectionMesh = GenerateMesh(obj);
+            _connectionMesh = GenerateMesh(ConnectedAnchor);
             SetUVToWorld uvScript = _connectionMesh.AddComponent<SetUVToWorld>();
             uvScript.MaterialToUse = _map.ConnectionMaterial;
             transform.localPosition -= 0.01f * transform.up;
@@ -210,18 +221,47 @@ namespace Map
         AnchorManager LocateObjectiveAnchor(GameObject room)
         {
             AnchorManager[] anchors = room.GetComponentsInChildren<AnchorManager>();
-            float minDist = 9999;
-            AnchorManager obj = this; //Pongo this en vez de null para que no de problemas en caso de fallo horrible dios no lo quiera
-            foreach (var a in anchors)
+            //float minDist = 9999f;
+            //AnchorManager obj = this; //Pongo this en vez de null para que no de problemas en caso de fallo horrible dios no lo quiera
+            //foreach (var a in anchors)
+            //{
+            //    float dist = Vector3.Distance(transform.position, a.transform.position);
+            //    if (dist < minDist)
+            //    {
+            //        minDist = dist;
+            //        obj = a;
+            //    }
+            //}
+
+            switch(_direction)
             {
-                float dist = Vector3.Distance(transform.position, a.transform.position);
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    obj = a;
-                }
+                case EAnchorDirection.Forward:
+                    foreach (var a in anchors)
+                    {
+                        if (a.GetDirection() == EAnchorDirection.Backward) return a;
+                    }
+                    break;
+                case EAnchorDirection.Backward:
+                    foreach (var a in anchors)
+                    {
+                        if (a.GetDirection() == EAnchorDirection.Forward) return a;
+                    }
+                    break;
+                case EAnchorDirection.Left:
+                    foreach (var a in anchors)
+                    {
+                        if (a.GetDirection() == EAnchorDirection.Right) return a;
+                    }
+                    break;
+                case EAnchorDirection.Right:
+                    foreach (var a in anchors)
+                    {
+                        if (a.GetDirection() == EAnchorDirection.Left) return a;
+                    }
+                    break;
             }
-            return obj;
+
+            return this;
         }
 
         /// <summary>
@@ -285,9 +325,9 @@ namespace Map
             BoxCollider baseCol = meshGO.AddComponent<BoxCollider>();
             baseCol.center = new Vector3(baseCol.center.x, 0f, baseCol.center.z);
 
-            //Debug.Log($"({_room.GetID()}) Diferencia en X: {positions[0].x - positions[3].x} < 0.3f; Diferencia en Z: {positions[0].z - positions[3].z} < 0.3f");
-            if (Mathf.Abs(positions[0].x - positions[3].x) < 1.5f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
-            else if (Mathf.Abs(positions[0].z - positions[3].z) < 1.5f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
+            //Debug.Log($"({_room.GetID()}) Diferencia en X: {positions[0].x - positions[3].x}");
+            if (Mathf.Abs(positions[0].x - positions[3].x) < 1.4f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
+            else if (Mathf.Abs(positions[0].z - positions[3].z) < 1.4f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
             else GenerateComplexColliders(meshGO, positions, line.endWidth);
 
             return meshGO;
@@ -300,26 +340,62 @@ namespace Map
         // Se crean BoxColliders. Se altera su center y size para que se adecuen a su correspondiente conexion
         #region Third Stage: Collider Generation
 
+        /// <summary>
+        /// Si la conexion es vertical, se generan dos colliders a ambos lados del camino
+        /// </summary>
+        /// <param name="con"></param>
+        /// <param name="positions"></param>
         void GenerateSimpleCollidersZ(GameObject con, Vector3[] positions)
         {
+            float zReduction = 0.8f;
+
             BoxCollider box1 = con.AddComponent<BoxCollider>();
             BoxCollider box2 = con.AddComponent<BoxCollider>();
+
+            //Se colocan acorde a un offset
             box1.center += _map.ConnectionCollidersOffset * 2f * Vector3.right;
             box2.center -= _map.ConnectionCollidersOffset * 2f * Vector3.right;
-            box1.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
-            box2.size = new Vector3(box1.size.x, 2f, box1.size.z * 0.8f);
+            //Se expanden una cantidad que se ha considerado correcta
+            box1.size = new Vector3(box1.size.x, 2f, box1.size.z * zReduction);
+            box2.size = new Vector3(box1.size.x, 2f, box1.size.z * zReduction);
+
+            float deltaCenters = Mathf.Abs(box1.center.x - box2.center.x);
+            float offset = 0;
+            //Debug.Log($"Soy {_room.GetID()} con distancia en X: {deltaCenters}");
+            if (deltaCenters > 5f) offset = 1.7f;
+
+            box1.center -= offset * Vector3.right;
+            box2.center += offset * Vector3.right;
         }
 
+        /// <summary>
+        /// Si la conexion es horizontal, se generan dos colliders a ambos lados del camino
+        /// </summary>
+        /// <param name="con"></param>
+        /// <param name="positions"></param>
         void GenerateSimpleCollidersX(GameObject con, Vector3[] positions)
         {
+            float xReduction = 0.8f;
+
             BoxCollider box1 = con.AddComponent<BoxCollider>();
             BoxCollider box2 = con.AddComponent<BoxCollider>();
+            //Se colocan acorde a un offset
             box1.center += _map.ConnectionCollidersOffset * 2f * Vector3.forward;
             box2.center -= _map.ConnectionCollidersOffset * 2f * Vector3.forward;
-            box1.size = new Vector3(box1.size.x * 0.8f, 2f, box1.size.z);
-            box2.size = new Vector3(box1.size.x * 0.8f, 2f, box1.size.z);
+            //Se expanden una cantidad que se ha considerado correcta
+            box1.size = new Vector3(box1.size.x * xReduction, 2f, box1.size.z);
+            box2.size = new Vector3(box1.size.x * xReduction, 2f, box1.size.z);
+
+            float deltaCenters = Mathf.Abs(box1.center.x - box2.center.x);
+            float offset = 0;
+            //Debug.Log($"Soy {_room.GetID()} con distancia en X: {deltaCenters}");
+            if (deltaCenters > 5f) offset = 1.55f;
+
+            box1.center -= offset * Vector3.right;
+            box2.center += offset * Vector3.right;
         }
 
+        //Generacion de colliders complejos
         void GenerateComplexColliders(GameObject con, Vector3[] positions, float lineWidth)
         {
             BoxCollider[] boxes = new BoxCollider[4];
@@ -332,17 +408,33 @@ namespace Map
             ExpandColliders(boxes, positions);
         }
 
+        /// <summary>
+        /// Se expanden los colliders en tamano. Cada anchor tiene una direccion y gracias a ella podemos predecir que direccion tendra la conexion (horizontal o vertical).
+        /// 
+        /// </summary>
+        /// <param name="boxes"></param>
+        /// <param name="positions"></param>
         void ExpandColliders(BoxCollider[] boxes, Vector3[] positions)
         {
             Vector2 halfSize;
 
-            switch(_direction)
+            float anchorDeltaX;
+            float anchorDeltaZ;
+            float extraSize;
+
+            switch (_direction)
             {
                 case EAnchorDirection.Forward:
                     CalibrateCollidersZ(boxes, positions);
 
                     halfSize = ExpandHalfSizeZ(boxes, positions[0], positions[3], (int)EColliderOrientation.Z);
-                    boxes[2].size = new Vector3(halfSize[0] * 2f, 2f, halfSize[1] * 2f);
+
+                    anchorDeltaX = Mathf.Abs(positions[0].x - positions[3].x);
+                    if (anchorDeltaX > 4f) extraSize = 0.4f * anchorDeltaX; //Valor exacto en >4f encontrado para 7.47
+                    else if (anchorDeltaX > 2f) extraSize = 0.7f * anchorDeltaX;
+                    else extraSize = 0.9f * anchorDeltaX;
+
+                    boxes[2].size = new Vector3(halfSize[0] * extraSize, 2f, halfSize[1] * 2.1f);
                     
                     break;
 
@@ -350,22 +442,38 @@ namespace Map
                     CalibrateCollidersZ(boxes, positions);
 
                     halfSize = ExpandHalfSizeZ(boxes, positions[0], positions[3], (int)EColliderOrientation.Z);
-                    boxes[2].size = new Vector3(halfSize[0] * 2f, 2f, halfSize[1] * 2f);
+
+                    anchorDeltaX = Mathf.Abs(positions[0].x - positions[3].x);
+                    if (anchorDeltaX > 4f) extraSize = 0.4f * anchorDeltaX; //Valor exacto en >4f encontrado para 7.47
+                    else if (anchorDeltaX > 2f) extraSize = 0.7f * anchorDeltaX;
+                    else extraSize = 0.9f * anchorDeltaX;
+
+                    boxes[2].size = new Vector3(halfSize[0] * extraSize, 2f, halfSize[1] * 2.1f);
 
                     break;
 
                 case EAnchorDirection.Right:
                     CalibrateCollidersX(boxes, positions);
-                    
+
+                    anchorDeltaZ = Mathf.Abs(positions[0].z - positions[3].z);
+                    //Debug.Log($"Soy {_room.GetID()} con distancia en Z: {anchorDeltaZ}");
+                    if (anchorDeltaZ > 4f) extraSize = 0.4f * anchorDeltaZ; //Valor exacto en >4f encontrado para 7.47
+                    else extraSize = 0.9f * anchorDeltaZ;
+
                     halfSize = ExpandHalfSizeX(boxes, positions[0], positions[3], (int)EColliderOrientation.X);
-                    boxes[2].size = new Vector3(halfSize[1] * 2f, 2f, halfSize[0] * 2f);
+                    boxes[2].size = new Vector3(halfSize[1] * 2.1f, 2f, halfSize[0] * extraSize);
                     break;
 
                 case EAnchorDirection.Left:
                     CalibrateCollidersX(boxes, positions);
 
+                    anchorDeltaZ = Mathf.Abs(positions[0].z - positions[3].z);
+                    //Debug.Log($"Soy {_room.GetID()} con distancia en Z: {anchorDeltaZ}");
+                    if (anchorDeltaZ > 4f) extraSize = 0.4f * anchorDeltaZ; //Valor exacto en >4f encontrado para 7.47
+                    else extraSize = 0.9f * anchorDeltaZ;
+
                     halfSize = ExpandHalfSizeX(boxes, positions[0], positions[3], (int)EColliderOrientation.X);
-                    boxes[2].size = new Vector3(halfSize[1] * 2f, 2f, halfSize[0] * 2f);
+                    boxes[2].size = new Vector3(halfSize[1] * 2.1f, 2f, halfSize[0] * extraSize);
                     break;                
             }
 
@@ -374,16 +482,34 @@ namespace Map
 
         void CalibrateCollidersZ(BoxCollider[] boxes, Vector3[] positions)
         {
-            //Colliders exteriores
-            boxes[0].center += new Vector3(_map.ConnectionCollidersOffset * Mathf.Abs(positions[0].x - positions[3].x) * 2f, 0f, 0f);
-            boxes[1].center -= new Vector3(_map.ConnectionCollidersOffset * Mathf.Abs(positions[0].x - positions[3].x) * 2f, 0f, 0f);
-            boxes[0].size = new Vector3(boxes[0].size.x, 2f, boxes[0].size.z * 0.8f);
-            boxes[1].size = new Vector3(boxes[1].size.x, 2f, boxes[1].size.z * 0.8f);
+            //=== COLLIDERS EXTERIORES ===
+
+            //La distancia en el eje X entre ambos anchors.
+            float anchorDeltaX = Mathf.Abs(positions[0].x - positions[3].x);
+            //Debug.Log($"Soy {_room.GetID()} con distancia en X: {anchorDeltaX}");
+
+            //Se elije segun la distancia.
+            // Para deltaX > 4: 1.27f (posicion exacta conseguida en 7.47)
+            // Para deltaX > 3: 1.7f
+            // Para deltaX <= 3: 1.85f (posicion exacta conseguida en 2.056)
+            float extraDist = 0f;
+            if (anchorDeltaX > 4f) extraDist = 1.27f;
+            else if (anchorDeltaX > 3f) extraDist = 1.7f;
+            else if (anchorDeltaX > 2f) extraDist = 1.85f;
+            else extraDist = 2.2f;
+
+            //Para elegir el centro de cada conexion, se toma el valor del offset y se multiplica por la distancia
+            //Cuanto mas lejos esten los anchors en el eje X, mas se alejaran los colliders
+            boxes[0].center += new Vector3(anchorDeltaX * extraDist, 0f, 0f);
+            boxes[1].center -= new Vector3(anchorDeltaX * extraDist, 0f, 0f);
+            boxes[0].size = new Vector3(boxes[0].size.x, 2f, boxes[0].size.z * 0.65f);
+            boxes[1].size = new Vector3(boxes[1].size.x, 2f, boxes[1].size.z * 0.65f);
 
 
-            //Colliders interiores
+            //=== COLLIDERS INTERIORES ===
+
             bool dirCond = (int)_direction % 2 == 0; //Si es 0, es forward o right
-            Vector3 offset = new Vector3(0f, 0f, Mathf.Abs(positions[0].z - positions[3].z) / 4);
+            Vector3 offset = new Vector3(0f, 0f, Mathf.Abs(positions[0].z - positions[3].z) * 0.25f);
 
             boxes[2].center += (dirCond ? -1 : 1) * offset;
             boxes[3].center += (!dirCond ? -1 : 1) * offset;
@@ -433,22 +559,42 @@ namespace Map
 
         void CalibrateCollidersX(BoxCollider[] boxes, Vector3[] positions)
         {
-            //Colliders exteriores
-            boxes[0].center += new Vector3(0f, 0f, _map.ConnectionCollidersOffset * Mathf.Abs(positions[0].z - positions[3].z) * 2f);
-            boxes[1].center -= new Vector3(0f, 0f, _map.ConnectionCollidersOffset * Mathf.Abs(positions[0].z - positions[3].z) * 2f);
+            //=== COLLIDERS EXTERIORES ===
+
+            //La distancia en el eje X entre ambos anchors.
+            float anchorDeltaZ = Mathf.Abs(positions[0].z - positions[3].z);
+            //Debug.Log($"Soy {_room.GetID()} con distancia en Z: {anchorDeltaZ}");
+
+            //La distancia extra se elije segun la distancia.
+            // Para deltaX > 4: 1.27f (posicion exacta conseguida en 7.47)
+            // Para deltaX > 3: 1.7f
+            // Para deltaX <= 3: 1.85f (posicion exacta conseguida en 2.056)
+            float extraDist = 0f;
+            if (anchorDeltaZ > 4f) extraDist = 1.27f;
+            else if (anchorDeltaZ > 3f) extraDist = 1.7f;
+            else if (anchorDeltaZ > 2f) extraDist = 1.85f;
+            else extraDist = 2.2f;
+
+            boxes[0].center += new Vector3(0f, 0f, anchorDeltaZ * extraDist);
+            boxes[1].center -= new Vector3(0f, 0f, anchorDeltaZ * extraDist);
             boxes[0].size = new Vector3(boxes[0].size.x * 0.8f, 2f, boxes[0].size.z);
             boxes[1].size = new Vector3(boxes[1].size.x * 0.8f, 2f, boxes[1].size.z);
 
 
-            //Colliders interiores
+            //=== COLLIDERS INTERIORES ===
+          
             bool dirCond = (int)_direction % 2 == 0; //Si es 0, es forward o right
-            Vector3 offset = new Vector3(Mathf.Abs(positions[0].x - positions[3].x) / 4, 0f, 0f);
+            Vector3 offset = new Vector3(Mathf.Abs(positions[0].x - positions[3].x) * 0.25f, 0f, 0f);
 
             boxes[2].center += (dirCond ? -1 : 1) * offset;
             boxes[3].center += (!dirCond ? -1 : 1) * offset;
             boxes[2].center = new Vector3(boxes[2].center.x, boxes[2].center.y, positions[3].z);
             boxes[3].center = new Vector3(boxes[3].center.x, boxes[3].center.y, positions[0].z);
+
             boxes[2].size = new Vector3(0f, 2f, 0f);
+
+            
+
         }
         Vector2 ExpandHalfSizeX(BoxCollider[] boxes, Vector3 start, Vector3 end, int axis)
         {
@@ -499,14 +645,18 @@ namespace Map
         {
             GetComponent<Collider>().enabled = false;
             _sprite.SetActive(false);
+            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 0);
 
             if (!_room.AvailableAnchors.Contains(this)) _room.AvailableAnchors.Add(this);
         }
 
         public void CloseAnchor()
         {
+            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 1);
             GetComponent<Collider>().enabled = true;
             _sprite.SetActive(true);
         }
+
+        public EAnchorDirection GetDirection() => _direction;
     }
 }

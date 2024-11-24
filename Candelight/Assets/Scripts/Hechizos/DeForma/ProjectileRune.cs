@@ -12,7 +12,7 @@ namespace Hechizos.DeForma
         public event Action<Transform> OnImpactProjectile;
         public event Action<Transform> OnEndProjectile;
 
-        public ProjectileRune(Mage m) : base(m, 3, 0.25f)
+        public ProjectileRune(Mage m) : base(m, 2, 0.25f)
         {
             Name = "Projectile";
         }
@@ -44,10 +44,10 @@ namespace Hechizos.DeForma
                 proj.OnImpact += ProjectileImpact;
                 proj.OnEnd += ProjectileEnd;
 
-                float avDam = 0;
-                foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
-                avDam /= MageManager.GetActiveElements().Count;
-                proj.Damage = avDam;
+                //float avDam = 0;
+                //foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
+                //avDam /= MageManager.GetActiveElements().Count;
+                proj.Damage = GetTotalDamage();
             }
         }
 

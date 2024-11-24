@@ -20,7 +20,7 @@ namespace Player
         {
             if (!_footPlayed)
             {
-                Debug.Log("Se comienzan las particulas");
+                //Debug.Log("Se comienzan las particulas");
                 _footParticles.Play();
                 _footPlayed = true;
             }
@@ -30,7 +30,7 @@ namespace Player
         {
             if (_footPlayed)
             {
-                Debug.Log("Se paran las particulas");
+                //Debug.Log("Se paran las particulas");
                 _footParticles.Stop();
                 _footPlayed = false;
             }
