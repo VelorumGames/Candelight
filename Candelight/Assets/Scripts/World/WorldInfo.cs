@@ -38,7 +38,11 @@ namespace World
                 {
                     m_candle = value;
                     if (OnCandleChanged != null) OnCandleChanged(m_candle);
-                    if (value == 0 && OnPlayerDeath != null) OnPlayerDeath();
+
+                    if (m_candle <= 0 && OnPlayerDeath != null)
+                    {
+                        OnPlayerDeath();
+                    }
                 }
             }
         }

@@ -2143,12 +2143,12 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: IdriaLargeRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: IdriaSmallRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -2163,7 +2163,7 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: IdriaMediumRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -2194,6 +2194,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: IdriaLargeRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: cc98170eb4561074e88af4c6561f6518,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaLargeRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: f08dcd533044e324bb88b14179e5d38a,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: IdriaSmallRooms.Array.data[0]
       value: 
       objectReference: {fileID: 3729855312333802389, guid: a74968dbf692b5e40a6db1b17443fbab,
@@ -2203,6 +2215,18 @@ PrefabInstance:
       propertyPath: IdriaSmallRooms.Array.data[1]
       value: 
       objectReference: {fileID: 3729855312333802389, guid: e75ecfb9d8ca84541a90bde494f0cb79,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaSmallRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 9f9f1c0bcd9afe3408ac20d2ad592e78,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaSmallRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 71e4f8716d42f224b8daa0a2b1c1fe98,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -2247,15 +2271,27 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: IdriaMediumRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 2a4824d90fe4ad5478d968cb8b19ae0e,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaMediumRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 74321d75db057074bb74d1576a643d8e,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: DurniaMediumRooms.Array.data[0]
       value: 
-      objectReference: {fileID: 3729855312333802389, guid: 8e08174c79265fe429e432977d694cd8,
+      objectReference: {fileID: 3729855312333802389, guid: 88aa35c6f6638534ebfcbef4b2b82518,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: DurniaMediumRooms.Array.data[1]
       value: 
-      objectReference: {fileID: 3729855312333802389, guid: 88aa35c6f6638534ebfcbef4b2b82518,
+      objectReference: {fileID: 3729855312333802389, guid: 8e08174c79265fe429e432977d694cd8,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -2273,25 +2309,25 @@ PrefabInstance:
         type: 3}
       propertyPath: TemeriaSmallRooms.Array.data[0]
       value: 
-      objectReference: {fileID: 2188563618886970509, guid: 4c743c4ae38ad1645b62b86eaa5d91a7,
+      objectReference: {fileID: 2188563618886970509, guid: 985325846f03d5f4daeeef8f5e34b571,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: TemeriaSmallRooms.Array.data[1]
       value: 
-      objectReference: {fileID: 2188563618886970509, guid: 985325846f03d5f4daeeef8f5e34b571,
+      objectReference: {fileID: 2188563618886970509, guid: 4c743c4ae38ad1645b62b86eaa5d91a7,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: TemeriaMediumRooms.Array.data[0]
       value: 
-      objectReference: {fileID: 2188563618886970509, guid: 162bff4049edbd341ae75b5dd3d8a2ba,
+      objectReference: {fileID: 2188563618886970509, guid: 1f29d6abc492fb94b9ede410bc94b2e8,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: TemeriaMediumRooms.Array.data[1]
       value: 
-      objectReference: {fileID: 2188563618886970509, guid: 1f29d6abc492fb94b9ede410bc94b2e8,
+      objectReference: {fileID: 2188563618886970509, guid: 162bff4049edbd341ae75b5dd3d8a2ba,
         type: 3}
     - target: {fileID: 3307859510703695798, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -2400,8 +2436,7 @@ MonoBehaviour:
   - {fileID: 6448967847911273602, guid: 52b5ee9823bb6fb4f954be84b6c79ef8, type: 3}
   _temeriaRewards:
   - {fileID: 3963072599212410864, guid: 90b17a184bc871b468ab18272f59d7fb, type: 3}
-  _idriaRewards:
-  - {fileID: 9136983261127698270, guid: 98de1a335edae6649a618fee48f45e07, type: 3}
+  _idriaRewards: []
   _healthAltar: {fileID: 6411216318155351410, guid: 05e18e9bee0be52469a74f43f51a72aa,
     type: 3}
 --- !u!1660057539 &9223372036854775807

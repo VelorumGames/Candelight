@@ -175,9 +175,12 @@ namespace Events
             if (_rewardEvents.Length > 0)
             {
                 ARoom rewardRoom = MapManager.Instance.GetRandomAvailableRoom(true).GetComponent<ARoom>();
-                rewardRoom.IdText.text += " REWARD";
 
-                Instantiate(_rewardEvents[Random.Range(0, _rewardEvents.Length)], rewardRoom.GetRandomSpawnPoint());
+                if (_rewardEvents != null && _eventEndings.Length > 0)
+                {
+                    Instantiate(_rewardEvents[Random.Range(0, _rewardEvents.Length)], rewardRoom.GetRandomSpawnPoint());
+                    rewardRoom.IdText.text += " REWARD";
+                }
             }
         }
 

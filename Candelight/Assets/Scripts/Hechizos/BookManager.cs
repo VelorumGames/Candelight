@@ -54,6 +54,8 @@ namespace Hechizos
 
         public void AddNewString(string str)
         {
+            if (_text.text.Length > 30) _text.text = "";
+
             _text.text += str;
         }
 
@@ -62,6 +64,7 @@ namespace Hechizos
         public void ShowResult(ARune rune)
         {
             FindObjectOfType<ManageBookSpell>().Show(rune);
+            ResetText();
         }
 
         //public IEnumerator ShowResult(ARune rune)

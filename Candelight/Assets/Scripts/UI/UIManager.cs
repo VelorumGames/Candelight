@@ -18,6 +18,8 @@ using Cameras;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEditor.Experimental.GraphView;
+using Menu;
+using World;
 
 namespace UI
 {
@@ -26,6 +28,7 @@ namespace UI
         public static UIManager Instance;
 
         [Header("GENERAL")]
+        public WorldInfo World;
         public string NextNodeName;
         public string ActualNodeName;
         string _chains;
@@ -43,6 +46,7 @@ namespace UI
         public GameObject InventoryUI;
         public GameObject FragmentHalo;
         public GameObject SpellHalo;
+        public DeathWindow _deathWindow;
         public Image FadeImage;
         [SerializeField] MinimapManager _minimap;
         [SerializeField] UIGameState _state;
@@ -93,6 +97,8 @@ namespace UI
             {
                 _inv.OnFragmentsChange += ShowFragmentHalo;
             }
+
+            World.OnPlayerDeath += Death;
         }
 
         private void Start()
@@ -174,6 +180,13 @@ namespace UI
         {
             _candle = candle;
         }
+
+        void Death()
+        {
+            Invoke("DelayedDeath", 1f);
+        }
+
+        public void DelayedDeath() => _deathWindow.gameObject.SetActive(true);
 
         #region Spell UI
 
@@ -442,6 +455,8 @@ namespace UI
             {
                 _inv.OnFragmentsChange -= ShowFragmentHalo;
             }
+
+            World.OnPlayerDeath += Death;
         }
     }
 }

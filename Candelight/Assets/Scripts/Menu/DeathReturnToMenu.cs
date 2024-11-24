@@ -21,10 +21,9 @@ namespace Menu
         private void OnEnable()
         {
             FindObjectOfType<InputManager>().LoadControls(EControlMap.UI);
-            _ui.FadeToBlack(10f, EraseProgress);
+            _ui.FadeToBlack(20f, EraseProgress);
         }
 
-        //Se puede probar con una serie de ventanas para hacer algo mas artistico
         public void Lose()
         {
             _ui.ShowWarning(EraseProgress, "Abandonarás este mundo y perderás todo lo que llevas contigo. Por suerte, tu luz perdurará tras la muerte. ¿Aceptas?");

@@ -99,6 +99,8 @@ namespace Player
             _input.OnExitElementMode += OnChooseElements;
             _input.OnStartShapeMode += ResetInstructions;
             _input.OnExitShapeMode += OnSpellLaunch;
+
+            World.OnPlayerDeath += Death;
         }
 
         private void Awake()
@@ -180,9 +182,16 @@ namespace Player
 
         public void Revive()
         {
+            CanMove = true;
+
             Debug.Log("SE REVIVE AL JUGADOR");
             World.Candle = World.MAX_CANDLE * 0.5f;
             if (OnRevive != null) OnRevive();
+        }
+
+        void Death()
+        {
+            CanMove = false;
         }
 
         #region Actions
@@ -512,6 +521,8 @@ namespace Player
             _input.OnStartElementMode -= OnChooseElements;
             _input.OnStartShapeMode -= ResetInstructions;
             _input.OnExitShapeMode -= OnSpellLaunch;
+
+            World.OnPlayerDeath += Death;
         }
     }
 }

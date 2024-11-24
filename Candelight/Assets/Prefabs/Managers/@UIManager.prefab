@@ -4127,6 +4127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6394767700220531737}
+  - component: {fileID: 3854597680438156773}
   m_Layer: 5
   m_Name: DeathWindow
   m_TagString: Untagged
@@ -4159,6 +4160,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3854597680438156773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3854831228174396051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f3711fbbecd040428062316e8702b5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _world: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
 --- !u!1 &3916413005370582050
 GameObject:
   m_ObjectHideFlags: 0
@@ -5414,14 +5428,14 @@ RectTransform:
   - {fileID: 5776351169726451791}
   - {fileID: 7653575893213121268}
   - {fileID: 8917773387003631474}
+  - {fileID: 2384665309858906398}
+  - {fileID: 1266701904317043822}
   - {fileID: 8813075713507110857}
   - {fileID: 5850128387621002830}
   - {fileID: 522807100521261524}
   - {fileID: 7769650113114497346}
   - {fileID: 2516265017419155194}
   - {fileID: 5570277870091317342}
-  - {fileID: 2384665309858906398}
-  - {fileID: 1266701904317043822}
   - {fileID: 670481225345764573}
   - {fileID: 8053161119194921382}
   - {fileID: 5954845758157852702}
@@ -5452,6 +5466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 313a67c80994b7448986af8c3d3fb329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  World: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
   NextNodeName: 
   ActualNodeName: 
   PauseMenu: {fileID: 7505899579408112214}
@@ -5462,6 +5477,7 @@ MonoBehaviour:
   InventoryUI: {fileID: 1959527443356830456}
   FragmentHalo: {fileID: 3243245981315682083}
   SpellHalo: {fileID: 4629116946629188520}
+  _deathWindow: {fileID: 3854597680438156773}
   FadeImage: {fileID: 7801891630685271295}
   _minimap: {fileID: 7439247498470722205}
   _state: {fileID: 4406453061267945582}

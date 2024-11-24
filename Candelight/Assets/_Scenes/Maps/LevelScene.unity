@@ -404,7 +404,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 55
   orthographic: 0
   orthographic size: 1.01
   m_Depth: 0
@@ -501,7 +501,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 1.5
+    m_Time: 0
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -580,7 +580,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 55
     OrthographicSize: 1.01
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -1261,8 +1261,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 4.896098
-  m_FrequencyGain: 19.58439
+  m_AmplitudeGain: 1.430581
+  m_FrequencyGain: 5.722325
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1001 &1572233455
 PrefabInstance:
@@ -1736,6 +1736,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1195221490}
     m_Modifications:
+    - target: {fileID: 2043384785631716172, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: Active
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3486557483265283610, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1957,7 +1962,7 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: RuneChance
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -2069,42 +2074,42 @@ PrefabInstance:
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: IdriaLargeRooms.Array.size
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: IdriaSmallRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: DurniaLargeRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: DurniaSmallRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: IdriaMediumRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: DurniaMediumRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: TemeriaLargeRooms.Array.size
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
       propertyPath: TemeriaSmallRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -2120,6 +2125,24 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: IdriaLargeRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 02388fc2b83bb4c4e83d4413d98e3ba1,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaLargeRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 6733bf1d5978a6340a66cea93c4ebb72,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaLargeRooms.Array.data[4]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 4fd677b8518f5394881b207ceb3e4fcc,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: IdriaSmallRooms.Array.data[0]
       value: 
       objectReference: {fileID: 3729855312333802389, guid: e6d7b3c01a10dba4a98f5955a6e6e78a,
@@ -2132,8 +2155,20 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: IdriaSmallRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: ee7dd32548dbeab4c8f6f313d5a7a106,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaSmallRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 5fa720fdc1564a84cb25518dc2bef06f,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: TemeriaMediumRooms.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -2149,6 +2184,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: DurniaLargeRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 4f5ca947c532686439c12461e044ba80,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: DurniaLargeRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 0b8322cb5c3b2bd4085d3aefa5a5e470,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: DurniaSmallRooms.Array.data[0]
       value: 
       objectReference: {fileID: 8668900970460633133, guid: 05de7358a7244e24a9f0d118ecc41c17,
@@ -2158,6 +2205,18 @@ PrefabInstance:
       propertyPath: DurniaSmallRooms.Array.data[1]
       value: 
       objectReference: {fileID: 8668900970460633133, guid: 15a5d1fca4a31a8498bfa013b9978855,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: DurniaSmallRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 8668900970460633133, guid: 51e2ad06fedf99c47ad600405638dae9,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: DurniaSmallRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 8668900970460633133, guid: 0b7d8cd33c3df854baf4e3b74581a8af,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -2173,6 +2232,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: IdriaMediumRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: d53d224bd8764d24a93c92963bca8d36,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: IdriaMediumRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 11494c1454254e54484e1665b7dd0e5d,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: DurniaMediumRooms.Array.data[0]
       value: 
       objectReference: {fileID: 3729855312333802389, guid: 750a785fff63e684bb1cad178074d1b6,
@@ -2182,6 +2253,18 @@ PrefabInstance:
       propertyPath: DurniaMediumRooms.Array.data[1]
       value: 
       objectReference: {fileID: 3729855312333802389, guid: 0d5d58f967d65e749ad2f242f0f97bc7,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: DurniaMediumRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 195e792ee49bd3e41981350786ceeb4e,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: DurniaMediumRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 3729855312333802389, guid: 2337fcb31fbb5904c9ed09a220634c8c,
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
@@ -2197,6 +2280,24 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: TemeriaLargeRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 794f0574018b6e640a38bd4458bbf7e5,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaLargeRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 928c22519c8ce4d49b55340af391d716,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaLargeRooms.Array.data[4]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 70f29b317092b434ea320ebdfc94436a,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: TemeriaSmallRooms.Array.data[0]
       value: 
       objectReference: {fileID: 2188563618886970509, guid: 28f3608dd2b77084d8fae86ebadee189,
@@ -2209,6 +2310,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
+      propertyPath: TemeriaSmallRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 943f39c5accf12544a78183676d68a04,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaSmallRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: 7a95797fd46359945b78826fc2094094,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
       propertyPath: TemeriaMediumRooms.Array.data[0]
       value: 
       objectReference: {fileID: 2188563618886970509, guid: 02dce584f101ea440b7994c5ed439549,
@@ -2218,6 +2331,18 @@ PrefabInstance:
       propertyPath: TemeriaMediumRooms.Array.data[1]
       value: 
       objectReference: {fileID: 2188563618886970509, guid: e7ff4a7dcf6e4b941a4ab56bbde25438,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaMediumRooms.Array.data[2]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: fd1aa983a6452e64cb49ebe037cb15cb,
+        type: 3}
+    - target: {fileID: 1267763661487660103, guid: a3efef8749460fc45b9a2651827ed758,
+        type: 3}
+      propertyPath: TemeriaMediumRooms.Array.data[3]
+      value: 
+      objectReference: {fileID: 2188563618886970509, guid: d05ffa7e9048300418cde97b7de21f31,
         type: 3}
     - target: {fileID: 3307859510703695798, guid: a3efef8749460fc45b9a2651827ed758,
         type: 3}
