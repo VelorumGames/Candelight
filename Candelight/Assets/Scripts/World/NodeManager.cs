@@ -17,9 +17,9 @@ namespace World
     }
     public enum ENodeState
     {
-        Undiscovered,
-        Explored,
-        Completed
+        Sin_Descubrir,
+        Explorado,
+        Completado
     }
     public enum EEventSolution
     {
@@ -82,8 +82,13 @@ namespace World
             }
             _data.LevelTypes[0] = 0; //El primer nivel siempre sera de exploracion
 
+            string[] names = WorldManager.Instance.GetRandomNames(_data.Biome);
+            _data.Name = names[0];
+            _data.Description = names[1];
+
             _data.EventID = -1;
-            if (EventCheck()) _data.EventID = Random.Range(0, 2); //DEBUG
+            //Debug. Deberia ser mas amplio el rango
+            if (EventCheck()) _data.EventID = Random.Range(0, 3);
             _data.EventSolution = EEventSolution.None;
 
             yield return new WaitForSeconds(Random.Range(0.01f, 0.2f));
@@ -168,7 +173,7 @@ namespace World
             //        StartCoroutine(DelayedConnection());
             //    }
             //}
-            if (s == ENodeState.Completed)
+            if (s == ENodeState.Completado)
             {
                 //Debug.Log("COUNT: " + ConnectedNodes.Count);
                 foreach (var n in ConnectedNodes)
@@ -242,13 +247,15 @@ namespace World
 
         public void RegisterCompletedNode()
         {
-            SetState(ENodeState.Completed);
+            Debug.Log("Registro como completado a: " + gameObject.name);
+            SetState(ENodeState.Completado);
             WorldManager.Instance.World.CompletedIds.Add(Id);
             WorldManager.Instance.World.CompletedNodes++;
             foreach(var node in ConnectedNodes)
             {
                 //Debug.Log("NODO: " + node);
-                node.GetComponent<NodeManager>().SetState(ENodeState.Explored);
+                Debug.Log("Registro como explorado a: " + node.name);
+                if (gameObject != node.gameObject) node.GetComponent<NodeManager>().SetState(ENodeState.Explorado);
             }
         }
 

@@ -22,17 +22,27 @@ namespace UI
 
         private void OnTriggerEnter(Collider other)
         {
+            Debug.Log("TRIGGER: " + other.gameObject.name);
             if (other.CompareTag("Player"))
             {
-                NodeData data = _node.GetNodeData();
-
-                string[] names = WorldManager.Instance.GetRandomNames(data.Biome);
-                data.Name = names[0];
-                data.Description = names[1];
-
-                _box.RegisterNode(data.Name, data.Description, data.Biome, data.State.ToString());
-                _box.ShowBox(true);
+                StartCoroutine(ShowData());
             }
+        }
+
+        IEnumerator ShowData()
+        {
+            yield return new WaitForEndOfFrame();
+
+            NodeData data = _node.GetNodeData();
+            while (data.Name == "" || data.Name == " ")
+            {
+                Debug.Log($"COMPROBANDO ({_node.gameObject.name}): {_node.GetNodeData().Name}");
+                data = _node.GetNodeData();
+                yield return null;
+            }
+            Debug.Log($"COMPR_TRUE ({_node.gameObject.name}): {_node.GetNodeData().Name}");
+            _box.RegisterNode(data.Name, data.Description, data.Biome, data.State.ToString());
+            _box.ShowBox(true);
         }
 
         private void OnTriggerExit(Collider other)

@@ -642,9 +642,9 @@ MonoBehaviour:
   m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 36
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -1133,7 +1133,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 448, y: -36}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 304.3, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &694667116
 MonoBehaviour:
@@ -1186,9 +1186,9 @@ MonoBehaviour:
   m_fontSize: 30
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 15
+  m_fontSizeMax: 30
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -3883,12 +3883,12 @@ PrefabInstance:
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: IdriaNodeNames.Array.size
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: DurniaNodeNames.Array.size
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
@@ -3898,37 +3898,37 @@ PrefabInstance:
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: TemeriaNodeNames.Array.size
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: IdriaNodeNames.Array.data[0]
-      value: ccc1
+      value: "Ef\xEDmeri"
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: IdriaNodeNames.Array.data[1]
-      value: ccc2
+      value: La Gran Biblioteca
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: IdriaNodeNames.Array.data[2]
-      value: ccc3
+      value: Crecentia
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: DurniaNodeNames.Array.data[0]
-      value: aaa1
+      value: Ojo de Cuervo
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: DurniaNodeNames.Array.data[1]
-      value: aaa2
+      value: Bosque sin Encantar
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: DurniaNodeNames.Array.data[2]
-      value: aaa3
+      value: "Los Cuatro \xC1rboles"
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
@@ -3948,77 +3948,88 @@ PrefabInstance:
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: TemeriaNodeNames.Array.data[0]
-      value: bbb1
+      value: Grutas del Llanto
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: TemeriaNodeNames.Array.data[1]
-      value: bbb2
+      value: Clan del Pueblo Cavernario
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: TemeriaNodeNames.Array.data[2]
-      value: bbb3
+      value: "Peque\xF1a Noche Eterna"
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: IdriaNodeDescriptions.Array.size
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: DurniaNodeDescriptions.Array.size
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: TemeriaNodeDescriptions.Array.size
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: IdriaNodeDescriptions.Array.data[0]
-      value: ccc1
+      value: "Iba a ser un hogar provisional para los que ayudasen a edificar Letargaria.
+        Pero nunca se movieron de aqu\xED."
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: IdriaNodeDescriptions.Array.data[1]
-      value: ccc2
+      value: "Una copia de cada libro de Candelight acababa aqu\xED. Sin importar
+        su procedencia."
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: IdriaNodeDescriptions.Array.data[2]
-      value: ccc3
+      value: La ciudad del progreso...
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: DurniaNodeDescriptions.Array.data[0]
-      value: aaa1
+      value: "Se dice que es el bosque que frecuentaba el cazador m\xE1s astuto de
+        todo Candelight. Todos los h\xE9roes del Alba que acampan aqu\xED aspiran
+        a ser como \xE9l."
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: DurniaNodeDescriptions.Array.data[1]
-      value: aaa2
+      value: "Los antiguos temerios que viv\xEDan aqu\xED estaban cansados de desmentir
+        teor\xEDas sobre la existencia de criaturas m\xE1gicas en sus lindes. Hasta
+        tal punto se cansaron, que pasaron a llamarlo: \u201CEl Bosque sin Encantar\u201D."
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: DurniaNodeDescriptions.Array.data[2]
-      value: aaa3
+      value: "Se dice que siglos atr\xE1s, cuatro clanes que habitaban el bosque
+        se reun\xEDan cada luna llena bajo la copa de cuatro inmensos \xE1rboles.
+        Un d\xEDa, los \xE1rboles aparecieron cortados."
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: TemeriaNodeDescriptions.Array.data[0]
-      value: bbb1
+      value: Se dice que desde sus profundidades asoma el sonido de un llanto desconsolado.
+        No se sabe si se trata de un monstruo o de un temerio desdichado.
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: TemeriaNodeDescriptions.Array.data[1]
-      value: bbb2
+      value: "Un refugio muy unido. Despu\xE9s de todo, fue el que m\xE1s sufri\xF3
+        de las calamidades de la guerra junto con P\xE9trica."
       objectReference: {fileID: 0}
     - target: {fileID: 864110197258216460, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}
       propertyPath: TemeriaNodeDescriptions.Array.data[2]
-      value: bbb3
+      value: "Es dif\xEDcil encontrar en ella musgo brillante o setas luminosas,
+        por lo que sus habitantes est\xE1n acostumbrados a vivir en completa oscuridad."
       objectReference: {fileID: 0}
     - target: {fileID: 5496283967911012366, guid: e40d5efc02419ed4296139547de937bb,
         type: 3}

@@ -415,9 +415,9 @@ namespace Player
                     //Debug.Log($"2: {node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered} ({node.GetComponent<NodeManager>().GetNodeData().State})");
 
 
-
-                    if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completed) ||
-                        (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completed && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Explored) )
+                    //Debug.Log("ESTADO ADYACENTE: " + node.GetComponent<NodeManager>().GetNodeData().State);
+                    if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Sin_Descubrir && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado) ||
+                        (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Explorado) )
                     {
                         float dist = Vector3.Distance(_pathChooser.transform.position, node.transform.position);
                         if (dist < minDist)

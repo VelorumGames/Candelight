@@ -176,7 +176,7 @@ namespace World
                 if (node.TryGetComponent<NodeManager>(out var nodeMan) && nodeMan.StartNodeCheck())
                 {
                     nodeMan.Text.text += " START";
-                    nodeMan.SetState(ENodeState.Explored);
+                    nodeMan.SetState(ENodeState.Explorado);
                     CurrentNodeInfo.Node = nodeMan; //Marcamos este como nodo inicial
 
                     MovePlayerToNode(node.transform);
@@ -191,13 +191,13 @@ namespace World
         {
             foreach(var id in World.CompletedIds)
             {
-                _nodes[id].GetComponent<NodeManager>().SetState(ENodeState.Completed);
+                _nodes[id].GetComponent<NodeManager>().SetState(ENodeState.Completado);
             }
         }
 
         void MovePlayerToNode(Transform node)
         {
-            _player.transform.position = new Vector3(node.position.x, _player.transform.position.y, node.position.z);
+            _player.transform.position = new Vector3(node.position.x, _player.transform.position.y + 0.1f, node.position.z);
         }
 
         /// <summary>
@@ -295,15 +295,15 @@ namespace World
             int id = Random.Range(0, names.Length);
             result[0] = names[id];
 
-            int timeout = 50;
-            while (result[0] == "TAKEN")
-            {
-                id = Random.Range(0, names.Length);
-                result[0] = names[id];
-
-                if (timeout-- <= 0) break;
-            }
-            names[id] = "TAKEN";
+            //int timeout = 50;
+            //while (result[0] == "TAKEN")
+            //{
+            //    id = Random.Range(0, names.Length);
+            //    result[0] = names[id];
+            //
+            //    if (timeout-- <= 0) break;
+            //}
+            //names[id] = "TAKEN";
 
             result[1] = descs[id]; 
 
