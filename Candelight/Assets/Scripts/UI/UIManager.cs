@@ -352,7 +352,7 @@ namespace UI
 
         public void PlayerDamageFeedback(float damage, float remHealth)
         {
-            RedFilter.DOFade((1 / remHealth) * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play()).SetUpdate(true);
+            RedFilter.DOFade((1f - remHealth) * 0.5f, 0.2f).Play().OnComplete(() => RedFilter.DOFade(0, 0.2f).Play()).SetUpdate(true);
             _camMan.Shake(5f, 20f, 0.4f);
         }
 
@@ -361,7 +361,7 @@ namespace UI
             WhiteFilter.DOFade(0.05f, 0.1f).Play().OnComplete(() => WhiteFilter.DOFade(0, 0.2f).Play()).SetUpdate(true);
 
             //if (_timeFreeze != null) StopCoroutine(_timeFreeze);
-            _timeFreeze = StartCoroutine(FreezeGame(0.25f, remHealth));
+            _timeFreeze = StartCoroutine(FreezeGame(0.15f, remHealth));
         }
 
         public void WinCombat()
@@ -390,7 +390,9 @@ namespace UI
             Time.timeScale = _spellTimeScale;
 
             SpellHalo.SetActive(true);
-            SpellHalo.transform.localPosition = new Vector3(0f, -0.5f, 0.5f);
+            SpellHalo.transform.localPosition = new Vector3(0f, GetScreenSizeOffset(), 0.5f);
+
+            GetScreenSizeOffset();
         }
 
         void ExitSpellModeFeedback()
@@ -402,9 +404,20 @@ namespace UI
 
         void ShowFragmentHalo(int prev, int num)
         {
-            FragmentHalo.transform.localPosition = new Vector3(0.5f, -0.5f, 0.5f);
+            FragmentHalo.transform.localPosition = new Vector3(0.5f, GetScreenSizeOffset(), 0.5f);
             FragmentHalo.SetActive(true);
             Invoke("ResetHalo", 3f);
+        }
+
+        float GetScreenSizeOffset()
+        {
+            if (Screen.height < 627) return -0.5f;
+            else if (Screen.height < 716) return -0.57f;
+            else return -0.66f;
+            // 627 -> -0.5f
+            // 716 -> -0.57f
+            // 902 -> -0.66f
+            //Debug.Log("Screen: " + Screen.height);
         }
 
         public void ResetHalo() => FragmentHalo.SetActive(false);

@@ -61,7 +61,7 @@ namespace Hechizos
                     enemy.RecieveDamage(Damage);
                 }
 
-                if (OnImpact != null) OnImpact(Target);
+                if (OnImpact != null) OnImpact(Target != null ? Target : other.transform);
             }
         }
 
@@ -96,18 +96,18 @@ namespace Hechizos
 
             _body.sharedMaterial.DOVector(new Vector2(0.99f, 1f), Shader.PropertyToID("_Opacity"), _lifeSpan).Play().OnComplete(() =>
             {
-                _body.sharedMaterial.SetVector("_Opacity", new Vector2(-1.4f, 1f));
+                if (_body != null) _body.sharedMaterial.SetVector("_Opacity", new Vector2(-1.4f, 1f));
                 Death();
             });
             _body.sharedMaterial.DOFloat(-0.5f, Shader.PropertyToID("_SecColorPresence"), _lifeSpan).Play().OnComplete(() =>
             {
-                _body.sharedMaterial.SetFloat("_SecColorPresence", 0.01f);
+                if (_body != null) _body.sharedMaterial.SetFloat("_SecColorPresence", 0.01f);
             });
 
             Vector3 oScale = _body.transform.localScale;
             _body.transform.DOScale(oScale * 2f, _lifeSpan).Play().OnComplete(() =>
             {
-                _body.transform.localScale = oScale;
+                if (_body != null) _body.transform.localScale = oScale;
             });
 
             if (runes.Length > 1)

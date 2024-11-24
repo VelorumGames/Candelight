@@ -2702,6 +2702,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1342569512}
     m_Modifications:
+    - target: {fileID: 540174115040930832, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2715611108306876656, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_text
@@ -2716,6 +2721,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828286829163116654, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125827342434837266, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3486557483265283610, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
@@ -2782,6 +2797,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3916413005370582050, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4870556320599610303, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: PauseMenu
@@ -2791,6 +2811,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: '@UIManager'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364967511428938174, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6735227253975775564, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}

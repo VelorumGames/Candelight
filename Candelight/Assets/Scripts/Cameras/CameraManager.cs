@@ -48,7 +48,7 @@ namespace Cameras
         {
             SetActiveCamera(InitialCam, 0f);
 
-            _noise = InitialCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            _noise = GetActiveCam().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
             if (_noise != null)
             {
                 _noise.m_AmplitudeGain = 0f;
@@ -100,7 +100,7 @@ namespace Cameras
                         _brain.m_DefaultBlend.m_Time = blendTime;
 
                         c.Priority = 1;
-                        _noise = c.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+                        if (c != null) _noise = c.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
                         if (_noise != null)
                         {
                             _originalAmp = _noise.m_AmplitudeGain;
@@ -148,8 +148,18 @@ namespace Cameras
                 _noise.m_FrequencyGain = _originalFrec;
                 //Se cambia el ruido a los nuevos parametros de forma temporal
                 StartCoroutine(ManageShake(amp, frec, time));
+                Invoke("SafeResetNoise", time + 0.5f);
             }
             else Debug.Log("ERROR: Se intenta hacer Shake pero no se ha encontrado ningun noise en la camara: " + _activeCam.gameObject.name);
+        }
+        public void SafeResetNoise()
+        {
+            _noise = GetActiveCam().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            if (_noise != null)
+            {
+                _noise.m_AmplitudeGain = 0f;
+                _noise.m_FrequencyGain = 0f;
+            }
         }
 
         /// <summary>

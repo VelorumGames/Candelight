@@ -1151,6 +1151,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1782246940}
     m_Modifications:
+    - target: {fileID: 540174115040930832, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2440620000825513378, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1160,6 +1165,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 247.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828286829163116654, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125827342434837266, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3486557483265283610, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
@@ -1261,6 +1276,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3916413005370582050, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4134334320524872933, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_IsActive
@@ -1270,6 +1290,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: '@UIManager'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364967511428938174, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6021577376166146927, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
@@ -1309,6 +1334,11 @@ PrefabInstance:
     - target: {fileID: 7801891630685271295, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150483750104775853, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

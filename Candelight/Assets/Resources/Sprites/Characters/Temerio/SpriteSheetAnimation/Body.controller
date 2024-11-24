@@ -399,8 +399,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 3
     m_ConditionEvent: yVelocity
     m_EventTreshold: -0.15
-  - m_ConditionMode: 3
-    m_ConditionEvent: xVelocity
+  - m_ConditionMode: 4
+    m_ConditionEvent: yVelocity
     m_EventTreshold: 0.15
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1425374065369647232}
@@ -504,7 +504,7 @@ AnimatorStateTransition:
     m_ConditionEvent: yVelocity
     m_EventTreshold: -0.15
   - m_ConditionMode: 4
-    m_ConditionEvent: xVelocity
+    m_ConditionEvent: yVelocity
     m_EventTreshold: 0.15
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6581891371860294138}

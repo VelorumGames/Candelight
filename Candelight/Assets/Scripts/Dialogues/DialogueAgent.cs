@@ -24,7 +24,7 @@ namespace Dialogues
 
         private void Start()
         {
-            if (Dialogue == null) Dialogue = Reward ? FindObjectOfType<RandomDialogues>().GetRewardDialogue() : RandomDialogue ? FindObjectOfType<RandomDialogues>().GetLoreDialogue() : null;
+            if (Dialogue == null) Dialogue = Reward ? FindObjectOfType<RandomDialogues>().GetRewardDialogue() : RandomDialogue ? FindObjectOfType<RandomDialogues>().GetRandomDialogue() : null;
         }
 
         public void StartDialogue()

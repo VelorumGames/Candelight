@@ -32,7 +32,7 @@ namespace Hechizos
             Spells.Add(Instructions, this);
 
             //Debug. Deberia estar desactivado
-            Activate(true);
+            //Activate(true);
 
             string instrs = "";
 
@@ -230,8 +230,8 @@ namespace Hechizos
 
         public void Activate(bool b)
         {
-            if (b && MageManager != null) MageManager.RuneActivation(this);
             Activated = b;
+            if (b && MageManager != null) MageManager.RuneActivation(this);
         }
         public bool IsActivated() => Activated;
         public static void Activate(ESpellInstruction[] chain, out ARune rune)
