@@ -32,10 +32,15 @@ public class IntroBlock : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = null;
         foreach (var c in GetComponents<Collider>()) c.enabled = false;
 
-        _block.SetActive(true);
         _block.transform.DOMoveY(-2f, 1f).Play();
 
-        _runes.SetActive(true);
-        _runes.transform.DOMoveY(-2f, 1f).Play().OnComplete(() => Destroy(gameObject));
+        _runes.transform.DOMoveY(-2f, 1f).Play().OnComplete(End);
+    }
+
+    void End()
+    {
+        _runes.SetActive(false);
+        _block.SetActive(false);
+        Destroy(gameObject);
     }
 }

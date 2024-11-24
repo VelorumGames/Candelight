@@ -60,6 +60,7 @@ namespace Dialogues
 
             _showUIText.ShowText(_currentBlock.text);
             _spriteRend.sprite = _currentBlock.icon;
+            _spriteRend.SetNativeSize();
 
             if (_currentBlock.RandomItem)
             {

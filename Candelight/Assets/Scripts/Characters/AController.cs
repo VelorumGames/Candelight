@@ -34,6 +34,7 @@ public abstract class AController : MonoBehaviour
 
     Coroutine _tempDamage;
     Coroutine _paralize;
+    Coroutine _burn;
     Coroutine _slowness;
 
     protected bool CanMove = true;
@@ -80,9 +81,23 @@ public abstract class AController : MonoBehaviour
     IEnumerator ProcessParalize(float time)
     {
         CanMove = false;
+        GetComponentInChildren<SpriteRenderer>().color = Color.yellow;
         yield return new WaitForSeconds(time);
+        GetComponentInChildren<SpriteRenderer>().color = Color.white;
         CanMove = true;
     }
+    public void Burn(float time)
+    {
+        if (_burn != null) StopCoroutine(_burn);
+        _burn = StartCoroutine(ProcessBurn(time));
+    }
+    IEnumerator ProcessBurn(float time)
+    {
+        GetComponentInChildren<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(time);
+        GetComponentInChildren<SpriteRenderer>().color = Color.white;
+    }
+
 
     public void Slow(float ratio, float time)
     {

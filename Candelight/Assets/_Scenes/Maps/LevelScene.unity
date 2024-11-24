@@ -403,10 +403,10 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 50
+  far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 3.74
+  orthographic size: 1.01
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -581,9 +581,9 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 3.74
+    OrthographicSize: 1.01
     NearClipPlane: 0.3
-    FarClipPlane: 50
+    FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -1214,7 +1214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 6, z: -7.23}
+  m_FollowOffset: {x: 0, y: 4.8, z: -5.15}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1261,8 +1261,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 2.494993
-  m_FrequencyGain: 9.979971
+  m_AmplitudeGain: 4.896098
+  m_FrequencyGain: 19.58439
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1001 &1572233455
 PrefabInstance:

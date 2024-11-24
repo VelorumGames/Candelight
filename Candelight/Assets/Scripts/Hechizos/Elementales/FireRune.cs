@@ -31,7 +31,8 @@ namespace Hechizos.Elementales
             //Queda haciendo dano durante cierto tiempo
             if (target != null && target.TryGetComponent<EnemyController>(out var cont))
             {
-                cont.RecieveTemporalDamage(Damage * 0.25f, 5, 1f);
+                cont.RecieveTemporalDamage(Damage * 0.25f, 5f, 1f);
+                cont.Burn(5f);
             }
 
             if (_bombEffect)

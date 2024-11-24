@@ -41,7 +41,7 @@ namespace Enemy
 
         void ChangeState(EMurcielagoState state)
         {
-            Debug.Log("[MUERCIELAGO] Entra en estado: " + state.ToString());
+            //Debug.Log("[MUERCIELAGO] Entra en estado: " + state.ToString());
 
             _updateAction = null;
 
@@ -70,10 +70,10 @@ namespace Enemy
 
         void CheckPlayer()
         {
-            Debug.Log($"Distancia: {Vector3.Distance(transform.position, Player.transform.position)} < {_aggro} && Velocidad: {_playerRb.velocity.magnitude} && {_minPlayerVel}");
+            //Debug.Log($"Distancia: {Vector3.Distance(transform.position, Player.transform.position)} < {_aggro} && Velocidad: {_playerRb.velocity.magnitude} && {_minPlayerVel}");
             if (Vector3.Distance(transform.position, Player.transform.position) < _aggro && _playerRb.velocity.magnitude > _minPlayerVel)
             {
-                Debug.Log("PHANTOM CHECK: " + PhantomCheck());
+                //Debug.Log("PHANTOM CHECK: " + PhantomCheck());
                 if (PhantomCheck()) ChangeState(EMurcielagoState.Confused);
                 else ChangeState(EMurcielagoState.Attack);
             }

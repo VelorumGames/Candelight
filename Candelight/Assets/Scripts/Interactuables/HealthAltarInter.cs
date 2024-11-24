@@ -11,6 +11,8 @@ namespace Interactuables
         Inventory _inv;
         UIManager _ui;
 
+        [SerializeField] int _minFrags;
+
         private void Awake()
         {
             _inv = FindObjectOfType<Inventory>();
@@ -19,10 +21,19 @@ namespace Interactuables
 
         public override void Interaction()
         {
-            //TODO
-            //Esto esta de placeholder (te quita la mitad de los fragmentos que tengas), pero puede cambiarse segun se vea testeando
+            if (_inv.GetFragments() >= _minFrags) _ui.ShowWarning(ManageFragments, "Recuperarás un cuarto de tu salud total a cambio de la mitad de tus fragmentos. ¿Estás seguro?");
+            else _ui.ShowWarning(NullAction, "Todavía no posees fragmentos suficientes", "Ok", "Volver");
+        }
 
-            _ui.ShowWarning(() => _inv.AddFragments(-_inv.GetFragments() / 2), "Recuperarás un cuarto de tu salud total a cambio de la mitad de tus fragmentos. ¿Estás seguro?");
+        void ManageFragments()
+        {
+            _inv.AddFragments(-_inv.GetFragments() / 2);
+            FindObjectOfType<UIManager>().Back();
+        }
+
+        void NullAction()
+        {
+            FindObjectOfType<UIManager>().Back();
         }
     }
 }

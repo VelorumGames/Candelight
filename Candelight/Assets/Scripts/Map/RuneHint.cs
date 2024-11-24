@@ -25,7 +25,7 @@ namespace Map
 
         private void Awake()
         {
-            //Debug
+            //Debug. Deberia estar desactivado
             ARune.CreateAllRunes(FindObjectOfType<Mage>());
         }
 
@@ -43,7 +43,12 @@ namespace Map
         {
             if (_runeToFind != "")
             {
-                return ARune.FindSpell(_runeToFind, out var spell) ? spell.GetInstructions() : null;
+                if (ARune.FindSpell(_runeToFind, out var spell))
+                {
+                    LoadParticles(spell);
+                    return spell.GetInstructions();
+                }
+                else return null;
             }
             else
             {

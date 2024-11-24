@@ -167,7 +167,7 @@ namespace Player
                     finalHealth = 0.25f * World.MAX_CANDLE;
                 }
 
-                CallDamageEvent(finalDamage, finalHealth / World.MAX_CANDLE);
+                CallDamageEvent(finalDamage, Mathf.Clamp01(finalHealth / World.MAX_CANDLE));
 
                 World.Candle = finalHealth;
             }
@@ -286,8 +286,8 @@ namespace Player
                         }
 
                         _instrInBook = false;
-                        _UIMan.BookInstructionFeedback(1f);
-                        Invoke("ResetBookInstructionTimer", 1f);
+                        _UIMan.BookInstructionFeedback(0.25f);
+                        Invoke("ResetBookInstructionTimer", 0.25f);
                     }
                 }
                 else

@@ -41,7 +41,7 @@ namespace Hechizos
                     enemy.RecieveDamage(Damage);
                 }
 
-                if (OnImpact != null) OnImpact(Target);
+                if (OnImpact != null) OnImpact(Target != null ? Target : other.transform);
             }
         }
 

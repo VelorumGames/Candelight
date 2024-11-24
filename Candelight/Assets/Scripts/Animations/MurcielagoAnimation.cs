@@ -16,8 +16,8 @@ namespace Animations
 
         private void Update()
         {
-            Anim.SetFloat("xVelocity", _rb.velocity.x);
-            Anim.SetFloat("yVelocity", _rb.velocity.z);
+            Anim.SetFloat("xVelocity", _rb.velocity.normalized.x);
+            Anim.SetFloat("yVelocity", _rb.velocity.normalized.z);
         }
 
         public void ChangeToDown() => Anim.SetTrigger("Down");

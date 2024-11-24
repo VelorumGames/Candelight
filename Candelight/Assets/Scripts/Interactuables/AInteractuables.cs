@@ -9,6 +9,7 @@ namespace Interactuables
     public abstract class AInteractuables : MonoBehaviour
     {
         public Transform NotificationTransform;
+        public GameObject Exclamation;
 
         public event Action OnTrigger;
         public event Action OnInteraction;
@@ -33,6 +34,7 @@ namespace Interactuables
 
         void EventInteraction()
         {
+            if (Exclamation != null) Exclamation.SetActive(false);
             if (OnInteraction != null) OnInteraction();
             Interaction();
         }
