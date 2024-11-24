@@ -22,7 +22,7 @@ namespace Menu
             }
             else
             {
-                FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
+                FindObjectOfType<UIManager>()?.ShowState(EGameState.Loading);
                 SceneManager.LoadScene("MenuScene");
             }
         }

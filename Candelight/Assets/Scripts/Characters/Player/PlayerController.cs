@@ -80,7 +80,7 @@ namespace Player
 
         PlayerParticlesManager _particles;
         [SerializeField] CinemachineVirtualCamera _fpCam;
-        bool _isFirstPerson;
+        [SerializeField] bool _isFirstPerson;
         CameraManager _camMan;
 
         bool _invicible;
@@ -115,6 +115,7 @@ namespace Player
             _mage = FindObjectOfType<Mage>();
             _input = FindObjectOfType<InputManager>();
 
+
             DontDestroyOnLoad(gameObject);
         }
 
@@ -131,11 +132,6 @@ namespace Player
             _camMan = FindObjectOfType<CameraManager>();
             if (_camMan != null) _camMan.AddCamera(_fpCam);
 
-            OnNewInstruction += _UIMan.ShowNewInstruction;
-            OnSpell += _UIMan.ShowValidSpell;
-            OnElements += _UIMan.ShowValidElements;
-            World.OnCandleChanged += _UIMan.RegisterCandle;
-
             _interaction = null;
 
             CanMove = true;
@@ -147,11 +143,6 @@ namespace Player
         {
             UnloadInteraction();
             _pathShower.SetActive(false);
-
-            OnNewInstruction -= _UIMan.ShowNewInstruction;
-            OnSpell -= _UIMan.ShowValidSpell;
-            OnElements -= _UIMan.ShowValidElements;
-            World.OnCandleChanged -= _UIMan.RegisterCandle;
         }
 
         public override void RecieveDamage(float damage)
@@ -538,7 +529,7 @@ namespace Player
             _input.OnStartShapeMode -= ResetInstructions;
             _input.OnExitShapeMode -= OnSpellLaunch;
 
-            World.OnPlayerDeath += Death;
+            World.OnPlayerDeath -= Death;
         }
     }
 }

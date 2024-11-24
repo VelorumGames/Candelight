@@ -110,70 +110,76 @@ namespace Controls
         void InitializeControls()
         {
             Debug.Log("Se inicializan los controles");
-            _cont = FindObjectOfType<PlayerController>();
+            if (!GameSettings.LoadedControls)
+            {
+                GameSettings.LoadedControls = true;
 
-            //Level
-            _levelMap = Input.FindActionMap("Level");
+                
+                _cont = FindObjectOfType<PlayerController>();
 
-            _move = _levelMap.FindAction("Move");
-            //_move.canceled += _cont.OnStopMove;
-            InputAction interact = _levelMap.FindAction("Interact");
-            interact.performed += _cont.OnInteract;
-            _element = _levelMap.FindAction("Element");
-            _element.performed += StartElementMode;
-            _element.canceled += StopElementMode;
-            _spell = _levelMap.FindAction("Spell");
-            _spell.performed += StartSpellMode;
-            _spell.canceled += StopSpellMode;
-            InputAction spellUp = _levelMap.FindAction("SpellUp");
-            spellUp.performed += RegisterSpellUp;
-            InputAction spellDown = _levelMap.FindAction("SpellDown");
-            spellDown.performed += RegisterSpellDown;
-            InputAction spellRight = _levelMap.FindAction("SpellRight");
-            spellRight.performed += RegisterSpellRight;
-            InputAction spellLeft = _levelMap.FindAction("SpellLeft");
-            spellLeft.performed += RegisterSpellLeft;
-            InputAction book = _levelMap.FindAction("Book");
-            book.performed += _cont.OnBook;
-            InputAction levelPause = _levelMap.FindAction("Pause");
-            levelPause.performed += _cont.OnPause;
-            _look = _levelMap.FindAction("Look");
-            InputAction inventory = _levelMap.FindAction("Inventory");
-            inventory.performed += _cont.OnInventory;
+                //Level
+                _levelMap = Input.FindActionMap("Level");
 
-            //World
-            _worldMap = Input.FindActionMap("World");
+                _move = _levelMap.FindAction("Move");
+                //_move.canceled += _cont.OnStopMove;
+                InputAction interact = _levelMap.FindAction("Interact");
+                interact.performed += _cont.OnInteract;
+                _element = _levelMap.FindAction("Element");
+                _element.performed += StartElementMode;
+                _element.canceled += StopElementMode;
+                _spell = _levelMap.FindAction("Spell");
+                _spell.performed += StartSpellMode;
+                _spell.canceled += StopSpellMode;
+                InputAction spellUp = _levelMap.FindAction("SpellUp");
+                spellUp.performed += RegisterSpellUp;
+                InputAction spellDown = _levelMap.FindAction("SpellDown");
+                spellDown.performed += RegisterSpellDown;
+                InputAction spellRight = _levelMap.FindAction("SpellRight");
+                spellRight.performed += RegisterSpellRight;
+                InputAction spellLeft = _levelMap.FindAction("SpellLeft");
+                spellLeft.performed += RegisterSpellLeft;
+                InputAction book = _levelMap.FindAction("Book");
+                book.performed += _cont.OnBook;
+                InputAction levelPause = _levelMap.FindAction("Pause");
+                levelPause.performed += _cont.OnPause;
+                _look = _levelMap.FindAction("Look");
+                InputAction inventory = _levelMap.FindAction("Inventory");
+                inventory.performed += _cont.OnInventory;
 
-            _choosePath = _worldMap.FindAction("ChoosePath");
-            InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
-            confirmPath.performed += _cont.OnConfirmPath;
-            InputAction worldInteract = _worldMap.FindAction("Interact");
-            worldInteract.performed += _cont.OnInteract;
-            InputAction worldPause = _worldMap.FindAction("Pause");
-            worldPause.performed += _cont.OnPause;
-            InputAction worldInventory = _worldMap.FindAction("Inventory");
-            worldInventory.performed += _cont.OnInventory;
+                //World
+                _worldMap = Input.FindActionMap("World");
 
-            //Dialogue
-            _dialogueMap = Input.FindActionMap("Dialogue");
+                _choosePath = _worldMap.FindAction("ChoosePath");
+                InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
+                confirmPath.performed += _cont.OnConfirmPath;
+                InputAction worldInteract = _worldMap.FindAction("Interact");
+                worldInteract.performed += _cont.OnInteract;
+                InputAction worldPause = _worldMap.FindAction("Pause");
+                worldPause.performed += _cont.OnPause;
+                InputAction worldInventory = _worldMap.FindAction("Inventory");
+                worldInventory.performed += _cont.OnInventory;
 
-            InputAction next = _dialogueMap.FindAction("Next");
-            next.performed += NextDialogueBlock;
-            InputAction dialoguePause = _dialogueMap.FindAction("Pause");
-            dialoguePause.performed += _cont.OnPause;
+                //Dialogue
+                _dialogueMap = Input.FindActionMap("Dialogue");
 
-            //Intro
-            _introMap = Input.FindActionMap("Intro");
+                InputAction next = _dialogueMap.FindAction("Next");
+                next.performed += NextDialogueBlock;
+                InputAction dialoguePause = _dialogueMap.FindAction("Pause");
+                dialoguePause.performed += _cont.OnPause;
 
-            _introMove = _introMap.FindAction("Move");
-            InputAction introPause = _introMap.FindAction("Pause");
-            introPause.performed += _cont.OnPause;
-            _introLook = _introMap.FindAction("Look");
+                //Intro
+                _introMap = Input.FindActionMap("Intro");
+
+                _introMove = _introMap.FindAction("Move");
+                InputAction introPause = _introMap.FindAction("Pause");
+                introPause.performed += _cont.OnPause;
+                _introLook = _introMap.FindAction("Look");
+            }
         }
 
         public void LoadControls(EControlMap map)
         {
-            //Debug.Log("Mapa previo: " + _currentMap);
+            //Debug.Log("Mapa previo: " + _currentMap + $" y se colocara {map}");
             _prevControls = _currentMap;
             if (_currentMap != null) _currentMap.Disable();
 
@@ -187,7 +193,7 @@ namespace Controls
                     break;
                 case EControlMap.World:
                     _currentMap = _worldMap;
-
+                    Debug.Log("Cargo controles de world");
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.Confined;
                     break;
@@ -210,9 +216,17 @@ namespace Controls
                     Cursor.lockState = CursorLockMode.Locked;
                     break;
             }
+            //if (_currentMap == null) _currentMap = _worldMap; //Esto esta mal pero es para que se pueda seguir por ahora
             //Debug.Log("Mapa colocado: " + _currentMap);
-            _currentMap.Enable();
-            CurrentControls = _currentMap.name;
+            try
+            {
+                _currentMap.Enable();
+                CurrentControls = _currentMap.name;
+            }
+            catch(System.Exception e)
+            {
+                _currentMap = _worldMap;
+            }
         }
 
         public void LoadControls(InputActionMap map)

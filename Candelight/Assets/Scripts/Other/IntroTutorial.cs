@@ -34,6 +34,8 @@ public class IntroTutorial : MonoBehaviour
 
     bool _instrTest;
 
+    bool _inTutorial = true;
+
     private void Awake()
     {
         _ui = FindObjectOfType<UIManager>();
@@ -54,9 +56,14 @@ public class IntroTutorial : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (_inTutorial)
         {
-            _ui.FadeToWhite(7f, () => StartCoroutine(Tutorial()));
+            if (other.CompareTag("Player"))
+            {
+                _ui.FadeToWhite(7f, () => StartCoroutine(Tutorial()));
+            }
+
+            _inTutorial = false;
         }
     }
 
@@ -88,7 +95,7 @@ public class IntroTutorial : MonoBehaviour
 
         Element.sprite = SymbolSprites[0];
 
-        ShowText("[ W, A, S, D ]");
+        ShowText("\\/[ ESPACIO ]\\/\n[ W, A, S, D ]");
         GetRuneString();
         ActivateInstructionsText();
         yield return StartCoroutine(ShowSpell());

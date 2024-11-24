@@ -17,7 +17,6 @@ using Player;
 using Cameras;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEditor.Experimental.GraphView;
 using Menu;
 using World;
 using TMPro;
@@ -89,7 +88,14 @@ namespace UI
 
         private void OnEnable()
         {
-            if (_player != null) _player.OnDamage += PlayerDamageFeedback;
+            if (_player != null)
+            {
+                _player.OnDamage += PlayerDamageFeedback;
+                _player.OnNewInstruction += ShowNewInstruction;
+                _player.OnSpell += ShowValidSpell;
+                _player.OnElements += ShowValidElements;
+                World.OnCandleChanged += RegisterCandle;
+            }
             if (_input != null)
             {
                 _input.OnStartElementMode += EnterSpellModeFeedback;
@@ -116,23 +122,23 @@ namespace UI
 
         private void OnGUI()
         {
-            GUI.Label(new Rect(10, 40, 200, 70), $"FPS: {CalculateFPS(1.0f / Time.deltaTime)/*}\nCandle (Nodes left): {_candle}\nCurrent Node: {ActualNodeName}\nNext Node: {NextNodeName*/}");
-            if (SceneManager.GetActiveScene().name == "LevelScene" || SceneManager.GetActiveScene().name == "CalmScene")
-            {
-                if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<MapManager>().EndLevel();
-            }
-            else if(SceneManager.GetActiveScene().name == "ChallengeScene")
-            {
-                if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<SimpleRoomManager>().EndLevel();
-            }
-            if (SceneManager.GetActiveScene().name == "MenuScene")
-            {
-                if (GUI.Button(new Rect(350, 40, 150, 20), "REMOVE DATA")) SaveSystem.RemovePreviousGameData();
-            }
-            //if (GUI.Button(new Rect(500, 40, 150, 20), "CALM SCENE")) SceneManager.LoadScene("CalmScene");
-            if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM")) FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(EItemCategory.Rare));
-            if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
-            GUI.Label(new Rect(10, 140, 200, 500), $"Current elements: {_elements}\nActive runes:\n{_chains}");
+            //GUI.Label(new Rect(10, 40, 200, 70), $"FPS: {CalculateFPS(1.0f / Time.deltaTime)/*}\nCandle (Nodes left): {_candle}\nCurrent Node: {ActualNodeName}\nNext Node: {NextNodeName*/}");
+            //if (SceneManager.GetActiveScene().name == "LevelScene" || SceneManager.GetActiveScene().name == "CalmScene")
+            //{
+            //    if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<MapManager>().EndLevel();
+            //}
+            //else if(SceneManager.GetActiveScene().name == "ChallengeScene")
+            //{
+            //    if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<SimpleRoomManager>().EndLevel();
+            //}
+            //if (SceneManager.GetActiveScene().name == "MenuScene")
+            //{
+            //    if (GUI.Button(new Rect(350, 40, 150, 20), "REMOVE DATA")) SaveSystem.RemovePreviousGameData();
+            //}
+            ////if (GUI.Button(new Rect(500, 40, 150, 20), "CALM SCENE")) SceneManager.LoadScene("CalmScene");
+            //if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM")) FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(EItemCategory.Rare));
+            //if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
+            //GUI.Label(new Rect(10, 140, 200, 500), $"Current elements: {_elements}\nActive runes:\n{_chains}");
         }
 
         int CalculateFPS(float frameSpeed)
@@ -196,6 +202,7 @@ namespace UI
 
         public void ShowNewInstruction(ESpellInstruction instr)
         {
+            if (_showInstr == null) _showInstr = FindObjectOfType<ShowInstructions>();
             _showInstr.ShowInstruction(instr);
         }
 
@@ -318,10 +325,13 @@ namespace UI
 
         public void LoadUIWindow(GameObject window)
         {
-            window.SetActive(true);
-            _windows.Push(window);
+            if (window != null)
+            {
+                window.SetActive(true);
+                _windows.Push(window);
 
-            if (_windows.Count == 1) FindObjectOfType<InputManager>()?.LoadControls(EControlMap.UI);
+                if (_windows.Count == 1) FindObjectOfType<InputManager>()?.LoadControls(EControlMap.UI);
+            }
         }
 
         public void LoadUIWindow(GameObject window, string key)
@@ -414,7 +424,8 @@ namespace UI
             Time.timeScale = _spellTimeScale;
 
             SpellHalo.SetActive(true);
-            SpellHalo.transform.localPosition = new Vector3(0f, GetScreenSizeOffset(), 0.5f);
+            float offset = GetScreenSizeOffset();
+            SpellHalo.transform.localPosition = new Vector3(0f, -offset, offset);
 
             GetScreenSizeOffset();
         }
@@ -428,20 +439,15 @@ namespace UI
 
         void ShowFragmentHalo(int prev, int num)
         {
-            FragmentHalo.transform.localPosition = new Vector3(0.5f, GetScreenSizeOffset(), 0.5f);
+            float offset = GetScreenSizeOffset();
+            FragmentHalo.transform.localPosition = new Vector3(0.5f, -offset, offset);
             FragmentHalo.SetActive(true);
             Invoke("ResetHalo", 3f);
         }
 
         float GetScreenSizeOffset()
         {
-            if (Screen.height < 627) return -0.5f;
-            else if (Screen.height < 716) return -0.57f;
-            else return -0.66f;
-            // 627 -> -0.5f
-            // 716 -> -0.57f
-            // 902 -> -0.66f
-            //Debug.Log("Screen: " + Screen.height);
+            return (0.38f * Screen.height + 35.66f) / 484f;
         }
 
         public void ResetHalo() => FragmentHalo.SetActive(false);
@@ -467,7 +473,14 @@ namespace UI
 
         private void OnDisable()
         {
-            if (_player != null) _player.OnDamage -= PlayerDamageFeedback;
+            if (_player != null)
+            {
+                _player.OnDamage -= PlayerDamageFeedback;
+                _player.OnNewInstruction -= ShowNewInstruction;
+                _player.OnSpell -= ShowValidSpell;
+                _player.OnElements -= ShowValidElements;
+                World.OnCandleChanged -= RegisterCandle;
+            }
             if (_input != null)
             {
                 _input.OnStartElementMode -= EnterSpellModeFeedback;

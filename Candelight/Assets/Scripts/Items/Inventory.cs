@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using World;
-using static UnityEditor.Progress;
 
 namespace Items
 {

@@ -175,7 +175,7 @@ namespace World
             {
                 if (node.TryGetComponent<NodeManager>(out var nodeMan) && nodeMan.StartNodeCheck())
                 {
-                    nodeMan.Text.text += " START";
+                    nodeMan.gameObject.name += " START";
                     nodeMan.SetState(ENodeState.Explorado);
                     CurrentNodeInfo.Node = nodeMan; //Marcamos este como nodo inicial
 
@@ -197,7 +197,8 @@ namespace World
 
         void MovePlayerToNode(Transform node)
         {
-            _player.transform.position = new Vector3(node.position.x, _player.transform.position.y + 0.1f, node.position.z);
+            Debug.Log("Se mueve al jugador a: " + node.position);
+            _player.transform.position = new Vector3(node.position.x, 1f, node.position.z);
         }
 
         /// <summary>
