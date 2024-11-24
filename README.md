@@ -1,6 +1,6 @@
 Este GDD no contiene imágenes. Para ver el GDD completo, consultar el PDF de la entrega.
 
-Versión 0.1.10
+Versión 0.2.8
 
 **_ÍNDICE_**
 
