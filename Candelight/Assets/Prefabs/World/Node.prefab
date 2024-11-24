@@ -2398,6 +2398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9946a9111ff04704da14909fff4df813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 0
   ConnectedNodes: []
   _connectRadius: 15
   UnexploredLineMat: {fileID: 2100000, guid: b6b96888792051a408b67c444e314d90, type: 2}
@@ -2421,6 +2422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NotificationTransform: {fileID: 1458530065762755930}
+  Exclamation: {fileID: 0}
 --- !u!114 &983118377390783655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2502,7 +2504,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
+  m_Radius: 1.78
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4973140249477406243
 GameObject:

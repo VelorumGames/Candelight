@@ -45,11 +45,11 @@ public static class Database
             Completed = true;
         }).Catch(ex =>
         {
-            Debug.LogWarning($"[DATABASE] ERROR: " + ex.Message + "\nSe devuelve un valor por defecto.");
-            callback(default);
-
             _running = false;
             Completed = true;
+
+            Debug.LogWarning($"[DATABASE] ERROR: " + ex.Message + "\nSe devuelve un valor por defecto.");
+            callback(default);
         });
 
         yield return new WaitUntil(() => Completed);
@@ -61,26 +61,32 @@ public static class Database
 
         //Mandamos la info
         Debug.Log("[DATABASE] SE MANDA INFO");
-        yield return Send($"Players/{data.Name}", data);
-
-        //Tomamos la lista de nombres anteriores registrados
-        yield return Get<UserNames>("Names/", RecieveNames);
-        //yield return new WaitUntil(() => Completed);
-
-        bool valid = true;
-        string[] names = _names.Names.Split('*');
-        foreach (var n in names)
+        if (data.Name != "")
         {
-            if (n == data.Name) valid = false;
-        }
+            yield return Send($"Players/{data.Name}", data);
 
-        //Actualizamos la lista y la devolvemos a la base de datos
-        if (valid)
-        {
-            Debug.Log("[DATABASE] Se registra un nuevo nombre en " + _names.Names);
-            _names.Names += $"{data.Name}*";
-            Debug.Log("[DATABASE] Nueva lista: " + _names.Names);
-            yield return Send("Names/", _names);
+            //Tomamos la lista de nombres anteriores registrados
+            yield return Get<UserNames>("Names/", RecieveNames);
+            //yield return new WaitUntil(() => Completed);
+
+            bool valid = true;
+            if (_names.Names != null)
+            {
+                string[] names = _names.Names.Split('*');
+                foreach (var n in names)
+                {
+                    if (n == data.Name) valid = false;
+                }
+            }
+
+            //Actualizamos la lista y la devolvemos a la base de datos
+            if (valid)
+            {
+                Debug.Log("[DATABASE] Se registra un nuevo nombre en " + _names.Names);
+                _names.Names += $"{data.Name}*";
+                Debug.Log("[DATABASE] Nueva lista: " + _names.Names);
+                yield return Send("Names/", _names);
+            }
         }
     }
 
