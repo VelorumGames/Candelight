@@ -2,7 +2,9 @@ using Player;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Interactuables
 {
@@ -20,6 +22,11 @@ namespace Interactuables
             {
                 if (OnTrigger != null) OnTrigger();
                 other.GetComponentInParent<PlayerController>().LoadInteraction(EventInteraction, NotificationTransform);
+
+                if (SceneManager.GetActiveScene().name == "TutorialScene")
+                {
+                    FindObjectOfType<UIManager>().ShowTutorial("Pulsa E para interactuar");
+                }
             }
         }
 

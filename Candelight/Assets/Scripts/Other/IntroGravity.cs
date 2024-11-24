@@ -22,9 +22,14 @@ public class IntroGravity : MonoBehaviour
                 _cf.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
                 _active = false;
 
-                GetComponentInChildren<ParticleSystem>().Play();
+                Invoke("PlayParticles", 2f);
             }
         }
+    }
+
+    public void PlayParticles()
+    {
+        GetComponentInChildren<ParticleSystem>().Play();
     }
 
     public void ResetPlayer()

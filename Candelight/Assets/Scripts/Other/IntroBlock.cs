@@ -42,8 +42,11 @@ public class IntroBlock : MonoBehaviour
         {
             while (!spell.IsActivated())
             {
-                yield return new WaitForSecondsRealtime(15f);
-                if (!spell.IsActivated()) _ui.ShowTutorial("Pulsa B para abrir tus apuntes.\n\nMantén SHIFT o ESPACIO e invoca las runas para memorizar una nueva magia.");
+                if (!spell.IsActivated())
+                {
+                    _ui.ShowTutorial("Pulsa B para abrir tus apuntes.\n\nMantén SHIFT o ESPACIO e invoca las runas para memorizar una nueva magia.", 10f);
+                    yield return new WaitForSecondsRealtime(13f);
+                }
             }
 
             StartCoroutine(SpellHelp());
@@ -54,8 +57,8 @@ public class IntroBlock : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSecondsRealtime(15f);
-            _ui.ShowTutorial("Para activar un elemento memorizado, mantén ESPACIO e invoca sus runas.\n Para lanzar un hechizo memorizado, mantén SHIFT e invoca sus runas.");
+            _ui.ShowTutorial("Para activar un elemento memorizado, mantén ESPACIO e invoca sus runas.\n Para lanzar un hechizo memorizado, mantén SHIFT e invoca sus runas.", 10f);
+            yield return new WaitForSecondsRealtime(13f);
         }
     }
 
