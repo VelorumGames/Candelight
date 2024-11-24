@@ -4,6 +4,7 @@ using Hechizos.Elementales;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
 namespace Enemy
@@ -26,11 +27,14 @@ namespace Enemy
         Rigidbody _playerRb;
         MurcielagoAnimation _anim;
 
+        UIManager _ui;
+
         private new void Awake()
         {
             base.Awake();
             _playerRb = Player.GetComponent<Rigidbody>();
             _anim = GetComponentInChildren<MurcielagoAnimation>();
+            _ui = FindObjectOfType<UIManager>();
         }
 
         private new void Start()
@@ -52,9 +56,11 @@ namespace Enemy
                     NormalStart();
                     break;
                 case EMurcielagoState.Attack:
+                    _ui.ShowTutorial("\"Y el murciélago enfureció...\"", 3f);
                     AttackStart();
                     break;
                 case EMurcielagoState.Confused:
+                    _ui.ShowTutorial("\"El murciélago quedó confundido, incapaz de rastrear la esencia fantasmal.\"", 4f);
                     ConfusedStart();
                     break;
             }

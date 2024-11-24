@@ -22,6 +22,9 @@ namespace Animations
         {
             _rend.flipX = !_rend.flipX;
         }
+
+        public void StartAttacking() => Anim.SetBool("Attacking", true);
+        public void EndAttacking() => Anim.SetBool("Attacking", false);
     }
 
     public enum ESpriteOrientation

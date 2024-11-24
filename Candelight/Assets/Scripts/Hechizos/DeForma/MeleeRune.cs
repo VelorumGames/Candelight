@@ -34,10 +34,10 @@ namespace Hechizos.DeForma
             Melee melee = meleeGO.GetComponent<Melee>();
             melee.OnImpact += OnMeleeImpact;
 
-            float avDam = 0;
-            foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
-            avDam /= MageManager.GetMaxElements();
-            melee.Damage = avDam;
+            //float avDam = 0;
+            //foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
+            //avDam /= MageManager.GetMaxElements();
+            melee.Damage = GetTotalDamage() * 1.5f;
         }
     }
 }

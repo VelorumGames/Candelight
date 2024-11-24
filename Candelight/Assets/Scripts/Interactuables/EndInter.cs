@@ -23,6 +23,8 @@ namespace Interactuables
         {
             if (SceneManager.GetActiveScene().name == "TutorialScene")
             {
+                GameSettings.Tutorial = false;
+
                 FindObjectOfType<UIManager>().FadeToBlack(3f, () =>
                 {
                     SceneManager.LoadScene("WorldScene");

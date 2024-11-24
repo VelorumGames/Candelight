@@ -1,3 +1,4 @@
+using Animations;
 using Cameras;
 using Cinemachine;
 using Controls;
@@ -75,6 +76,8 @@ namespace Player
         UIManager _UIMan;
         InputManager _input;
 
+        SacrificadoAnimation _anim;
+
         PlayerParticlesManager _particles;
         [SerializeField] CinemachineVirtualCamera _fpCam;
         bool _isFirstPerson;
@@ -107,6 +110,7 @@ namespace Player
         {
             _rb = GetComponent<Rigidbody>();
             _particles = GetComponent<PlayerParticlesManager>();
+            _anim = GetComponentInChildren<SacrificadoAnimation>();
 
             _mage = FindObjectOfType<Mage>();
             _input = FindObjectOfType<InputManager>();
@@ -167,6 +171,13 @@ namespace Player
                 {
                     _extraLives--;
                     finalHealth = 0.25f * World.MAX_CANDLE;
+                }
+
+                //TODO. Esto cambiara para la gold.
+                if (finalHealth <= 0) //Morira
+                {
+                    CanMove = false;
+                    _anim.ChangeToDeath();
                 }
 
                 CallDamageEvent(finalDamage, Mathf.Clamp01(finalHealth / World.MAX_CANDLE));
@@ -259,7 +270,7 @@ namespace Player
         {
             if (_isFirstPerson)
             {
-                _fpOrientation = Mathf.Clamp(_fpOrientation + delta[1] * _mouseSens * Time.deltaTime * 10f, -50f, 50f);
+                _fpOrientation = Mathf.Clamp(_fpOrientation + delta[1] * _mouseSens * Time.deltaTime * 10f, -30f, 30f);
                 _camMan.GetActiveCam().transform.rotation = Quaternion.Euler(-_fpOrientation, 0f, 0f);
             }
         }
@@ -327,6 +338,8 @@ namespace Player
                 }
                 else if (OnElements != null) OnElements(null); //Si no encuentra elemento valido
             }
+
+            _UIMan.ManageAuxiliarRuneReset();
         }
         public void OnSpellLaunch()
         {
@@ -351,6 +364,7 @@ namespace Player
                         {
                             shapeSpell.ThrowSpell();
                             if (OnSpell != null) OnSpell(shapeSpell);
+                            if (shapeSpell is MeleeRune) _anim.ChangeToMelee();
                         }
                         else if (OnSpell != null) OnSpell(null); //Si no encuentra hechizo valido
                     }
@@ -358,6 +372,8 @@ namespace Player
                     ResetInstructions();
                 }
             }
+
+            _UIMan.ManageAuxiliarRuneReset();
         }
 
         public void ResetInstructions() => _instructions.Clear();

@@ -45,7 +45,7 @@ namespace Menu
 
             ARune.CreateAllRunes(FindObjectOfType<Mage>());
 
-            SceneManager.LoadScene(PlayDirectly ? "WorldScene" : "IntroScene");
+            SceneManager.LoadScene(PlayDirectly || !GameSettings.Tutorial ? "WorldScene" : "IntroScene");
         }
     }
 }

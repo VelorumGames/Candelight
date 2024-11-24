@@ -44,7 +44,7 @@ namespace Visual
 
         public void LoadBiomeVisuals(EBiome biome)
         {
-            Debug.Log("Se carga bioma: " + biome);
+            //Debug.Log("Se carga bioma: " + biome);
             switch(biome)
             {
                 case EBiome.Durnia:

@@ -48,7 +48,7 @@ public class IntroTutorial : MonoBehaviour
 
         //Debug.Log("ENERGY IMAGE: " + EnergyImage.gameObject.name);
 
-        //Debug
+        //Debug. Deberia estar desactivado
         //_ui.FadeToWhite(1f, () => StartCoroutine(Tutorial()));
     }
 
@@ -85,6 +85,8 @@ public class IntroTutorial : MonoBehaviour
         yield return StartCoroutine(SpellTest2());
 
         yield return new WaitForSeconds(1f);
+
+        Element.sprite = SymbolSprites[0];
 
         ShowText("[ W, A, S, D ]");
         GetRuneString();
@@ -144,7 +146,7 @@ public class IntroTutorial : MonoBehaviour
 
     void ManageEnterSpell2()
     {
-        if (Keyboard.current.spaceKey.isPressed)
+        if (Keyboard.current.shiftKey.isPressed)
         {
             _spellTime += Time.deltaTime;
             Element.color = new Color(1f, 1f, 1f, 0.5f * _spellTime / _maxSpellTime);
@@ -215,7 +217,7 @@ public class IntroTutorial : MonoBehaviour
 
     IEnumerator SpellTest()
     {
-        ShowText("[ ESPACIO ]");
+        ShowText("\\/[ ESPACIO ]\\/");
 
         Element.sprite = SymbolSprites[0];
 
@@ -239,7 +241,7 @@ public class IntroTutorial : MonoBehaviour
 
     IEnumerator SpellTest2()
     {
-        ShowText("[ SHIFT ]");
+        ShowText("\\/[ SHIFT ]\\/");
 
         Element.sprite = SymbolSprites[1];
 

@@ -26,7 +26,7 @@ namespace Map
         private void Awake()
         {
             //Debug. Deberia estar desactivado
-            ARune.CreateAllRunes(FindObjectOfType<Mage>());
+            //ARune.CreateAllRunes(FindObjectOfType<Mage>());
         }
 
         private void Start()

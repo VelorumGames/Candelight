@@ -10,7 +10,7 @@ using World;
 
 namespace Enemy
 {
-    public class EnemyController : AController
+    public abstract class EnemyController : AController
     {
         public EnemyInfo Info;
         [SerializeField] EnemyModifiers _modifier;

@@ -14,7 +14,7 @@ namespace Hechizos.Elementales
         public PhantomRune(Mage m) : base(m)
         {
             Name = "Phantom";
-            Damage = 8f;
+            Damage = 10f;
         }
 
         //Proyectil fantasmal

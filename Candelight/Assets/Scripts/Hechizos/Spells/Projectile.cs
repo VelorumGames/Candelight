@@ -61,19 +61,20 @@ namespace Hechizos
                 
                 if (other.CompareTag("Enemy"))
                 {
-                   
                     Target = other.transform.parent;
 
                     if (Target != null && Target.TryGetComponent<EnemyController>(out var enemy))
                     {
                         enemy.RecieveDamage(Damage);
+                        if (OnImpact != null) OnImpact(Target);
                     }
                     else if (other.transform.TryGetComponent(out enemy))
                     {
                         enemy.RecieveDamage(Damage);
+                        if (OnImpact != null) OnImpact(other.transform);
                     }
 
-                    if (OnImpact != null) OnImpact(Target != null ? Target : other.transform);
+                    //if (OnImpact != null) OnImpact(Target != null ? Target : other.transform);
                 }
             } 
             else
@@ -131,6 +132,21 @@ namespace Hechizos
                 runes = new AElementalRune[1];
                 runes[0] = oldRune;
             }
+            else if (runes.Length == 3 && runes[0].Name == runes[1].Name) //En caso de 3 elementos a la vez
+            {
+                AElementalRune[] oldRunes = runes;
+                runes = new AElementalRune[2];
+                runes[0] = oldRunes[0];
+                runes[1] = oldRunes[2];
+            }
+            else if (runes.Length == 3 && runes[0].Name == runes[2].Name || runes.Length == 3 && runes[1].Name == runes[2].Name)
+            {
+                AElementalRune[] oldRunes = runes;
+                runes = new AElementalRune[2];
+                runes[0] = oldRunes[0];
+                runes[1] = oldRunes[1];
+            }
+
 
             switch(runes[0].Name)
             {

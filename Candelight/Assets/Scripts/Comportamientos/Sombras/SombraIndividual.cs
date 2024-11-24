@@ -9,6 +9,7 @@ using Enemy;
 using Player;
 using DG.Tweening;
 using Animations;
+using UI;
 
 namespace Comportamientos.Sombra
 {
@@ -63,6 +64,8 @@ namespace Comportamientos.Sombra
             {
                 CurrentHP += _healthIncrease;
                 transform.localScale = transform.localScale + new Vector3 (_scaleIncrease, _scaleIncrease, _scaleIncrease);
+
+                FindObjectOfType<UIManager>().ShowTutorial("\"Las sombras absorbieron el poder del hechizo fantasmal\"", 4f);
             }
             
         }

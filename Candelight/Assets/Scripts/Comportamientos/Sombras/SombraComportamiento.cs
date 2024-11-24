@@ -5,6 +5,7 @@ using Hechizos.Elementales;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
 namespace Comportamientos.Sombra
@@ -31,7 +32,8 @@ namespace Comportamientos.Sombra
 
                 if (value >= _numSombras)
                 {
-                    gameObject.SetActive(false);
+                    Muerte();
+                    //gameObject.SetActive(false);
                 }
             }
         }
@@ -59,6 +61,7 @@ namespace Comportamientos.Sombra
         private float vel;
 
         List<SombraAnimation> _anims = new List<SombraAnimation>();
+        UIManager _ui;
 
         //Array Prefabs Anillos
 
@@ -67,7 +70,7 @@ namespace Comportamientos.Sombra
         private void Awake()
         {
             _player = FindObjectOfType<PlayerController>().gameObject;
-
+            _ui = FindObjectOfType<UIManager>();
         }
 
         private void Start()
@@ -194,6 +197,7 @@ namespace Comportamientos.Sombra
 
                     if (EquipadoFuego())
                     {
+                        _ui.ShowTutorial("\"Las sombras chillaron...\"", 3f);
                         scSombra.GoAway(2f);
                     }
                    

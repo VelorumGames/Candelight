@@ -11,4 +11,6 @@ public static class GameSettings
     public static float GeneralVolume;
     public static float SoundVolume;
     public static float MusicVolume;
+
+    public static bool Tutorial = true;
 }

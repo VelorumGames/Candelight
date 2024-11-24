@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Reward: 0
+  RandomDialogue: 0
   Dialogue: {fileID: 0}
 --- !u!114 &2932335460151449510
 MonoBehaviour:
@@ -147,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NotificationTransform: {fileID: 6227411872310699139}
+  Exclamation: {fileID: 0}
 --- !u!114 &7841421913427160153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,6 +333,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 1
+  InitialOrientation: 0
+  CanMoveOnStart: 0
 --- !u!1 &9209046907135373598
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +388,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3698a355ac469b240a3f1d5d7c0fb357, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

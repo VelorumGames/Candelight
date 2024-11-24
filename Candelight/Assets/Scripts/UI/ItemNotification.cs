@@ -20,7 +20,13 @@ namespace UI
 
         private void OnEnable()
         {
-            GetComponent<RectTransform>().DOLocalMove(new Vector3(-300f, 0f, 0f), _startDuration).OnComplete(() => Invoke("ResetNotification", _duration)).Play().SetUpdate(true);
+            GetComponent<RectTransform>().DOLocalMove(new Vector3(-300f, 0f, 0f), _startDuration).OnComplete(() => StartCoroutine(ManageReset())).Play().SetUpdate(true);
+        }
+
+        IEnumerator ManageReset()
+        {
+            yield return new WaitForSecondsRealtime(_duration);
+            ResetNotification();
         }
 
         public void LoadItemInfo(ItemInfo data)
@@ -33,6 +39,11 @@ namespace UI
         void ResetNotification()
         {
             GetComponent<RectTransform>().DOLocalMove(new Vector3(-1000f, 0f, 0f), _startDuration).OnComplete(() => gameObject.SetActive(false)).Play().SetUpdate(true);
+        }
+
+        public void SetDuration(float dur)
+        {
+            _duration = dur;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Hechizos.Elementales
         public FireRune(Mage m) : base(m)
         {
             Name = "Fire";
-            Damage = 100f;
+            Damage = 15f;
             Activate(true);
             m.SetInitialElement(this);
         }
@@ -28,9 +28,17 @@ namespace Hechizos.Elementales
         }
         public override void ProjectileImpact(Transform target)
         {
+            //Debug.Log("AAAAAAA: " + target);
+
             //Queda haciendo dano durante cierto tiempo
             if (target != null && target.TryGetComponent<EnemyController>(out var cont))
             {
+                cont.RecieveTemporalDamage(Damage * 0.25f, 5f, 1f);
+                cont.Burn(5f);
+            }
+            else if (target.transform.parent != null && target.transform.parent.TryGetComponent<EnemyController>(out cont))
+            {
+                target = target.transform.parent;
                 cont.RecieveTemporalDamage(Damage * 0.25f, 5f, 1f);
                 cont.Burn(5f);
             }

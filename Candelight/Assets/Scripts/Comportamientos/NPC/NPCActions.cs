@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Player;
 using System.Threading;
+using Unity.VisualScripting;
 
+[RequireComponent(typeof(NPCController))]
 public class NPCActions : MonoBehaviour
 {
     PlayerController player;
@@ -14,11 +16,16 @@ public class NPCActions : MonoBehaviour
 
     int count;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         player = FindObjectOfType<PlayerController>();
         controller = GetComponent<NPCController>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
         //currentPos = player.transform.position;
         target = currentPos;
         count = 0;

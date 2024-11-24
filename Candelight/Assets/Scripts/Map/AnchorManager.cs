@@ -108,7 +108,7 @@ namespace Map
             //    Debug.DrawRay(transform.position + 0.44f * transform.forward, _auxDirRight * _map.MediumThreshold, Color.yellow);
             //    Debug.DrawRay(transform.position + (_map.MediumThreshold * transform.forward - _map.SmallThreshold * transform.right), _map.SmallThreshold * transform.right, Color.blue);
             //}
-            Debug.DrawRay(transform.position, _map.MediumThreshold * transform.forward, Color.blue);
+            //Debug.DrawRay(transform.position, _map.MediumThreshold * transform.forward, Color.blue);
             //Debug.DrawRay(transform.position + _map.MediumThreshold * transform.forward, transform.right * _map.SmallThreshold, Color.red);
             //Debug.DrawRay(transform.position + _map.MediumThreshold * transform.forward, );
         }

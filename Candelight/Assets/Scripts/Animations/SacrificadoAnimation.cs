@@ -29,5 +29,10 @@ namespace Animations
             Anim.SetFloat("xOrientation", _cont.GetOrientation().x);
             Anim.SetFloat("yOrientation", _cont.GetOrientation().z);
         }
+
+        
+        public void ChangeToDeath() => Anim.SetBool("Death", true);
+
+        public void ChangeToMelee() => Anim.SetTrigger("Melee");
     }
 }

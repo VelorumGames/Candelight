@@ -36,6 +36,9 @@ public abstract class AController : MonoBehaviour
     Coroutine _paralize;
     Coroutine _burn;
     Coroutine _slowness;
+    bool _isSlowed;
+    bool _isBurned;
+    bool _isParalized;
 
     protected bool CanMove = true;
 
@@ -74,43 +77,52 @@ public abstract class AController : MonoBehaviour
 
     public void Paralize(float time)
     {
-        if (_paralize != null) StopCoroutine(_paralize);
-        _paralize = StartCoroutine(ProcessParalize(time));
+        //if (_paralize != null) StopCoroutine(_paralize);
+        if (!_isParalized) _paralize = StartCoroutine(ProcessParalize(time));
     }
 
     IEnumerator ProcessParalize(float time)
     {
+        _isParalized = true;
         CanMove = false;
         GetComponentInChildren<SpriteRenderer>().color = Color.yellow;
         yield return new WaitForSeconds(time);
         GetComponentInChildren<SpriteRenderer>().color = Color.white;
         CanMove = true;
+        _isParalized = false;
     }
     public void Burn(float time)
     {
-        if (_burn != null) StopCoroutine(_burn);
-        _burn = StartCoroutine(ProcessBurn(time));
+        //if (_burn != null) StopCoroutine(_burn);
+        if (!_isBurned) _burn = StartCoroutine(ProcessBurn(time));
     }
     IEnumerator ProcessBurn(float time)
     {
+        _isBurned = true;
         GetComponentInChildren<SpriteRenderer>().color = Color.red;
         yield return new WaitForSeconds(time);
         GetComponentInChildren<SpriteRenderer>().color = Color.white;
+        _isBurned = false;
     }
 
 
     public void Slow(float ratio, float time)
     {
-        if (_slowness != null) StopCoroutine(_slowness);
-        _slowness = StartCoroutine(ProcessSlowness(ratio, time));
+        //if (_slowness != null) StopCoroutine(_slowness);
+        if (!_isSlowed) _slowness = StartCoroutine(ProcessSlowness(ratio, time));
     }
 
     IEnumerator ProcessSlowness(float ratio, float time)
     {
+
+        _isSlowed = true;
         float oSpeed = _speed;
         _speed *= ratio;
+        GetComponentInChildren<SpriteRenderer>().color = Color.gray;
         yield return new WaitForSeconds(time);
+        GetComponentInChildren<SpriteRenderer>().color = Color.white;
         _speed = oSpeed;
+        _isSlowed = false;
     }
 
     public void Push(float force, Vector3 direction)
@@ -158,14 +170,17 @@ public abstract class AController : MonoBehaviour
     /// <returns></returns>
     protected IEnumerator MoveTowards(Vector3 target, float timeOut)
     {
-        float outTime = 0;
-        Vector3 direction;
-        while (Vector3.Distance(transform.position, target) > 1.5f && outTime < timeOut)
+        if (CanMove)
         {
-            direction = new Vector3((target - transform.position).x, 0f, (target - transform.position).z).normalized;
-            OnMove(new Vector2(direction.x, direction.z));
-            outTime += Time.deltaTime;
-            yield return null;
+            float outTime = 0;
+            Vector3 direction;
+            while (Vector3.Distance(transform.position, target) > 1.5f && outTime < timeOut)
+            {
+                direction = new Vector3((target - transform.position).x, 0f, (target - transform.position).z).normalized;
+                OnMove(new Vector2(direction.x, direction.z));
+                outTime += Time.deltaTime;
+                yield return null;
+            }
         }
     }
 

@@ -44,10 +44,10 @@ namespace Hechizos.DeForma
                 proj.OnImpact += ProjectileImpact;
                 proj.OnEnd += ProjectileEnd;
 
-                float avDam = 0;
-                foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
-                avDam /= MageManager.GetActiveElements().Count;
-                proj.Damage = avDam;
+                //float avDam = 0;
+                //foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
+                //avDam /= MageManager.GetActiveElements().Count;
+                proj.Damage = GetTotalDamage();
             }
         }
 

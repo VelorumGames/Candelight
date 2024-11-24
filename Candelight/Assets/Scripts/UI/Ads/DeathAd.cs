@@ -29,8 +29,8 @@ namespace UI.Ads
         {
             //Se carga el anuncio
             _ad.SetActive(true);
-            //Debug
-            PostAd();
+            //Debug. Deberia estar desactivado
+            //PostAd();
         }
 
         /// <summary>

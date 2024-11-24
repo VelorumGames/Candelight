@@ -371,6 +371,9 @@ namespace Hechizos
         public void RuneActivation(ARune rune)
         {
             if (OnNewRuneActivation != null) OnNewRuneActivation(rune);
+
+            //TODO. Esto que sirve de placeholder por el momento y ya encontraremos una manera mas diegetica de presentarlo
+            if (rune is ElectricRune) ElementsMixTutorial();
         }
 
         public void SetExtraProjSpeed(float speed) => _projectileSpeedFactor = speed;
@@ -384,6 +387,11 @@ namespace Hechizos
         public void ManageResetBuff()
         {
             _buff.ResetBuff();
+        }
+
+        void ElementsMixTutorial()
+        {
+            FindObjectOfType<UIManager>().ShowTutorial("Activa varios elementos a la vez combinando sus instrucciones");
         }
 
         private void OnDisable()

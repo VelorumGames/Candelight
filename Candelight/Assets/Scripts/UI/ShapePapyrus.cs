@@ -81,7 +81,7 @@ namespace UI
             int i = 0;
             foreach (var spell in ARune.Spells.Values)
             {
-                Debug.Log($"Para {spell.Name} tenemos: {spell.IsActivated()} && {spell is AShapeRune}");
+                //Debug.Log($"Para {spell.Name} tenemos: {spell.IsActivated()} && {spell is AShapeRune}");
                 if (spell.IsActivated() && spell is AShapeRune)
                 {
                     if (i < _runeTexts.Length)

@@ -20,6 +20,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEditor.Experimental.GraphView;
 using Menu;
 using World;
+using TMPro;
 
 namespace UI
 {
@@ -52,11 +53,14 @@ namespace UI
         [SerializeField] UIGameState _state;
 
         [Space(10)]
+        public GameObject TutorialNotif;
+
+        [Space(10)]
         [Header("FEEDBACK")]
         public Image RedFilter;
         public Image WhiteFilter;
         Volume _vol;
-        float _spellTimeScale = 0.5f;
+        float _spellTimeScale = 0.4f;
         float _prevTimeScale = 1f;
 
         ShowInstructions _showInstr;
@@ -183,7 +187,7 @@ namespace UI
 
         void Death()
         {
-            Invoke("DelayedDeath", 1f);
+            Invoke("DelayedDeath", 2f);
         }
 
         public void DelayedDeath() => _deathWindow.gameObject.SetActive(true);
@@ -219,6 +223,13 @@ namespace UI
         public void ShowElements()
         {
             if (_showInstr != null) _showInstr.ShowElements();
+        }
+
+        public void ManageAuxiliarRuneReset() => Invoke("AuxiliarResetRuneSprites", 2f);
+
+        public void AuxiliarResetRuneSprites()
+        {
+            if (_showInstr != null) _showInstr.ResetSprites();
         }
 
         #endregion
@@ -440,6 +451,19 @@ namespace UI
         public void HideState() => _state.Hide();
 
         #endregion
+
+        public void ShowTutorial(string s)
+        {
+            TutorialNotif.SetActive(true);
+            TutorialNotif.GetComponentInChildren<TextMeshProUGUI>().text = s;
+        }
+
+        public void ShowTutorial(string s, float duration)
+        {
+            TutorialNotif.GetComponent<ItemNotification>().SetDuration(duration);
+            TutorialNotif.SetActive(true);
+            TutorialNotif.GetComponentInChildren<TextMeshProUGUI>().text = s;
+        }
 
         private void OnDisable()
         {

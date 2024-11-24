@@ -143,7 +143,7 @@ namespace Hechizos
         {
             int found = 0;
             int num = System.Math.Clamp(chain.Length / 2, 0, _extraElement ? 3 : 2);  //2 Es la complejidad de cada elemento
-            Debug.Log($"Deberia haber {num} elementos en esta cadena: " + InstructionsToString(chain));
+            //Debug.Log($"Deberia haber {num} elementos en esta cadena: " + InstructionsToString(chain));
             elements = new AElementalRune[num];
 
             if (chain.Length < 2) return false;
@@ -159,7 +159,7 @@ namespace Hechizos
                 }
                 catch (System.IndexOutOfRangeException e)
                 {
-                    Debug.Log("ERROR: Fallo al dividir subcadenas: " + e);
+                    Debug.LogWarning("ERROR: Fallo al dividir subcadenas: " + e);
                     return false;
                 }
 

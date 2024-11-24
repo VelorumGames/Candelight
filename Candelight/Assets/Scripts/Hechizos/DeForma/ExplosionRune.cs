@@ -36,10 +36,10 @@ namespace Hechizos.DeForma
             Explosion expl = explGO.GetComponent<Explosion>();
             expl.OnImpact += OnExplosionImpact;
 
-            float avDam = 0;
-            foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
-            avDam /= MageManager.GetMaxElements();
-            expl.Damage = avDam;
+            //float avDam = 0;
+            //foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
+            //avDam /= MageManager.GetMaxElements();
+            expl.Damage = GetTotalDamage() * 1.25f;
         }
     }
 }
