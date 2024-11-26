@@ -386,7 +386,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Candelight 0.2.8
+  m_text: Candelight 0.3.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c6406cb7b6d03d4996ecb974b0c6837, type: 2}
   m_sharedMaterial: {fileID: 7374735417175842553, guid: 7c6406cb7b6d03d4996ecb974b0c6837,
@@ -2983,6 +2983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   World: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
+  CurrentNodeInfo: {fileID: 11400000, guid: 590e6fd0067b28f4e9bc3585d233a483, type: 2}
   PlayerName: PLAYER
   _play: {fileID: 1893781882}
   _loadSave: {fileID: 1731357528}
@@ -6673,7 +6674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _world: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
-  PlayDirectly: 0
+  PlayDirectly: 1
 --- !u!1 &1960110783
 GameObject:
   m_ObjectHideFlags: 0

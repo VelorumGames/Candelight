@@ -136,7 +136,13 @@ namespace Player
 
             CanMove = true;
             
-            if (!_currentNode && FindObjectOfType<WorldManager>() != null) _currentNode = FindObjectOfType<WorldManager>().CurrentNodeInfo.Node;
+            if (_currentNode != null && FindObjectOfType<WorldManager>() != null) _currentNode = FindObjectOfType<WorldManager>().CurrentNodeInfo.Node;
+
+            if (scene.name == "WorldScene")
+            {
+                _rb.useGravity = true;
+                _rb.constraints = RigidbodyConstraints.FreezeRotation;
+            }
         }
 
         void OnSceneUnloaded(Scene scene)
@@ -144,6 +150,9 @@ namespace Player
             UnloadInteraction();
             _pathShower.SetActive(false);
         }
+
+        public NodeManager GetCurrentNode() => _currentNode;
+        public void SetCurrentNode(NodeManager node) => _currentNode = node;
 
         public override void RecieveDamage(float damage)
         {
@@ -390,6 +399,7 @@ namespace Player
 
         public void OnChoosePath(Vector2 direction)
         {
+            //Debug.Log(_currentNode);
             if (_currentNode != null)
             {
                 //Movemos un gameobject invisible
@@ -403,7 +413,7 @@ namespace Player
                 foreach (var node in _currentNode.ConnectedNodes)
                 {
                     //Debug.Log($"1: {node != _currentNode.gameObject}");
-                    //Debug.Log($"2: {node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered} ({node.GetComponent<NodeManager>().GetNodeData().State})");
+                    //Debug.Log($"2: {node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Sin_Descubrir} ({node.GetComponent<NodeManager>().GetNodeData().State})");
 
 
                     //Debug.Log("ESTADO ADYACENTE: " + node.GetComponent<NodeManager>().GetNodeData().State);
@@ -418,7 +428,7 @@ namespace Player
                         }
                     }
                 }
-                Debug.Log("Closest: " + closest);
+                //Debug.Log("Closest: " + closest);
                 if (closest != null) _nextNode = closest.transform;
             }
         }

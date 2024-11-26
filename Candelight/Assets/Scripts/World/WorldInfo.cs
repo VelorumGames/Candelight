@@ -54,6 +54,6 @@ namespace World
 
         //SAVE INFO
         public List<int> CompletedIds = new List<int>();
-        public bool LoadedInfo;
+        public bool LoadedPreviousGame;
     }
 }

@@ -3,6 +3,7 @@ using Items;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ using World;
 public class MenuSaveManager : MonoBehaviour
 {
     public WorldInfo World;
+    public NodeInfo CurrentNodeInfo;
     public string PlayerName;
 
     [SerializeField] GameObject _play;
@@ -23,7 +25,12 @@ public class MenuSaveManager : MonoBehaviour
 
     private void Start()
     {
-        World.LoadedInfo = true;
+        GameSettings.LoadedWorld = false;
+
+        World.LoadedPreviousGame = false;
+        World.CompletedNodes = 0;
+
+        CurrentNodeInfo.Node = null;
 
         SaveSystem.ScoreboardData = new ScoreData(PlayerName, -1, 0f, 0f);
 
@@ -52,27 +59,32 @@ public class MenuSaveManager : MonoBehaviour
         yield return StartCoroutine(SaveSystem.Load());
         SaveData data = SaveSystem.GameData;
 
+        ARune.CreateAllRunes(FindObjectOfType<Mage>());
+
         FindObjectOfType<Inventory>().LoadInventory(data.ActiveItems, data.UnactiveItems, data.Fragments);
         World.Candle = data.Candle;
         World.CompletedIds.Clear();
         foreach (var node in data.CompletedNodes) World.CompletedIds.Add(node);
-        World.CompletedNodes = World.CompletedIds.Count;
+        //World.CompletedNodes = World.CompletedIds.Count;
         SaveSystem.ScoreboardData.Score = World.CompletedNodes;
         World.World = null;
 
-        World.LoadedInfo = false;
+        World.LoadedPreviousGame = true;
 
-        data.Runes = "";
+        Debug.Log("Datos de runas: " + data.Runes);
         string[] runeNames = data.Runes.Split(",");
         int count = 0;
         foreach(var rune in ARune.Spells.Values)
         {
+            Debug.Log("Cargo: " + rune);
             if (rune.Name == runeNames[count])
             {
                 count++;
                 rune.Activate(true);
             }
         }
+        data.Runes = "";
+
         FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
         SceneManager.LoadScene("WorldScene");
     }
