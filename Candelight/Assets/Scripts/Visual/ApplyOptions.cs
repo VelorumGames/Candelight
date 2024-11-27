@@ -46,6 +46,10 @@ namespace Visual
             _mixer.GetFloat("SoundVol", out _oSoundVol);
             _mixer.GetFloat("MusicVol", out _oMusicVol);
 
+        }
+
+        private void OnEnable()
+        {
             //Aplicamos los offset de las opciones
             ApplySettings();
         }
@@ -62,6 +66,25 @@ namespace Visual
             _mixer.SetFloat("MasterVol", _oGenVol + GameSettings.GeneralVolume);
             _mixer.SetFloat("SoundVol", _oSoundVol + GameSettings.SoundVolume);
             _mixer.SetFloat("MusicVol", _oMusicVol + GameSettings.MusicVolume);
+        }
+
+        public void ResetSettings()
+        {
+            if (_postVolume.sharedProfile.TryGet(out ColorAdjustments color))
+            {
+                color.postExposure.Override(_oBright);
+                color.contrast.Override(_oContr);
+                color.saturation.Override(_oSatur);
+            }
+
+            _mixer.SetFloat("MasterVol", _oGenVol);
+            _mixer.SetFloat("SoundVol", _oSoundVol);
+            _mixer.SetFloat("MusicVol", _oMusicVol);
+        }
+
+        private void OnDisable()
+        {
+            ResetSettings();
         }
     }
 }

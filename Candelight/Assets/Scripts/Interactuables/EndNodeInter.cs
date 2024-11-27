@@ -15,6 +15,13 @@ namespace Interactuables
     {
         public NodeInfo CurrentNodeInfo;
 
+        UIManager _ui;
+
+        private void Awake()
+        {
+            _ui = FindObjectOfType<UIManager>();
+        }
+
         public override void Interaction()
         {
             Debug.Log("Se completa el nodo");
@@ -23,7 +30,12 @@ namespace Interactuables
 
             CurrentNodeInfo.Node.RegisterCompletedNode();
 
-            DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 90f, 2f).OnComplete(FinishScene);            
+            _ui.ShowWarning(StartTransition, "Entrega parte de tu alma y prende la Gran Pira.");
+        }
+
+        void StartTransition()
+        {
+            DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 90f, 2f).OnComplete(FinishScene);
         }
 
         void FinishScene()
@@ -37,7 +49,7 @@ namespace Interactuables
             //    Debug.Log("ERROR: Asegurate de que el mundo esta presente en esta escena para que el nodo pueda ser registrado. " + e);
             //}
 
-            FindObjectOfType<PlayerController>().World.Candle -= 1f * FindObjectOfType<PlayerController>().World.NodeCandleFactor;
+            FindObjectOfType<PlayerController>().World.Candle -= 5f * FindObjectOfType<PlayerController>().World.NodeCandleFactor;
             FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
             SceneManager.LoadScene("WorldScene");
         }

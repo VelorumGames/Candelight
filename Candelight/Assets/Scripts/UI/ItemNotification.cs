@@ -18,9 +18,16 @@ namespace UI
         [SerializeField] TextMeshProUGUI _itemsubDesc;
         [SerializeField] Image _itemSprite;
 
+        float _oPosY;
+
+        private void Awake()
+        {
+            _oPosY = GetComponent<RectTransform>().localPosition.y;
+        }
+
         private void OnEnable()
         {
-            GetComponent<RectTransform>().DOLocalMove(new Vector3(-300f, 0f, 0f), _startDuration).OnComplete(() => StartCoroutine(ManageReset())).Play().SetUpdate(true);
+            GetComponent<RectTransform>().DOLocalMove(new Vector3(-300f, _oPosY, 0f), _startDuration).OnComplete(() => StartCoroutine(ManageReset())).Play().SetUpdate(true);
         }
 
         IEnumerator ManageReset()
@@ -38,7 +45,7 @@ namespace UI
 
         void ResetNotification()
         {
-            GetComponent<RectTransform>().DOLocalMove(new Vector3(-1000f, 0f, 0f), _startDuration).OnComplete(() => gameObject.SetActive(false)).Play().SetUpdate(true);
+            GetComponent<RectTransform>().DOLocalMove(new Vector3(-1000f, _oPosY, 0f), _startDuration).OnComplete(() => gameObject.SetActive(false)).Play().SetUpdate(true);
         }
 
         public void SetDuration(float dur)

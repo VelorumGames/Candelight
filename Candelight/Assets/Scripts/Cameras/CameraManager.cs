@@ -175,7 +175,7 @@ namespace Cameras
                 _noise.m_AmplitudeGain = amp;
                 _noise.m_FrequencyGain = frec;
             }
-            else Debug.Log("ERROR: Se intenta hacer Shake pero no se ha encontrado ningun noise en la camara: " + _activeCam.gameObject.name);
+            else Debug.LogWarning("ERROR: Se intenta hacer Shake pero no se ha encontrado ningun noise en la camara: " + _activeCam.gameObject.name);
         }
 
         public void Impulse()
@@ -201,20 +201,24 @@ namespace Cameras
 
         IEnumerator ManageShake(float amp, float frec, float time)
         {
-            float iAmp = _noise.m_AmplitudeGain;
-            float iFrec = _noise.m_FrequencyGain;
-            float h = 0;
-            while (h < 1)
+            if (_noise != null)
             {
-                _noise.m_AmplitudeGain = Mathf.Lerp(amp, iAmp, h);
-                _noise.m_FrequencyGain = Mathf.Lerp(frec, iFrec, h);
+                float iAmp = _noise.m_AmplitudeGain;
+                float iFrec = _noise.m_FrequencyGain;
+                float h = 0;
+                while (h < 1)
+                {
+                    _noise.m_AmplitudeGain = Mathf.Lerp(amp, iAmp, h);
+                    _noise.m_FrequencyGain = Mathf.Lerp(frec, iFrec, h);
 
-                h += Time.deltaTime / time;
+                    h += Time.deltaTime / time;
+                    yield return null;
+                }
+                _noise.m_AmplitudeGain = iAmp;
+                _noise.m_FrequencyGain = iFrec;
                 yield return null;
             }
-            _noise.m_AmplitudeGain = iAmp;
-            _noise.m_FrequencyGain = iFrec;
-            yield return null;
+            else Debug.LogWarning("ERROR: Se intenta hacer Shake pero no se ha encontrado ningun noise en la camara: " + _activeCam.gameObject.name);
         }
 
         public float GetCurrentBlendTime() => _brain.m_DefaultBlend.m_Time;

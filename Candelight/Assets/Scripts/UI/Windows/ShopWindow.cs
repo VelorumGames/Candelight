@@ -13,7 +13,12 @@ namespace UI.Window
 
         protected override void OnStart()
         {
-            
+            if (!GameSettings.Online)
+            {
+                gameObject.SetActive(false);
+                FindObjectOfType<UIManager>().Back();
+                FindObjectOfType<UIManager>().ShowTutorial("La tienda de mejoras no está disponible en el Modo Sin Conexión");
+            }
         }
     }
 }

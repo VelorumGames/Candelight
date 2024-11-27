@@ -15,6 +15,8 @@ namespace Menu.Shop
         public EStartingElement Element;
         public float Cost;
 
+        public GameObject Selector;
+
         bool _bought;
         [SerializeField] TextMeshProUGUI _status;
         [SerializeField] TextMeshProUGUI _desc;
@@ -40,8 +42,11 @@ namespace Menu.Shop
         {
             if (_bought)
             {
+                _active = !_active;
+
                 Upgrades.StartElement = _active ? EStartingElement.Fire : Element;
-                _desc.text = _active ? "MEJORA DESACTIVADA" : "MEJORA ACTIVADA";
+                _desc.text = _active ? "MEJORA ACTIVADA" : "MEJORA DESACTIVADA";
+                Selector.SetActive(_active);
             }
         }
 

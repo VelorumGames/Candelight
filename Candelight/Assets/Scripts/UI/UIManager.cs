@@ -61,6 +61,7 @@ namespace UI
         Volume _vol;
         float _spellTimeScale = 0.4f;
         float _prevTimeScale = 1f;
+        //bool _isInSpellMode;
 
         ShowInstructions _showInstr;
         CameraManager _camMan;
@@ -234,11 +235,11 @@ namespace UI
             if (_showInstr != null) _showInstr.ShowElements();
         }
 
-        public void ManageAuxiliarRuneReset() => Invoke("AuxiliarResetRuneSprites", 2f);
+        public void ManageAuxiliarRuneReset() => Invoke("AuxiliarResetRuneSprites", 0.5f);
 
         public void AuxiliarResetRuneSprites()
         {
-            if (_showInstr != null) _showInstr.ResetSprites();
+            if (_showInstr != null && !_input.IsInSpellMode()) _showInstr.ResetSprites();
         }
 
         #endregion
@@ -256,6 +257,7 @@ namespace UI
             {
                 FadeImage.color = new Color(0f, 0f, 0f, 1f);
                 FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
+
             }
         }
 
@@ -267,7 +269,10 @@ namespace UI
         IEnumerator ManageTimeOffsetBlack(float offset, float duration)
         {
             FadeImage.color = new Color(0f, 0f, 0f, 1f);
+
+            //_input.LoadControls(EControlMap.None);
             yield return new WaitForSeconds(offset);
+            //_input.LoadPreviousControls();
 
             if (FadeImage != null)
             {
@@ -320,37 +325,46 @@ namespace UI
                 {
                     window.SetActive(false);
 
-                    if (_windows.Count == 0) FindObjectOfType<InputManager>().LoadPreviousControls();
+                    if (_windows.Count == 0) _input.LoadPreviousControls();
                 }
             }
         }
 
         public void LoadUIWindow(GameObject window)
         {
-            if (window != null)
+            if (window != null && !_input.IsInSpellMode())
             {
                 window.SetActive(true);
                 _windows.Push(window);
 
-                if (_windows.Count == 1) FindObjectOfType<InputManager>()?.LoadControls(EControlMap.UI);
+                if (_windows.Count == 1) _input?.LoadControls(EControlMap.UI);
             }
         }
 
         public void LoadUIWindow(GameObject window, string key)
         {
-            window.SetActive(true);
-            _windows.Push(window);
+            if (window != null && !_input.IsInSpellMode())
+            {
+                window.SetActive(true);
+                _windows.Push(window);
 
-            if (_windows.Count == 1) FindObjectOfType<InputManager>().LoadControls(EControlMap.UI);
+                if (_windows.Count == 1) _input.LoadControls(EControlMap.UI);
 
-            FindObjectOfType<InputManager>().Input.FindActionMap("UI").FindAction("Back").AddBinding($"<Keyboard>/{key}");
-            FindObjectOfType<InputManager>().Input.FindActionMap("UI").FindAction("Back").performed += OnResetBack;
+                InputAction back = _input.Input.FindActionMap("UI").FindAction("Back");
+
+                back.AddBinding($"<Keyboard>/{key}");
+                back.performed += OnResetBack;
+            }
         }
 
         void OnResetBack(InputAction.CallbackContext _)
         {
-            FindObjectOfType<InputManager>().Input.FindActionMap("UI").FindAction("Back").ChangeBinding(1).Erase();
-            FindObjectOfType<InputManager>().Input.FindActionMap("UI").FindAction("Back").performed -= OnResetBack;
+            int numBinds = _input.Input.FindActionMap("UI").FindAction("Back").bindings.Count;
+
+            InputAction back = _input.Input.FindActionMap("UI").FindAction("Back");
+
+            back.ChangeBinding(numBinds - 1).Erase();
+            back.performed -= OnResetBack;
         }
 
         public void Back() => OnUIBack(new InputAction.CallbackContext());
@@ -415,15 +429,13 @@ namespace UI
             Time.timeScale = 1;
 
             //Por si acaso
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(0.5f);
 
-            if (Time.timeScale != 1) Time.timeScale = 1;
+            AuxiliarTimeReset();
         }
 
         void EnterSpellModeFeedback()
         {
-            Debug.Log("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
-
             _prevTimeScale = Time.timeScale;
             Time.timeScale = _spellTimeScale;
 
@@ -439,6 +451,13 @@ namespace UI
             Time.timeScale = _prevTimeScale;
 
             SpellHalo.SetActive(false);
+
+            Invoke("AuxiliarTimeReset", 0.5f);
+        }
+
+        public void AuxiliarTimeReset()
+        {
+            if (!_input.IsInSpellMode()) Time.timeScale = 1;
         }
 
         void ShowFragmentHalo(int prev, int num)

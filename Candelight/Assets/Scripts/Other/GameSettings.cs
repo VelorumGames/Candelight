@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class GameSettings
 {
+    public static bool Online = true;
+
     public static float Brightness;
     public static float Contrast;
     public static float Saturation;

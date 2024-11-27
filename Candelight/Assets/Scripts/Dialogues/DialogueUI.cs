@@ -9,6 +9,7 @@ using Player;
 using Items;
 using World;
 using System;
+using Music;
 
 namespace Dialogues
 {
@@ -29,12 +30,14 @@ namespace Dialogues
         [SerializeField] GameObject _dialogueUI;
 
         PlayerController _cont;
+        Inventory _inventory;
+        MusicManager _music;
 
         System.Action _onEndDialogue;
 
         Image _spriteRend;
 
-        Inventory _inventory;
+        
 
         public event Action OnDialogueStart;
         public event Action OnDialogueEnd;
@@ -47,11 +50,18 @@ namespace Dialogues
             _spriteRend = _iconGameObject.GetComponent<Image>();
 
             _cont = FindObjectOfType<PlayerController>();
+            _music = FindObjectOfType<MusicManager>();
         }
 
         private void Start()
         {
             _inventory = FindObjectOfType<Inventory>();
+        }
+
+        private void OnEnable()
+        {
+            OnDialogueStart += _music.StartDialogueMusic;
+            OnDialogueEnd += _music.EndDialogueMusic;
         }
 
         private void LoadBlockInfo(DialogueBlock block)
@@ -170,5 +180,11 @@ namespace Dialogues
         }
 
         public bool IsActive() => _active;
+
+        private void OnDisable()
+        {
+            OnDialogueStart -= _music.StartDialogueMusic;
+            OnDialogueEnd -= _music.EndDialogueMusic;
+        }
     }
 }

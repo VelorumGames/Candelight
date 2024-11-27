@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class DatabaseManager : MonoBehaviour
 
     private void Awake()
     {
+        if (!GameSettings.Online) SceneManager.LoadScene("MenuScene");
+        
         _scoreboard = FindObjectOfType<ScoreboardManager>();
 
         _names = new UserNames();

@@ -98,11 +98,6 @@ namespace Player
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
 
-            _input.OnStartElementMode += ResetInstructions;
-            _input.OnExitElementMode += OnChooseElements;
-            _input.OnStartShapeMode += ResetInstructions;
-            _input.OnExitShapeMode += OnSpellLaunch;
-
             World.OnPlayerDeath += Death;
         }
 
@@ -114,7 +109,6 @@ namespace Player
 
             _mage = FindObjectOfType<Mage>();
             _input = FindObjectOfType<InputManager>();
-
 
             DontDestroyOnLoad(gameObject);
         }
@@ -239,12 +233,15 @@ namespace Player
 
         public void LoadInteraction(Action interaction, Transform obj)
         {
-            Debug.Log("Se carga interaccion de " + gameObject.name);
-            _interaction = interaction;
+            if (interaction != _interaction)
+            {
+                Debug.Log("Se carga interaccion de " + gameObject.name);
+                _interaction = interaction;
 
-            _selection.SetActive(true);
-            _selection.transform.parent = obj;
-            _selection.transform.position = obj.transform.position;
+                _selection.SetActive(true);
+                _selection.transform.parent = obj;
+                _selection.transform.position = obj.transform.position;
+            }
         }
 
         public void UnloadInteraction()
@@ -281,6 +278,7 @@ namespace Player
 
         public void OnSpellInstruction(ESpellInstruction instr)
         {
+            Debug.Log("INSTRUCCION: " + instr);
             if (CanMove && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 //Debug.Log("Se ha registrado la instruccion " + instr);
@@ -533,11 +531,6 @@ namespace Player
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
-
-            _input.OnStartElementMode -= ResetInstructions;
-            _input.OnStartElementMode -= OnChooseElements;
-            _input.OnStartShapeMode -= ResetInstructions;
-            _input.OnExitShapeMode -= OnSpellLaunch;
 
             World.OnPlayerDeath -= Death;
         }

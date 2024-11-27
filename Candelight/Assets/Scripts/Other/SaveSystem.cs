@@ -27,10 +27,13 @@ public static class SaveSystem
         formatter.Serialize(stream, data);
         stream.Close();
 
-        //Subir info a la base de datos
-        Debug.Log("Se guardarán los datos de: " + PlayerName);
-        //Database.Send($"Players/{PlayerData.Name}", PlayerData);
-        yield return Database.SendUserData(ScoreboardData);
+        if (GameSettings.Online)
+        {
+            //Subir info a la base de datos
+            Debug.Log("Se guardarán los datos de: " + PlayerName);
+            //Database.Send($"Players/{PlayerData.Name}", PlayerData);
+            yield return Database.SendUserData(ScoreboardData);
+        }
     }
 
     public static IEnumerator Load()
@@ -43,8 +46,11 @@ public static class SaveSystem
             SaveData save = formatter.Deserialize(stream) as SaveData;
             stream.Close();
 
-            //Coger info de la base de datos
-            yield return Database.Get<ScoreData>($"Players/{PlayerName}", GetPlayerData);
+            if (GameSettings.Online)
+            {
+                //Coger info de la base de datos
+                yield return Database.Get<ScoreData>($"Players/{PlayerName}", GetPlayerData);
+            }
 
             GameData = save;
         }

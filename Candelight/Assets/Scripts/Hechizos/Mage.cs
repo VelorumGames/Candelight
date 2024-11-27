@@ -73,7 +73,7 @@ namespace Hechizos
         {
             if (runes.Length > 0)
             {
-                Debug.Log($"Se registran {runes.Length} nuevos elementos");
+                //Debug.Log($"Se registran {runes.Length} nuevos elementos");
                 ResetActiveElements();
                 _activeElements.Clear();
 
@@ -373,7 +373,7 @@ namespace Hechizos
             if (OnNewRuneActivation != null) OnNewRuneActivation(rune);
 
             //TODO. Esto que sirve de placeholder por el momento y ya encontraremos una manera mas diegetica de presentarlo
-            if (rune is ElectricRune) ElementsMixTutorial();
+            if (rune is ElectricRune && SceneManager.GetActiveScene().name != "MenuScene") ElementsMixTutorial();
         }
 
         public void SetExtraProjSpeed(float speed) => _projectileSpeedFactor = speed;

@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using World;
 using UI;
 using Visual;
+using Music;
 
 namespace Map
 {
@@ -91,11 +92,14 @@ namespace Map
 
         bool _inCombat;
         bool _available = true;
+        MusicManager _music;
 
         private void Awake()
         {
             if (CurrentNodeInfo) _seed = CurrentNodeInfo.Seeds[CurrentNodeInfo.CurrentLevel];
             Random.InitState(_seed);
+            
+            _music = FindObjectOfType<MusicManager>();
 
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
@@ -158,6 +162,9 @@ namespace Map
         {
             OnRoomGenerationEnd += RegisterRoomTypes;
             OnRoomGenerationEnd += EventCheck;
+
+            OnCombatStart += _music.StartCombatMusic;
+            OnCombatEnd += _music.ReturnToExploreMusic;
             OnCombatEnd += _uiMan.WinCombat;
         }
 
@@ -374,6 +381,9 @@ namespace Map
         {
             OnRoomGenerationEnd -= RegisterRoomTypes;
             OnRoomGenerationEnd -= EventCheck;
+
+            OnCombatStart -= _music.StartCombatMusic;
+            OnCombatEnd -= _music.ReturnToExploreMusic;
             OnCombatEnd -= _uiMan.WinCombat;
         }
     }

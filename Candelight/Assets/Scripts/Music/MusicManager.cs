@@ -5,6 +5,8 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Map;
 using Dialogues;
+using UnityEngine.Audio;
+using Controls;
 
 namespace Music
 {
@@ -18,8 +20,8 @@ namespace Music
 
         bool _randomMusic;
 
-        MapManager _map;
-        DialogueUI _dial;
+        [SerializeField] AudioMixer _mixer;
+        InputManager _input;
 
         bool _inCombat;
 
@@ -31,6 +33,8 @@ namespace Music
 
         private void Awake()
         {
+            _input = FindObjectOfType<InputManager>();
+
             _sources = new AudioSource[4];
             _sources[0] = _ambientSource;
             _sources[1] = _exploreSource;
@@ -42,36 +46,12 @@ namespace Music
 
         void OnSceneLoad(Scene scene, LoadSceneMode mode)
         {
-            _map = FindObjectOfType<MapManager>();
-
-            if (_map)
-            {
-                _map.OnCombatStart += StartCombatMusic;
-                _map.OnCombatEnd += ReturnToExploreMusic;
-            }
-
-            _dial = FindObjectOfType<DialogueUI>();
-            if (_dial)
-            {
-                _dial.OnDialogueStart += StartDialogueMusic;
-                _dial.OnDialogueEnd += EndDialogueMusic;
-            }
+            AuxiliarSpellModeReset();
         }
 
         void OnSceneUnload(Scene scene)
         {
-            if (_map)
-            {
-                _map.OnCombatStart -= StartCombatMusic;
-                _map.OnCombatEnd -= ReturnToExploreMusic;
-            }
-
-            if (_dial)
-            {
-                _dial.OnDialogueStart -= StartDialogueMusic;
-                _dial.OnDialogueEnd -= EndDialogueMusic;
-            }
-
+            StopAllCoroutines();
             ChangeVolumeTo(0, 0f, 0.75f);
             ChangeVolumeTo(1, 0f, 0.75f);
             ChangeVolumeTo(2, 0f, 0.75f);
@@ -161,7 +141,7 @@ namespace Music
 
         public float GetCurrentVolume(int id) => _sources[id].volume;
 
-        void StartCombatMusic()
+        public void StartCombatMusic()
         {
             _inCombat = true;
 
@@ -175,7 +155,7 @@ namespace Music
             ChangeVolumeTo(2, 0.5f, 2f);
         }
 
-        void ReturnToExploreMusic()
+        public void ReturnToExploreMusic()
         {
             _inCombat = false;
 
@@ -183,7 +163,7 @@ namespace Music
             ChangeVolumeTo(2, 0f, 2f);
         }
 
-        void StartDialogueMusic()
+        public void StartDialogueMusic()
         {
             for (int i = 1; i < 4; i++)
             {
@@ -194,18 +174,40 @@ namespace Music
                     ChangeVolumeTo(i, 0.15f, 1f);
                 }
             }
-            //ChangeVolumeTo(1, 0.2f, 1f);
-            //ChangeVolumeTo(2, 0.2f, 1f);
         }
 
-        void EndDialogueMusic()
+        public void EndDialogueMusic()
         {
             for (int i = 1; i < 4; i++)
             {
                 if (GetCurrentVolume(i) < 0.3f && GetCurrentVolume(i) > 0.1f) ChangeVolumeTo(i, 0.5f, 2f);
             }
-            //ChangeVolumeTo(1, 0.5f, 1f);
-            //ChangeVolumeTo(2, 0.5f, 1f);
+        }
+
+        public void EnterSpellModeMusic()
+        {
+            _mixer.SetFloat("MusicCutoffHighFreq", 22000f);
+            _mixer.DOSetFloat("MusicCutoffHighFreq", 1100f, 0.5f).SetUpdate(true).Play();
+
+            _mixer.SetFloat("MusicPitch", 1f);
+            _mixer.DOSetFloat("MusicPitch", 0.8f, 0.5f).SetUpdate(true).Play();
+        }
+
+        public void ExitSpellModeMusic()
+        {
+            _mixer.DOSetFloat("MusicCutoffHighFreq", 22000f, 0.5f).SetUpdate(true).Play();
+            _mixer.DOSetFloat("MusicPitch", 1f, 0.5f).SetUpdate(true).Play();
+
+            Invoke("AuxiliarSpellModeReset", 0.5f);
+        }
+
+        public void AuxiliarSpellModeReset()
+        {
+            if (!_input.IsInSpellMode())
+            {
+                _mixer.SetFloat("MusicCutoffHighFreq", 22000f);
+                _mixer.SetFloat("MusicPitch", 1f);
+            }
         }
 
         private void OnDisable()

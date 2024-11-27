@@ -35,8 +35,6 @@ namespace Rest
         {
             yield return StartCoroutine(SavePlayerData());
 
-            
-
             _ui.Back();
             _ui.Back();
 

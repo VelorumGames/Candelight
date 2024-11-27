@@ -2710,17 +2710,19 @@ PrefabInstance:
     - target: {fileID: 2715611108306876656, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_text
-      value: DESCANSAR
+      value: 'DESCANSAR
+
+        (Guardar y Salir)'
       objectReference: {fileID: 0}
     - target: {fileID: 2715611108306876656, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_fontSize
-      value: 22
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 2715611108306876656, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 22
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 2828286829163116654, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
@@ -2796,6 +2798,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3668441240167655195, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3687
+      objectReference: {fileID: 0}
+    - target: {fileID: 3668441240167655195, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1635239
       objectReference: {fileID: 0}
     - target: {fileID: 3916413005370582050, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
@@ -3098,8 +3110,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

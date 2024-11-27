@@ -71,5 +71,28 @@ namespace UI.Window
             if (_options != null) _options.ApplySettings();
         }
 
+        public void ResetSettings()
+        {
+            if (_options != null)
+            {
+                _options.ResetSettings();
+            }
+
+            GameSettings.Brightness = 0;
+            GameSettings.Contrast = 0;
+            GameSettings.Saturation = 0;
+
+            GameSettings.GeneralVolume = 0;
+            GameSettings.SoundVolume = 0;
+            GameSettings.MusicVolume = 0;
+
+            _brightness.value = GameSettings.Brightness;
+            _contrast.value = GameSettings.Contrast;
+            _saturation.value = GameSettings.Saturation;
+            _genVolume.value = GameSettings.GeneralVolume;
+            _soundVolume.value = GameSettings.SoundVolume;
+            _musicVolume.value = GameSettings.MusicVolume;
+        }
+
     }
 }

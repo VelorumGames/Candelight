@@ -10,11 +10,14 @@ using Cameras;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using BehaviourAPI.Core.Actions;
+using UnityEngine.Windows;
+using Music;
 
 namespace Controls
 {
     public enum EControlMap
     {
+        None,
         Level,
         World,
         Dialogue,
@@ -54,10 +57,9 @@ namespace Controls
         InputAction _look;
         InputAction _introLook;
 
-        CameraManager _camMan;
-        
+        MusicManager _music;
 
-        //float _spellTimeScale = 0.75f;
+        bool _isInSpellMode;
 
         public event System.Action OnStartElementMode;
         public event System.Action OnExitElementMode;
@@ -68,13 +70,25 @@ namespace Controls
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
+
+            OnStartElementMode += _cont.ResetInstructions;
+            OnStartElementMode += _music.EnterSpellModeMusic;
+
+            OnExitElementMode += _cont.OnChooseElements;
+            OnExitElementMode += _music.ExitSpellModeMusic;
+
+            OnStartShapeMode += _cont.ResetInstructions;
+            OnStartShapeMode += _music.EnterSpellModeMusic;
+
+            OnExitShapeMode += _cont.OnSpellLaunch;
+            OnExitShapeMode += _music.ExitSpellModeMusic;
         }
 
         private void Awake()
         {
             //if (Instance != null) Destroy(gameObject);
             //else Instance = this;
-            
+            _music = FindObjectOfType<MusicManager>();
 
             DontDestroyOnLoad(gameObject);
 
@@ -92,7 +106,6 @@ namespace Controls
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
         {
             _dialogue = FindObjectOfType<DialogueUI>();
-            _camMan = FindObjectOfType<CameraManager>();
 
             //UI
             _uiMap = Input.FindActionMap("UI");
@@ -208,6 +221,9 @@ namespace Controls
                     Cursor.visible = false;
                     Cursor.lockState = CursorLockMode.Locked;
                     break;
+                default:
+                    _currentMap = null;
+                    break;
             }
             //if (_currentMap == null) _currentMap = _worldMap; //Esto esta mal pero es para que se pueda seguir por ahora
             //Debug.Log("Mapa colocado: " + _currentMap);
@@ -285,12 +301,6 @@ namespace Controls
             }
         }
 
-        private void OnDisable()
-        {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-            SceneManager.sceneUnloaded -= OnSceneUnloaded;
-        }
-
         private void FixedUpdate()
         {
             if (_cont)
@@ -320,7 +330,7 @@ namespace Controls
             if (SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnStartElementMode != null) OnStartElementMode();
-
+                _isInSpellMode = true;
                 _move.Disable();
             }
         }
@@ -330,7 +340,7 @@ namespace Controls
             if (SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnExitElementMode != null) OnExitElementMode();
-
+                _isInSpellMode = false;
                 _move.Enable();
             }
         }
@@ -340,7 +350,7 @@ namespace Controls
             if (SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnStartShapeMode != null) OnStartShapeMode();
-
+                _isInSpellMode = true;
                 _move.Disable();
             }
         }
@@ -350,7 +360,7 @@ namespace Controls
             if (SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnExitShapeMode != null) OnExitShapeMode();
-
+                _isInSpellMode = false;
                 _move.Enable();
             }
         }
@@ -361,6 +371,7 @@ namespace Controls
 
         void RegisterSpellUp(InputAction.CallbackContext ctx)
         {
+            Debug.Log("UP");
             if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Up);
         }
         void RegisterSpellDown(InputAction.CallbackContext ctx)
@@ -378,7 +389,24 @@ namespace Controls
 
         #endregion
 
-        //public void SetSpellTimeScale(float t) => _spellTimeScale = t;
-        //public float GetSpellTimeScale() => _spellTimeScale;
+        public bool IsInSpellMode() => _isInSpellMode;
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
+
+            OnStartElementMode -= _cont.ResetInstructions;
+            OnStartElementMode -= _music.EnterSpellModeMusic;
+
+            OnExitElementMode -= _cont.OnChooseElements;
+            OnExitElementMode -= _music.ExitSpellModeMusic;
+
+            OnStartShapeMode -= _cont.ResetInstructions;
+            OnStartShapeMode -= _music.EnterSpellModeMusic;
+
+            OnExitShapeMode -= _cont.OnSpellLaunch;
+            OnExitShapeMode -= _music.ExitSpellModeMusic;
+        }
     }
 }
