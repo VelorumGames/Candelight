@@ -37,6 +37,15 @@ namespace Enemy
             _ui = FindObjectOfType<UIManager>();
         }
 
+        private new void OnEnable()
+        {
+            base.OnEnable();
+
+            OnDamage += ChangeToAttackOnDamage;
+        }
+
+        void ChangeToAttackOnDamage(float dam, float rem) => ChangeState(EMurcielagoState.Attack);
+
         private new void Start()
         {
             base.Start();
@@ -45,8 +54,6 @@ namespace Enemy
 
         void ChangeState(EMurcielagoState state)
         {
-            //Debug.Log("[MUERCIELAGO] Entra en estado: " + state.ToString());
-
             _updateAction = null;
 
             switch (state)
@@ -76,10 +83,8 @@ namespace Enemy
 
         void CheckPlayer()
         {
-            //Debug.Log($"Distancia: {Vector3.Distance(transform.position, Player.transform.position)} < {_aggro} && Velocidad: {_playerRb.velocity.magnitude} && {_minPlayerVel}");
             if (Vector3.Distance(transform.position, Player.transform.position) < _aggro && _playerRb.velocity.magnitude > _minPlayerVel)
             {
-                //Debug.Log("PHANTOM CHECK: " + PhantomCheck());
                 if (PhantomCheck()) ChangeState(EMurcielagoState.Confused);
                 else ChangeState(EMurcielagoState.Attack);
             }
@@ -107,9 +112,7 @@ namespace Enemy
             while (!PhantomCheck())
             {
                 target = Player.transform.position + new Vector3(UnityEngine.Random.Range(-1f, 1f), 0f, UnityEngine.Random.Range(-1f, 1f)); //Para que tampoco sea exacto (es ciego)
-                //Debug.Log("Se movera hacia: " + target);
                 yield return StartCoroutine(MoveTowards(target, 3f));
-                //Debug.Log("Ha llegado");
                 if (Vector3.Distance(transform.position, Player.transform.position) < _attackRange) //Si entra en rango de ataque
                 {
                     OnAttack(); //Ataca y se espera un poco para que la animacion se reproduzca con normalidad (y para darle tiempo al jugador de escapar)
@@ -169,6 +172,13 @@ namespace Enemy
         private void Update()
         {
             if (_updateAction != null) _updateAction();
+        }
+
+        private new void OnDisable()
+        {
+            base.OnDisable();
+
+            OnDamage -= ChangeToAttackOnDamage;
         }
 
         private void OnDrawGizmos()

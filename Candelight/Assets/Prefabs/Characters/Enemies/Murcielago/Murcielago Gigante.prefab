@@ -45,7 +45,7 @@ Rigidbody:
   m_GameObject: {fileID: 6509294522334118098}
   serializedVersion: 4
   m_Mass: 20
-  m_Drag: 2
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   World: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
-  _speed: 160
+  _speed: 140
   MaxHP: 0
   m_HP: 0
   Info: {fileID: 11400000, guid: 410f10342fbff9d4eac35f17c1a163cc, type: 2}

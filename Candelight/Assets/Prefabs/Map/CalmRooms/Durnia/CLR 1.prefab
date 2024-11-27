@@ -4606,7 +4606,7 @@ PrefabInstance:
     - target: {fileID: 1777178264809396638, guid: c0157451cf49d4148904e0e2738d0407,
         type: 3}
       propertyPath: _direction
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1777178264809396638, guid: c0157451cf49d4148904e0e2738d0407,
         type: 3}
@@ -4818,7 +4818,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1361405184355326296, guid: dabd4e5cc44ce9945a7d912b8fffed7d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

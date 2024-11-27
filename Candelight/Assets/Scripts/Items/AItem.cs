@@ -77,11 +77,6 @@ namespace Items
         }
 
         public bool IsActive() => IsActivated;
-
-        private void OnDisable()
-        {
-            
-        }
     }
 
     public enum EItemCategory

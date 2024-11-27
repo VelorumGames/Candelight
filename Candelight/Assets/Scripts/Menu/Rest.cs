@@ -62,12 +62,7 @@ namespace Rest
 
         IEnumerator SavePlayerData()
         {
-            if (SaveSystem.ScoreboardData.Score == -1) //Si todavia no se habia guardado playerData
-            {
-                Debug.Log("Todavia no se ha modificado PlayerData, asi que se crean datos nuevos");
-                //Se registran los datos
-                SaveSystem.GenerateNewPlayerData(_world);
-            }
+            SaveSystem.GenerateNewPlayerData(_world);
             SaveSystem.ScoreboardIntro = true;
             _ui.ShowState(EGameState.Saving);
             yield return StartCoroutine(SaveSystem.Save(new SaveData(_world, FindObjectOfType<Inventory>())));

@@ -98,11 +98,14 @@ namespace Scoreboard
 
         void LoadBestPlayers(ScoreData[] data)
         {
-            for (int i = 0; i < data.Length; i++)
+            for (int i = 0; i < _bestPlayers.Length; i++)
             {
-                _bestPlayers[i].text = $"{i + 1}. ({data[i].Score} - {data[i].Name})";
-                if (data[i].Name == SaveSystem.ScoreboardData.Name) _bestPlayers[i].color = Color.yellow;
-                else _bestPlayers[i].color = Color.white;
+                if (i < data.Length)
+                {
+                    _bestPlayers[i].text = $"{i + 1}. ({data[i].Score} - {data[i].Name})";
+                    if (data[i].Name == SaveSystem.ScoreboardData.Name) _bestPlayers[i].color = Color.yellow;
+                    else _bestPlayers[i].color = Color.white;
+                }
             }
         }
 

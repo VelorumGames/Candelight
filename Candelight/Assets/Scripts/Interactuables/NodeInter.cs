@@ -15,8 +15,11 @@ namespace Interactuables
         public override void Interaction()
         {
             //GetComponent<NodeManager>().SetState(ENodeState.Incompleted);
-            WorldManager.Instance.SetCurrentNode(GetComponent<NodeManager>());
-            WorldManager.Instance.LoadNode();
+            if (GetComponent<NodeManager>().GetNodeData().State != ENodeState.Completado)
+            {
+                WorldManager.Instance.SetCurrentNode(GetComponent<NodeManager>());
+                WorldManager.Instance.LoadNode();
+            }
         }
 
         void Register() => WorldManager.Instance.SetCurrentNode(GetComponent<NodeManager>());

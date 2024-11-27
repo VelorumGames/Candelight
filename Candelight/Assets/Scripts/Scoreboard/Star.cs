@@ -23,7 +23,7 @@ namespace Scoreboard
         {
             _data = d;
             _name.text = _data.Name;
-            _score.text = $"{_data.Score} zonas iluminadas";
+            _score.text = _data.Score != 1 ? $"{_data.Score} zonas iluminadas" : $"{_data.Score} zona iluminada";
             //_sprite.transform.localScale = (_data.Score / 20f) * Vector3.one;
 
             if (_data.Score <= 0) _sprite.color = new Color(1f, 1f, 1f, 0f);

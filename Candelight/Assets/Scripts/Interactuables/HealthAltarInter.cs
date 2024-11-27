@@ -22,7 +22,7 @@ namespace Interactuables
         public override void Interaction()
         {
             if (_inv.GetFragments() >= _minFrags) _ui.ShowWarning(ManageFragments, "Recuperarás un cuarto de tu salud total a cambio de la mitad de tus fragmentos. ¿Estás seguro?");
-            else _ui.ShowWarning(NullAction, "Todavía no posees fragmentos suficientes", "Ok", "Volver");
+            else _ui.ShowWarning(NullAction, "Todavía no posees fragmentos suficientes", "Ok", "Atrás");
         }
 
         void ManageFragments()

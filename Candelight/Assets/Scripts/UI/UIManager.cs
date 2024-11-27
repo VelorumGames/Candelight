@@ -323,10 +323,16 @@ namespace UI
                 //Debug.Log("Hacia atras: " + _windows.Count);
                 if (window != null)
                 {
-                    window.SetActive(false);
+                    UIMoveOnDisable[] endMoves = window.GetComponentsInChildren<UIMoveOnDisable>();
+                    foreach (var m in endMoves) m.DisableElement();
 
-                    if (_windows.Count == 0) _input.LoadPreviousControls();
+                    UIFadeOnDisable[] endFades = window.GetComponentsInChildren<UIFadeOnDisable>();
+                    foreach (var f in endFades) f.FadeElement();
+
+                    if (endMoves.Length == 0 && endFades.Length == 0) window.SetActive(false);
                 }
+
+                if (_windows.Count == 0) _input.LoadPreviousControls();
             }
         }
 

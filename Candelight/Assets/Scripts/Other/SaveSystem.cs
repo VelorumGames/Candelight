@@ -29,6 +29,7 @@ public static class SaveSystem
 
         if (GameSettings.Online)
         {
+
             //Subir info a la base de datos
             Debug.Log("Se guardarán los datos de: " + PlayerName);
             //Database.Send($"Players/{PlayerData.Name}", PlayerData);
@@ -114,7 +115,7 @@ public class SaveData
         Debug.Log("GUARDANDO DATOS");
 
         CompletedNodes = world.CompletedIds.ToArray();
-        //Debug.Log("Nodos completados: " + CompletedNodes.Length);
+        Debug.Log("Nodos completados: " + CompletedNodes.Length);
 
         int[][] invData = GetInventoryData(inventory);
         ActiveItems = invData[0];

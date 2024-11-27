@@ -225,7 +225,6 @@ namespace Controls
                     _currentMap = null;
                     break;
             }
-            //if (_currentMap == null) _currentMap = _worldMap; //Esto esta mal pero es para que se pueda seguir por ahora
             //Debug.Log("Mapa colocado: " + _currentMap);
             try
             {
@@ -290,13 +289,6 @@ namespace Controls
         {
             if (_prevControls != null)
             {
-                //Debug.Log("Controles antiguos: " + _currentMap.name);
-                //_currentMap.Disable();
-                //_currentMap = _prevControls;
-                //Debug.Log("Controles actuales: " + _currentMap.name);
-                //_currentMap.Enable();
-                //CurrentControls = _currentMap.name;
-
                 LoadControls(_prevControls);
             }
         }
@@ -371,7 +363,6 @@ namespace Controls
 
         void RegisterSpellUp(InputAction.CallbackContext ctx)
         {
-            Debug.Log("UP");
             if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Up);
         }
         void RegisterSpellDown(InputAction.CallbackContext ctx)

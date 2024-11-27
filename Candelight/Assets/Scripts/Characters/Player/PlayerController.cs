@@ -83,8 +83,10 @@ namespace Player
         [SerializeField] bool _isFirstPerson;
         CameraManager _camMan;
 
+        bool _inCombat;
         bool _invicible;
         float _iFrameDuration = 0.5f;
+        Vector2 _oldDirection;
 
         [Space(10)]
         [Header("FIRST PERSON")]
@@ -185,6 +187,9 @@ namespace Player
             _invicible = false;
         }
 
+        public void RegisterCombat() => _inCombat = true;
+        public void FinishCombat() => _inCombat = false;
+
         public void Revive()
         {
             CanMove = true;
@@ -212,7 +217,16 @@ namespace Player
                 _rb.AddForce(force, ForceMode.Force);
 
                 _particles.StartFootParticles();
+
+                if (_inCombat && direction != _oldDirection) OnCombatMoveBoost(force);
+
+                _oldDirection = direction;
             }
+        }
+
+        public void OnCombatMoveBoost(Vector3 force)
+        {
+            _rb.AddForce(force * 2, ForceMode.Impulse);
         }
 
         public void OnStopMove()
@@ -397,7 +411,6 @@ namespace Player
 
         public void OnChoosePath(Vector2 direction)
         {
-            //Debug.Log(_currentNode);
             if (_currentNode != null)
             {
                 //Movemos un gameobject invisible
@@ -407,14 +420,9 @@ namespace Player
                 //Comparamos con que nodo conectado al actual esta mas cerca y consideramos ese como la decision del jugador
                 float minDist = 9999f;
                 GameObject closest = null;
-                //Debug.Log($"Para el current node hay {_currentNode.ConnectedNodes.Count} nodos conectados");
+
                 foreach (var node in _currentNode.ConnectedNodes)
                 {
-                    //Debug.Log($"1: {node != _currentNode.gameObject}");
-                    //Debug.Log($"2: {node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Sin_Descubrir} ({node.GetComponent<NodeManager>().GetNodeData().State})");
-
-
-                    //Debug.Log("ESTADO ADYACENTE: " + node.GetComponent<NodeManager>().GetNodeData().State);
                     if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Sin_Descubrir && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado) ||
                         (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Explorado) )
                     {
@@ -426,7 +434,6 @@ namespace Player
                         }
                     }
                 }
-                //Debug.Log("Closest: " + closest);
                 if (closest != null) _nextNode = closest.transform;
             }
         }

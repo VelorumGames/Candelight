@@ -37,8 +37,9 @@ namespace Comportamientos.Sombra
 
         SombraAnimation _anim;
 
-        private void OnEnable()
+        private new void OnEnable()
         {
+            base.OnEnable();
             OnDeath += IncreaseDeathCount;
         }
 
@@ -144,6 +145,8 @@ namespace Comportamientos.Sombra
         {
             while (_scSombracomportamiento.EquipadoFuego())
             {
+                yield return new WaitForSeconds(Random.Range(0, 1.5f));
+
                 _anim.ChangeToShoot();
                 yield return new WaitForSeconds(1f);
 
@@ -174,8 +177,9 @@ namespace Comportamientos.Sombra
         }
 
 
-        private void OnDisable()
+        private new void OnDisable()
         {
+            base.OnDisable();
             OnDeath -= IncreaseDeathCount;
         }
 

@@ -11,7 +11,7 @@ namespace Hechizos.Elementales
         public ElectricRune(Mage m) : base(m)
         {
             Name = "Electric";
-            Damage = 15f;
+            Damage = 30f;
         }
 
         //Proyectil electrico

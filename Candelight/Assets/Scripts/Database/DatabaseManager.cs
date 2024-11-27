@@ -29,7 +29,7 @@ public class DatabaseManager : MonoBehaviour
         FindObjectOfType<UIManager>().ShowState(EGameState.Database);
         yield return StartCoroutine(GetAllUsersData());
 
-        Debug.Log("Hay players: " + _players.Count);
+        //Debug.Log("Hay players: " + _players.Count);
 
         //Se ordenan los jugadores segun la puntuacion
         _players.Sort(ScoreCompare);
