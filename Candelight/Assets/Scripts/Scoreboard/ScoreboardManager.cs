@@ -48,7 +48,6 @@ namespace Scoreboard
 
         public void UpdatePlayers(ScoreData[] data)
         {
-            
             SpawnStars(data);
             LoadBestPlayers(data);
 
@@ -99,15 +98,12 @@ namespace Scoreboard
 
         void LoadBestPlayers(ScoreData[] data)
         {
-            if (SaveSystem.ScoreboardData != null && data.Length >= _bestPlayers.Length)
+            for (int i = 0; i < data.Length; i++)
             {
-                for (int i = 0; i < _bestPlayers.Length; i++)
-                {
-                    _bestPlayers[i].text = $"{i + 1}. ({data[i].Score} - {data[i].Name})";
-                    if (data[i].Name == SaveSystem.ScoreboardData.Name) _bestPlayers[i].color = Color.yellow;
-                }
+                _bestPlayers[i].text = $"{i + 1}. ({data[i].Score} - {data[i].Name})";
+                if (data[i].Name == SaveSystem.ScoreboardData.Name) _bestPlayers[i].color = Color.yellow;
+                else _bestPlayers[i].color = Color.white;
             }
-            else Debug.LogWarning("ERROR: No se ha encontrado PlayerData en el sistema de guardado.");
         }
 
         void LoadSurroundingPlayers(int index, ScoreData[] data)
@@ -120,6 +116,7 @@ namespace Scoreboard
                 {
                     p.text = $"{index + 1}. ({data[index].Score} - {data[index].Name})";
                     if (data[index].Name == SaveSystem.ScoreboardData.Name) p.color = Color.yellow;
+                    else p.color = Color.white;
                     index++;
                 }
             }

@@ -80,7 +80,7 @@ namespace Player
 
         PlayerParticlesManager _particles;
         [SerializeField] CinemachineVirtualCamera _fpCam;
-        bool _isFirstPerson;
+        [SerializeField] bool _isFirstPerson;
         CameraManager _camMan;
 
         bool _invicible;
@@ -115,6 +115,7 @@ namespace Player
             _mage = FindObjectOfType<Mage>();
             _input = FindObjectOfType<InputManager>();
 
+
             DontDestroyOnLoad(gameObject);
         }
 
@@ -131,28 +132,27 @@ namespace Player
             _camMan = FindObjectOfType<CameraManager>();
             if (_camMan != null) _camMan.AddCamera(_fpCam);
 
-            OnNewInstruction += _UIMan.ShowNewInstruction;
-            OnSpell += _UIMan.ShowValidSpell;
-            OnElements += _UIMan.ShowValidElements;
-            World.OnCandleChanged += _UIMan.RegisterCandle;
-
             _interaction = null;
 
             CanMove = true;
             
-            if (!_currentNode && FindObjectOfType<WorldManager>() != null) _currentNode = FindObjectOfType<WorldManager>().CurrentNodeInfo.Node;
+            if (_currentNode != null && FindObjectOfType<WorldManager>() != null) _currentNode = FindObjectOfType<WorldManager>().CurrentNodeInfo.Node;
+
+            if (scene.name == "WorldScene")
+            {
+                _rb.useGravity = true;
+                _rb.constraints = RigidbodyConstraints.FreezeRotation;
+            }
         }
 
         void OnSceneUnloaded(Scene scene)
         {
             UnloadInteraction();
             _pathShower.SetActive(false);
-
-            OnNewInstruction -= _UIMan.ShowNewInstruction;
-            OnSpell -= _UIMan.ShowValidSpell;
-            OnElements -= _UIMan.ShowValidElements;
-            World.OnCandleChanged -= _UIMan.RegisterCandle;
         }
+
+        public NodeManager GetCurrentNode() => _currentNode;
+        public void SetCurrentNode(NodeManager node) => _currentNode = node;
 
         public override void RecieveDamage(float damage)
         {
@@ -399,6 +399,7 @@ namespace Player
 
         public void OnChoosePath(Vector2 direction)
         {
+            //Debug.Log(_currentNode);
             if (_currentNode != null)
             {
                 //Movemos un gameobject invisible
@@ -412,12 +413,12 @@ namespace Player
                 foreach (var node in _currentNode.ConnectedNodes)
                 {
                     //Debug.Log($"1: {node != _currentNode.gameObject}");
-                    //Debug.Log($"2: {node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered} ({node.GetComponent<NodeManager>().GetNodeData().State})");
+                    //Debug.Log($"2: {node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Sin_Descubrir} ({node.GetComponent<NodeManager>().GetNodeData().State})");
 
 
-
-                    if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Undiscovered && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completed) ||
-                        (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completed && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Explored) )
+                    //Debug.Log("ESTADO ADYACENTE: " + node.GetComponent<NodeManager>().GetNodeData().State);
+                    if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Sin_Descubrir && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado) ||
+                        (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Explorado) )
                     {
                         float dist = Vector3.Distance(_pathChooser.transform.position, node.transform.position);
                         if (dist < minDist)
@@ -427,7 +428,7 @@ namespace Player
                         }
                     }
                 }
-                Debug.Log("Closest: " + closest);
+                //Debug.Log("Closest: " + closest);
                 if (closest != null) _nextNode = closest.transform;
             }
         }
@@ -538,7 +539,7 @@ namespace Player
             _input.OnStartShapeMode -= ResetInstructions;
             _input.OnExitShapeMode -= OnSpellLaunch;
 
-            World.OnPlayerDeath += Death;
+            World.OnPlayerDeath -= Death;
         }
     }
 }

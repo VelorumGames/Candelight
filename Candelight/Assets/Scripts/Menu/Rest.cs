@@ -35,6 +35,8 @@ namespace Rest
         {
             yield return StartCoroutine(SavePlayerData());
 
+            
+
             _ui.Back();
             _ui.Back();
 
@@ -71,6 +73,8 @@ namespace Rest
             SaveSystem.ScoreboardIntro = true;
             _ui.ShowState(EGameState.Saving);
             yield return StartCoroutine(SaveSystem.Save(new SaveData(_world, FindObjectOfType<Inventory>())));
+
+            Debug.Log("Se termina de guardar");
         }
 
         void ResetPermanentGameObjects()

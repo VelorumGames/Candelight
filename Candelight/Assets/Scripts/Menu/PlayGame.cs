@@ -45,7 +45,26 @@ namespace Menu
 
             ARune.CreateAllRunes(FindObjectOfType<Mage>());
 
-            SceneManager.LoadScene(PlayDirectly || !GameSettings.Tutorial ? "WorldScene" : "IntroScene");
+            _ui.ShowState(EGameState.Loading);
+            if (PlayDirectly || !GameSettings.Tutorial)
+            {
+                ManageSkip();
+                SceneManager.LoadScene("WorldScene");
+            }
+            else
+            {
+                SceneManager.LoadScene("IntroScene");
+            }
+        }
+
+        void ManageSkip()
+        {
+            if (ARune.FindSpell("Fire", out var spell)) spell.Activate(true);
+            if (ARune.FindSpell("Electric", out spell)) spell.Activate(true);
+            if (ARune.FindSpell("Projectile", out spell)) spell.Activate(true);
+
+            _ui.ShowState(EGameState.Loading);
+            SceneManager.LoadScene("WorldScene");
         }
     }
 }

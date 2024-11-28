@@ -9,7 +9,12 @@ namespace World
         [SerializeField] GameObject[] _nodeLights;
         private void OnEnable()
         {
-            if (GetComponentInParent<NodeManager>().GetNodeData().State == ENodeState.Completed)
+            RegisterNodeLights();
+        }
+
+        public void RegisterNodeLights()
+        {
+            if (GetComponentInParent<NodeManager>().GetNodeData().State == ENodeState.Completado)
             {
                 foreach (var l in _nodeLights) l.SetActive(true);
             }

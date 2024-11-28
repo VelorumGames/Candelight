@@ -29,7 +29,7 @@ namespace UI
 
         private void OnDisable()
         {
-            _world.OnCompletedNodesChanged += UpdateNum;
+            _world.OnCompletedNodesChanged -= UpdateNum;
         }
 
     }

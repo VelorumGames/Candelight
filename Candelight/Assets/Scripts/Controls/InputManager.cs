@@ -57,7 +57,7 @@ namespace Controls
         CameraManager _camMan;
         
 
-        float _spellTimeScale = 0.75f;
+        //float _spellTimeScale = 0.75f;
 
         public event System.Action OnStartElementMode;
         public event System.Action OnExitElementMode;
@@ -109,7 +109,6 @@ namespace Controls
 
         void InitializeControls()
         {
-            Debug.Log("Se inicializan los controles");
             _cont = FindObjectOfType<PlayerController>();
 
             //Level
@@ -173,7 +172,7 @@ namespace Controls
 
         public void LoadControls(EControlMap map)
         {
-            //Debug.Log("Mapa previo: " + _currentMap);
+            //Debug.Log("Mapa previo: " + _currentMap + $" y se colocara {map}");
             _prevControls = _currentMap;
             if (_currentMap != null) _currentMap.Disable();
 
@@ -187,7 +186,7 @@ namespace Controls
                     break;
                 case EControlMap.World:
                     _currentMap = _worldMap;
-
+                    Debug.Log("Cargo controles de world");
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.Confined;
                     break;
@@ -210,9 +209,18 @@ namespace Controls
                     Cursor.lockState = CursorLockMode.Locked;
                     break;
             }
+            //if (_currentMap == null) _currentMap = _worldMap; //Esto esta mal pero es para que se pueda seguir por ahora
             //Debug.Log("Mapa colocado: " + _currentMap);
-            _currentMap.Enable();
-            CurrentControls = _currentMap.name;
+            try
+            {
+                _currentMap.Enable();
+                CurrentControls = _currentMap.name;
+            }
+            catch(System.Exception e)
+            {
+                Debug.LogWarning("ERROR: " + e);
+                _currentMap = _worldMap;
+            }
         }
 
         public void LoadControls(InputActionMap map)
@@ -370,7 +378,7 @@ namespace Controls
 
         #endregion
 
-        public void SetSpellTimeScale(float t) => _spellTimeScale = t;
-        public float GetSpellTimeScale() => _spellTimeScale;
+        //public void SetSpellTimeScale(float t) => _spellTimeScale = t;
+        //public float GetSpellTimeScale() => _spellTimeScale;
     }
 }

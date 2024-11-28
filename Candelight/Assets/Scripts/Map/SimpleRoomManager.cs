@@ -62,6 +62,7 @@ namespace Map
 
         public void EndLevel()
         {
+            Debug.Log($"Ultimo nivel: {CurrentNodeInfo.CurrentLevel < CurrentNodeInfo.Levels - 1}");
             FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
             if (CurrentNodeInfo.CurrentLevel < CurrentNodeInfo.Levels - 1) //Si no es el ultimo nivel todavia
             {
@@ -82,8 +83,8 @@ namespace Map
             else //Si es el ultimo nivel
             {
                 //Se vuelve al mapa del mundo
-                SceneManager.LoadScene("WorldScene");
-                CurrentNodeInfo.Node.RegisterCompletedNode();
+                SceneManager.LoadScene("NodeEndScene");
+                //CurrentNodeInfo.Node.RegisterCompletedNode();
             }
         }
     }

@@ -26,7 +26,7 @@ namespace Scoreboard
             _score.text = $"{_data.Score} zonas iluminadas";
             //_sprite.transform.localScale = (_data.Score / 20f) * Vector3.one;
 
-            if (_data.Score <= 0) _sprite.color = new Color(0f, 0f, 0f, 0f);
+            if (_data.Score <= 0) _sprite.color = new Color(1f, 1f, 1f, 0f);
             else if (_data.Score < 5) _sprite.sprite = _startSprites[0];
             else if (_data.Score < 15) _sprite.sprite = _startSprites[1];
             else if (_data.Score < 30) _sprite.sprite = _startSprites[2];

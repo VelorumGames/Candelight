@@ -17,7 +17,6 @@ using Player;
 using Cameras;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEditor.Experimental.GraphView;
 using Menu;
 using World;
 using TMPro;
@@ -85,11 +84,20 @@ namespace UI
             _player = FindObjectOfType<PlayerController>();
             _input = FindObjectOfType<InputManager>();
             _inv = FindObjectOfType<Inventory>();
+
+            Time.timeScale = 1f;
         }
 
         private void OnEnable()
         {
-            if (_player != null) _player.OnDamage += PlayerDamageFeedback;
+            if (_player != null)
+            {
+                _player.OnDamage += PlayerDamageFeedback;
+                _player.OnNewInstruction += ShowNewInstruction;
+                _player.OnSpell += ShowValidSpell;
+                _player.OnElements += ShowValidElements;
+                World.OnCandleChanged += RegisterCandle;
+            }
             if (_input != null)
             {
                 _input.OnStartElementMode += EnterSpellModeFeedback;
@@ -196,6 +204,7 @@ namespace UI
 
         public void ShowNewInstruction(ESpellInstruction instr)
         {
+            if (_showInstr == null) _showInstr = FindObjectOfType<ShowInstructions>();
             _showInstr.ShowInstruction(instr);
         }
 
@@ -318,10 +327,13 @@ namespace UI
 
         public void LoadUIWindow(GameObject window)
         {
-            window.SetActive(true);
-            _windows.Push(window);
+            if (window != null)
+            {
+                window.SetActive(true);
+                _windows.Push(window);
 
-            if (_windows.Count == 1) FindObjectOfType<InputManager>()?.LoadControls(EControlMap.UI);
+                if (_windows.Count == 1) FindObjectOfType<InputManager>()?.LoadControls(EControlMap.UI);
+            }
         }
 
         public void LoadUIWindow(GameObject window, string key)
@@ -410,11 +422,14 @@ namespace UI
 
         void EnterSpellModeFeedback()
         {
+            Debug.Log("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+
             _prevTimeScale = Time.timeScale;
             Time.timeScale = _spellTimeScale;
 
             SpellHalo.SetActive(true);
-            SpellHalo.transform.localPosition = new Vector3(0f, GetScreenSizeOffset(), 0.5f);
+            float offset = GetScreenSizeOffset();
+            SpellHalo.transform.localPosition = new Vector3(0f, -offset, offset);
 
             GetScreenSizeOffset();
         }
@@ -428,20 +443,15 @@ namespace UI
 
         void ShowFragmentHalo(int prev, int num)
         {
-            FragmentHalo.transform.localPosition = new Vector3(0.5f, GetScreenSizeOffset(), 0.5f);
+            float offset = GetScreenSizeOffset();
+            FragmentHalo.transform.localPosition = new Vector3(0.5f, -offset, offset);
             FragmentHalo.SetActive(true);
             Invoke("ResetHalo", 3f);
         }
 
         float GetScreenSizeOffset()
         {
-            if (Screen.height < 627) return -0.5f;
-            else if (Screen.height < 716) return -0.57f;
-            else return -0.66f;
-            // 627 -> -0.5f
-            // 716 -> -0.57f
-            // 902 -> -0.66f
-            //Debug.Log("Screen: " + Screen.height);
+            return (0.38f * Screen.height + 35.66f) / 484f;
         }
 
         public void ResetHalo() => FragmentHalo.SetActive(false);
@@ -467,7 +477,14 @@ namespace UI
 
         private void OnDisable()
         {
-            if (_player != null) _player.OnDamage -= PlayerDamageFeedback;
+            if (_player != null)
+            {
+                _player.OnDamage -= PlayerDamageFeedback;
+                _player.OnNewInstruction -= ShowNewInstruction;
+                _player.OnSpell -= ShowValidSpell;
+                _player.OnElements -= ShowValidElements;
+                World.OnCandleChanged -= RegisterCandle;
+            }
             if (_input != null)
             {
                 _input.OnStartElementMode -= EnterSpellModeFeedback;

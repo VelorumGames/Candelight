@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UI;
 using Music;
+using System.Collections;
 
 namespace World
 {
@@ -55,6 +56,8 @@ namespace World
         public NodeInfo CurrentNodeInfo;
         [SerializeField] AudioClip _worldMusic;
 
+        //public bool Loaded;
+
         private void Awake()
         {
             if (Instance != null) Destroy(gameObject);
@@ -64,9 +67,10 @@ namespace World
             FindObjectOfType<InputManager>().LoadControls(EControlMap.World);
 
             //Si es la primera vez que se visita esta escena
-            if (!World.World)
+            if (!GameSettings.LoadedWorld)
             {
                 World.CompletedNodes = 0;
+
                 World.MAX_NODES = MaxNodes;
                 DontDestroyOnLoad(_worldParent.gameObject);
             }
@@ -82,7 +86,7 @@ namespace World
 
         private void Start()
         {
-            FindObjectOfType<UIManager>().FadeFromBlack(2f);
+            FindObjectOfType<UIManager>().FadeFromBlack(0.5f, 4f);
 
             FindObjectOfType<MusicManager>().PlayMusic(0, _worldMusic);
             FindObjectOfType<MusicManager>().ChangeVolumeFrom(0, 0f, 0.5f, 2f);
@@ -166,7 +170,8 @@ namespace World
             }
 
             GenerateStart();
-            if (!World.LoadedInfo) LoadPreviousGame();
+            //if (World.LoadedPreviousGame) StartCoroutine(LoadPreviousGame());
+            //else Loaded = true;
         }
 
         public void GenerateStart()
@@ -175,8 +180,8 @@ namespace World
             {
                 if (node.TryGetComponent<NodeManager>(out var nodeMan) && nodeMan.StartNodeCheck())
                 {
-                    nodeMan.Text.text += " START";
-                    nodeMan.SetState(ENodeState.Explored);
+                    nodeMan.gameObject.name += " START";
+                    nodeMan.SetState(ENodeState.Explorado);
                     CurrentNodeInfo.Node = nodeMan; //Marcamos este como nodo inicial
 
                     MovePlayerToNode(node.transform);
@@ -187,17 +192,10 @@ namespace World
             Debug.LogWarning("ERROR: No se ha encontrado ningun nodo de entrada valido");
         }
 
-        void LoadPreviousGame()
-        {
-            foreach(var id in World.CompletedIds)
-            {
-                _nodes[id].GetComponent<NodeManager>().SetState(ENodeState.Completed);
-            }
-        }
-
         void MovePlayerToNode(Transform node)
         {
-            _player.transform.position = new Vector3(node.position.x, _player.transform.position.y, node.position.z);
+            //Debug.Log("Se mueve al jugador a: " + node.position);
+            _player.transform.position = new Vector3(node.position.x, 2f, node.position.z);
         }
 
         /// <summary>
@@ -228,6 +226,7 @@ namespace World
         /// <param name="biome"></param>
         public void SetCurrentNode(NodeManager node)
         {
+            _player.GetComponent<PlayerController>().SetCurrentNode(node);
             NodeData data = node.GetNodeData();
             CurrentNodeInfo.Levels = data.NumLevels;
             CurrentNodeInfo.LevelTypes = data.LevelTypes;
@@ -294,17 +293,6 @@ namespace World
 
             int id = Random.Range(0, names.Length);
             result[0] = names[id];
-
-            int timeout = 50;
-            while (result[0] == "TAKEN")
-            {
-                id = Random.Range(0, names.Length);
-                result[0] = names[id];
-
-                if (timeout-- <= 0) break;
-            }
-            names[id] = "TAKEN";
-
             result[1] = descs[id]; 
 
             return result;

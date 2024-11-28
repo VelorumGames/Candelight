@@ -26,6 +26,8 @@ public class DatabaseManager : MonoBehaviour
         FindObjectOfType<UIManager>().ShowState(EGameState.Database);
         yield return StartCoroutine(GetAllUsersData());
 
+        Debug.Log("Hay players: " + _players.Count);
+
         //Se ordenan los jugadores segun la puntuacion
         _players.Sort(ScoreCompare);
 
@@ -43,17 +45,20 @@ public class DatabaseManager : MonoBehaviour
     public IEnumerator SendUserData(ScoreData data)
     {
         //Mandamos la info
-        yield return Database.Send($"Players/{data.Name}", data);
+        if (data.Name !=null)
+        {
+            yield return Database.Send($"Players/{data.Name}", data);
 
-        //Tomamos la lista de nombres anteriores registrados
-        yield return Database.Get<UserNames>("Names/", RecieveNames);
-        //yield return new WaitUntil(() => Database.Completed);
+            //Tomamos la lista de nombres anteriores registrados
+            yield return Database.Get<UserNames>("Names/", RecieveNames);
+            //yield return new WaitUntil(() => Database.Completed);
 
-        //Actualizamos la lista y la devolvemos a la base de datos
-        Debug.Log("Se registra un nuevo nombre en " + _names.Names);
-        _names.Names += $"{data.Name}*";
-        Debug.Log("Nueva lista: " + _names.Names);
-        yield return Database.Send("Names/", _names);
+            //Actualizamos la lista y la devolvemos a la base de datos
+            Debug.Log("Se registra un nuevo nombre en " + _names.Names);
+            _names.Names += $"{data.Name}*";
+            Debug.Log("Nueva lista: " + _names.Names);
+            yield return Database.Send("Names/", _names);
+        }
     }
 
     public IEnumerator GetAllUsersData()

@@ -128,6 +128,8 @@ namespace Map
 
         private void Start()
         {
+            GameSettings.LoadedWorld = true;
+
             _uiMan.FadeFromBlack(1f, 2f);
 
             _player = FindObjectOfType<PlayerController>().gameObject;
@@ -283,7 +285,7 @@ namespace Map
             startRoom.IdText.text += " START";
             startRoom.gameObject.name = "START ROOM";
             _uiMan.UpdateMinimapRoom(startRoom.GetID(), ERoomType.Start);
-            _player.transform.position = startRoom.GetRandomSpawnPoint().position + 0.5f * Vector3.up;
+            _player.transform.position = startRoom.GetRandomSpawnPoint().position + 0.75f * Vector3.up;
 
             ARoom endRoom = rooms[Random.Range(rooms.Count / 2, rooms.Count)];
             rooms.Remove(endRoom);

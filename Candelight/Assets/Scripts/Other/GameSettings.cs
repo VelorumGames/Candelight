@@ -13,4 +13,5 @@ public static class GameSettings
     public static float MusicVolume;
 
     public static bool Tutorial = true;
+    public static bool LoadedWorld = false;
 }

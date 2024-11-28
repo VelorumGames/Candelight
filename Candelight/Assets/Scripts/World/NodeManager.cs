@@ -1,6 +1,8 @@
+using Player;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UI;
 using UnityEngine;
 
 namespace World
@@ -17,9 +19,9 @@ namespace World
     }
     public enum ENodeState
     {
-        Undiscovered,
-        Explored,
-        Completed
+        Sin_Descubrir,
+        Explorado,
+        Completado
     }
     public enum EEventSolution
     {
@@ -72,6 +74,9 @@ namespace World
         {
             gameObject.name = $"nodo {WorldManager.Instance.NumNodes++}";
 
+            yield return new WaitForSeconds(Random.Range(0.01f, 0.2f));
+            ConnectNode();
+
             _data.NumLevels = Random.Range(1, 5);
             _data.SeedExtra = new int[_data.NumLevels];
             _data.LevelTypes = new ELevel[_data.NumLevels];
@@ -82,12 +87,28 @@ namespace World
             }
             _data.LevelTypes[0] = 0; //El primer nivel siempre sera de exploracion
 
+            string[] names = WorldManager.Instance.GetRandomNames(_data.Biome);
+            _data.Name = names[0];
+            _data.Description = names[1];
+
             _data.EventID = -1;
-            if (EventCheck()) _data.EventID = Random.Range(0, 2); //DEBUG
+            //Debug. Deberia ser mas amplio el rango
+            if (EventCheck()) _data.EventID = Random.Range(0, 3);
             _data.EventSolution = EEventSolution.None;
 
-            yield return new WaitForSeconds(Random.Range(0.01f, 0.2f));
-            ConnectNode();
+            CheckForPreviousGameNode();
+        }
+
+        void CheckForPreviousGameNode()
+        {
+            if (WorldManager.Instance.World.LoadedPreviousGame)
+            {
+                //Debug.Log("COUNT: " + ConnectedNodes.Count);
+                foreach (var i in WorldManager.Instance.World.CompletedIds)
+                {
+                    if (Id == i) RegisterCompletedNode();
+                }
+            }
         }
 
         void ConnectNode()
@@ -168,27 +189,38 @@ namespace World
             //        StartCoroutine(DelayedConnection());
             //    }
             //}
-            if (s == ENodeState.Completed)
+            if (s == ENodeState.Completado)
             {
-                //Debug.Log("COUNT: " + ConnectedNodes.Count);
+                //if (WorldManager.Instance.World.LoadedPreviousGame)
+                //{
+                //    FindObjectOfType<NodeInfoBox>().RegisterNode(_data.Name, _data.Description, _data.Biome, "Completado"); //Se actualiza el nodo mas reciente completado al cargar la partida
+                //    Debug.Log("NOMBRE: " + _data.Name);
+                //
+                //    WorldManager.Instance.World.LoadedPreviousGame = false;
+                //}
+                GetComponentInChildren<NodeStatusFeedback>().RegisterNodeLights();
+
                 foreach (var n in ConnectedNodes)
                 {
-                    NodeManager targetNode = n.GetComponent<NodeManager>();
-
-                    //Comprobamos si la linea no ha sido creada (registrada) antes. En ese caso, la sobreescribimos
-                    if (targetNode.Connections.ContainsKey(this))
+                    if (n.gameObject != gameObject)
                     {
-                        targetNode.CleanLine(this);
-                        SpawnLine(this, targetNode, ExploredLineMat);
+                        NodeManager targetNode = n.GetComponent<NodeManager>();
+
+                        //Comprobamos si la linea no ha sido creada (registrada) antes. En ese caso, la sobreescribimos
+                        if (targetNode.Connections.ContainsKey(this))
+                        {
+                            targetNode.CleanLine(this);
+                            SpawnLine(this, targetNode, ExploredLineMat);
+                        }
+                        else SpawnLine(this, targetNode, UnexploredLineMat);
+
+                        //Dibujamos la linea de conexion
+                        //Debug.Log($"Se dibujara con nuevo material?: {targetNode.GetNodeData().State == ENodeState.Completed}");
+                        //if (targetNode.GetNodeData().State == ENodeState.Completed) SpawnLine(this, targetNode, ExploredLineMat);
+                        //else SpawnLine(this, targetNode, UnexploredLineMat);
+
+                        Fog.SetActive(false);
                     }
-                    else SpawnLine(this, targetNode, UnexploredLineMat);
-
-                    //Dibujamos la linea de conexion
-                    //Debug.Log($"Se dibujara con nuevo material?: {targetNode.GetNodeData().State == ENodeState.Completed}");
-                    //if (targetNode.GetNodeData().State == ENodeState.Completed) SpawnLine(this, targetNode, ExploredLineMat);
-                    //else SpawnLine(this, targetNode, UnexploredLineMat);
-
-                    Fog.SetActive(false);
                 }
             }
         }
@@ -242,13 +274,15 @@ namespace World
 
         public void RegisterCompletedNode()
         {
-            SetState(ENodeState.Completed);
-            WorldManager.Instance.World.CompletedIds.Add(Id);
+            Debug.Log("Registro como completado a: " + gameObject.name);
+            SetState(ENodeState.Completado);
+            if (!WorldManager.Instance.World.LoadedPreviousGame) WorldManager.Instance.World.CompletedIds.Add(Id);
             WorldManager.Instance.World.CompletedNodes++;
             foreach(var node in ConnectedNodes)
             {
                 //Debug.Log("NODO: " + node);
-                node.GetComponent<NodeManager>().SetState(ENodeState.Explored);
+                Debug.Log("Registro como explorado a: " + node.name);
+                if (gameObject != node.gameObject) node.GetComponent<NodeManager>().SetState(ENodeState.Explorado);
             }
         }
 
