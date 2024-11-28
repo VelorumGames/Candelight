@@ -229,8 +229,12 @@ namespace Player
 
         public void OnCombatMoveBoost(Vector3 force)
         {
-            _rb.AddForce(force * 2, ForceMode.Impulse);
+            _maxSpeed *= 2f;
+            _rb.AddForce(force, ForceMode.Impulse);
+            Invoke("ResetMaxVelocity", 0.5f);
         }
+
+        public void ResetMaxVelocity() => _maxSpeed /= 2f;
 
         public void OnStopMove()
         {

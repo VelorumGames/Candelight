@@ -187,6 +187,7 @@ namespace Hechizos
                     Vector3 orientation = _cont.GetOrientation();
                     if (count == 0) orientation = Quaternion.AngleAxis(30f, Vector3.up) * orientation;
                     else if (count == 1) orientation = Quaternion.AngleAxis(-30f, Vector3.up) * orientation;
+                    proj.GetComponent<Rigidbody>().velocity = new Vector3(0f, 0f, 0f);
                     proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * orientation.normalized, ForceMode.Impulse);
 
                     count++;

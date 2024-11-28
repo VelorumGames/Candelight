@@ -9,8 +9,6 @@ using UI;
 using Cameras;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
-using BehaviourAPI.Core.Actions;
-using UnityEngine.Windows;
 using Music;
 
 namespace Controls
@@ -56,6 +54,7 @@ namespace Controls
         InputAction _spell;
         InputAction _look;
         InputAction _introLook;
+        
 
         MusicManager _music;
 
@@ -67,6 +66,8 @@ namespace Controls
         public event System.Action OnExitElementMode;
         public event System.Action OnStartShapeMode;
         public event System.Action OnExitShapeMode;
+
+        UIManager _ui;
 
         private void OnEnable()
         {
@@ -108,18 +109,12 @@ namespace Controls
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
         {
             _dialogue = FindObjectOfType<DialogueUI>();
-
-            //UI
-            _uiMap = Input.FindActionMap("UI");
-
-            InputAction back = _uiMap.FindAction("Back");
-            UIManager _ui = FindObjectOfType<UIManager>();
-            if (_ui != null) back.performed += _ui.OnUIBack;
+            _ui = FindObjectOfType<UIManager>();
         }
 
         void OnSceneUnloaded(Scene scene)
         {
-            
+
         }
 
         void InitializeControls()
@@ -183,6 +178,11 @@ namespace Controls
             InputAction introPause = _introMap.FindAction("Pause");
             introPause.performed += _cont.OnPause;
             _introLook = _introMap.FindAction("Look");
+
+            //UI
+            _uiMap = Input.FindActionMap("UI");
+            InputAction back = _uiMap.FindAction("Back");
+            back.performed += UIBack;
         }
 
         public void LoadControls(EControlMap map)
@@ -201,7 +201,7 @@ namespace Controls
                     break;
                 case EControlMap.World:
                     _currentMap = _worldMap;
-                    Debug.Log("Cargo controles de world");
+                    
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.Confined;
                     break;
@@ -295,6 +295,11 @@ namespace Controls
             }
         }
 
+        void UIBack(InputAction.CallbackContext _)
+        {
+            if (_ui != null) _ui.OnUIBack(_);
+        }
+
         private void FixedUpdate()
         {
             if (_cont)
@@ -357,7 +362,7 @@ namespace Controls
             if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnExitShapeMode != null) OnExitShapeMode();
-                _shapeMode = true;
+                _shapeMode = false;
                 _isInSpellMode = false;
                 _move.Enable();
             }

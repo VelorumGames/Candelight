@@ -345,7 +345,11 @@ namespace UI
                     if (endMoves.Length == 0 && endFades.Length == 0) window.SetActive(false);
                 }
 
-                if (_windows.Count == 0) _input.LoadPreviousControls();
+                if (_windows.Count == 0)
+                {
+                    
+                    _input.LoadPreviousControls();
+                }
             }
         }
 
@@ -387,7 +391,10 @@ namespace UI
             back.performed -= OnResetBack;
         }
 
-        public void Back() => OnUIBack(new InputAction.CallbackContext());
+        public void Back()
+        {
+            OnUIBack(new InputAction.CallbackContext());
+        }
 
         public void OnOpenOptions()
         {
@@ -396,7 +403,7 @@ namespace UI
 
         public void ShowWarning(Action action, string desc)
         {
-            Debug.Log("AVISO");
+            //Debug.Log("AVISO");
             LoadUIWindow(Warning);
             Warning.GetComponent<WarningWindow>().Show(action, desc);
         }

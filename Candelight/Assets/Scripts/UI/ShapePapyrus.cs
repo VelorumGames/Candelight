@@ -33,7 +33,7 @@ namespace UI
 
             DOTween.defaultAutoPlay = AutoPlay.None;
             _show = GetComponent<RectTransform>().DOLocalMoveY(-140f, 0.4f).SetAutoKill(false).SetUpdate(true);
-            _hide = GetComponent<RectTransform>().DOLocalMoveY(_oPos, 0.4f).SetAutoKill(false).SetUpdate(true);
+            _hide = GetComponent<RectTransform>().DOLocalMoveY(-500f, 0.4f).SetAutoKill(false).SetUpdate(true);
             DOTween.defaultAutoPlay = AutoPlay.All;
         }
 
@@ -67,7 +67,7 @@ namespace UI
             _show.Pause();
 
             _hide.Restart();
-            _hide.Play().OnComplete(() => GetComponent<RectTransform>().localPosition = new Vector3(GetComponent<RectTransform>().localPosition.x, _oPos, GetComponent<RectTransform>().localPosition.z));
+            _hide.Play().OnComplete(() => GetComponent<RectTransform>().localPosition = new Vector3(GetComponent<RectTransform>().localPosition.x, -9999f, GetComponent<RectTransform>().localPosition.z));
         }
 
         void ResetRunes()

@@ -43,7 +43,7 @@ public class IntroTutorial : MonoBehaviour
 
     private void Start()
     {
-        _ui.FadeFromBlack(1f, 3f);
+        _ui.FadeFromBlack(1.5f, 3f);
 
         DramaticText.color = new Color(1f, 1f, 1f, 0f);
 
