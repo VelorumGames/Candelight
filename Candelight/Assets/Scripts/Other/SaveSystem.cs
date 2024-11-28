@@ -106,6 +106,7 @@ public class SaveData
     public int[] CompletedNodes;
     public int[] ActiveItems;
     public int[] UnactiveItems;
+    public int[] MarkedItems;
     public int Fragments;
     public float Candle;
     public string Runes;

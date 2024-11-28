@@ -33,6 +33,8 @@ namespace Scoreboard
             else if (_data.Score < 50) _sprite.sprite = _startSprites[3];
             else if (_data.Score < _world.MAX_NODES - 5) _sprite.sprite = _startSprites[4];
             else _sprite.sprite = _startSprites[5];
+
+            if (_data.Score > 0) _sprite.color = new Color(1f, 1f, 1f, 1f);
         }
         private void OnMouseDown()
         {

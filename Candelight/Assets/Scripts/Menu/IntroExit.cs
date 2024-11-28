@@ -18,7 +18,7 @@ namespace Menu
 
         public void Exit()
         {
-            FindObjectOfType<UIManager>().ShowWarning(ManageSkip, "¿Estás seguro de que quieres saltarte el tutorial?");
+            _ui.ShowWarning(ManageSkip, "¿Estás seguro de que quieres saltarte el tutorial?");
         }
 
         void ManageSkip()

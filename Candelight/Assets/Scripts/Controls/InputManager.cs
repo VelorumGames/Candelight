@@ -60,6 +60,8 @@ namespace Controls
         MusicManager _music;
 
         bool _isInSpellMode;
+        bool _elementMode;
+        bool _shapeMode;
 
         public event System.Action OnStartElementMode;
         public event System.Action OnExitElementMode;
@@ -319,9 +321,10 @@ namespace Controls
 
         void StartElementMode(InputAction.CallbackContext _)
         {
-            if (SceneManager.GetActiveScene().name != "CalmScene")
+            if (!_shapeMode && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnStartElementMode != null) OnStartElementMode();
+                _elementMode = true;
                 _isInSpellMode = true;
                 _move.Disable();
             }
@@ -329,9 +332,10 @@ namespace Controls
 
         void StopElementMode(InputAction.CallbackContext _)
         {
-            if (SceneManager.GetActiveScene().name != "CalmScene")
+            if (!_shapeMode && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnExitElementMode != null) OnExitElementMode();
+                _elementMode = false;
                 _isInSpellMode = false;
                 _move.Enable();
             }
@@ -339,9 +343,10 @@ namespace Controls
 
         void StartSpellMode(InputAction.CallbackContext _)
         {
-            if (SceneManager.GetActiveScene().name != "CalmScene")
+            if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnStartShapeMode != null) OnStartShapeMode();
+                _shapeMode = true;
                 _isInSpellMode = true;
                 _move.Disable();
             }
@@ -349,9 +354,10 @@ namespace Controls
 
         void StopSpellMode(InputAction.CallbackContext _)
         {
-            if (SceneManager.GetActiveScene().name != "CalmScene")
+            if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnExitShapeMode != null) OnExitShapeMode();
+                _shapeMode = true;
                 _isInSpellMode = false;
                 _move.Enable();
             }

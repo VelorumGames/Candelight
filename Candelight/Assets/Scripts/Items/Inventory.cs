@@ -50,6 +50,7 @@ namespace Items
         //public List<AItem> ConstantItemsList = new List<AItem>();
         public List<GameObject> UnactiveItems = new List<GameObject>();
         public List<GameObject> ActiveItems = new List<GameObject>();
+        public List<GameObject> MarkItems = new List<GameObject>();
 
         [Space(10)]
         InventoryWindow _window;
@@ -168,6 +169,25 @@ namespace Items
             return false;
         }
 
+        public void MarkItem(GameObject itemButton)
+        {
+            UnactiveItems.Remove(itemButton);
+            if (ActiveItems.Remove(itemButton))
+            {
+                itemButton.GetComponent<AItem>().SetActivation();
+            }
+
+            MarkItems.Add(itemButton);
+        }
+
+        public void ResetMarkItem(GameObject itemButton)
+        {
+            if (MarkItems.Remove(itemButton))
+            {
+                UnactiveItems.Add(itemButton);
+            }
+        }
+
         public bool RemoveItem(string name)
         {
             if (FindItem(name, out AItem item))
@@ -175,14 +195,11 @@ namespace Items
 
                 _uiMan.ShowRemoveItemNotification(item);
 
-                if (ActiveItems.Contains(item.gameObject))
+                if (ActiveItems.Remove(item.gameObject))
                 {
-                    ActiveItems.Remove(item.gameObject);
+                    item.SetActivation();
                 }
-                else if (UnactiveItems.Contains(item.gameObject))
-                {
-                    UnactiveItems.Remove(item.gameObject);
-                }
+                UnactiveItems.Remove(item.gameObject);
 
                 Destroy(item.gameObject);
                 return true;

@@ -129,8 +129,8 @@ namespace Player
             if (_camMan != null) _camMan.AddCamera(_fpCam);
 
             _interaction = null;
-
             CanMove = true;
+            _isFirstPerson = false;
             
             if (_currentNode != null && FindObjectOfType<WorldManager>() != null) _currentNode = FindObjectOfType<WorldManager>().CurrentNodeInfo.Node;
 
@@ -196,6 +196,9 @@ namespace Player
 
             Debug.Log("SE REVIVE AL JUGADOR");
             World.Candle = World.MAX_CANDLE * 0.5f;
+
+            _anim.ChangeToLife();
+
             if (OnRevive != null) OnRevive();
         }
 

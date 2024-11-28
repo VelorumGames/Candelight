@@ -29,6 +29,8 @@ namespace Enemy
 
         UIManager _ui;
 
+        bool _attackNotif = true;
+
         private new void Awake()
         {
             base.Awake();
@@ -63,7 +65,12 @@ namespace Enemy
                     NormalStart();
                     break;
                 case EMurcielagoState.Attack:
-                    _ui.ShowTutorial("\"Y el murciélago enfureció...\"", 3f);
+                    if (_attackNotif)
+                    {
+                        _ui.ShowTutorial("\"Y el murciélago enfureció...\"", 3f);
+                        _attackNotif = false;
+                        Invoke("ResetNotif", 8f);
+                    }
                     AttackStart();
                     break;
                 case EMurcielagoState.Confused:
@@ -72,6 +79,8 @@ namespace Enemy
                     break;
             }
         }
+
+        public void ResetNotif() => _attackNotif = true;
 
 
         #region Normal
@@ -109,7 +118,7 @@ namespace Enemy
         IEnumerator ManageAttack()
         {
             Vector3 target;
-            while (!PhantomCheck())
+            while (!PhantomCheck() && World.Candle > 0)
             {
                 target = Player.transform.position + new Vector3(UnityEngine.Random.Range(-1f, 1f), 0f, UnityEngine.Random.Range(-1f, 1f)); //Para que tampoco sea exacto (es ciego)
                 yield return StartCoroutine(MoveTowards(target, 3f));
@@ -163,7 +172,7 @@ namespace Enemy
 
             CanMove = true;
 
-            ChangeState(EMurcielagoState.Attack);
+            if (World.Candle > 0) ChangeState(EMurcielagoState.Attack);
         }
 
         #endregion
@@ -176,6 +185,8 @@ namespace Enemy
 
         private new void OnDisable()
         {
+            StopAllCoroutines();
+
             base.OnDisable();
 
             OnDamage -= ChangeToAttackOnDamage;

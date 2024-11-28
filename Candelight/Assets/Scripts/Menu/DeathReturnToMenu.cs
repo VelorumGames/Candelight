@@ -31,12 +31,9 @@ namespace Menu
 
         void EraseProgress()
         {
-            if (Active)
-            {
-                _ui.ShowState(EGameState.Loading);
-                SaveSystem.RestartDataOnDeath();
-                SceneManager.LoadScene("MenuScene");
-            }
+            _ui.ShowState(EGameState.Loading);
+            SaveSystem.RestartDataOnDeath();
+            SceneManager.LoadScene("MenuScene");
         }
     }
 }

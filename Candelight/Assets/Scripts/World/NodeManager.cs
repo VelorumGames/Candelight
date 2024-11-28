@@ -226,6 +226,8 @@ namespace World
 
         public void RegisterCompletedNode()
         {
+            Debug.Log("Se completa el nodo");
+
             SetState(ENodeState.Completado);
 
             if (!WorldManager.Instance.World.LoadedPreviousGame) WorldManager.Instance.World.CompletedIds.Add(Id);

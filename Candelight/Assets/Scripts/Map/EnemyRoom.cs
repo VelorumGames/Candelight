@@ -72,6 +72,7 @@ public class EnemyRoom : ARoom
         Debug.Log($"Se abriran {AvailableAnchors.Count} anchors");
         foreach (var anchor in AvailableAnchors)
         {
+            Debug.Log("Anchor: " + anchor);
             if (anchor != null)
             {
                 anchor.OpenAnchor();

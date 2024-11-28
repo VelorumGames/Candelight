@@ -921,7 +921,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1195221490
 RectTransform:
@@ -1353,6 +1353,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1195221490}
     m_Modifications:
+    - target: {fileID: 1873548480809535241, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3486557483265283610, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}
       propertyPath: m_LocalPosition.x

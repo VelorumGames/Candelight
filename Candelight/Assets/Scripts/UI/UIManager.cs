@@ -251,6 +251,19 @@ namespace UI
             if (FadeImage != null) FadeImage.DOColor(Color.black, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
         }
 
+        public void InterruptFade()
+        {
+            GameObject newFade = Instantiate(FadeImage.gameObject, FadeImage.transform.parent);
+            Destroy(FadeImage);
+            StartCoroutine(ResetImage(newFade.GetComponent<Image>()));
+        }
+
+        IEnumerator ResetImage(Image img)
+        {
+            yield return new WaitForSeconds(1f);
+            FadeImage = img;
+        }
+
         public void FadeFromBlack(float duration) //Esto puede lanzar excepcion si el jugador cambia de escena demasiado rapido. Por ahora el safe mode lo mantiene a raya, pero hay que solucionarlo
         {
             if (FadeImage != null)
@@ -338,6 +351,7 @@ namespace UI
 
         public void LoadUIWindow(GameObject window)
         {
+            Debug.Log($"Condiciones aviso: {window != null} && {!_input.IsInSpellMode()}");
             if (window != null && !_input.IsInSpellMode())
             {
                 window.SetActive(true);
@@ -382,6 +396,7 @@ namespace UI
 
         public void ShowWarning(Action action, string desc)
         {
+            Debug.Log("AVISO");
             LoadUIWindow(Warning);
             Warning.GetComponent<WarningWindow>().Show(action, desc);
         }
@@ -469,7 +484,7 @@ namespace UI
         void ShowFragmentHalo(int prev, int num)
         {
             float offset = GetScreenSizeOffset();
-            FragmentHalo.transform.localPosition = new Vector3(0.5f, -offset, offset);
+            FragmentHalo.transform.localPosition = new Vector3(offset, -offset, offset);
             FragmentHalo.SetActive(true);
             Invoke("ResetHalo", 3f);
         }
@@ -522,7 +537,7 @@ namespace UI
                 _inv.OnFragmentsChange -= ShowFragmentHalo;
             }
 
-            World.OnPlayerDeath += Death;
+            World.OnPlayerDeath -= Death;
         }
     }
 }

@@ -18,7 +18,17 @@ namespace UI
 
         private void OnEnable()
         {
-            _hp.text = $"HP: {_world.Candle} / {_world.MAX_CANDLE}";
+            _world.OnCandleChanged += UpdateHealth;
+        }
+
+        void UpdateHealth(float hp)
+        {
+            _hp.text = $"HP: {hp} / {_world.MAX_CANDLE}";
+        }
+
+        private void OnDisable()
+        {
+            _world.OnCandleChanged -= UpdateHealth;
         }
     }
 }
