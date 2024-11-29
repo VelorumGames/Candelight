@@ -106,6 +106,7 @@ public static class SaveSystem
 [System.Serializable]
 public class SaveData
 {
+    public bool CanRevive;
     public int CurrentNode = -1;
     public int[] CompletedNodes;
     public int[] ActiveItems;
@@ -118,6 +119,8 @@ public class SaveData
     public SaveData(NodeInfo node, WorldInfo world, Inventory inventory)
     {
         Debug.Log("GUARDANDO DATOS");
+
+        CanRevive = GameSettings.CanRevive;
 
         if (node != null) CurrentNode = node.Node.Id;
 

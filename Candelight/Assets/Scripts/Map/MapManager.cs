@@ -142,13 +142,13 @@ namespace Map
                 switch (CurrentNodeInfo.Biome)
                 {
                     case EBiome.Durnia:
-                        _maxRooms = 10;
+                        _maxRooms = 6;
                         break;
                     case EBiome.Temeria:
-                        _maxRooms = 20;
+                        _maxRooms = 12;
                         break;
                     case EBiome.Idria:
-                        _maxRooms = 30;
+                        _maxRooms = 20;
                         break;
                 }
             }

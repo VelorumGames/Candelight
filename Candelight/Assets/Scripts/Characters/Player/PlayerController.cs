@@ -441,7 +441,7 @@ namespace Player
 
         void ThrowSpell(AShapeRune shapeSpell)
         {
-            if (_canSpellThrow)
+            if (_canSpellThrow && !_bookIsOpen && !_isFirstPerson)
             {
                 _lastSpell = shapeSpell;
 

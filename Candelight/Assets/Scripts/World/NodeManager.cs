@@ -61,6 +61,8 @@ namespace World
         public TextMeshPro Text;
         public GameObject Fog;
 
+        int _maxConNodes = 3;
+
         [SerializeField] GameObject[] _biomeGOs;
 
         private void Awake()
@@ -122,7 +124,7 @@ namespace World
             foreach (var n in _closeNodes)
             {
                 //Si encontramos un nodo valido que no este conectado a este todavia
-                if (n.CompareTag("Node") && !ConnectedNodes.Contains(n.gameObject) && !n.GetComponent<NodeManager>().ConnectedNodes.Contains(gameObject) && connection < 4 && n.GetComponent<NodeManager>().ConnectedNodes.Count < 4)
+                if (n.CompareTag("Node") && !ConnectedNodes.Contains(n.gameObject) && !n.GetComponent<NodeManager>().ConnectedNodes.Contains(gameObject) && connection < _maxConNodes && n.GetComponent<NodeManager>().ConnectedNodes.Count < _maxConNodes)
                 {
                     //Registramos la conexion en ambos nodos
                     ConnectedNodes.Add(n.gameObject);

@@ -63,6 +63,8 @@ public class MenuSaveManager : MonoBehaviour
 
         ARune.CreateAllRunes(FindObjectOfType<Mage>());
 
+        GameSettings.CanRevive = data.CanRevive;
+
         FindObjectOfType<Inventory>().LoadInventory(data.ActiveItems, data.UnactiveItems, data.MarkedItems, data.Fragments);
         World.Candle = data.Candle;
         World.CompletedIds.Clear();

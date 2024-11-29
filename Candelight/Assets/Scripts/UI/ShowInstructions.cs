@@ -253,9 +253,9 @@ namespace UI
             if (_auxiliarSpell)
             {
                 img.sprite = spr;
-                img.GetComponent<RectTransform>().DOScale(0.55f, 0.2f).Play().OnComplete(() => img.GetComponent<RectTransform>().DOScale(0.5f, delay).Play().SetEase(Ease.InBack).OnComplete(() =>
+                img.GetComponent<RectTransform>().DOScale(0.55f, 0.2f).Play().OnComplete(() => img.GetComponent<RectTransform>().DOScale(0.5f, delay - 0.2f).Play().SetEase(Ease.InBack).OnComplete(() =>
                     img.GetComponent<RectTransform>().localScale = new Vector3(0.45f, 0.45f, 0.45f)));
-                img.DOFade(1f, 0.2f).Play().OnComplete(() => img.DOFade(0f, delay).SetEase(Ease.InBack).Play().OnComplete(() => img.color = new Color(1f, 1f, 1f, 0f)));
+                img.DOFade(1f, 0.2f).Play().OnComplete(() => img.DOFade(0f, delay - 0.2f).SetEase(Ease.InBack).Play().OnComplete(() => img.color = new Color(1f, 1f, 1f, 0f)));
 
                 _auxiliarSpell = false;
                 Invoke("ResetAuxiliar", delay);

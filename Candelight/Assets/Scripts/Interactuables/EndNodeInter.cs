@@ -24,15 +24,15 @@ namespace Interactuables
 
         public override void Interaction()
         {
-            FindObjectOfType<PlayerController>().SetMove(false);
-
-            CurrentNodeInfo.Node.RegisterCompletedNode();
-
             _ui.ShowWarning(StartTransition, "Entrega parte de tu alma y prende la Gran Pira.");
         }
 
         void StartTransition()
         {
+            FindObjectOfType<PlayerController>().SetMove(false);
+
+            CurrentNodeInfo.Node.RegisterCompletedNode();
+
             _ui.Back();
             _ui.FadeToWhite(2f, FinishScene);
             DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 90f, 2f);

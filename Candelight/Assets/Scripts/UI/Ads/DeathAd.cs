@@ -19,6 +19,11 @@ namespace UI.Ads
             _ui = FindObjectOfType<UIManager>();
         }
 
+        private void OnEnable()
+        {
+            if (!GameSettings.CanRevive) gameObject.SetActive(false);
+        }
+
         public void Save()
         {
             FindObjectOfType<DeathReturnToMenu>().Active = false;
@@ -41,6 +46,8 @@ namespace UI.Ads
         /// </summary>
         public void PostAd()
         {
+            GameSettings.CanRevive = false;
+
             _ad.SetActive(false);
             FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
             FindObjectOfType<PlayerController>().Revive();

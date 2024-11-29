@@ -492,7 +492,7 @@ namespace Controls
             OnExitShapeMode -= _cont.OnSpellLaunch;
             OnExitShapeMode -= _music.ExitSpellModeMusic;
 
-            UnloadControls();
+            if (_cont) UnloadControls();
         }
     }
 }

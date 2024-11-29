@@ -39,6 +39,8 @@ namespace Menu
         {
             _ui.Back();
 
+            GameSettings.CanRevive = true;
+
             _world.Candle = _world.MAX_CANDLE;
             _world.CompletedIds.Clear();
             _inv.ResetInventory();

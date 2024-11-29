@@ -26,16 +26,21 @@ public class EnemyRoom : ARoom
 
     bool _inCombat;
 
-    private void OnEnable()
+    private new void Awake()
     {
+        base.Awake();
+
         enemies = GetComponentsInChildren<EnemyController>();
         _enemyCount = enemies.Length;
         foreach (var e in enemies)
         {
             e.OnDeath += NotifyEnemyDeath;
-            e.gameObject.SetActive(false); 
+            e.gameObject.SetActive(false);
         }
+    }
 
+    private void OnEnable()
+    {
         OnPlayerExit += ResetCheck;
     }
 

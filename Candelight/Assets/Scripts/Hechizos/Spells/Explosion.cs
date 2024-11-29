@@ -47,7 +47,7 @@ namespace Hechizos
             }
         }
 
-        public void RegisterTypes(AElementalRune[] runes)
+        protected override void RegisterTypes(AElementalRune[] runes)
         {
             //Chequeo de que se hayan pasado mal los datos
             if (runes.Length == 2 && runes[0].Name == runes[1].Name)
@@ -56,6 +56,22 @@ namespace Hechizos
                 runes = new AElementalRune[1];
                 runes[0] = oldRune;
             }
+            else if (runes.Length == 3 && runes[0].Name == runes[1].Name) //En caso de 3 elementos a la vez
+            {
+                AElementalRune[] oldRunes = runes;
+                runes = new AElementalRune[2];
+                runes[0] = oldRunes[0];
+                runes[1] = oldRunes[2];
+            }
+            else if (runes.Length == 3 && runes[0].Name == runes[2].Name || runes.Length == 3 && runes[1].Name == runes[2].Name)
+            {
+                AElementalRune[] oldRunes = runes;
+                runes = new AElementalRune[2];
+                runes[0] = oldRunes[0];
+                runes[1] = oldRunes[1];
+            }
+
+            Elements = runes;
 
             switch (runes[0].Name)
             {

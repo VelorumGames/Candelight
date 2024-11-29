@@ -3,6 +3,7 @@ using Items;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -83,7 +84,7 @@ namespace Enemy
             float target = dam.transform.position.y + 2f;
             dam.transform.DOMoveY(target, 1f).Play();
 
-            damText.text = $"-{damage}";
+            damText.text = $"-{damage.ToString("F1", CultureInfo.InvariantCulture)}";
             damText.DOFade(0f, 1f).Play().OnComplete(() => Destroy(dam));
             dam.transform.DOLocalMoveY(5f, 1f).Play();
         }

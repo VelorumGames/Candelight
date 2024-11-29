@@ -227,7 +227,7 @@ namespace Hechizos
         {
             GameObject proj = null;
             proj = Projectiles[Random.Range(0, Projectiles.Length)];
-            proj.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
+            //proj.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
             while (proj.activeInHierarchy)
             {
                 proj = Projectiles[Random.Range(0, Projectiles.Length)];
@@ -238,7 +238,7 @@ namespace Hechizos
         public GameObject SpawnProjectileWithRandomDirection()
         {
             _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
-            _lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
+            //_lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
             while (_lastProjectile.activeInHierarchy)
             {
                 _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
@@ -256,7 +256,7 @@ namespace Hechizos
         public GameObject SpawnExplosion()
         {
             GameObject expl = Instantiate(Explosion);
-            expl.GetComponent<Explosion>().RegisterTypes(_activeElements.ToArray());
+            //expl.GetComponent<Explosion>().RegisterTypes(_activeElements.ToArray());
             expl.transform.position = _cont.transform.position;
 
             _cam.Shake(20f, 0.2f, 1f);
@@ -271,14 +271,14 @@ namespace Hechizos
             expl.transform.localScale *= range;
             AElementalRune[] runes = new AElementalRune[1];
             runes[0] = element;
-            expl.GetComponent<Explosion>().RegisterTypes(runes);
+            //expl.GetComponent<Explosion>().RegisterTypes(runes);
             _cam.Shake(10f, 0.2f, 1f);
         }
 
         public GameObject SpawnMelee()
         {
             GameObject mel = Instantiate(Melee);
-            mel.GetComponent<Melee>().RegisterTypes(_activeElements.ToArray());
+            //mel.GetComponent<Melee>().RegisterTypes(_activeElements.ToArray());
             mel.transform.position = _cont.transform.position;
 
             mel.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * 0.15f * _cont.GetOrientation(), ForceMode.Impulse);

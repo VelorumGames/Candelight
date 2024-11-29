@@ -16,4 +16,5 @@ public static class GameSettings
 
     public static bool Tutorial = true;
     public static bool LoadedWorld = false;
+    public static bool CanRevive = true;
 }

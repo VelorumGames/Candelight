@@ -37,6 +37,10 @@ namespace World
         public string[] TemeriaNodeDescriptions;
         public string[] IdriaNodeDescriptions;
 
+        bool[] _durniaTakenNames;
+        bool[] _temeriaTakenNames;
+        bool[] _idriaTakenNames;
+
         [Space(20)]
         [Header("===BIOME GENERATION===")]
         [Space(10)]
@@ -65,6 +69,10 @@ namespace World
 
             _player = FindObjectOfType<PlayerController>().gameObject;
             FindObjectOfType<InputManager>().LoadControls(EControlMap.World);
+
+            _durniaTakenNames = new bool[DurniaNodeNames.Length];
+            _temeriaTakenNames = new bool[TemeriaNodeNames.Length];
+            _idriaTakenNames = new bool[IdriaNodeNames.Length];
 
             //Si es la primera vez que se visita esta escena
             if (!GameSettings.LoadedWorld)
@@ -169,7 +177,7 @@ namespace World
                 }
             }
 
-            if (World.LoadedPreviousGame)
+            if (World.LoadedPreviousGame && SaveSystem.GameData.CurrentNode != -1)
             {
                 MovePlayerToNode(_nodes[SaveSystem.GameData.CurrentNode].transform);
             }
@@ -280,32 +288,67 @@ namespace World
             string[] names;
             string[] descs;
 
+            bool[] taken;
+
             switch (biome)
             {
                 case EBiome.Durnia:
                     names = DurniaNodeNames;
                     descs = DurniaNodeDescriptions;
+
+                    if (!CheckForAvailableName(_durniaTakenNames)) _durniaTakenNames = new bool[_durniaTakenNames.Length];
+
+                    taken = _durniaTakenNames;
                     break;
                 case EBiome.Temeria:
                     names = TemeriaNodeNames;
                     descs = TemeriaNodeDescriptions;
+
+                    if (!CheckForAvailableName(_temeriaTakenNames)) _temeriaTakenNames = new bool[_temeriaTakenNames.Length];
+
+                    taken = _temeriaTakenNames;
                     break;
                 case EBiome.Idria:
                     names = IdriaNodeNames;
                     descs = IdriaNodeDescriptions;
+
+                    if (!CheckForAvailableName(_idriaTakenNames)) _idriaTakenNames = new bool[_idriaTakenNames.Length];
+
+                    taken = _idriaTakenNames;
                     break;
                 default:
                     names = DurniaNodeNames;
                     descs = DurniaNodeDescriptions;
+
+                    if (!CheckForAvailableName(_durniaTakenNames)) _durniaTakenNames = new bool[_durniaTakenNames.Length];
+
+                    taken = _durniaTakenNames;
                     break;
 
             }
-
+            
             int id = Random.Range(0, names.Length);
+
+            while (taken[id])
+            {
+                if (++id >= taken.Length) id = 0;
+            }
+            taken[id] = true;
+
             result[0] = names[id];
             result[1] = descs[id]; 
 
             return result;
+        }
+
+        bool CheckForAvailableName(bool[] taken)
+        {
+            foreach (var b in taken)
+            {
+                if (!b) return true;
+            }
+
+            return false;
         }
     }
 }

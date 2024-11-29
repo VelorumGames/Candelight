@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Items.ConcreteItems;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,18 +6,20 @@ using System.ComponentModel;
 using TMPro;
 using UI.Window;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Items 
 {
 
-    public abstract class AItem : MonoBehaviour
+    public abstract class AItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public ItemInfo Data;
 
         [SerializeField] protected Sprite[] _buttonSprites;
 
         Image _img;
+        float _oScale;
 
         public bool IsNew = true;
         protected bool IsActivated = false;
@@ -85,6 +88,17 @@ namespace Items
         }
 
         public bool IsActive() => IsActivated;
+
+        public void OnPointerEnter(PointerEventData _)
+        {
+            _oScale = GetComponent<RectTransform>().localScale.x;
+            GetComponent<RectTransform>().DOScale(_oScale * 1.05f, 0.2f);
+        }
+
+        public void OnPointerExit(PointerEventData _)
+        {
+            GetComponent<RectTransform>().DOScale(_oScale, 0.2f);
+        }
     }
 
     public enum EItemCategory
