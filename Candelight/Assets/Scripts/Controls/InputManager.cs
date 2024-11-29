@@ -54,6 +54,7 @@ namespace Controls
         InputAction _spell;
         InputAction _look;
         InputAction _introLook;
+        InputAction _scroll;
         
 
         MusicManager _music;
@@ -75,12 +76,14 @@ namespace Controls
             SceneManager.sceneUnloaded += OnSceneUnloaded;
 
             OnStartElementMode += _cont.ResetInstructions;
+            OnStartElementMode += _cont.StartSpellMove;
             OnStartElementMode += _music.EnterSpellModeMusic;
 
             OnExitElementMode += _cont.OnChooseElements;
             OnExitElementMode += _music.ExitSpellModeMusic;
 
             OnStartShapeMode += _cont.ResetInstructions;
+            OnStartShapeMode += _cont.StartSpellMove;
             OnStartShapeMode += _music.EnterSpellModeMusic;
 
             OnExitShapeMode += _cont.OnSpellLaunch;
@@ -149,6 +152,8 @@ namespace Controls
             _look = _levelMap.FindAction("Look");
             InputAction inventory = _levelMap.FindAction("Inventory");
             inventory.performed += _cont.OnInventory;
+            InputAction throwLast = _levelMap.FindAction("ThrowLastSpell");
+            throwLast.performed += _cont.OnLastSpellLaunch;
 
             //World
             _worldMap = Input.FindActionMap("World");
@@ -183,6 +188,78 @@ namespace Controls
             _uiMap = Input.FindActionMap("UI");
             InputAction back = _uiMap.FindAction("Back");
             back.performed += UIBack;
+            _scroll = _uiMap.FindAction("Scroll");
+        }
+
+        void UnloadControls()
+        {
+            _cont = FindObjectOfType<PlayerController>();
+
+            //Level
+            _levelMap = Input.FindActionMap("Level");
+
+            _move = _levelMap.FindAction("Move");
+            //_move.canceled += _cont.OnStopMove;
+            InputAction interact = _levelMap.FindAction("Interact");
+            interact.performed -= _cont.OnInteract;
+            _element = _levelMap.FindAction("Element");
+            _element.performed -= StartElementMode;
+            _element.canceled -= StopElementMode;
+            _spell = _levelMap.FindAction("Spell");
+            _spell.performed -= StartSpellMode;
+            _spell.canceled -= StopSpellMode;
+            InputAction spellUp = _levelMap.FindAction("SpellUp");
+            spellUp.performed -= RegisterSpellUp;
+            InputAction spellDown = _levelMap.FindAction("SpellDown");
+            spellDown.performed -= RegisterSpellDown;
+            InputAction spellRight = _levelMap.FindAction("SpellRight");
+            spellRight.performed -= RegisterSpellRight;
+            InputAction spellLeft = _levelMap.FindAction("SpellLeft");
+            spellLeft.performed -= RegisterSpellLeft;
+            InputAction book = _levelMap.FindAction("Book");
+            book.performed -= _cont.OnBook;
+            InputAction levelPause = _levelMap.FindAction("Pause");
+            levelPause.performed -= _cont.OnPause;
+            _look = _levelMap.FindAction("Look");
+            InputAction inventory = _levelMap.FindAction("Inventory");
+            inventory.performed -= _cont.OnInventory;
+            InputAction throwLast = _levelMap.FindAction("ThrowLastSpell");
+            throwLast.performed -= _cont.OnLastSpellLaunch;
+
+            //World
+            _worldMap = Input.FindActionMap("World");
+
+            _choosePath = _worldMap.FindAction("ChoosePath");
+            InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
+            confirmPath.performed -= _cont.OnConfirmPath;
+            InputAction worldInteract = _worldMap.FindAction("Interact");
+            worldInteract.performed -= _cont.OnInteract;
+            InputAction worldPause = _worldMap.FindAction("Pause");
+            worldPause.performed -= _cont.OnPause;
+            InputAction worldInventory = _worldMap.FindAction("Inventory");
+            worldInventory.performed -= _cont.OnInventory;
+
+            //Dialogue
+            _dialogueMap = Input.FindActionMap("Dialogue");
+
+            InputAction next = _dialogueMap.FindAction("Next");
+            next.performed -= NextDialogueBlock;
+            InputAction dialoguePause = _dialogueMap.FindAction("Pause");
+            dialoguePause.performed -= _cont.OnPause;
+
+            //Intro
+            _introMap = Input.FindActionMap("Intro");
+
+            _introMove = _introMap.FindAction("Move");
+            InputAction introPause = _introMap.FindAction("Pause");
+            introPause.performed -= _cont.OnPause;
+            _introLook = _introMap.FindAction("Look");
+
+            //UI
+            _uiMap = Input.FindActionMap("UI");
+            InputAction back = _uiMap.FindAction("Back");
+            back.performed -= UIBack;
+            _scroll = _uiMap.FindAction("Scroll");
         }
 
         public void LoadControls(EControlMap map)
@@ -351,6 +428,7 @@ namespace Controls
             if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnStartShapeMode != null) OnStartShapeMode();
+
                 _shapeMode = true;
                 _isInSpellMode = true;
                 _move.Disable();
@@ -391,6 +469,8 @@ namespace Controls
 
         #endregion
 
+        public float GetScrollData() => _scroll.ReadValue<Vector2>().y;
+
         public bool IsInSpellMode() => _isInSpellMode;
 
         private void OnDisable()
@@ -399,16 +479,20 @@ namespace Controls
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
 
             OnStartElementMode -= _cont.ResetInstructions;
+            OnStartElementMode -= _cont.StartSpellMove;
             OnStartElementMode -= _music.EnterSpellModeMusic;
 
             OnExitElementMode -= _cont.OnChooseElements;
             OnExitElementMode -= _music.ExitSpellModeMusic;
 
             OnStartShapeMode -= _cont.ResetInstructions;
+            OnStartShapeMode -= _cont.StartSpellMove;
             OnStartShapeMode -= _music.EnterSpellModeMusic;
 
             OnExitShapeMode -= _cont.OnSpellLaunch;
             OnExitShapeMode -= _music.ExitSpellModeMusic;
+
+            UnloadControls();
         }
     }
 }

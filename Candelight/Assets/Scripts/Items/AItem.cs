@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using TMPro;
+using UI.Window;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,14 +15,20 @@ namespace Items
         public ItemInfo Data;
 
         [SerializeField] protected Sprite[] _buttonSprites;
+
         Image _img;
 
         public bool IsNew = true;
         protected bool IsActivated = false;
 
+        InventoryWindow _invWin;
+        Inventory _inv;
+
         private void Awake()
         {
             DontDestroyOnLoad(this);
+
+            _inv = FindObjectOfType<Inventory>();
         }
 
         private void Start()
@@ -41,39 +48,40 @@ namespace Items
 
         public void SetActivation()  // Funcion preparada para llamarse con un boton/clic dependiendo de la interfaz
         {
-            Inventory inv = FindObjectOfType<Inventory>();
+            if (!_inv) _inv = FindObjectOfType<Inventory>();
+            if (!_invWin) _invWin = FindObjectOfType<InventoryWindow>();
 
-            if (IsActivated)
+            if (IsActivated) //Se desactiva si estaba activado
             {
                 IsActivated = false;
                 ResetProperty();
-                inv.AddFragments((int)Data.Category);
-
-                inv.ActiveItems.Remove(gameObject);
-                inv.UnactiveItems.Add(gameObject);
-                inv.RelocateItems();
+                _inv.DeactivateItem(this);
 
                 _img.sprite = _buttonSprites[0];
             }
-            else if (inv.GetFragments() >= (int)Data.Category)
-            {
-                IsActivated = true;
-                ApplyProperty();
-                inv.AddFragments(-(int)Data.Category);
-
-                inv.UnactiveItems.Remove(gameObject);
-                inv.ActiveItems.Add(gameObject);
-                inv.RelocateItems();
-
-                _img.sprite = _buttonSprites[1];
-            } 
             else
             {
-                Debug.Log("[INFO] NO SE HA PODIDO ACTIVAR EL ITEM");
-                //Annadir efecto visual que indique que no se ha podido activar el item porque no se tiene el numero de fragmentos necesarios
-            }
-            
+                if (_invWin.EternalFrameMode != -1)
+                {
+                    _inv.MarkItem(gameObject);
+                }
+                else if (_inv.GetFragments() >= (int)Data.Category) //Si activa si estaba activado y hay fragmentos suficientes
+                {
+                    IsActivated = true;
+                    ApplyProperty();
+                    _inv.ActivateItem(this);
 
+                    _img.sprite = _buttonSprites[1];
+
+                    if (!_invWin) _invWin = FindObjectOfType<InventoryWindow>();
+                    _invWin.ShowActivatedParticles(GetComponent<RectTransform>().position);
+                }
+                else
+                {
+                    Debug.Log("[INFO] NO SE HA PODIDO ACTIVAR EL ITEM");
+                    _invWin.ManageUnableFeedback(GetComponent<Image>());
+                }
+            }
         }
 
         public bool IsActive() => IsActivated;
@@ -86,5 +94,4 @@ namespace Items
         Epic = 8,
         Legendary = 10
     }
-
 }

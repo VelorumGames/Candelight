@@ -71,7 +71,7 @@ namespace Player
         public event Action<ESpellInstruction> OnNewInstruction;
         public event Action<AShapeRune> OnSpell;
         public event Action<AElementalRune[]> OnElements;
-        public event Action OnRevive;
+        public event Action<float> OnRevive;
 
         UIManager _UIMan;
         InputManager _input;
@@ -84,9 +84,18 @@ namespace Player
         CameraManager _camMan;
 
         bool _inCombat;
+        float _spellThrowDelay = 0.7f;
+        bool _canSpellThrow = true;
+
         bool _invicible;
         float _iFrameDuration = 0.5f;
+
         Vector2 _oldDirection;
+
+        AShapeRune _lastSpell;
+        float _lastSpellDuration = 5f;
+        bool _canLastSpell;
+        Vector3 force;
 
         [Space(10)]
         [Header("FIRST PERSON")]
@@ -113,6 +122,8 @@ namespace Player
             _input = FindObjectOfType<InputManager>();
 
             DontDestroyOnLoad(gameObject);
+
+            force = new Vector3();
         }
 
         private new void Start()
@@ -199,7 +210,7 @@ namespace Player
 
             _anim.ChangeToLife();
 
-            if (OnRevive != null) OnRevive();
+            if (OnRevive != null) OnRevive(World.Candle);
         }
 
         void Death()
@@ -216,7 +227,7 @@ namespace Player
             if (CanMove)
             {
                 if (!_rb) _rb = GetComponent<Rigidbody>();
-                Vector3 force = (_bookIsOpen || _isFirstPerson ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * _speedFactor * new Vector3(direction.x, 0f, direction.y);
+                force = (_bookIsOpen || _isFirstPerson ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * _speedFactor * new Vector3(direction.x, 0f, direction.y);
                 _rb.AddForce(force, ForceMode.Force);
 
                 _particles.StartFootParticles();
@@ -227,14 +238,34 @@ namespace Player
             }
         }
 
+        public void StartSpellMove()
+        {
+
+            if (_rb.velocity.magnitude > 4f) StartCoroutine(OnSpellMove());
+        }
+
+        IEnumerator OnSpellMove()
+        {
+            yield return new WaitForEndOfFrame();
+
+            while (_input.IsInSpellMode())
+            {
+                force *= 0.975f;
+                _rb.AddForce(force * Time.deltaTime * 100f, ForceMode.Force);
+                _particles.StartFootParticles();
+
+                yield return null;
+            }
+        }
+
         public void OnCombatMoveBoost(Vector3 force)
         {
-            _maxSpeed *= 2f;
+            _maxSpeed *= 1.1f;
             _rb.AddForce(force, ForceMode.Impulse);
             Invoke("ResetMaxVelocity", 0.5f);
         }
 
-        public void ResetMaxVelocity() => _maxSpeed /= 2f;
+        public void ResetMaxVelocity() => _maxSpeed /= 1.1f;
 
         public void OnStopMove()
         {
@@ -299,7 +330,6 @@ namespace Player
 
         public void OnSpellInstruction(ESpellInstruction instr)
         {
-            Debug.Log("INSTRUCCION: " + instr);
             if (CanMove && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 //Debug.Log("Se ha registrado la instruccion " + instr);
@@ -325,7 +355,7 @@ namespace Player
                         }
 
                         _instrInBook = false;
-                        _UIMan.BookInstructionFeedback(0.25f);
+                        _UIMan.VignetteFeedback(0.25f);
                         Invoke("ResetBookInstructionTimer", 0.25f);
                     }
                 }
@@ -374,16 +404,20 @@ namespace Player
                 {
                     string str = "";
                     foreach (ESpellInstruction i in _instructions) str += i.ToString();
-                    Debug.Log("Se lanza hechizo: " + str);
+                    //Debug.Log("Se lanza hechizo: " + str);
                     if (ARune.FindSpell(_instructions.ToArray(), out var spell))
                     {
                         Debug.Log("Hechizo encontrado!!: " + spell.Name);
                         AShapeRune shapeSpell = spell as AShapeRune;
                         if (shapeSpell != null)
                         {
-                            shapeSpell.ThrowSpell();
-                            if (OnSpell != null) OnSpell(shapeSpell);
-                            if (shapeSpell is MeleeRune) _anim.ChangeToMelee();
+                            if (!(shapeSpell is ExplosionRune))
+                            {
+                                _canLastSpell = true;
+                                Invoke("ResetLastSpellTimer", _lastSpellDuration);
+                            }
+
+                            ThrowSpell(shapeSpell);
                         }
                         else if (OnSpell != null) OnSpell(null); //Si no encuentra hechizo valido
                     }
@@ -395,7 +429,45 @@ namespace Player
             _UIMan.ManageAuxiliarRuneReset();
         }
 
-        public void ResetInstructions() => _instructions.Clear();
+        public void OnLastSpellLaunch(InputAction.CallbackContext _)
+        {
+            if (_canLastSpell && CanMove && SceneManager.GetActiveScene().name != "CalmScene" && _lastSpell != null)
+            {
+                ThrowSpell(_lastSpell);
+            }
+        }
+
+        public void ResetLastSpellTimer() => _canLastSpell = false;
+
+        void ThrowSpell(AShapeRune shapeSpell)
+        {
+            if (_canSpellThrow)
+            {
+                _lastSpell = shapeSpell;
+
+                shapeSpell.ThrowSpell();
+                if (OnSpell != null) OnSpell(shapeSpell);
+
+                if (shapeSpell is MeleeRune) _anim.ChangeToMelee();
+
+                _UIMan.ResetCanShoot();
+                _UIMan.VignetteFeedback(_spellThrowDelay);
+
+                _canSpellThrow = false;
+                Invoke("ResetSpellThrowDelay", _spellThrowDelay);
+            }
+        }
+
+        public void ResetSpellThrowDelay()
+        {
+            _UIMan.ShowCanShoot();
+            _canSpellThrow = true;
+        }
+
+        public void ResetInstructions()
+        {
+            _instructions.Clear();
+        }
 
         public void OnBook(InputAction.CallbackContext _)
         {
@@ -533,6 +605,8 @@ namespace Player
         public float GetSpeedFactor() => _speedFactor;
 
         public void AddExtraLife(int n) => _extraLives += n;
+
+        public float GetLastSpellDelay() => _lastSpellDuration;
 
         #endregion
 

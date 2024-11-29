@@ -1,3 +1,4 @@
+using Player;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,24 +12,33 @@ namespace UI
         [SerializeField] WorldInfo _world;
         TextMeshProUGUI _hp;
 
+        PlayerController _cont;
+
         private void Awake()
         {
             _hp = GetComponent<TextMeshProUGUI>();
+            _cont = FindObjectOfType<PlayerController>();
+
+            _world.OnCandleChanged += UpdateHealth;
+            if (_cont != null) _cont.OnRevive += UpdateHealth;
         }
 
         private void OnEnable()
         {
-            _world.OnCandleChanged += UpdateHealth;
+            UpdateHealth();
         }
 
-        void UpdateHealth(float hp)
+        public void UpdateHealth(float hp)
         {
-            _hp.text = $"HP: {hp} / {_world.MAX_CANDLE}";
+            _hp.text = $"HP: {_world.Candle} / {_world.MAX_CANDLE}";
         }
 
-        private void OnDisable()
+        void UpdateHealth() => _hp.text = $"HP: {_world.Candle} / {_world.MAX_CANDLE}";
+
+        private void OnDestroy()
         {
             _world.OnCandleChanged -= UpdateHealth;
+            if (_cont != null) _cont.OnRevive -= UpdateHealth;
         }
     }
 }

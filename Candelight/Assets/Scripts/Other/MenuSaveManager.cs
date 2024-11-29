@@ -63,7 +63,7 @@ public class MenuSaveManager : MonoBehaviour
 
         ARune.CreateAllRunes(FindObjectOfType<Mage>());
 
-        FindObjectOfType<Inventory>().LoadInventory(data.ActiveItems, data.UnactiveItems, data.Fragments);
+        FindObjectOfType<Inventory>().LoadInventory(data.ActiveItems, data.UnactiveItems, data.MarkedItems, data.Fragments);
         World.Candle = data.Candle;
         World.CompletedIds.Clear();
         foreach (var node in data.CompletedNodes) World.CompletedIds.Add(node);

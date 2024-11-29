@@ -24,6 +24,8 @@ public class EnemyRoom : ARoom
         }
     }
 
+    bool _inCombat;
+
     private void OnEnable()
     {
         enemies = GetComponentsInChildren<EnemyController>();
@@ -33,21 +35,35 @@ public class EnemyRoom : ARoom
             e.OnDeath += NotifyEnemyDeath;
             e.gameObject.SetActive(false); 
         }
+
+        OnPlayerExit += ResetCheck;
     }
 
     protected override void OnPlayerTrigger()
     {
-        if (_enemyCount > 0)
+        if (!_inCombat)
         {
-            FindObjectOfType<MapManager>().StartCombat();
-            Invoke("CloseAllAnchors", 1f);
-
-            foreach (var e in enemies)
+            if (_enemyCount > 0)
             {
-                e.gameObject.SetActive(true);
+                FindObjectOfType<MapManager>().StartCombat();
+                StartCoroutine(CheckForPlayerDistance());
             }
+
+            _inCombat = true;
         }
     }
+
+    IEnumerator CheckForPlayerDistance()
+    {
+        yield return new WaitUntil(() => Vector3.Distance(_cont.transform.position, transform.position) < 2f);
+        CloseAllAnchors();
+        foreach (var e in enemies)
+        {
+            e.gameObject.SetActive(true);
+        }
+    }
+
+    void ResetCheck() => StopAllCoroutines();
 
     void EndCombat()
     {
@@ -85,5 +101,15 @@ public class EnemyRoom : ARoom
     {
         enemy.OnDeath -= NotifyEnemyDeath;
         _enemyCount--;
+    }
+
+    private void OnDisable()
+    {
+        foreach (var e in enemies)
+        {
+            if (e != null) e.OnDeath -= NotifyEnemyDeath;
+        }
+
+        OnPlayerExit -= ResetCheck;
     }
 }

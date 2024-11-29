@@ -34,7 +34,11 @@ namespace Hechizos
         [SerializeField] Material[] _secMaterials;
         [SerializeField] TrailRenderer[] _trails;
 
+        public Vector3 Direction;
+
         public bool AffectsPlayer;
+
+        bool _impacted;
 
         private void Awake()
         {
@@ -43,7 +47,10 @@ namespace Hechizos
 
         private new void OnEnable()
         {
-            base.OnEnable();
+            //base.OnEnable();
+
+            _impacted = false;
+
             StartCoroutine(TimedReset());
         }
 
@@ -52,48 +59,58 @@ namespace Hechizos
             //Debug.Log("Vel: " + GetComponent<Rigidbody>().velocity);
 
             if (OnUpdate != null) OnUpdate(Target);
+
+            transform.Translate(Direction * Time.deltaTime);
+        }
+
+        public void Push(Vector3 dir, float speed)
+        {
+            Direction = speed * dir;
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!AffectsPlayer) 
+            if (!_impacted)
             {
-                
-                if (other.CompareTag("Enemy"))
+                if (!AffectsPlayer)
                 {
-                    Target = other.transform.parent;
-
-                    if (Target != null && Target.TryGetComponent<EnemyController>(out var enemy))
+                    if (other.CompareTag("Enemy"))
                     {
-                        enemy.RecieveDamage(Damage);
-                        if (OnImpact != null) OnImpact(Target);
-                    }
-                    else if (other.transform.TryGetComponent(out enemy))
-                    {
-                        enemy.RecieveDamage(Damage);
-                        if (OnImpact != null) OnImpact(other.transform);
-                    }
+                        Target = other.transform.parent;
 
-                    //if (OnImpact != null) OnImpact(Target != null ? Target : other.transform);
+                        if (Target != null && Target.TryGetComponent<EnemyController>(out var enemy))
+                        {
+                            enemy.RecieveDamage(Damage);
+                            if (OnImpact != null) OnImpact(Target);
+                            _impacted = true;
+                        }
+                        else if (other.transform.TryGetComponent(out enemy))
+                        {
+                            enemy.RecieveDamage(Damage);
+                            if (OnImpact != null) OnImpact(other.transform);
+                            _impacted = true;
+                        }
+
+                        //if (OnImpact != null) OnImpact(Target != null ? Target : other.transform);
+                    }
                 }
-            } 
-            else
-            {
-                if(other.CompareTag("Player"))
+                else
                 {
-                    Target = other.transform;
-
-                    if (Target.TryGetComponent<PlayerController>(out var player))
+                    if (other.CompareTag("Player"))
                     {
-                        player.RecieveDamage(Damage);
-                        gameObject.SetActive(false);
-                    }
+                        Target = other.transform;
 
-                    if (OnImpact != null) OnImpact(Target);
+                        if (Target.TryGetComponent<PlayerController>(out var player))
+                        {
+                            player.RecieveDamage(Damage);
+                            gameObject.SetActive(false);
+
+                            if (OnImpact != null) OnImpact(Target);
+                            _impacted = true;
+                        }
+                    }
                 }
             }
-
-            
         }
 
         public void FollowTarget(Transform _)

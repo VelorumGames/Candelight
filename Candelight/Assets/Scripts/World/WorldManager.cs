@@ -169,7 +169,14 @@ namespace World
                 }
             }
 
-            GenerateStart();
+            if (World.LoadedPreviousGame)
+            {
+                MovePlayerToNode(_nodes[SaveSystem.GameData.CurrentNode].transform);
+            }
+            else
+            {
+                GenerateStart();
+            }
             //if (World.LoadedPreviousGame) StartCoroutine(LoadPreviousGame());
             //else Loaded = true;
         }

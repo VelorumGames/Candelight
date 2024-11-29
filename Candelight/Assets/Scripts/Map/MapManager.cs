@@ -166,6 +166,7 @@ namespace Map
             OnCombatStart += _music.StartCombatMusic;
             OnCombatEnd += _music.ReturnToExploreMusic;
             OnCombatEnd += _cont.FinishCombat;
+            OnCombatEnd += _cont.ResetLastSpellTimer;
             OnCombatEnd += _uiMan.WinCombat;
 
             
@@ -366,6 +367,7 @@ namespace Map
             OnCombatStart -= _music.StartCombatMusic;
             OnCombatEnd -= _music.ReturnToExploreMusic;
             OnCombatEnd -= _cont.FinishCombat;
+            OnCombatEnd -= _cont.ResetLastSpellTimer;
             OnCombatEnd -= _uiMan.WinCombat;
         }
     }

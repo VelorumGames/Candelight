@@ -187,8 +187,11 @@ namespace Hechizos
                     Vector3 orientation = _cont.GetOrientation();
                     if (count == 0) orientation = Quaternion.AngleAxis(30f, Vector3.up) * orientation;
                     else if (count == 1) orientation = Quaternion.AngleAxis(-30f, Vector3.up) * orientation;
-                    proj.GetComponent<Rigidbody>().velocity = new Vector3(0f, 0f, 0f);
-                    proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * orientation.normalized, ForceMode.Impulse);
+
+                    proj.GetComponent<Projectile>().Push(orientation, 8f);
+
+                    //proj.GetComponent<Rigidbody>().velocity = new Vector3(0f, 0f, 0f);
+                    //proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * orientation.normalized, ForceMode.Impulse);
 
                     count++;
                     yield return null;
@@ -209,8 +212,10 @@ namespace Hechizos
                 _lastProjectile.transform.position = _cont.transform.position;
                 //Debug.Log("FUERZA: " + _projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation());
 
-                _lastProjectile.GetComponent<Rigidbody>().maxLinearVelocity = _projectileSpeed * _projectileSpeedFactor * 0.1f;
-                _lastProjectile.GetComponent<Rigidbody>().AddRelativeForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
+                //_lastProjectile.GetComponent<Rigidbody>().maxLinearVelocity = _projectileSpeed * _projectileSpeedFactor * 0.1f;
+                //_lastProjectile.GetComponent<Rigidbody>().AddRelativeForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
+
+                _lastProjectile.GetComponent<Projectile>().Push(_cont.GetOrientation(), 8f);
 
                 _cam.Shake(6f, 0.1f, 0.4f);
 

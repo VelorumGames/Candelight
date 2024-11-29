@@ -18,26 +18,10 @@ namespace Hechizos
 
         CameraManager _camMan;
 
-        private void Awake()
-        {
-            //SceneManager.sceneLoaded += RegisterBook;
-        }
-
         private void Start()
         {
             ResetText();
-            //_prevCam = CameraManager.Instance.GetActiveCam();
-            //CameraManager.Instance.SetActiveCamera(_bookCam);
         }
-
-        //void RegisterBook(Scene scene, LoadSceneMode mode)
-        //{
-        //    _camMan = FindObjectOfType<CameraManager>();
-        //
-        //    if (_camMan != null) _camMan.AddCamera(_bookCam);
-        //
-        //    gameObject.SetActive(false);
-        //}
 
         private void OnEnable()
         {
@@ -66,14 +50,6 @@ namespace Hechizos
             FindObjectOfType<ManageBookSpell>().Show(rune);
             ResetText();
         }
-
-        //public IEnumerator ShowResult(ARune rune)
-        //{
-        //    _result.text = rune.Name;
-        //    yield return new WaitForSeconds(1.5f);
-        //    ResetText();
-        //    _result.text = "";
-        //}
 
         private void OnDisable()
         {

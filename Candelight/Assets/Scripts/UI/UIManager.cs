@@ -61,7 +61,6 @@ namespace UI
         Volume _vol;
         float _spellTimeScale = 0.4f;
         float _prevTimeScale = 1f;
-        //bool _isInSpellMode;
 
         ShowInstructions _showInstr;
         CameraManager _camMan;
@@ -70,6 +69,8 @@ namespace UI
         Inventory _inv;
 
         Coroutine _timeFreeze;
+
+        Tween _fade;
 
         Stack<GameObject> _windows = new Stack<GameObject>();
 
@@ -215,7 +216,7 @@ namespace UI
             if (spell != null)
             {
                 StartCoroutine(_showInstr.ShowValidInstructions());
-                _showInstr.ShowShapeResult(spell);
+                if (!(spell is ExplosionRune)) _showInstr.ShowShapeResult(spell, _player.GetLastSpellDelay());
             }
             else _showInstr.ResetSprites();
         }
@@ -248,28 +249,28 @@ namespace UI
 
         public void FadeToBlack(float duration, Action onEnd)
         {
-            if (FadeImage != null) FadeImage.DOColor(Color.black, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
+            if (FadeImage != null) _fade = FadeImage.DOColor(Color.black, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
         }
 
-        public void InterruptFade()
-        {
-            GameObject newFade = Instantiate(FadeImage.gameObject, FadeImage.transform.parent);
-            Destroy(FadeImage);
-            StartCoroutine(ResetImage(newFade.GetComponent<Image>()));
-        }
+        //public void InterruptFade()
+        //{
+        //    GameObject newFade = Instantiate(FadeImage.gameObject, FadeImage.transform.parent);
+        //    Destroy(FadeImage);
+        //    StartCoroutine(ResetImage(newFade.GetComponent<Image>()));
+        //}
 
-        IEnumerator ResetImage(Image img)
-        {
-            yield return new WaitForSeconds(1f);
-            FadeImage = img;
-        }
+        //IEnumerator ResetImage(Image img)
+        //{
+        //    yield return new WaitForSeconds(1f);
+        //    FadeImage = img;
+        //}
 
         public void FadeFromBlack(float duration) //Esto puede lanzar excepcion si el jugador cambia de escena demasiado rapido. Por ahora el safe mode lo mantiene a raya, pero hay que solucionarlo
         {
             if (FadeImage != null)
             {
                 FadeImage.color = new Color(0f, 0f, 0f, 1f);
-                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
+                _fade = FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
 
             }
         }
@@ -289,7 +290,7 @@ namespace UI
 
             if (FadeImage != null)
             {
-                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
+                _fade = FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
 
                 yield return null;
             }
@@ -298,13 +299,13 @@ namespace UI
         public void FadeToWhite(float duration, Ease ease, Action onEnd)
         {
             FadeImage.color = new Color(1f, 1f, 1f, 0f);
-            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetEase(ease).SetUpdate(true);
+            if (FadeImage != null) _fade = FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetEase(ease).SetUpdate(true);
         }
 
         public void FadeToWhite(float duration, Action onEnd)
         {
             FadeImage.color = new Color(1f, 1f, 1f, 0f);
-            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
+            if (FadeImage != null) _fade = FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
         }
 
         public void FadeFromWhite(float duration)
@@ -312,7 +313,17 @@ namespace UI
             if (FadeImage != null)
             {
                 FadeImage.color = new Color(1f, 1f, 1f, 1f);
-                FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration).Play().SetUpdate(true);
+                _fade = FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration).Play().SetUpdate(true);
+            }
+        }
+
+        public void InterruptFade()
+        {
+            //Debug.Log("OOOOOOOOOOOOOOOOO");
+            if (_fade != null)
+            {
+                _fade.Restart();
+                _fade.Pause();
             }
         }
 
@@ -355,7 +366,6 @@ namespace UI
 
         public void LoadUIWindow(GameObject window)
         {
-            Debug.Log($"Condiciones aviso: {window != null} && {!_input.IsInSpellMode()}");
             if (window != null && !_input.IsInSpellMode())
             {
                 window.SetActive(true);
@@ -418,7 +428,7 @@ namespace UI
 
         #region Feedback
 
-        public void BookInstructionFeedback(float duration)
+        public void VignetteFeedback(float duration)
         {
             if (_vol.sharedProfile.TryGet(out Vignette vig))
             {
@@ -427,6 +437,9 @@ namespace UI
                 DOTween.To(vig.intensity.Override, oIntensity, 0.5f, duration * 0.2f).Play().OnComplete(() => DOTween.To(vig.intensity.Override, 0.5f, oIntensity, duration * 0.8f).Play());
             }
         }
+
+        public void ShowCanShoot() => _showInstr.ShowCanThrow(true);
+        public void ResetCanShoot() => _showInstr.ShowCanThrow(false);
 
         public void PlayerDamageFeedback(float damage, float remHealth)
         {
@@ -511,16 +524,17 @@ namespace UI
 
         public void ShowTutorial(string s)
         {
-            TutorialNotif.SetActive(true);
-            TutorialNotif.GetComponentInChildren<TextMeshProUGUI>().text = s;
+            ShowTutorial(s, 8f);
         }
 
         public void ShowTutorial(string s, float duration)
         {
-            TutorialNotif.GetComponent<ItemNotification>().SetDuration(duration);
             TutorialNotif.SetActive(true);
             TutorialNotif.GetComponentInChildren<TextMeshProUGUI>().text = s;
+            Invoke("HideTutorial", duration);
         }
+
+        public void HideTutorial() => TutorialNotif.GetComponent<UIMoveOnDisable>().DisableElement();
 
         private void OnDisable()
         {

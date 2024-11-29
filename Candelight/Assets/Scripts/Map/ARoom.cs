@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UI;
 using static UnityEngine.Rendering.DebugUI;
+using Player;
 
 namespace Map
 {
@@ -29,15 +30,20 @@ namespace Map
         [SerializeField] Transform[] _spawnPoints;
         public AnchorManager[] Anchors;
 
+        protected PlayerController _cont;
+
         Vector2 _minimapOffset;
 
         public List<AnchorManager> AvailableAnchors = new List<AnchorManager>();
         public event System.Action OnPlayerEnter;
         public event System.Action OnPlayerExit;
 
+        bool _hasEntered;
+
         protected void Awake()
         {
             _uiMan = FindObjectOfType<UIManager>();
+            _cont = FindObjectOfType<PlayerController>();
         }
 
         protected void Start()
@@ -83,11 +89,13 @@ namespace Map
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (other.CompareTag("Player") && !_hasEntered)
             {
                 _uiMan.ShowMinimapRoom(ID);
                 OnPlayerTrigger();
                 if (OnPlayerEnter != null) OnPlayerEnter();
+
+                _hasEntered = true;
             }
         }
 
@@ -95,6 +103,7 @@ namespace Map
         {
             if (other.CompareTag("Player"))
             {
+                _hasEntered = false;
                 if (OnPlayerExit != null) OnPlayerExit();
             }
         }

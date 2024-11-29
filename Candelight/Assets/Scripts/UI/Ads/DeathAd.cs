@@ -22,6 +22,7 @@ namespace UI.Ads
         public void Save()
         {
             FindObjectOfType<DeathReturnToMenu>().Active = false;
+            _ui.InterruptFade();
             _ui.FadeToWhite(1f, LoadAd);
         }
 
@@ -29,6 +30,8 @@ namespace UI.Ads
         {
             //Se carga el anuncio
             _ad.SetActive(true);
+            _ui.InterruptFade();
+
             //Debug. Deberia estar desactivado
             //PostAd();
         }

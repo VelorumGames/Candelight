@@ -24,6 +24,8 @@ namespace UI
         Tween _show;
         Tween _hide;
 
+        bool _shown;
+
         private void Awake()
         {
             _input = FindObjectOfType<InputManager>();
@@ -56,18 +58,28 @@ namespace UI
 
         void Show()
         {
-            _hide.Pause();
+            if (!_shown)
+            {
+                _hide.Pause();
 
-            _show.Restart();
-            _show.Play();
+                _show.Restart();
+                _show.Play();
+
+                _shown = true;
+            }
         }
 
         void Hide()
         {
-            _show.Pause();
+            if (_shown)
+            {
+                _show.Pause();
 
-            _hide.Restart();
-            _hide.Play().OnComplete(() => GetComponent<RectTransform>().localPosition = new Vector3(GetComponent<RectTransform>().localPosition.x, -9999f, GetComponent<RectTransform>().localPosition.z));
+                _hide.Restart();
+                _hide.Play().OnComplete(() => GetComponent<RectTransform>().localPosition = new Vector3(GetComponent<RectTransform>().localPosition.x, -9999f, GetComponent<RectTransform>().localPosition.z));
+
+                _shown = false;
+            }
         }
 
         void ResetRunes()

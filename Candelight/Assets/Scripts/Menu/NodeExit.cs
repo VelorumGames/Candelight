@@ -23,12 +23,15 @@ namespace Menu
 
         void ManageReturn()
         {
+            _ui.Back();
+            _ui.Back();
+
             _ui.FadeToBlack(1f, LoseItems);
         }
 
         void LoseItems()
         {
-            FindObjectOfType<Inventory>().LooseItemsOnNodeExit();
+            FindObjectOfType<Inventory>().LoseItemsOnNodeExit();
             _ui.ShowState(EGameState.Loading);
             SceneManager.LoadScene("WorldScene");
         }

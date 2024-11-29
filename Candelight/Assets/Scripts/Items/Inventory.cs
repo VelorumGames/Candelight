@@ -178,6 +178,27 @@ namespace Items
             }
 
             MarkItems.Add(itemButton);
+            _window.ShowItemInFrame(itemButton.GetComponent<AItem>());
+
+            itemButton.GetComponent<RectTransform>().localPosition = new Vector3(9999f, 9999f, 9999f); //Lo sacamos fuera de la vista
+
+            RelocateItems();
+        }
+
+        public void MarkItem(GameObject itemButton, int frameId)
+        {
+            UnactiveItems.Remove(itemButton);
+            if (ActiveItems.Remove(itemButton))
+            {
+                itemButton.GetComponent<AItem>().SetActivation();
+            }
+
+            MarkItems.Add(itemButton);
+            _window.ShowItemInFrame(itemButton.GetComponent<AItem>(), frameId);
+
+            GetComponent<RectTransform>().localPosition = new Vector3(9999f, 9999f, 9999f); //Lo sacamos fuera de la vista
+
+            RelocateItems();
         }
 
         public void ResetMarkItem(GameObject itemButton)
@@ -186,6 +207,26 @@ namespace Items
             {
                 UnactiveItems.Add(itemButton);
             }
+
+            RelocateItems();
+        }
+
+        public void ActivateItem(AItem item)
+        {
+            AddFragments(-(int)item.Data.Category);
+
+            UnactiveItems.Remove(item.gameObject);
+            ActiveItems.Add(item.gameObject);
+            RelocateItems();
+        }
+
+        public void DeactivateItem(AItem item)
+        {
+            AddFragments((int)item.Data.Category);
+
+            ActiveItems.Remove(item.gameObject);
+            UnactiveItems.Add(item.gameObject);
+            RelocateItems();
         }
 
         public bool RemoveItem(string name)
@@ -243,7 +284,7 @@ namespace Items
             }
         }
 
-        public void LooseItemsOnNodeExit()
+        public void LoseItemsOnNodeExit()
         {
             //El jugador perdera el progreso del inventario al salirse del nodo 
             foreach (var item in ActiveItems) if (item.GetComponent<AItem>().IsNew) Destroy(item.gameObject);
@@ -322,7 +363,7 @@ namespace Items
             return item;
         }
 
-        public void LoadInventory(int[] activeItems, int[] unactiveItems, int fragments)
+        public void LoadInventory(int[] activeItems, int[] unactiveItems, int[] markItems, int fragments)
         {
             _totalNumFragments = 999999;
 
@@ -336,8 +377,14 @@ namespace Items
             foreach (var id in unactiveItems)
             {
                 GameObject item = Instantiate(SearchForItem(id));
-                Debug.Log("Se ha encontrado el item: " + item.name);
                 UnactiveItems.Add(item);
+            }
+
+            int frameId = 0;
+            foreach (var id in markItems)
+            {
+                GameObject item = Instantiate(SearchForItem(id));
+                MarkItem(item, frameId++);
             }
 
             _totalNumFragments = fragments;
