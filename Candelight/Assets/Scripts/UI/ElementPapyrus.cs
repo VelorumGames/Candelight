@@ -24,6 +24,8 @@ namespace UI
         Tween _show;
         Tween _hide;
 
+        bool _shown;
+
         private void Awake()
         {
             _input = FindObjectOfType<InputManager>();
@@ -32,8 +34,8 @@ namespace UI
             _oPos = GetComponent<RectTransform>().position.y;
 
             DOTween.defaultAutoPlay = AutoPlay.None;
-            _show = GetComponent<RectTransform>().DOLocalMoveY(-140f, 0.4f).SetAutoKill(false);
-            _hide = GetComponent<RectTransform>().DOLocalMoveY(_oPos, 0.4f).SetAutoKill(false);
+            _show = GetComponent<RectTransform>().DOLocalMoveY(-140f, 0.4f).SetAutoKill(false).SetUpdate(true);
+            _hide = GetComponent<RectTransform>().DOLocalMoveY(-500f, 0.4f).SetAutoKill(false).SetUpdate(true);
             DOTween.defaultAutoPlay = AutoPlay.All;
         }
 
@@ -56,18 +58,28 @@ namespace UI
 
         void Show()
         {
-            _hide.Pause();
+            if (!_shown)
+            {
+                _hide.Pause();
 
-            _show.Restart();
-            _show.Play();
+                _show.Restart();
+                _show.Play();
+
+                _shown = true;
+            }
         }
 
         void Hide()
         {
-            _show.Pause();
+            if (_shown)
+            {
+                _show.Pause();
 
-            _hide.Restart();
-            _hide.Play();
+                _hide.Restart();
+                _hide.Play().OnComplete(() => GetComponent<RectTransform>().localPosition = new Vector3(GetComponent<RectTransform>().localPosition.x, -9999f, GetComponent<RectTransform>().localPosition.z));
+
+                _shown = false;
+            }
         }
 
         void LoadRunes(ARune rune)

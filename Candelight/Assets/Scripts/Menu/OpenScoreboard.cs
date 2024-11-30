@@ -10,8 +10,15 @@ namespace Menu
     {
         public void Open()
         {
-            FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
-            SceneManager.LoadScene("ScoreboardScene");
+            if (GameSettings.Online)
+            {
+                FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
+                SceneManager.LoadScene("ScoreboardScene");
+            }
+            else
+            {
+                FindObjectOfType<UIManager>().ShowTutorial("Las puntuaciones no están disponibles en el Modo Sin Conexión.");
+            }
         }
     }
 }

@@ -24,30 +24,51 @@ public class EnemyRoom : ARoom
         }
     }
 
-    private void OnEnable()
+    bool _inCombat;
+
+    private new void Awake()
     {
+        base.Awake();
+
         enemies = GetComponentsInChildren<EnemyController>();
         _enemyCount = enemies.Length;
         foreach (var e in enemies)
         {
             e.OnDeath += NotifyEnemyDeath;
-            e.gameObject.SetActive(false); 
+            e.gameObject.SetActive(false);
         }
+    }
+
+    private void OnEnable()
+    {
+        OnPlayerExit += ResetCheck;
     }
 
     protected override void OnPlayerTrigger()
     {
-        if (_enemyCount > 0)
+        if (!_inCombat)
         {
-            FindObjectOfType<MapManager>().StartCombat();
-            Invoke("CloseAllAnchors", 1f);
-
-            foreach (var e in enemies)
+            if (_enemyCount > 0)
             {
-                e.gameObject.SetActive(true);
+                FindObjectOfType<MapManager>().StartCombat();
+                StartCoroutine(CheckForPlayerDistance());
             }
+
+            _inCombat = true;
         }
     }
+
+    IEnumerator CheckForPlayerDistance()
+    {
+        yield return new WaitUntil(() => Vector3.Distance(_cont.transform.position, transform.position) < 3f);
+        CloseAllAnchors();
+        foreach (var e in enemies)
+        {
+            e.gameObject.SetActive(true);
+        }
+    }
+
+    void ResetCheck() => StopAllCoroutines();
 
     void EndCombat()
     {
@@ -72,10 +93,12 @@ public class EnemyRoom : ARoom
         Debug.Log($"Se abriran {AvailableAnchors.Count} anchors");
         foreach (var anchor in AvailableAnchors)
         {
+            Debug.Log("Anchor: " + anchor);
             if (anchor != null)
             {
                 anchor.OpenAnchor();
                 anchor.GetComponent<SI_AnchorBarrier>().Activate(false);
+                anchor.GetComponentInChildren<HealthBar>()?.gameObject.SetActive(false);
             }
         }
     }
@@ -84,5 +107,15 @@ public class EnemyRoom : ARoom
     {
         enemy.OnDeath -= NotifyEnemyDeath;
         _enemyCount--;
+    }
+
+    private void OnDisable()
+    {
+        foreach (var e in enemies)
+        {
+            if (e != null) e.OnDeath -= NotifyEnemyDeath;
+        }
+
+        OnPlayerExit -= ResetCheck;
     }
 }

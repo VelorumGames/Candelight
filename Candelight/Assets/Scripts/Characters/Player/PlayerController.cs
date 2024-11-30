@@ -71,7 +71,7 @@ namespace Player
         public event Action<ESpellInstruction> OnNewInstruction;
         public event Action<AShapeRune> OnSpell;
         public event Action<AElementalRune[]> OnElements;
-        public event Action OnRevive;
+        public event Action<float> OnRevive;
 
         UIManager _UIMan;
         InputManager _input;
@@ -83,8 +83,19 @@ namespace Player
         [SerializeField] bool _isFirstPerson;
         CameraManager _camMan;
 
+        bool _inCombat;
+        float _spellThrowDelay = 0.7f;
+        bool _canSpellThrow = true;
+
         bool _invicible;
         float _iFrameDuration = 0.5f;
+
+        Vector2 _oldDirection;
+
+        AShapeRune _lastSpell;
+        float _lastSpellDuration = 5f;
+        bool _canLastSpell;
+        Vector3 force;
 
         [Space(10)]
         [Header("FIRST PERSON")]
@@ -98,11 +109,6 @@ namespace Player
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
 
-            _input.OnStartElementMode += ResetInstructions;
-            _input.OnExitElementMode += OnChooseElements;
-            _input.OnStartShapeMode += ResetInstructions;
-            _input.OnExitShapeMode += OnSpellLaunch;
-
             World.OnPlayerDeath += Death;
         }
 
@@ -115,8 +121,9 @@ namespace Player
             _mage = FindObjectOfType<Mage>();
             _input = FindObjectOfType<InputManager>();
 
-
             DontDestroyOnLoad(gameObject);
+
+            force = new Vector3();
         }
 
         private new void Start()
@@ -130,11 +137,16 @@ namespace Player
         {
             _UIMan = FindObjectOfType<UIManager>();
             _camMan = FindObjectOfType<CameraManager>();
-            if (_camMan != null) _camMan.AddCamera(_fpCam);
+            if (_camMan != null)
+            {
+                _camMan.AddCamera(_fpCam);
+                _camMan.SafeResetNoise();
+                _camMan.SafeResetNoise(_fpCam);
+            }
 
             _interaction = null;
-
             CanMove = true;
+            _isFirstPerson = false;
             
             if (_currentNode != null && FindObjectOfType<WorldManager>() != null) _currentNode = FindObjectOfType<WorldManager>().CurrentNodeInfo.Node;
 
@@ -143,6 +155,8 @@ namespace Player
                 _rb.useGravity = true;
                 _rb.constraints = RigidbodyConstraints.FreezeRotation;
             }
+
+            
         }
 
         void OnSceneUnloaded(Scene scene)
@@ -191,13 +205,19 @@ namespace Player
             _invicible = false;
         }
 
+        public void RegisterCombat() => _inCombat = true;
+        public void FinishCombat() => _inCombat = false;
+
         public void Revive()
         {
             CanMove = true;
 
             Debug.Log("SE REVIVE AL JUGADOR");
             World.Candle = World.MAX_CANDLE * 0.5f;
-            if (OnRevive != null) OnRevive();
+
+            _anim.ChangeToLife();
+
+            if (OnRevive != null) OnRevive(World.Candle);
         }
 
         void Death()
@@ -214,12 +234,45 @@ namespace Player
             if (CanMove)
             {
                 if (!_rb) _rb = GetComponent<Rigidbody>();
-                Vector3 force = (_bookIsOpen || _isFirstPerson ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * _speedFactor * new Vector3(direction.x, 0f, direction.y);
+                force = (_bookIsOpen || _isFirstPerson ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * _speedFactor * new Vector3(direction.x, 0f, direction.y);
                 _rb.AddForce(force, ForceMode.Force);
 
                 _particles.StartFootParticles();
+
+                if (_inCombat && direction != _oldDirection) OnCombatMoveBoost(force);
+
+                _oldDirection = direction;
             }
         }
+
+        public void StartSpellMove()
+        {
+
+            if (_rb.velocity.magnitude > 4f) StartCoroutine(OnSpellMove());
+        }
+
+        IEnumerator OnSpellMove()
+        {
+            yield return new WaitForEndOfFrame();
+
+            while (_input.IsInSpellMode())
+            {
+                force *= 0.975f;
+                _rb.AddForce(force * Time.deltaTime * 100f, ForceMode.Force);
+                _particles.StartFootParticles();
+
+                yield return null;
+            }
+        }
+
+        public void OnCombatMoveBoost(Vector3 force)
+        {
+            _maxSpeed *= 1.1f;
+            _rb.AddForce(force, ForceMode.Impulse);
+            Invoke("ResetMaxVelocity", 0.5f);
+        }
+
+        public void ResetMaxVelocity() => _maxSpeed /= 1.1f;
 
         public void OnStopMove()
         {
@@ -239,12 +292,15 @@ namespace Player
 
         public void LoadInteraction(Action interaction, Transform obj)
         {
-            Debug.Log("Se carga interaccion de " + gameObject.name);
-            _interaction = interaction;
+            if (interaction != _interaction)
+            {
+                Debug.Log("Se carga interaccion de " + gameObject.name);
+                _interaction = interaction;
 
-            _selection.SetActive(true);
-            _selection.transform.parent = obj;
-            _selection.transform.position = obj.transform.position;
+                _selection.SetActive(true);
+                _selection.transform.parent = obj;
+                _selection.transform.position = obj.transform.position;
+            }
         }
 
         public void UnloadInteraction()
@@ -306,7 +362,7 @@ namespace Player
                         }
 
                         _instrInBook = false;
-                        _UIMan.BookInstructionFeedback(0.25f);
+                        _UIMan.VignetteFeedback(0.25f);
                         Invoke("ResetBookInstructionTimer", 0.25f);
                     }
                 }
@@ -355,16 +411,20 @@ namespace Player
                 {
                     string str = "";
                     foreach (ESpellInstruction i in _instructions) str += i.ToString();
-                    Debug.Log("Se lanza hechizo: " + str);
+                    //Debug.Log("Se lanza hechizo: " + str);
                     if (ARune.FindSpell(_instructions.ToArray(), out var spell))
                     {
                         Debug.Log("Hechizo encontrado!!: " + spell.Name);
                         AShapeRune shapeSpell = spell as AShapeRune;
                         if (shapeSpell != null)
                         {
-                            shapeSpell.ThrowSpell();
-                            if (OnSpell != null) OnSpell(shapeSpell);
-                            if (shapeSpell is MeleeRune) _anim.ChangeToMelee();
+                            if (!(shapeSpell is ExplosionRune))
+                            {
+                                _canLastSpell = true;
+                                Invoke("ResetLastSpellTimer", _lastSpellDuration);
+                            }
+
+                            ThrowSpell(shapeSpell);
                         }
                         else if (OnSpell != null) OnSpell(null); //Si no encuentra hechizo valido
                     }
@@ -376,7 +436,45 @@ namespace Player
             _UIMan.ManageAuxiliarRuneReset();
         }
 
-        public void ResetInstructions() => _instructions.Clear();
+        public void OnLastSpellLaunch(InputAction.CallbackContext _)
+        {
+            if (_canLastSpell && CanMove && SceneManager.GetActiveScene().name != "CalmScene" && _lastSpell != null)
+            {
+                ThrowSpell(_lastSpell);
+            }
+        }
+
+        public void ResetLastSpellTimer() => _canLastSpell = false;
+
+        void ThrowSpell(AShapeRune shapeSpell)
+        {
+            if (_canSpellThrow && !_bookIsOpen && !_isFirstPerson)
+            {
+                _lastSpell = shapeSpell;
+
+                shapeSpell.ThrowSpell();
+                if (OnSpell != null) OnSpell(shapeSpell);
+
+                if (shapeSpell is MeleeRune) _anim.ChangeToMelee();
+
+                _UIMan.ResetCanShoot();
+                _UIMan.VignetteFeedback(_spellThrowDelay);
+
+                _canSpellThrow = false;
+                Invoke("ResetSpellThrowDelay", _spellThrowDelay);
+            }
+        }
+
+        public void ResetSpellThrowDelay()
+        {
+            _UIMan.ShowCanShoot();
+            _canSpellThrow = true;
+        }
+
+        public void ResetInstructions()
+        {
+            _instructions.Clear();
+        }
 
         public void OnBook(InputAction.CallbackContext _)
         {
@@ -399,24 +497,18 @@ namespace Player
 
         public void OnChoosePath(Vector2 direction)
         {
-            //Debug.Log(_currentNode);
             if (_currentNode != null)
             {
                 //Movemos un gameobject invisible
                 _pathChooser.transform.localPosition += new Vector3(direction.x, 0f, direction.y);
-                _pathChooser.transform.localPosition = Vector3.ClampMagnitude(_pathChooser.transform.localPosition, 7f);
+                _pathChooser.transform.localPosition = Vector3.ClampMagnitude(_pathChooser.transform.localPosition, 8f);
 
                 //Comparamos con que nodo conectado al actual esta mas cerca y consideramos ese como la decision del jugador
                 float minDist = 9999f;
                 GameObject closest = null;
-                //Debug.Log($"Para el current node hay {_currentNode.ConnectedNodes.Count} nodos conectados");
+
                 foreach (var node in _currentNode.ConnectedNodes)
                 {
-                    //Debug.Log($"1: {node != _currentNode.gameObject}");
-                    //Debug.Log($"2: {node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Sin_Descubrir} ({node.GetComponent<NodeManager>().GetNodeData().State})");
-
-
-                    //Debug.Log("ESTADO ADYACENTE: " + node.GetComponent<NodeManager>().GetNodeData().State);
                     if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Sin_Descubrir && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado) ||
                         (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Explorado) )
                     {
@@ -428,7 +520,6 @@ namespace Player
                         }
                     }
                 }
-                //Debug.Log("Closest: " + closest);
                 if (closest != null) _nextNode = closest.transform;
             }
         }
@@ -444,12 +535,13 @@ namespace Player
 
         public void OnPause(InputAction.CallbackContext _)
         {
-            UIManager.Instance.LoadUIWindow(UIManager.Instance.PauseMenu);
+            _UIMan.LoadUIWindow(_UIMan.PauseMenu);
         }
 
         public void OnInventory(InputAction.CallbackContext _)
         {
-            UIManager.Instance.LoadUIWindow(UIManager.Instance.InventoryUI, "i");
+            _UIMan.LoadUIWindow(_UIMan.InventoryUI, "i");
+            _UIMan.ShowUIMode(EUIMode.Inventory);
         }
 
         #endregion
@@ -522,6 +614,8 @@ namespace Player
 
         public void AddExtraLife(int n) => _extraLives += n;
 
+        public float GetLastSpellDelay() => _lastSpellDuration;
+
         #endregion
 
         private void FixedUpdate()
@@ -533,11 +627,6 @@ namespace Player
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
-
-            _input.OnStartElementMode -= ResetInstructions;
-            _input.OnStartElementMode -= OnChooseElements;
-            _input.OnStartShapeMode -= ResetInstructions;
-            _input.OnExitShapeMode -= OnSpellLaunch;
 
             World.OnPlayerDeath -= Death;
         }

@@ -61,9 +61,9 @@ namespace World
         public TextMeshPro Text;
         public GameObject Fog;
 
-        [SerializeField] GameObject[] _biomeGOs;
+        int _maxConNodes = 3;
 
-        bool _completedConnection;
+        [SerializeField] GameObject[] _biomeGOs;
 
         private void Awake()
         {
@@ -103,10 +103,13 @@ namespace World
         {
             if (WorldManager.Instance.World.LoadedPreviousGame)
             {
-                //Debug.Log("COUNT: " + ConnectedNodes.Count);
                 foreach (var i in WorldManager.Instance.World.CompletedIds)
                 {
-                    if (Id == i) RegisterCompletedNode();
+                    if (Id == i)
+                    {
+                        RegisterCompletedNode();
+                        GetComponentInChildren<NodeStatusFeedback>().RegisterNodeLights();
+                    }
                 }
             }
         }
@@ -121,7 +124,7 @@ namespace World
             foreach (var n in _closeNodes)
             {
                 //Si encontramos un nodo valido que no este conectado a este todavia
-                if (n.CompareTag("Node") && !ConnectedNodes.Contains(n.gameObject) && !n.GetComponent<NodeManager>().ConnectedNodes.Contains(gameObject) && connection < 4 && n.GetComponent<NodeManager>().ConnectedNodes.Count < 4)
+                if (n.CompareTag("Node") && !ConnectedNodes.Contains(n.gameObject) && !n.GetComponent<NodeManager>().ConnectedNodes.Contains(gameObject) && connection < _maxConNodes && n.GetComponent<NodeManager>().ConnectedNodes.Count < _maxConNodes)
                 {
                     //Registramos la conexion en ambos nodos
                     ConnectedNodes.Add(n.gameObject);
@@ -130,7 +133,6 @@ namespace World
                     connection++;
                 }
             }
-            _completedConnection = true;
         }
 
         void SpawnLine(NodeManager startNode, NodeManager endNode, Material lineMat)
@@ -169,37 +171,11 @@ namespace World
 
         public void SetState(ENodeState s)
         {
-            Debug.Log($"Se registra {gameObject.name} como: {s}");
             _data.State = s;
             Text.text += _data.State.ToString(); //Simplemente una guia para saber si se registra bien el estado
-            //if (s == ENodeState.Explored)
-            //{
-            //    Debug.Log("Connected nodes: " + ConnectedNodes.Count);
-            //    if (_completedConnection)
-            //    {
-            //        foreach (var n in ConnectedNodes)
-            //        {
-            //            //Dibujamos la linea de conexion
-            //            SpawnLine(transform.position, n.transform.position, UnexploredLineMat);
-            //            Fog.SetActive(false);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        StartCoroutine(DelayedConnection());
-            //    }
-            //}
+
             if (s == ENodeState.Completado)
             {
-                //if (WorldManager.Instance.World.LoadedPreviousGame)
-                //{
-                //    FindObjectOfType<NodeInfoBox>().RegisterNode(_data.Name, _data.Description, _data.Biome, "Completado"); //Se actualiza el nodo mas reciente completado al cargar la partida
-                //    Debug.Log("NOMBRE: " + _data.Name);
-                //
-                //    WorldManager.Instance.World.LoadedPreviousGame = false;
-                //}
-                GetComponentInChildren<NodeStatusFeedback>().RegisterNodeLights();
-
                 foreach (var n in ConnectedNodes)
                 {
                     if (n.gameObject != gameObject)
@@ -214,11 +190,6 @@ namespace World
                         }
                         else SpawnLine(this, targetNode, UnexploredLineMat);
 
-                        //Dibujamos la linea de conexion
-                        //Debug.Log($"Se dibujara con nuevo material?: {targetNode.GetNodeData().State == ENodeState.Completed}");
-                        //if (targetNode.GetNodeData().State == ENodeState.Completed) SpawnLine(this, targetNode, ExploredLineMat);
-                        //else SpawnLine(this, targetNode, UnexploredLineMat);
-
                         Fog.SetActive(false);
                     }
                 }
@@ -232,22 +203,6 @@ namespace World
             Connections.Remove(targetNode);
         }
 
-        IEnumerator DelayedConnection()
-        {
-            Debug.Log("Se espera hasta que se complete el proceso de conexion");
-
-            yield return new WaitUntil(() => _completedConnection);
-
-            Debug.Log("Nuevo numero de nodos conectados: " + ConnectedNodes.Count);
-            foreach (var n in ConnectedNodes)
-            {
-                //Dibujamos la linea de conexion
-                SpawnLine(this, n.GetComponent<NodeManager>(), UnexploredLineMat);
-                Fog.SetActive(false);
-            }
-            yield return null;
-        }
-
         /// <summary>
         /// Comprobamos si se trata de un nodo de bioma facil rodeado de nodos de bioma facil
         /// </summary>
@@ -259,7 +214,6 @@ namespace World
             if (_data.Biome != EBiome.Durnia) start = false;
             foreach(var n in ConnectedNodes)
             {
-                Debug.Log(n.GetComponent<NodeManager>().GetNodeData().Biome);
                 if (n.GetComponent<NodeManager>().GetNodeData().Biome != EBiome.Durnia)
                 {
                     start = false;
@@ -274,15 +228,18 @@ namespace World
 
         public void RegisterCompletedNode()
         {
-            Debug.Log("Registro como completado a: " + gameObject.name);
+            Debug.Log("Se completa el nodo");
+
             SetState(ENodeState.Completado);
+
             if (!WorldManager.Instance.World.LoadedPreviousGame) WorldManager.Instance.World.CompletedIds.Add(Id);
             WorldManager.Instance.World.CompletedNodes++;
-            foreach(var node in ConnectedNodes)
+
+            NodeManager nodeMan;
+            foreach (var node in ConnectedNodes)
             {
-                //Debug.Log("NODO: " + node);
-                Debug.Log("Registro como explorado a: " + node.name);
-                if (gameObject != node.gameObject) node.GetComponent<NodeManager>().SetState(ENodeState.Explorado);
+                nodeMan = node.GetComponent<NodeManager>();
+                if (gameObject != node.gameObject && nodeMan.GetNodeData().State != ENodeState.Completado) nodeMan.SetState(ENodeState.Explorado);
             }
         }
 

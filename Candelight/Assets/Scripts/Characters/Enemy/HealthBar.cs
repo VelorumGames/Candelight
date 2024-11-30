@@ -22,7 +22,7 @@ namespace Enemy
 
         private void OnEnable()
         {
-            _enemy.OnDamage += UpdateHealthBar;
+            if (_enemy) _enemy.OnDamage += UpdateHealthBar;
         }
 
         void UpdateHealthBar(float dam, float rem)
@@ -30,9 +30,14 @@ namespace Enemy
             _mask.localPosition = new Vector3(Mathf.Lerp(_endPos, _oPos, rem), _mask.localPosition.y, _mask.localPosition.z);
         }
 
+        public void ManualUpdateHealthBar(float rem)
+        {
+            _mask.localPosition = new Vector3(Mathf.Lerp(_endPos, _oPos, rem), _mask.localPosition.y, _mask.localPosition.z);
+        }
+
         private void OnDisable()
         {
-            _enemy.OnDamage -= UpdateHealthBar;
+            if (_enemy) _enemy.OnDamage -= UpdateHealthBar;
         }
     }
 }

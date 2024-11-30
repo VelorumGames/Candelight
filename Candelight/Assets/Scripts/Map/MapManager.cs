@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using World;
 using UI;
 using Visual;
+using Music;
 
 namespace Map
 {
@@ -17,7 +18,7 @@ namespace Map
     {
         public static MapManager Instance;
 
-        GameObject _player;
+        PlayerController _cont;
         UIManager _uiMan;
 
         [Header("===ROOM GENERATION===")]
@@ -91,11 +92,15 @@ namespace Map
 
         bool _inCombat;
         bool _available = true;
+        MusicManager _music;
 
         private void Awake()
         {
             if (CurrentNodeInfo) _seed = CurrentNodeInfo.Seeds[CurrentNodeInfo.CurrentLevel];
             Random.InitState(_seed);
+            
+            _music = FindObjectOfType<MusicManager>();
+            _cont = FindObjectOfType<PlayerController>();
 
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
@@ -132,20 +137,18 @@ namespace Map
 
             _uiMan.FadeFromBlack(1f, 2f);
 
-            _player = FindObjectOfType<PlayerController>().gameObject;
-
             if (CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration)
             {
                 switch (CurrentNodeInfo.Biome)
                 {
                     case EBiome.Durnia:
-                        _maxRooms = 10;
+                        _maxRooms = 6;
                         break;
                     case EBiome.Temeria:
-                        _maxRooms = 20;
+                        _maxRooms = 12;
                         break;
                     case EBiome.Idria:
-                        _maxRooms = 30;
+                        _maxRooms = 20;
                         break;
                 }
             }
@@ -158,13 +161,19 @@ namespace Map
         {
             OnRoomGenerationEnd += RegisterRoomTypes;
             OnRoomGenerationEnd += EventCheck;
+
+            OnCombatStart += _cont.RegisterCombat;
+            OnCombatStart += _music.StartCombatMusic;
+            OnCombatEnd += _music.ReturnToExploreMusic;
+            OnCombatEnd += _cont.FinishCombat;
+            OnCombatEnd += _cont.ResetLastSpellTimer;
             OnCombatEnd += _uiMan.WinCombat;
+
+            
         }
 
         void EventCheck()
         {
-            
-
             //Debug. Las condiciones deben estar sin comentar
 
             //Si el penultimo nivel es de exploracion, generamos el evento que corresponda
@@ -185,7 +194,6 @@ namespace Map
         /// <returns></returns>
         public bool CanCreateRoom()
         {
-            //Debug.Log($"COUNT: {_rooms.Count} (< {_maxRooms}) && finished: {_available}:: {_rooms.Count < _maxRooms && _available}");
             return _rooms.Count < _maxRooms && _available;
         }
 
@@ -198,7 +206,6 @@ namespace Map
         /// <returns></returns>
         public GameObject RegisterNewRoom(int originalRoomID, Vector3 position, Vector2 minimapOffset, ERoomSize size)
         {
-            //Debug.Log($"Se crea nueva habitacion ({_rooms.Count}) (c_rooms: {_currentRooms}) de tamano {size} conectada con habitacion {originalRoomID}");
             _roomGraph.Add(new List<int>());
 
             if (originalRoomID != -1)
@@ -228,25 +235,6 @@ namespace Map
             _rooms.Add(room);
             room.gameObject.name = $"ROOM {_rooms.Count - 1}";
             _rooms[_rooms.Count - 1].GetComponent<ARoom>().SetID(_rooms.Count - 1);
-            //Debug.Log("Hemos introducido como id: " + _currentRooms);
-            //Debug.Log("EL ID DEBERIA SER: " + _rooms[_rooms.Count - 1].GetComponent<ARoom>().GetID());
-
-            //Gestion del minimapa
-            //room.GetComponent<ARoom>().SetMinimapOffset(minimapOffset);
-            //_uiMan.RegisterMinimapRoom(_currentRooms, minimapOffset, room.GetComponent<ARoom>().RoomType);
-
-            //string s = "";
-            //int count = 0;
-            //foreach (var r in _rooms)
-            //{
-            //    s += $"({count++}, {r.GetComponent<ARoom>().GetID()}), ";
-            //}
-            //Debug.Log(s);
-
-            //_currentRooms++;
-
-            //AQUI HAY PROBLEMA
-
 
             return _rooms[_rooms.Count - 1];
         }
@@ -285,7 +273,7 @@ namespace Map
             startRoom.IdText.text += " START";
             startRoom.gameObject.name = "START ROOM";
             _uiMan.UpdateMinimapRoom(startRoom.GetID(), ERoomType.Start);
-            _player.transform.position = startRoom.GetRandomSpawnPoint().position + 0.75f * Vector3.up;
+            _cont.transform.position = startRoom.GetRandomSpawnPoint().position + 0.75f * Vector3.up;
 
             ARoom endRoom = rooms[Random.Range(rooms.Count / 2, rooms.Count)];
             rooms.Remove(endRoom);
@@ -374,6 +362,12 @@ namespace Map
         {
             OnRoomGenerationEnd -= RegisterRoomTypes;
             OnRoomGenerationEnd -= EventCheck;
+
+            OnCombatStart -= _cont.RegisterCombat;
+            OnCombatStart -= _music.StartCombatMusic;
+            OnCombatEnd -= _music.ReturnToExploreMusic;
+            OnCombatEnd -= _cont.FinishCombat;
+            OnCombatEnd -= _cont.ResetLastSpellTimer;
             OnCombatEnd -= _uiMan.WinCombat;
         }
     }

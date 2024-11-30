@@ -13,7 +13,7 @@ namespace Hechizos.Elementales
         public CosmicRune(Mage m) : base(m)
         {
             Name = "Cosmic";
-            Damage = 20f;
+            Damage = 35f;
         }
 
         //Proyectil cosmico

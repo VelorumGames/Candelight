@@ -73,7 +73,7 @@ namespace Hechizos
         {
             if (runes.Length > 0)
             {
-                Debug.Log($"Se registran {runes.Length} nuevos elementos");
+                //Debug.Log($"Se registran {runes.Length} nuevos elementos");
                 ResetActiveElements();
                 _activeElements.Clear();
 
@@ -153,7 +153,7 @@ namespace Hechizos
         #region Spell Functions
         public GameObject SpawnProjectile(int numProj)
         {
-            Debug.Log("Se instancia proyectil");
+            //Debug.Log("Se instancia proyectil");
 
             _lastProjectile = GetAvailableProjectile();
 
@@ -187,7 +187,11 @@ namespace Hechizos
                     Vector3 orientation = _cont.GetOrientation();
                     if (count == 0) orientation = Quaternion.AngleAxis(30f, Vector3.up) * orientation;
                     else if (count == 1) orientation = Quaternion.AngleAxis(-30f, Vector3.up) * orientation;
-                    proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * orientation.normalized, ForceMode.Impulse);
+
+                    proj.GetComponent<Projectile>().Push(orientation, 8f);
+
+                    //proj.GetComponent<Rigidbody>().velocity = new Vector3(0f, 0f, 0f);
+                    //proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * orientation.normalized, ForceMode.Impulse);
 
                     count++;
                     yield return null;
@@ -208,8 +212,10 @@ namespace Hechizos
                 _lastProjectile.transform.position = _cont.transform.position;
                 //Debug.Log("FUERZA: " + _projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation());
 
-                _lastProjectile.GetComponent<Rigidbody>().maxLinearVelocity = _projectileSpeed * _projectileSpeedFactor * 0.1f;
-                _lastProjectile.GetComponent<Rigidbody>().AddRelativeForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
+                //_lastProjectile.GetComponent<Rigidbody>().maxLinearVelocity = _projectileSpeed * _projectileSpeedFactor * 0.1f;
+                //_lastProjectile.GetComponent<Rigidbody>().AddRelativeForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
+
+                _lastProjectile.GetComponent<Projectile>().Push(_cont.GetOrientation(), 8f);
 
                 _cam.Shake(6f, 0.1f, 0.4f);
 
@@ -221,7 +227,7 @@ namespace Hechizos
         {
             GameObject proj = null;
             proj = Projectiles[Random.Range(0, Projectiles.Length)];
-            proj.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
+            //proj.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
             while (proj.activeInHierarchy)
             {
                 proj = Projectiles[Random.Range(0, Projectiles.Length)];
@@ -232,7 +238,7 @@ namespace Hechizos
         public GameObject SpawnProjectileWithRandomDirection()
         {
             _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
-            _lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
+            //_lastProjectile.GetComponent<Projectile>().RegisterTypes(_activeElements.ToArray());
             while (_lastProjectile.activeInHierarchy)
             {
                 _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
@@ -250,7 +256,7 @@ namespace Hechizos
         public GameObject SpawnExplosion()
         {
             GameObject expl = Instantiate(Explosion);
-            expl.GetComponent<Explosion>().RegisterTypes(_activeElements.ToArray());
+            //expl.GetComponent<Explosion>().RegisterTypes(_activeElements.ToArray());
             expl.transform.position = _cont.transform.position;
 
             _cam.Shake(20f, 0.2f, 1f);
@@ -265,14 +271,14 @@ namespace Hechizos
             expl.transform.localScale *= range;
             AElementalRune[] runes = new AElementalRune[1];
             runes[0] = element;
-            expl.GetComponent<Explosion>().RegisterTypes(runes);
+            //expl.GetComponent<Explosion>().RegisterTypes(runes);
             _cam.Shake(10f, 0.2f, 1f);
         }
 
         public GameObject SpawnMelee()
         {
             GameObject mel = Instantiate(Melee);
-            mel.GetComponent<Melee>().RegisterTypes(_activeElements.ToArray());
+            //mel.GetComponent<Melee>().RegisterTypes(_activeElements.ToArray());
             mel.transform.position = _cont.transform.position;
 
             mel.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * 0.15f * _cont.GetOrientation(), ForceMode.Impulse);
@@ -373,7 +379,7 @@ namespace Hechizos
             if (OnNewRuneActivation != null) OnNewRuneActivation(rune);
 
             //TODO. Esto que sirve de placeholder por el momento y ya encontraremos una manera mas diegetica de presentarlo
-            if (rune is ElectricRune) ElementsMixTutorial();
+            if (rune is ElectricRune && SceneManager.GetActiveScene().name != "MenuScene") ElementsMixTutorial();
         }
 
         public void SetExtraProjSpeed(float speed) => _projectileSpeedFactor = speed;

@@ -27,6 +27,8 @@ namespace Menu.Login
         private void Awake()
         {
             _ui = FindObjectOfType<UIManager>();
+
+            _pass.contentType = TMP_InputField.ContentType.Password;
         }
 
         bool GetInfo()
@@ -38,10 +40,25 @@ namespace Menu.Login
                 Invoke("ResetText", _infoTime);
                 return false;
             }
-            if (_pass.text.Any(StringCheck))
+            else if (_pass.text.Any(StringCheck))
             {
                 _info.color = Color.red;
                 _info.text = "Has introducido carácteres no permitidos en tu nombre";
+                Invoke("ResetText", _infoTime);
+                return false;
+            }
+
+            if (_name.text.Length < 2)
+            {
+                _info.color = Color.red;
+                _info.text = "Tu nombre es demasiado corto";
+                Invoke("ResetText", _infoTime);
+                return false;
+            }
+            else if (_pass.text.Length < 2)
+            {
+                _info.color = Color.red;
+                _info.text = "Tu contraseña es demasiado corta";
                 Invoke("ResetText", _infoTime);
                 return false;
             }
@@ -50,7 +67,7 @@ namespace Menu.Login
             return true;
         }
 
-        bool StringCheck(char l) => (l == '/' || l == '{' || l == '}' || l == '"' || l == '.');
+        bool StringCheck(char l) => (l == '/' || l == '{' || l == '}' || l == '"' || l == '.' || l == ' ');
 
         public void Login()
         {
@@ -116,16 +133,23 @@ namespace Menu.Login
             yield return Database.Get<UserData>($"PlayerAccounts/{_playerName}", CheckForExistingUser);
 
             _data = new UserData(_playerName, _password);
-            Debug.Log($"Se registra usuario con nombre {_playerName} y contraseña {_password}");
+            //Debug.Log($"Se registra usuario con nombre {_playerName} y contraseña {_password}");
             yield return Database.Send($"PlayerAccounts/{_data.Name}", _data);
 
             _ui.HideState();
 
             _info.color = Color.green;
-            _info.text = "Usuario creado";
+            _info.text = "Usuario creado! No te preocupes, tu contraseña ha sido encriptada.";
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
 
+            _ui.ShowState(EGameState.Loading);
+            SceneManager.LoadScene("MenuScene");
+        }
+
+        public void OfflineMode()
+        {
+            GameSettings.Online = false;
             _ui.ShowState(EGameState.Loading);
             SceneManager.LoadScene("MenuScene");
         }

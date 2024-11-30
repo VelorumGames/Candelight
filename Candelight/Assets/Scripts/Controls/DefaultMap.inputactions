@@ -78,6 +78,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ThrowLastSpell",
+                    "type": "Button",
+                    "id": "0948b626-3d25-4c6b-987a-0069b7d37578",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Book",
                     "type": "Button",
                     "id": "3caa6330-18fb-4797-b7e7-4422f82c78e5",
@@ -290,6 +299,17 @@
                     "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "67885801-2db8-42cc-b0d8-5c091dd6da9d",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrowLastSpell",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -482,6 +502,39 @@
                 },
                 {
                     "name": "",
+                    "id": "8dfb3377-71fa-42be-a09f-8e9714928b21",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "72022e4b-cadc-4ed6-9a08-1a16c272cf66",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7f5b27c4-0ff3-4720-947e-bb7f921a67be",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "657b31d1-42fc-4b24-bd7c-edfdf75e680e",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
@@ -505,6 +558,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Scroll",
+                    "type": "PassThrough",
+                    "id": "5ed6a5dc-6260-4632-8424-54aff65bf9a0",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -516,6 +578,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dc05f43c-a96e-4d24-b311-0edd2febd1c8",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Scroll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

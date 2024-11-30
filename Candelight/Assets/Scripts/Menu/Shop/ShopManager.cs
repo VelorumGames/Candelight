@@ -26,9 +26,11 @@ namespace Menu.Shop
             _ui = FindObjectOfType<UIManager>();
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
-            StartCoroutine(CheckForBoughtItems());
+            _desc.text = "Conectando con la base de datos...";
+            yield return StartCoroutine(CheckForBoughtItems());
+            _desc.text = "Compra una mejora o activa una que ya poseas.";
         }
 
         public void ShowCurrentInfo(ShopItem item)
@@ -59,8 +61,10 @@ namespace Menu.Shop
             ShopData data = new ShopData(this);
 
             _ui.ShowState(EGameState.Database);
+            Debug.Log("Envio datos a: " + SaveSystem.PlayerName);
             yield return Database.Send($"Shop/{SaveSystem.PlayerName}", data);
             _ui.HideState();
+            _ui.Back();
         }
 
         IEnumerator CheckForBoughtItems()

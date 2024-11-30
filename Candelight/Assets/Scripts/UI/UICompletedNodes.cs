@@ -16,8 +16,9 @@ namespace UI
             _world.OnCompletedNodesChanged += UpdateNum;
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
+            yield return new WaitForSeconds(0.5f);
             UpdateNum(_world.CompletedNodes);
         }
 

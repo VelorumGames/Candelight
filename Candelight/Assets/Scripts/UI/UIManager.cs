@@ -62,6 +62,9 @@ namespace UI
         float _spellTimeScale = 0.4f;
         float _prevTimeScale = 1f;
 
+        [Space(10)]
+        public List<ManageUIMode> UiModeElements = new List<ManageUIMode>();
+
         ShowInstructions _showInstr;
         CameraManager _camMan;
         PlayerController _player;
@@ -69,6 +72,8 @@ namespace UI
         Inventory _inv;
 
         Coroutine _timeFreeze;
+
+        Tween _fade;
 
         Stack<GameObject> _windows = new Stack<GameObject>();
 
@@ -176,18 +181,6 @@ namespace UI
             }
         }
 
-        public void ShowItemNotification(AItem item)
-        {
-            InventoryNotif.SetActive(true);
-            InventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
-        }
-
-        public void ShowRemoveItemNotification(AItem item)
-        {
-            RemoveInventoryNotif.SetActive(true);
-            RemoveInventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
-        }
-
         public void RegisterCandle(float candle)
         {
             _candle = candle;
@@ -214,7 +207,7 @@ namespace UI
             if (spell != null)
             {
                 StartCoroutine(_showInstr.ShowValidInstructions());
-                _showInstr.ShowShapeResult(spell);
+                if (!(spell is ExplosionRune)) _showInstr.ShowShapeResult(spell, _player.GetLastSpellDelay());
             }
             else _showInstr.ResetSprites();
         }
@@ -234,11 +227,11 @@ namespace UI
             if (_showInstr != null) _showInstr.ShowElements();
         }
 
-        public void ManageAuxiliarRuneReset() => Invoke("AuxiliarResetRuneSprites", 2f);
+        public void ManageAuxiliarRuneReset() => Invoke("AuxiliarResetRuneSprites", 0.5f);
 
         public void AuxiliarResetRuneSprites()
         {
-            if (_showInstr != null) _showInstr.ResetSprites();
+            if (_showInstr != null && !_input.IsInSpellMode()) _showInstr.ResetSprites();
         }
 
         #endregion
@@ -247,7 +240,7 @@ namespace UI
 
         public void FadeToBlack(float duration, Action onEnd)
         {
-            if (FadeImage != null) FadeImage.DOColor(Color.black, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
+            if (FadeImage != null) _fade = FadeImage.DOColor(Color.black, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
         }
 
         public void FadeFromBlack(float duration) //Esto puede lanzar excepcion si el jugador cambia de escena demasiado rapido. Por ahora el safe mode lo mantiene a raya, pero hay que solucionarlo
@@ -255,7 +248,8 @@ namespace UI
             if (FadeImage != null)
             {
                 FadeImage.color = new Color(0f, 0f, 0f, 1f);
-                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
+                _fade = FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
+
             }
         }
 
@@ -267,11 +261,14 @@ namespace UI
         IEnumerator ManageTimeOffsetBlack(float offset, float duration)
         {
             FadeImage.color = new Color(0f, 0f, 0f, 1f);
+
+            //_input.LoadControls(EControlMap.None);
             yield return new WaitForSeconds(offset);
+            //_input.LoadPreviousControls();
 
             if (FadeImage != null)
             {
-                FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
+                _fade = FadeImage.DOColor(new Color(0f, 0f, 0f, 0f), duration).Play().SetUpdate(true);
 
                 yield return null;
             }
@@ -280,13 +277,13 @@ namespace UI
         public void FadeToWhite(float duration, Ease ease, Action onEnd)
         {
             FadeImage.color = new Color(1f, 1f, 1f, 0f);
-            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetEase(ease).SetUpdate(true);
+            if (FadeImage != null) _fade = FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetEase(ease).SetUpdate(true);
         }
 
         public void FadeToWhite(float duration, Action onEnd)
         {
             FadeImage.color = new Color(1f, 1f, 1f, 0f);
-            if (FadeImage != null) FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
+            if (FadeImage != null) _fade = FadeImage.DOColor(Color.white, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
         }
 
         public void FadeFromWhite(float duration)
@@ -294,7 +291,17 @@ namespace UI
             if (FadeImage != null)
             {
                 FadeImage.color = new Color(1f, 1f, 1f, 1f);
-                FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration).Play().SetUpdate(true);
+                _fade = FadeImage.DOColor(new Color(1f, 1f, 1f, 0f), duration).Play().SetUpdate(true);
+            }
+        }
+
+        public void InterruptFade()
+        {
+            //Debug.Log("OOOOOOOOOOOOOOOOO");
+            if (_fade != null)
+            {
+                _fade.Restart();
+                _fade.Pause();
             }
         }
 
@@ -318,42 +325,64 @@ namespace UI
                 //Debug.Log("Hacia atras: " + _windows.Count);
                 if (window != null)
                 {
-                    window.SetActive(false);
+                    UIMoveOnDisable[] endMoves = window.GetComponentsInChildren<UIMoveOnDisable>();
+                    foreach (var m in endMoves) m.DisableElement();
 
-                    if (_windows.Count == 0) FindObjectOfType<InputManager>().LoadPreviousControls();
+                    UIFadeOnDisable[] endFades = window.GetComponentsInChildren<UIFadeOnDisable>();
+                    foreach (var f in endFades) f.FadeElement();
+
+                    if (endMoves.Length == 0 && endFades.Length == 0) window.SetActive(false);
+                }
+
+                if (_windows.Count == 0)
+                {
+                    
+                    _input.LoadPreviousControls();
                 }
             }
         }
 
         public void LoadUIWindow(GameObject window)
         {
-            if (window != null)
+            if (window != null && !_input.IsInSpellMode())
             {
                 window.SetActive(true);
                 _windows.Push(window);
 
-                if (_windows.Count == 1) FindObjectOfType<InputManager>()?.LoadControls(EControlMap.UI);
+                if (_windows.Count == 1) _input?.LoadControls(EControlMap.UI);
             }
         }
 
         public void LoadUIWindow(GameObject window, string key)
         {
-            window.SetActive(true);
-            _windows.Push(window);
+            if (window != null && !_input.IsInSpellMode())
+            {
+                window.SetActive(true);
+                _windows.Push(window);
 
-            if (_windows.Count == 1) FindObjectOfType<InputManager>().LoadControls(EControlMap.UI);
+                if (_windows.Count == 1) _input.LoadControls(EControlMap.UI);
 
-            FindObjectOfType<InputManager>().Input.FindActionMap("UI").FindAction("Back").AddBinding($"<Keyboard>/{key}");
-            FindObjectOfType<InputManager>().Input.FindActionMap("UI").FindAction("Back").performed += OnResetBack;
+                InputAction back = _input.Input.FindActionMap("UI").FindAction("Back");
+
+                back.AddBinding($"<Keyboard>/{key}");
+                back.performed += OnResetBack;
+            }
         }
 
         void OnResetBack(InputAction.CallbackContext _)
         {
-            FindObjectOfType<InputManager>().Input.FindActionMap("UI").FindAction("Back").ChangeBinding(1).Erase();
-            FindObjectOfType<InputManager>().Input.FindActionMap("UI").FindAction("Back").performed -= OnResetBack;
+            int numBinds = _input.Input.FindActionMap("UI").FindAction("Back").bindings.Count;
+
+            InputAction back = _input.Input.FindActionMap("UI").FindAction("Back");
+
+            back.ChangeBinding(numBinds - 1).Erase();
+            back.performed -= OnResetBack;
         }
 
-        public void Back() => OnUIBack(new InputAction.CallbackContext());
+        public void Back()
+        {
+            OnUIBack(new InputAction.CallbackContext());
+        }
 
         public void OnOpenOptions()
         {
@@ -362,6 +391,7 @@ namespace UI
 
         public void ShowWarning(Action action, string desc)
         {
+            //Debug.Log("AVISO");
             LoadUIWindow(Warning);
             Warning.GetComponent<WarningWindow>().Show(action, desc);
         }
@@ -372,11 +402,17 @@ namespace UI
             Warning.GetComponent<WarningWindow>().Show(action, desc, yes, no);
         }
 
+        public void ShowWarning(Action action, string desc, string ok)
+        {
+            LoadUIWindow(Warning);
+            Warning.GetComponent<WarningWindow>().Show(action, desc, ok);
+        }
+
         #endregion
 
         #region Feedback
 
-        public void BookInstructionFeedback(float duration)
+        public void VignetteFeedback(float duration)
         {
             if (_vol.sharedProfile.TryGet(out Vignette vig))
             {
@@ -385,6 +421,9 @@ namespace UI
                 DOTween.To(vig.intensity.Override, oIntensity, 0.5f, duration * 0.2f).Play().OnComplete(() => DOTween.To(vig.intensity.Override, 0.5f, oIntensity, duration * 0.8f).Play());
             }
         }
+
+        public void ShowCanShoot() => _showInstr.ShowCanThrow(true);
+        public void ResetCanShoot() => _showInstr.ShowCanThrow(false);
 
         public void PlayerDamageFeedback(float damage, float remHealth)
         {
@@ -415,15 +454,13 @@ namespace UI
             Time.timeScale = 1;
 
             //Por si acaso
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(0.5f);
 
-            if (Time.timeScale != 1) Time.timeScale = 1;
+            AuxiliarTimeReset();
         }
 
         void EnterSpellModeFeedback()
         {
-            Debug.Log("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
-
             _prevTimeScale = Time.timeScale;
             Time.timeScale = _spellTimeScale;
 
@@ -439,12 +476,19 @@ namespace UI
             Time.timeScale = _prevTimeScale;
 
             SpellHalo.SetActive(false);
+
+            Invoke("AuxiliarTimeReset", 0.5f);
+        }
+
+        public void AuxiliarTimeReset()
+        {
+            if (!_input.IsInSpellMode()) Time.timeScale = 1;
         }
 
         void ShowFragmentHalo(int prev, int num)
         {
             float offset = GetScreenSizeOffset();
-            FragmentHalo.transform.localPosition = new Vector3(0.5f, -offset, offset);
+            FragmentHalo.transform.localPosition = new Vector3(offset, -offset, offset);
             FragmentHalo.SetActive(true);
             Invoke("ResetHalo", 3f);
         }
@@ -462,18 +506,152 @@ namespace UI
 
         #endregion
 
+        #region Notifications
+
+        public void ShowItemNotification(AItem item)
+        {
+            InventoryNotif.SetActive(true);
+            InventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
+        }
+
+        public void ShowRemoveItemNotification(AItem item)
+        {
+            RemoveInventoryNotif.SetActive(true);
+            RemoveInventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
+        }
+
         public void ShowTutorial(string s)
         {
-            TutorialNotif.SetActive(true);
-            TutorialNotif.GetComponentInChildren<TextMeshProUGUI>().text = s;
+            ShowTutorial(s, 8f);
         }
 
         public void ShowTutorial(string s, float duration)
         {
-            TutorialNotif.GetComponent<ItemNotification>().SetDuration(duration);
             TutorialNotif.SetActive(true);
             TutorialNotif.GetComponentInChildren<TextMeshProUGUI>().text = s;
+            Invoke("HideTutorial", duration);
         }
+
+        public void HideTutorial() => TutorialNotif.GetComponent<UIMoveOnDisable>().DisableElement();
+
+        #endregion
+
+        #region UI Modes
+
+        public void ShowUIMode(EUIMode mode)
+        {
+            switch (mode)
+            {
+                case EUIMode.Explore:
+                    ShowMinimapMode();
+                    ShowCandleMode();
+                    break;
+                case EUIMode.Combat:
+                    HideMinimapMode();
+                    ShowCandleMode();
+                    break;
+                case EUIMode.Calm:
+                    ShowMinimapMode();
+                    ShowCandleMode();
+
+                    LocateModeElement("Book")?.Hide();
+                    LocateModeElement("BookText")?.Hide();
+                    break;
+                case EUIMode.Dialogue:
+                    HideMinimapMode();
+                    HideCandleMode();
+                    break;
+                case EUIMode.Inventory:
+                    HideMinimapMode();
+                    HideCandleMode();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        ManageUIMode LocateModeElement(string id)
+        {
+            foreach (var el in UiModeElements)
+            {
+                if (el.Id == id) return el;
+            }
+            return null;
+        }
+
+        void ShowMinimapMode()
+        {
+            LocateModeElement("Minimap")?.Show();
+            LocateModeElement("MinimapBackground")?.Show();
+            LocateModeElement("Book")?.Show();
+            LocateModeElement("BookText")?.Show();
+            LocateModeElement("Inventory")?.Show();
+            LocateModeElement("InventoryText")?.Show();
+
+            LocateModeElement("MinimapPlayer")?.Show();
+            LocateModeElement("MinimapRoom")?.Show();
+            LocateModeElement("MinimapStart")?.Show();
+            LocateModeElement("MinimapRune")?.Show();
+            LocateModeElement("MinimapEvent")?.Show();
+            LocateModeElement("MinimapExit")?.Show();
+        }
+
+        void HideMinimapMode()
+        {
+            LocateModeElement("Minimap")?.Hide();
+            LocateModeElement("MinimapBackground")?.Hide();
+            LocateModeElement("Book")?.Hide();
+            LocateModeElement("BookText")?.Hide();
+            LocateModeElement("Inventory")?.Hide();
+            LocateModeElement("InventoryText")?.Hide();
+
+            LocateModeElement("MinimapPlayer")?.Hide();
+            LocateModeElement("MinimapRoom")?.Hide();
+            LocateModeElement("MinimapStart")?.Hide();
+            LocateModeElement("MinimapRune")?.Hide();
+            LocateModeElement("MinimapEvent")?.Hide();
+            LocateModeElement("MinimapExit")?.Hide();
+        }
+
+        void ShowCandleMode()
+        {
+            LocateModeElement("Fire")?.Show();
+            LocateModeElement("Electric")?.Show();
+            LocateModeElement("Cosmic")?.Show();
+            LocateModeElement("Phantom")?.Show();
+            LocateModeElement("Orb")?.Show();
+            LocateModeElement("DoubleOrb")?.Show();
+            LocateModeElement("TripleOrb")?.Show();
+
+            LocateModeElement("ElementSymbol")?.Show();
+            LocateModeElement("ElementText")?.Show();
+            LocateModeElement("ShapeSymbol")?.Show();
+            LocateModeElement("ShapeText")?.Show();
+
+            LocateModeElement("BottomCandle")?.Show();
+            LocateModeElement("TopCandle")?.Show();
+        }
+
+        void HideCandleMode()
+        {
+            LocateModeElement("Fire")?.Hide();
+            LocateModeElement("Electric")?.Hide();
+            LocateModeElement("Cosmic")?.Hide();
+            LocateModeElement("Phantom")?.Hide();
+            LocateModeElement("Orb")?.Hide();
+            LocateModeElement("DoubleOrb")?.Hide();
+            LocateModeElement("TripleOrb")?.Hide();
+
+            LocateModeElement("ElementSymbol")?.Hide();
+            LocateModeElement("ElementText")?.Hide();
+            LocateModeElement("ShapeSymbol")?.Hide();
+            LocateModeElement("ShapeText")?.Hide();
+
+            LocateModeElement("BottomCandle")?.Hide();
+            LocateModeElement("TopCandle")?.Hide();
+        }
+
+        #endregion
 
         private void OnDisable()
         {
@@ -497,7 +675,17 @@ namespace UI
                 _inv.OnFragmentsChange -= ShowFragmentHalo;
             }
 
-            World.OnPlayerDeath += Death;
+            World.OnPlayerDeath -= Death;
         }
+    }
+
+    public enum EUIMode
+    {
+        None,
+        Explore,
+        Combat,
+        Calm,
+        Dialogue,
+        Inventory
     }
 }

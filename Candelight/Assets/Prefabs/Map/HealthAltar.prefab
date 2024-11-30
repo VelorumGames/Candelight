@@ -248,11 +248,21 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -6423117887665535432, guid: 3ff16302c05d9484c86b0eb11956e309,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2ea495dea132c5c4bbab7787f6c2514a, type: 2}
     - target: {fileID: 919132149155446097, guid: 3ff16302c05d9484c86b0eb11956e309,
         type: 3}
       propertyPath: m_Name
       value: AltarDeCuracion
       objectReference: {fileID: 0}
+    - target: {fileID: 5279095331347438348, guid: 3ff16302c05d9484c86b0eb11956e309,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: aec2332e88bf53846b3542ff2ff770a2, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -266,6 +276,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1375904759096848681}
   m_SourcePrefab: {fileID: 100100000, guid: 3ff16302c05d9484c86b0eb11956e309, type: 3}
+--- !u!23 &184709302700078392 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5279095331347438348, guid: 3ff16302c05d9484c86b0eb11956e309,
+    type: 3}
+  m_PrefabInstance: {fileID: 5463751567574756916}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5121240164698149733 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3ff16302c05d9484c86b0eb11956e309,
@@ -306,7 +322,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NotificationTransform: {fileID: 8869737319968142988}
+  Exclamation: {fileID: 0}
+  _world: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
   _minFrags: 10
+  _unused: {r: 0, g: 0.8584695, b: 1, a: 1}
+  _used: {r: 0, g: 0, b: 0, a: 1}
+  _heart: {fileID: 184709302700078392}
 --- !u!4 &5501600387095562719 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3ff16302c05d9484c86b0eb11956e309,

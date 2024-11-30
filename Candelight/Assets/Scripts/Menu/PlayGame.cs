@@ -37,7 +37,9 @@ namespace Menu
 
         void StartGame()
         {
-            FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
+            _ui.Back();
+
+            GameSettings.CanRevive = true;
 
             _world.Candle = _world.MAX_CANDLE;
             _world.CompletedIds.Clear();
@@ -45,15 +47,14 @@ namespace Menu
 
             ARune.CreateAllRunes(FindObjectOfType<Mage>());
 
-            _ui.ShowState(EGameState.Loading);
             if (PlayDirectly || !GameSettings.Tutorial)
             {
                 ManageSkip();
-                SceneManager.LoadScene("WorldScene");
+                FindObjectOfType<MenuEffectManager>().StartGame("WorldScene");
             }
             else
             {
-                SceneManager.LoadScene("IntroScene");
+                FindObjectOfType<MenuEffectManager>().StartGame("IntroScene");
             }
         }
 
@@ -64,7 +65,7 @@ namespace Menu
             if (ARune.FindSpell("Projectile", out spell)) spell.Activate(true);
 
             _ui.ShowState(EGameState.Loading);
-            SceneManager.LoadScene("WorldScene");
+            FindObjectOfType<MenuEffectManager>().StartGame("WorldScene");
         }
     }
 }

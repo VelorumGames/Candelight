@@ -142,16 +142,17 @@ namespace Hechizos
         public static bool FindElements(ESpellInstruction[] chain, out AElementalRune[] elements)
         {
             int found = 0;
+            int elementalComplexity = 2;
             int num = System.Math.Clamp(chain.Length / 2, 0, _extraElement ? 3 : 2);  //2 Es la complejidad de cada elemento
             //Debug.Log($"Deberia haber {num} elementos en esta cadena: " + InstructionsToString(chain));
             elements = new AElementalRune[num];
 
-            if (chain.Length < 2) return false;
-            if (chain.Length % 2 != 0) return false;
+            //Filtro
+            if (chain.Length < elementalComplexity || chain.Length % elementalComplexity != 0 || chain.Length / elementalComplexity > num) return false;
 
             for (int i = 0; i < num; i++)
             {
-                ESpellInstruction[] subChain = new ESpellInstruction[2];
+                ESpellInstruction[] subChain = new ESpellInstruction[elementalComplexity];
                 try
                 {
                     subChain[0] = chain[i * num];
@@ -163,11 +164,15 @@ namespace Hechizos
                     return false;
                 }
 
-                if (FindSpell(subChain, out ARune element))
+                if (FindSpell(subChain, out ARune element) && element != null)
                 {
                     elements[i] = element as AElementalRune;
                     Debug.Log(elements[i].Name);
                     found++;
+                }
+                else
+                {
+                    Debug.LogWarning("Hay un elemento que no se ha encontrado");
                 }
             }
 

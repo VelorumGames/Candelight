@@ -15,6 +15,8 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 6707375169689073917}
+  - {fileID: 1293946867612461157}
+  - {fileID: -280934518357108268}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
@@ -38,6 +40,28 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-280934518357108268
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: ca7e8ca95ac7fb249a6a8d3b180c0e08
+  m_EffectName: Pitch Shifter
+  m_MixLevel: 62e5ea1dd67a7f849b6692a6aadffd70
+  m_Parameters:
+  - m_ParameterName: Pitch
+    m_GUID: 660acead663ae9149aceaff8c7e7f5bd
+  - m_ParameterName: FFT size
+    m_GUID: 4de7c276a8da7b94fab0f2c295dde58c
+  - m_ParameterName: Overlap
+    m_GUID: bfdd684037db8ea4a98136dfd37a1787
+  - m_ParameterName: Max channels
+    m_GUID: 74985a9097294344b9073699cff838fa
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!241 &24100000
 AudioMixerController:
   m_ObjectHideFlags: 0
@@ -58,6 +82,10 @@ AudioMixerController:
     name: MasterVol
   - guid: 48b9b44c785034148ad0b3e47cde0c8d
     name: MusicVol
+  - guid: 39220a22a5c6e194590a3bf91fe0f69f
+    name: MusicCutoffHighFreq
+  - guid: 660acead663ae9149aceaff8c7e7f5bd
+    name: MusicPitch
   - guid: bf538db89a9b2b44f8a6f6a1f5f02eb4
     name: SoundVol
   m_AudioMixerGroupViews:
@@ -112,8 +140,31 @@ AudioMixerSnapshotController:
   m_Name: Snapshot
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 99f24d35f22236542a26b00aa4616ed9
-  m_FloatValues: {}
+  m_FloatValues:
+    85b5ff417c36a464c963a7b4d0b90b32: 515
+    39220a22a5c6e194590a3bf91fe0f69f: 22000
+    0a359709e5827294ab5c817cf2256762: 5872.29
+    6256fb9bb0629cc409a3bcdc15407a4c: 0.93999785
+    660acead663ae9149aceaff8c7e7f5bd: 1
   m_TransitionOverrides: {}
+--- !u!244 &1293946867612461157
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 533074b1819e6da47868a77f34fcdf9d
+  m_EffectName: Lowpass
+  m_MixLevel: c2249e16e89942d4db433b7d75e16c08
+  m_Parameters:
+  - m_ParameterName: Cutoff freq
+    m_GUID: 39220a22a5c6e194590a3bf91fe0f69f
+  - m_ParameterName: Resonance
+    m_GUID: 97229fbef56c3964597a0b1ef87861c6
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &6707375169689073917
 AudioMixerEffectController:
   m_ObjectHideFlags: 3

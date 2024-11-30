@@ -17,13 +17,15 @@ namespace Scoreboard
         [SerializeField] SpriteRenderer _sprite;
         [SerializeField] Sprite[] _startSprites;
 
-        bool _shown;
+        static GameObject _currentInfo;
+
+        //bool _shown;
 
         public void LoadData(ScoreData d)
         {
             _data = d;
             _name.text = _data.Name;
-            _score.text = $"{_data.Score} zonas iluminadas";
+            _score.text = _data.Score != 1 ? $"{_data.Score} zonas iluminadas" : $"{_data.Score} zona iluminada";
             //_sprite.transform.localScale = (_data.Score / 20f) * Vector3.one;
 
             if (_data.Score <= 0) _sprite.color = new Color(1f, 1f, 1f, 0f);
@@ -33,20 +35,26 @@ namespace Scoreboard
             else if (_data.Score < 50) _sprite.sprite = _startSprites[3];
             else if (_data.Score < _world.MAX_NODES - 5) _sprite.sprite = _startSprites[4];
             else _sprite.sprite = _startSprites[5];
+
+            if (_data.Score > 0) _sprite.color = new Color(1f, 1f, 1f, 1f);
         }
         private void OnMouseDown()
         {
-            if (_shown)
-            {
-                _shown = false;
-                _starInfo.SetActive(false);
-            }
-            else
-            {
-                _shown = true;
-                _starInfo.SetActive(true);
-            }
-        }
+            //if (_shown)
+            //{
+            //    _shown = false;
+            //    _currentInfo.SetActive(false);
+            //    _starInfo.SetActive(false);
+            //}
+            //else
+            //{
+            //    _shown = true;
+            //    _starInfo.SetActive(true);
+            //}
 
+            if (_currentInfo != null) _currentInfo.SetActive(false);
+            _currentInfo = _starInfo;
+            _currentInfo.SetActive(true);
+        }
     }
 }

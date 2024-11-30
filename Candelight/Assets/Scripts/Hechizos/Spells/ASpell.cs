@@ -12,10 +12,11 @@ namespace Hechizos
 
         protected void OnEnable()
         {
-            
             Elements = Mage.Instance.GetActiveElements().ToArray();
-
+            RegisterTypes(Elements);
         }
+
+        protected abstract void RegisterTypes(AElementalRune[] runes);
 
     }
 }

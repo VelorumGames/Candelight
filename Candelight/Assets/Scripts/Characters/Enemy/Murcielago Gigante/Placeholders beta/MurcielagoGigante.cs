@@ -29,6 +29,8 @@ namespace Enemy
 
         UIManager _ui;
 
+        bool _attackNotif = true;
+
         private new void Awake()
         {
             base.Awake();
@@ -36,6 +38,16 @@ namespace Enemy
             _anim = GetComponentInChildren<MurcielagoAnimation>();
             _ui = FindObjectOfType<UIManager>();
         }
+
+        private new void OnEnable()
+        {
+            base.OnEnable();
+
+            OnDamage += ChangeToAttackOnDamage;
+            Player.OnRevive += AttackOnRevive;
+        }
+
+        void ChangeToAttackOnDamage(float dam, float rem) => ChangeState(EMurcielagoState.Attack);
 
         private new void Start()
         {
@@ -45,8 +57,6 @@ namespace Enemy
 
         void ChangeState(EMurcielagoState state)
         {
-            //Debug.Log("[MUERCIELAGO] Entra en estado: " + state.ToString());
-
             _updateAction = null;
 
             switch (state)
@@ -56,15 +66,22 @@ namespace Enemy
                     NormalStart();
                     break;
                 case EMurcielagoState.Attack:
-                    _ui.ShowTutorial("\"Y el murciélago enfureció...\"", 3f);
+                    if (_attackNotif)
+                    {
+                        _ui.ShowTutorial("\"Y el murciélago enfureció...\"", 2f);
+                        _attackNotif = false;
+                        Invoke("ResetNotif", 8f);
+                    }
                     AttackStart();
                     break;
                 case EMurcielagoState.Confused:
-                    _ui.ShowTutorial("\"El murciélago quedó confundido, incapaz de rastrear la esencia fantasmal.\"", 4f);
+                    _ui.ShowTutorial("\"El murciélago quedó confundido.\"", 2f);
                     ConfusedStart();
                     break;
             }
         }
+
+        public void ResetNotif() => _attackNotif = true;
 
 
         #region Normal
@@ -76,10 +93,8 @@ namespace Enemy
 
         void CheckPlayer()
         {
-            //Debug.Log($"Distancia: {Vector3.Distance(transform.position, Player.transform.position)} < {_aggro} && Velocidad: {_playerRb.velocity.magnitude} && {_minPlayerVel}");
             if (Vector3.Distance(transform.position, Player.transform.position) < _aggro && _playerRb.velocity.magnitude > _minPlayerVel)
             {
-                //Debug.Log("PHANTOM CHECK: " + PhantomCheck());
                 if (PhantomCheck()) ChangeState(EMurcielagoState.Confused);
                 else ChangeState(EMurcielagoState.Attack);
             }
@@ -93,6 +108,8 @@ namespace Enemy
         #endregion
 
         #region Attack
+        void AttackOnRevive(float _) => ChangeState(EMurcielagoState.Attack);
+
         void AttackStart()
         {
             CanMove = true;
@@ -104,12 +121,10 @@ namespace Enemy
         IEnumerator ManageAttack()
         {
             Vector3 target;
-            while (!PhantomCheck())
+            while (!PhantomCheck() && World.Candle > 0)
             {
                 target = Player.transform.position + new Vector3(UnityEngine.Random.Range(-1f, 1f), 0f, UnityEngine.Random.Range(-1f, 1f)); //Para que tampoco sea exacto (es ciego)
-                //Debug.Log("Se movera hacia: " + target);
                 yield return StartCoroutine(MoveTowards(target, 3f));
-                //Debug.Log("Ha llegado");
                 if (Vector3.Distance(transform.position, Player.transform.position) < _attackRange) //Si entra en rango de ataque
                 {
                     OnAttack(); //Ataca y se espera un poco para que la animacion se reproduzca con normalidad (y para darle tiempo al jugador de escapar)
@@ -160,7 +175,7 @@ namespace Enemy
 
             CanMove = true;
 
-            ChangeState(EMurcielagoState.Attack);
+            if (World.Candle > 0) ChangeState(EMurcielagoState.Attack);
         }
 
         #endregion
@@ -169,6 +184,16 @@ namespace Enemy
         private void Update()
         {
             if (_updateAction != null) _updateAction();
+        }
+
+        private new void OnDisable()
+        {
+            StopAllCoroutines();
+
+            base.OnDisable();
+
+            OnDamage -= ChangeToAttackOnDamage;
+            Player.OnRevive -= AttackOnRevive;
         }
 
         private void OnDrawGizmos()

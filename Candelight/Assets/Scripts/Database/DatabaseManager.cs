@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class DatabaseManager : MonoBehaviour
 
     private void Awake()
     {
+        if (!GameSettings.Online) SceneManager.LoadScene("MenuScene");
+        
         _scoreboard = FindObjectOfType<ScoreboardManager>();
 
         _names = new UserNames();
@@ -26,7 +29,7 @@ public class DatabaseManager : MonoBehaviour
         FindObjectOfType<UIManager>().ShowState(EGameState.Database);
         yield return StartCoroutine(GetAllUsersData());
 
-        Debug.Log("Hay players: " + _players.Count);
+        //Debug.Log("Hay players: " + _players.Count);
 
         //Se ordenan los jugadores segun la puntuacion
         _players.Sort(ScoreCompare);

@@ -9,12 +9,13 @@ using UI;
 using Cameras;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
-using BehaviourAPI.Core.Actions;
+using Music;
 
 namespace Controls
 {
     public enum EControlMap
     {
+        None,
         Level,
         World,
         Dialogue,
@@ -53,28 +54,47 @@ namespace Controls
         InputAction _spell;
         InputAction _look;
         InputAction _introLook;
-
-        CameraManager _camMan;
+        InputAction _scroll;
         
 
-        //float _spellTimeScale = 0.75f;
+        MusicManager _music;
+
+        bool _isInSpellMode;
+        bool _elementMode;
+        bool _shapeMode;
 
         public event System.Action OnStartElementMode;
         public event System.Action OnExitElementMode;
         public event System.Action OnStartShapeMode;
         public event System.Action OnExitShapeMode;
 
+        UIManager _ui;
+
         private void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
+
+            OnStartElementMode += _cont.ResetInstructions;
+            OnStartElementMode += _cont.StartSpellMove;
+            OnStartElementMode += _music.EnterSpellModeMusic;
+
+            OnExitElementMode += _cont.OnChooseElements;
+            OnExitElementMode += _music.ExitSpellModeMusic;
+
+            OnStartShapeMode += _cont.ResetInstructions;
+            OnStartShapeMode += _cont.StartSpellMove;
+            OnStartShapeMode += _music.EnterSpellModeMusic;
+
+            OnExitShapeMode += _cont.OnSpellLaunch;
+            OnExitShapeMode += _music.ExitSpellModeMusic;
         }
 
         private void Awake()
         {
             //if (Instance != null) Destroy(gameObject);
             //else Instance = this;
-            
+            _music = FindObjectOfType<MusicManager>();
 
             DontDestroyOnLoad(gameObject);
 
@@ -92,19 +112,12 @@ namespace Controls
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
         {
             _dialogue = FindObjectOfType<DialogueUI>();
-            _camMan = FindObjectOfType<CameraManager>();
-
-            //UI
-            _uiMap = Input.FindActionMap("UI");
-
-            InputAction back = _uiMap.FindAction("Back");
-            UIManager _ui = FindObjectOfType<UIManager>();
-            if (_ui != null) back.performed += _ui.OnUIBack;
+            _ui = FindObjectOfType<UIManager>();
         }
 
         void OnSceneUnloaded(Scene scene)
         {
-            
+
         }
 
         void InitializeControls()
@@ -139,6 +152,8 @@ namespace Controls
             _look = _levelMap.FindAction("Look");
             InputAction inventory = _levelMap.FindAction("Inventory");
             inventory.performed += _cont.OnInventory;
+            InputAction throwLast = _levelMap.FindAction("ThrowLastSpell");
+            throwLast.performed += _cont.OnLastSpellLaunch;
 
             //World
             _worldMap = Input.FindActionMap("World");
@@ -168,6 +183,83 @@ namespace Controls
             InputAction introPause = _introMap.FindAction("Pause");
             introPause.performed += _cont.OnPause;
             _introLook = _introMap.FindAction("Look");
+
+            //UI
+            _uiMap = Input.FindActionMap("UI");
+            InputAction back = _uiMap.FindAction("Back");
+            back.performed += UIBack;
+            _scroll = _uiMap.FindAction("Scroll");
+        }
+
+        void UnloadControls()
+        {
+            _cont = FindObjectOfType<PlayerController>();
+
+            //Level
+            _levelMap = Input.FindActionMap("Level");
+
+            _move = _levelMap.FindAction("Move");
+            //_move.canceled += _cont.OnStopMove;
+            InputAction interact = _levelMap.FindAction("Interact");
+            interact.performed -= _cont.OnInteract;
+            _element = _levelMap.FindAction("Element");
+            _element.performed -= StartElementMode;
+            _element.canceled -= StopElementMode;
+            _spell = _levelMap.FindAction("Spell");
+            _spell.performed -= StartSpellMode;
+            _spell.canceled -= StopSpellMode;
+            InputAction spellUp = _levelMap.FindAction("SpellUp");
+            spellUp.performed -= RegisterSpellUp;
+            InputAction spellDown = _levelMap.FindAction("SpellDown");
+            spellDown.performed -= RegisterSpellDown;
+            InputAction spellRight = _levelMap.FindAction("SpellRight");
+            spellRight.performed -= RegisterSpellRight;
+            InputAction spellLeft = _levelMap.FindAction("SpellLeft");
+            spellLeft.performed -= RegisterSpellLeft;
+            InputAction book = _levelMap.FindAction("Book");
+            book.performed -= _cont.OnBook;
+            InputAction levelPause = _levelMap.FindAction("Pause");
+            levelPause.performed -= _cont.OnPause;
+            _look = _levelMap.FindAction("Look");
+            InputAction inventory = _levelMap.FindAction("Inventory");
+            inventory.performed -= _cont.OnInventory;
+            InputAction throwLast = _levelMap.FindAction("ThrowLastSpell");
+            throwLast.performed -= _cont.OnLastSpellLaunch;
+
+            //World
+            _worldMap = Input.FindActionMap("World");
+
+            _choosePath = _worldMap.FindAction("ChoosePath");
+            InputAction confirmPath = _worldMap.FindAction("ConfirmPath");
+            confirmPath.performed -= _cont.OnConfirmPath;
+            InputAction worldInteract = _worldMap.FindAction("Interact");
+            worldInteract.performed -= _cont.OnInteract;
+            InputAction worldPause = _worldMap.FindAction("Pause");
+            worldPause.performed -= _cont.OnPause;
+            InputAction worldInventory = _worldMap.FindAction("Inventory");
+            worldInventory.performed -= _cont.OnInventory;
+
+            //Dialogue
+            _dialogueMap = Input.FindActionMap("Dialogue");
+
+            InputAction next = _dialogueMap.FindAction("Next");
+            next.performed -= NextDialogueBlock;
+            InputAction dialoguePause = _dialogueMap.FindAction("Pause");
+            dialoguePause.performed -= _cont.OnPause;
+
+            //Intro
+            _introMap = Input.FindActionMap("Intro");
+
+            _introMove = _introMap.FindAction("Move");
+            InputAction introPause = _introMap.FindAction("Pause");
+            introPause.performed -= _cont.OnPause;
+            _introLook = _introMap.FindAction("Look");
+
+            //UI
+            _uiMap = Input.FindActionMap("UI");
+            InputAction back = _uiMap.FindAction("Back");
+            back.performed -= UIBack;
+            _scroll = _uiMap.FindAction("Scroll");
         }
 
         public void LoadControls(EControlMap map)
@@ -176,25 +268,34 @@ namespace Controls
             _prevControls = _currentMap;
             if (_currentMap != null) _currentMap.Disable();
 
-            switch(map)
+            if (_ui == null) _ui = FindObjectOfType<UIManager>();
+
+            switch (map)
             {
                 case EControlMap.Level:
                     _currentMap = _levelMap;
 
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.Confined;
+
+                    if (SceneManager.GetActiveScene().name == "CalmScene") _ui.ShowUIMode(EUIMode.Calm);
+                    else _ui.ShowUIMode(EUIMode.Explore);
                     break;
                 case EControlMap.World:
                     _currentMap = _worldMap;
-                    Debug.Log("Cargo controles de world");
+                    
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.Confined;
+
+                    _ui.ShowUIMode(EUIMode.Explore);
                     break;
                 case EControlMap.Dialogue:
                     _currentMap = _dialogueMap;
 
                     Cursor.visible = false;
                     Cursor.lockState = CursorLockMode.Locked;
+
+                    _ui.ShowUIMode(EUIMode.Dialogue);
                     break;
                 case EControlMap.UI:
                     _currentMap = _uiMap;
@@ -208,8 +309,10 @@ namespace Controls
                     Cursor.visible = false;
                     Cursor.lockState = CursorLockMode.Locked;
                     break;
+                default:
+                    _currentMap = null;
+                    break;
             }
-            //if (_currentMap == null) _currentMap = _worldMap; //Esto esta mal pero es para que se pueda seguir por ahora
             //Debug.Log("Mapa colocado: " + _currentMap);
             try
             {
@@ -235,6 +338,9 @@ namespace Controls
 
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
+
+                if (SceneManager.GetActiveScene().name == "CalmScene") _ui.ShowUIMode(EUIMode.Calm);
+                else _ui.ShowUIMode(EUIMode.Explore);
             }
             else if (map == _worldMap)
             {
@@ -242,6 +348,8 @@ namespace Controls
 
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
+
+                _ui.ShowUIMode(EUIMode.Explore);
             }
             else if (map == _dialogueMap)
             {
@@ -249,6 +357,8 @@ namespace Controls
 
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
+
+                _ui.ShowUIMode(EUIMode.Dialogue);
             }
             else if (map == _uiMap)
             {
@@ -274,21 +384,13 @@ namespace Controls
         {
             if (_prevControls != null)
             {
-                //Debug.Log("Controles antiguos: " + _currentMap.name);
-                //_currentMap.Disable();
-                //_currentMap = _prevControls;
-                //Debug.Log("Controles actuales: " + _currentMap.name);
-                //_currentMap.Enable();
-                //CurrentControls = _currentMap.name;
-
                 LoadControls(_prevControls);
             }
         }
 
-        private void OnDisable()
+        void UIBack(InputAction.CallbackContext _)
         {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-            SceneManager.sceneUnloaded -= OnSceneUnloaded;
+            if (_ui != null) _ui.OnUIBack(_);
         }
 
         private void FixedUpdate()
@@ -317,40 +419,45 @@ namespace Controls
 
         void StartElementMode(InputAction.CallbackContext _)
         {
-            if (SceneManager.GetActiveScene().name != "CalmScene")
+            if (!_shapeMode && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnStartElementMode != null) OnStartElementMode();
-
+                _elementMode = true;
+                _isInSpellMode = true;
                 _move.Disable();
             }
         }
 
         void StopElementMode(InputAction.CallbackContext _)
         {
-            if (SceneManager.GetActiveScene().name != "CalmScene")
+            if (!_shapeMode && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnExitElementMode != null) OnExitElementMode();
-
+                _elementMode = false;
+                _isInSpellMode = false;
                 _move.Enable();
             }
         }
 
         void StartSpellMode(InputAction.CallbackContext _)
         {
-            if (SceneManager.GetActiveScene().name != "CalmScene")
+            if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnStartShapeMode != null) OnStartShapeMode();
 
+                _shapeMode = true;
+                _isInSpellMode = true;
                 _move.Disable();
             }
         }
 
         void StopSpellMode(InputAction.CallbackContext _)
         {
-            if (SceneManager.GetActiveScene().name != "CalmScene")
+            if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene")
             {
                 if (OnExitShapeMode != null) OnExitShapeMode();
-
+                _shapeMode = false;
+                _isInSpellMode = false;
                 _move.Enable();
             }
         }
@@ -378,7 +485,30 @@ namespace Controls
 
         #endregion
 
-        //public void SetSpellTimeScale(float t) => _spellTimeScale = t;
-        //public float GetSpellTimeScale() => _spellTimeScale;
+        public float GetScrollData() => _scroll.ReadValue<Vector2>().y;
+
+        public bool IsInSpellMode() => _isInSpellMode;
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
+
+            OnStartElementMode -= _cont.ResetInstructions;
+            OnStartElementMode -= _cont.StartSpellMove;
+            OnStartElementMode -= _music.EnterSpellModeMusic;
+
+            OnExitElementMode -= _cont.OnChooseElements;
+            OnExitElementMode -= _music.ExitSpellModeMusic;
+
+            OnStartShapeMode -= _cont.ResetInstructions;
+            OnStartShapeMode -= _cont.StartSpellMove;
+            OnStartShapeMode -= _music.EnterSpellModeMusic;
+
+            OnExitShapeMode -= _cont.OnSpellLaunch;
+            OnExitShapeMode -= _music.ExitSpellModeMusic;
+
+            if (_cont) UnloadControls();
+        }
     }
 }

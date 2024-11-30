@@ -643,17 +643,17 @@ namespace Map
 
         public void OpenAnchor()
         {
-            GetComponent<Collider>().enabled = false;
+            if (GetComponent<Collider>()) GetComponent<Collider>().enabled = false;
             _sprite.SetActive(false);
-            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 0);
+            if (GetComponent<SpriteRenderer>() != null) _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 0);
 
             if (!_room.AvailableAnchors.Contains(this)) _room.AvailableAnchors.Add(this);
         }
 
         public void CloseAnchor()
         {
-            _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 1);
-            GetComponent<Collider>().enabled = true;
+            if (GetComponent<SpriteRenderer>() != null) _sprite.GetComponent<SpriteRenderer>().sharedMaterial.SetInt("_Highlight", 1);
+            if (GetComponent<Collider>() != null) GetComponent<Collider>().enabled = true;
             _sprite.SetActive(true);
         }
 

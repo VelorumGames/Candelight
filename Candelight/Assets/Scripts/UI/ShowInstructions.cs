@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace UI
@@ -27,6 +28,9 @@ namespace UI
         [Space(10)]
         [SerializeField] Image[] _results;
         [SerializeField] Sprite[] _spellResults;
+
+        Image _currentShape;
+        Sprite _currentSprite;
 
         private void Start()
         {
@@ -148,23 +152,27 @@ namespace UI
             ResetSprites();
         }
 
-        public void ShowShapeResult(AShapeRune rune)
+        public void ShowShapeResult(AShapeRune rune, float delay)
         {
+            _currentShape = _results[0];
+
             switch (rune.Name)
             {
                 case "Melee":
-                    ShowSpellSprite(_results[0], _spellResults[1]);
+                    _currentSprite = _spellResults[1];
                     break;
                 case "Projectile":
-                    ShowSpellSprite(_results[0], _spellResults[0]);
+                    _currentSprite = _spellResults[0];
                     break;
                 case "Explosion":
-                    ShowSpellSprite(_results[0], _spellResults[2]);
+                    _currentSprite = _spellResults[2];
                     break;
                 case "Buff":
-                    ShowSpellSprite(_results[0], _spellResults[3]);
+                    _currentSprite = _spellResults[3];
                     break;
             }
+
+            ShowSpellSprite(_currentShape, _currentSprite, delay);
         }
 
         public void ShowElementsResult(AElementalRune[] runes)
@@ -237,6 +245,39 @@ namespace UI
             img.GetComponent<RectTransform>().DOScale(0.55f, 0.2f).Play().OnComplete(() => img.GetComponent<RectTransform>().DOScale(0.5f, 0.7f).Play().OnComplete(() => 
                 img.GetComponent<RectTransform>().localScale = new Vector3(0.45f, 0.45f, 0.45f)));
             img.DOFade(1f, 0.2f).Play().OnComplete(() => img.DOFade(0f, 0.7f).Play());
+        }
+
+        bool _auxiliarSpell = true;
+        void ShowSpellSprite(Image img, Sprite spr, float delay)
+        {
+            if (_auxiliarSpell)
+            {
+                img.sprite = spr;
+                img.GetComponent<RectTransform>().DOScale(0.55f, 0.2f).Play().OnComplete(() => img.GetComponent<RectTransform>().DOScale(0.5f, delay - 0.2f).Play().SetEase(Ease.InBack).OnComplete(() =>
+                    img.GetComponent<RectTransform>().localScale = new Vector3(0.45f, 0.45f, 0.45f)));
+                img.DOFade(1f, 0.2f).Play().OnComplete(() => img.DOFade(0f, delay - 0.2f).SetEase(Ease.InBack).Play().OnComplete(() => img.color = new Color(1f, 1f, 1f, 0f)));
+
+                _auxiliarSpell = false;
+                Invoke("ResetAuxiliar", delay);
+            }
+        }
+
+        public void ResetAuxiliar()
+        {
+            _auxiliarSpell = true;
+            StopAllCoroutines();
+            StartCoroutine(AuxiliarFade());
+        }
+
+        IEnumerator AuxiliarFade()
+        {
+            yield return new WaitUntil(() => _currentShape.color == Color.yellow);
+            _currentShape.color = new Color(1f, 1f, 1f, 0f);
+        }
+
+        public void ShowCanThrow(bool b)
+        {
+            _currentShape.color = b ? Color.yellow : Color.white;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Hechizos.Elementales
         public FireRune(Mage m) : base(m)
         {
             Name = "Fire";
-            Damage = 15f;
+            Damage = 20f;
             Activate(true);
             m.SetInitialElement(this);
         }

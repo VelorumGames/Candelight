@@ -11,7 +11,8 @@ namespace Menu
 
         public void GoToDonation()
         {
-            FindObjectOfType<UIManager>().ShowWarning(() => Application.OpenURL(_url), "Se abrirá una nueva pestaña para que puedas gestionar tu donación. ¿Estás seguro?");
+            if (GameSettings.Online) FindObjectOfType<UIManager>().ShowWarning(() => Application.OpenURL(_url), "Se abrirá una nueva pestaña para que puedas gestionar tu donación. ¿Estás seguro?");
+            else FindObjectOfType<UIManager>().ShowTutorial("Las donaciones no están disponibles en el modo Sin Conexión.");
         }
     }
 }

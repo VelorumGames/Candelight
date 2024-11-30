@@ -22,6 +22,11 @@ namespace UI
             _show = FindObjectOfType<ShowCurrentItemInfo>();
         }
 
+        private void OnEnable()
+        {
+            if (!_show) _show = FindObjectOfType<ShowCurrentItemInfo>();
+        }
+
         private void Start()
         {
             LoadData(GetComponent<AItem>());
@@ -57,7 +62,9 @@ namespace UI
 
         public void SendInfo()
         {
-            if (_show) _show.ShowInfo(GetComponent<AItem>().Data);
+            Debug.Log("Se envia informacion a: " + _show);
+            if (!_show) _show = FindObjectOfType<ShowCurrentItemInfo>();
+            if (_show != null) _show.ShowInfo(GetComponent<AItem>().Data);
         }
     }
 }

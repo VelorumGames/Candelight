@@ -1,5 +1,6 @@
 using Hechizos;
 using Items;
+using Menu;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,6 @@ public class MenuSaveManager : MonoBehaviour
 {
     public WorldInfo World;
     public NodeInfo CurrentNodeInfo;
-    public string PlayerName;
 
     [SerializeField] GameObject _play;
     [SerializeField] GameObject _loadSave;
@@ -32,8 +32,10 @@ public class MenuSaveManager : MonoBehaviour
 
         CurrentNodeInfo.Node = null;
 
-        SaveSystem.ScoreboardData = new ScoreData(PlayerName, -1, 0f, 0f);
+        if (SaveSystem.PlayerName == null) SaveSystem.PlayerName = $"NombreAleatorio{Random.Range(0, 1000)}"; //Medida de seguridad
+        Debug.Log("NOMBRE JUGADOR: " + SaveSystem.PlayerName);
 
+        SaveSystem.ScoreboardData = new ScoreData(SaveSystem.PlayerName, -1, 0f, 0f);
         SaveSystem.ScoreboardIntro = false;
 
         if (SaveSystem.ExistsPreviousGame())
@@ -61,7 +63,9 @@ public class MenuSaveManager : MonoBehaviour
 
         ARune.CreateAllRunes(FindObjectOfType<Mage>());
 
-        FindObjectOfType<Inventory>().LoadInventory(data.ActiveItems, data.UnactiveItems, data.Fragments);
+        GameSettings.CanRevive = data.CanRevive;
+
+        FindObjectOfType<Inventory>().LoadInventory(data.ActiveItems, data.UnactiveItems, data.MarkedItems, data.Fragments);
         World.Candle = data.Candle;
         World.CompletedIds.Clear();
         foreach (var node in data.CompletedNodes) World.CompletedIds.Add(node);
@@ -71,12 +75,11 @@ public class MenuSaveManager : MonoBehaviour
 
         World.LoadedPreviousGame = true;
 
-        Debug.Log("Datos de runas: " + data.Runes);
+        //Debug.Log("Datos de runas: " + data.Runes);
         string[] runeNames = data.Runes.Split(",");
         int count = 0;
         foreach(var rune in ARune.Spells.Values)
         {
-            Debug.Log("Cargo: " + rune);
             if (rune.Name == runeNames[count])
             {
                 count++;
@@ -85,7 +88,6 @@ public class MenuSaveManager : MonoBehaviour
         }
         data.Runes = "";
 
-        FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
-        SceneManager.LoadScene("WorldScene");
+        FindObjectOfType<MenuEffectManager>().StartGame("WorldScene");
     }
 }

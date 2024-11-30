@@ -9,6 +9,7 @@ namespace UI
     {
         [SerializeField] Vector3 _endPos;
         [SerializeField] float _duration;
+        [SerializeField] Ease _easeType;
 
         Vector3 _oPos;
         RectTransform _rect;
@@ -22,7 +23,7 @@ namespace UI
         private void OnEnable()
         {
             _rect.localPosition = _oPos;
-            _rect.DOLocalMove(_endPos, _duration).SetUpdate(true).Play();
+            _rect.DOLocalMove(_endPos, _duration).SetUpdate(true).SetEase(_easeType).Play();
         }
     }
 }

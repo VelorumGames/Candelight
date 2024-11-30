@@ -19,9 +19,15 @@ namespace UI.Ads
             _ui = FindObjectOfType<UIManager>();
         }
 
+        private void OnEnable()
+        {
+            if (!GameSettings.CanRevive) gameObject.SetActive(false);
+        }
+
         public void Save()
         {
             FindObjectOfType<DeathReturnToMenu>().Active = false;
+            _ui.InterruptFade();
             _ui.FadeToWhite(1f, LoadAd);
         }
 
@@ -29,6 +35,8 @@ namespace UI.Ads
         {
             //Se carga el anuncio
             _ad.SetActive(true);
+            _ui.InterruptFade();
+
             //Debug. Deberia estar desactivado
             //PostAd();
         }
@@ -38,6 +46,8 @@ namespace UI.Ads
         /// </summary>
         public void PostAd()
         {
+            GameSettings.CanRevive = false;
+
             _ad.SetActive(false);
             FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
             FindObjectOfType<PlayerController>().Revive();

@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using World;
 using Items;
 using Hechizos;
+using Unity.VisualScripting;
 
 public static class SaveSystem
 {
@@ -27,10 +28,16 @@ public static class SaveSystem
         formatter.Serialize(stream, data);
         stream.Close();
 
-        //Subir info a la base de datos
-        Debug.Log("Se guardarán los datos de: " + PlayerName);
-        //Database.Send($"Players/{PlayerData.Name}", PlayerData);
-        yield return Database.SendUserData(ScoreboardData);
+        GameData = data;
+
+        if (GameSettings.Online)
+        {
+
+            //Subir info a la base de datos
+            Debug.Log("Se guardarán los datos de: " + PlayerName);
+            //Database.Send($"Players/{PlayerData.Name}", PlayerData);
+            yield return Database.SendUserData(ScoreboardData);
+        }
     }
 
     public static IEnumerator Load()
@@ -43,8 +50,11 @@ public static class SaveSystem
             SaveData save = formatter.Deserialize(stream) as SaveData;
             stream.Close();
 
-            //Coger info de la base de datos
-            yield return Database.Get<ScoreData>($"Players/{PlayerName}", GetPlayerData);
+            if (GameSettings.Online)
+            {
+                //Coger info de la base de datos
+                yield return Database.Get<ScoreData>($"Players/{PlayerName}", GetPlayerData);
+            }
 
             GameData = save;
         }
@@ -96,24 +106,32 @@ public static class SaveSystem
 [System.Serializable]
 public class SaveData
 {
+    public bool CanRevive;
+    public int CurrentNode = -1;
     public int[] CompletedNodes;
     public int[] ActiveItems;
     public int[] UnactiveItems;
+    public int[] MarkedItems;
     public int Fragments;
     public float Candle;
     public string Runes;
 
-    public SaveData(WorldInfo world, Inventory inventory)
+    public SaveData(NodeInfo node, WorldInfo world, Inventory inventory)
     {
         Debug.Log("GUARDANDO DATOS");
 
+        CanRevive = GameSettings.CanRevive;
+
+        if (node != null) CurrentNode = node.Node.Id;
+
         CompletedNodes = world.CompletedIds.ToArray();
-        //Debug.Log("Nodos completados: " + CompletedNodes.Length);
+        Debug.Log("Nodos completados: " + CompletedNodes.Length);
 
         int[][] invData = GetInventoryData(inventory);
         ActiveItems = invData[0];
         UnactiveItems = invData[1];
-        Fragments = invData[2][0];
+        MarkedItems = invData[2];
+        Fragments = invData[3][0];
 
         //string s = "ITEMS ACTIVOS: " + ActiveItems.Length;
         //foreach (var id in ActiveItems) s += $"\n- {id}";
@@ -138,7 +156,7 @@ public class SaveData
 
     int[][] GetInventoryData(Inventory inv)
     {
-        int[][] invData = new int[3][];
+        int[][] invData = new int[4][];
 
         invData[0] = new int[inv.ActiveItems.Count];
         for (int i = 0; i < inv.ActiveItems.Count; i++)
@@ -152,8 +170,14 @@ public class SaveData
             invData[1][i] = inv.UnactiveItems[i].GetComponent<AItem>().Data.Id;
         }
 
-        invData[2] = new int[1];
-        invData[2][0] = inv.GetFragments();
+        invData[2] = new int[inv.MarkItems.Count];
+        for (int i = 0; i < inv.MarkItems.Count; i++)
+        {
+            invData[2][i] = inv.MarkItems[i].GetComponent<AItem>().Data.Id;
+        }
+
+        invData[3] = new int[1];
+        invData[3][0] = inv.GetFragments();
 
         return invData;
     }
