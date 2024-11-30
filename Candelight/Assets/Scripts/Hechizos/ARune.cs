@@ -32,7 +32,7 @@ namespace Hechizos
             Spells.Add(Instructions, this);
 
             //Debug. Deberia estar desactivado
-            //Activate(true);
+            Activate(true);
 
             string instrs = "";
 

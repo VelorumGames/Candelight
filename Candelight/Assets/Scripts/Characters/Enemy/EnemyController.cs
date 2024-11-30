@@ -24,6 +24,12 @@ namespace Enemy
         bool _invicible;
         float _iFrameDuration = 0.5f;
 
+        // Variable para saber si tiene luciérnaga posada
+        public bool LuciernagaPosada { get; set; } = false;
+
+
+
+
         protected void Awake()
         {
             _uiMan = FindObjectOfType<UIManager>();
@@ -70,7 +76,12 @@ namespace Enemy
         {
             if (!_invicible)
             {
-                //Debug.Log($"Enemigo {gameObject.name} recibe {damage} de dano");
+                // Si tiene luciérnaga posada, duplicamos el daño
+                if (LuciernagaPosada)
+                {
+                    damage *= 2;
+                    Debug.Log($"{gameObject.name} recibe el doble de daño porque tiene una luciérnaga posada.");
+                }
 
                 CurrentHP -= damage;
                 ShowDamage(damage);
@@ -78,7 +89,6 @@ namespace Enemy
 
                 _invicible = true;
                 Invoke("ManageIFrames", _iFrameDuration);
-                
             }
         }
 
