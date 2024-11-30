@@ -13,6 +13,8 @@ namespace Interactuables
 {
     public class EndNodeInter : AInteractuables
     {
+        public GameObject Fires;
+        public ParticleSystem FireParticles;
         public NodeInfo CurrentNodeInfo;
 
         UIManager _ui;
@@ -24,18 +26,28 @@ namespace Interactuables
 
         public override void Interaction()
         {
-            _ui.ShowWarning(StartTransition, "Entrega parte de tu alma y prende la Gran Pira.");
+            _ui.ShowWarning(() => StartCoroutine(StartTransition()), "Entrega parte de tu alma y prende la Gran Pira.");
         }
 
-        void StartTransition()
+        IEnumerator StartTransition()
         {
+            Fires.SetActive(true);
+            FireParticles.Play();
+
             FindObjectOfType<PlayerController>().SetMove(false);
 
             CurrentNodeInfo.Node.RegisterCompletedNode();
 
             _ui.Back();
-            _ui.FadeToWhite(2f, FinishScene);
-            DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 90f, 2f);
+
+            yield return new WaitForSeconds(0.5f);
+
+            FindObjectOfType<CameraManager>().Shake(20f, 0.1f, 2.5f);
+
+            yield return new WaitForSeconds(0.5f);
+
+            _ui.FadeToWhite(2.5f, FinishScene);
+            DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 90f, 2.5f);
         }
 
         void FinishScene()

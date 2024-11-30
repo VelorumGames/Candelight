@@ -44,6 +44,7 @@ namespace Enemy
             base.OnEnable();
 
             OnDamage += ChangeToAttackOnDamage;
+            Player.OnRevive += AttackOnRevive;
         }
 
         void ChangeToAttackOnDamage(float dam, float rem) => ChangeState(EMurcielagoState.Attack);
@@ -67,14 +68,14 @@ namespace Enemy
                 case EMurcielagoState.Attack:
                     if (_attackNotif)
                     {
-                        _ui.ShowTutorial("\"Y el murciélago enfureció...\"", 3f);
+                        _ui.ShowTutorial("\"Y el murciélago enfureció...\"", 2f);
                         _attackNotif = false;
                         Invoke("ResetNotif", 8f);
                     }
                     AttackStart();
                     break;
                 case EMurcielagoState.Confused:
-                    _ui.ShowTutorial("\"El murciélago quedó confundido, incapaz de rastrear la esencia fantasmal.\"", 4f);
+                    _ui.ShowTutorial("\"El murciélago quedó confundido.\"", 2f);
                     ConfusedStart();
                     break;
             }
@@ -107,6 +108,8 @@ namespace Enemy
         #endregion
 
         #region Attack
+        void AttackOnRevive(float _) => ChangeState(EMurcielagoState.Attack);
+
         void AttackStart()
         {
             CanMove = true;
@@ -190,6 +193,7 @@ namespace Enemy
             base.OnDisable();
 
             OnDamage -= ChangeToAttackOnDamage;
+            Player.OnRevive -= AttackOnRevive;
         }
 
         private void OnDrawGizmos()

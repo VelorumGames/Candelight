@@ -153,7 +153,7 @@ namespace Hechizos
         #region Spell Functions
         public GameObject SpawnProjectile(int numProj)
         {
-            Debug.Log("Se instancia proyectil");
+            //Debug.Log("Se instancia proyectil");
 
             _lastProjectile = GetAvailableProjectile();
 

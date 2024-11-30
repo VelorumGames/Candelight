@@ -268,25 +268,34 @@ namespace Controls
             _prevControls = _currentMap;
             if (_currentMap != null) _currentMap.Disable();
 
-            switch(map)
+            if (_ui == null) _ui = FindObjectOfType<UIManager>();
+
+            switch (map)
             {
                 case EControlMap.Level:
                     _currentMap = _levelMap;
 
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.Confined;
+
+                    if (SceneManager.GetActiveScene().name == "CalmScene") _ui.ShowUIMode(EUIMode.Calm);
+                    else _ui.ShowUIMode(EUIMode.Explore);
                     break;
                 case EControlMap.World:
                     _currentMap = _worldMap;
                     
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.Confined;
+
+                    _ui.ShowUIMode(EUIMode.Explore);
                     break;
                 case EControlMap.Dialogue:
                     _currentMap = _dialogueMap;
 
                     Cursor.visible = false;
                     Cursor.lockState = CursorLockMode.Locked;
+
+                    _ui.ShowUIMode(EUIMode.Dialogue);
                     break;
                 case EControlMap.UI:
                     _currentMap = _uiMap;
@@ -329,6 +338,9 @@ namespace Controls
 
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
+
+                if (SceneManager.GetActiveScene().name == "CalmScene") _ui.ShowUIMode(EUIMode.Calm);
+                else _ui.ShowUIMode(EUIMode.Explore);
             }
             else if (map == _worldMap)
             {
@@ -336,6 +348,8 @@ namespace Controls
 
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
+
+                _ui.ShowUIMode(EUIMode.Explore);
             }
             else if (map == _dialogueMap)
             {
@@ -343,6 +357,8 @@ namespace Controls
 
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
+
+                _ui.ShowUIMode(EUIMode.Dialogue);
             }
             else if (map == _uiMap)
             {

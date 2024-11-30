@@ -154,7 +154,20 @@ namespace Cameras
         }
         public void SafeResetNoise()
         {
-            _noise = GetActiveCam().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            if (GetActiveCam() != null)
+            {
+                _noise = GetActiveCam().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+                if (_noise != null)
+                {
+                    _noise.m_AmplitudeGain = 0f;
+                    _noise.m_FrequencyGain = 0f;
+                }
+            }
+        }
+
+        public void SafeResetNoise(CinemachineVirtualCamera cam)
+        {
+            _noise = cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
             if (_noise != null)
             {
                 _noise.m_AmplitudeGain = 0f;

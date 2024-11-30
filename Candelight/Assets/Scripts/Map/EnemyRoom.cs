@@ -60,7 +60,7 @@ public class EnemyRoom : ARoom
 
     IEnumerator CheckForPlayerDistance()
     {
-        yield return new WaitUntil(() => Vector3.Distance(_cont.transform.position, transform.position) < 2f);
+        yield return new WaitUntil(() => Vector3.Distance(_cont.transform.position, transform.position) < 3f);
         CloseAllAnchors();
         foreach (var e in enemies)
         {
@@ -98,6 +98,7 @@ public class EnemyRoom : ARoom
             {
                 anchor.OpenAnchor();
                 anchor.GetComponent<SI_AnchorBarrier>().Activate(false);
+                anchor.GetComponentInChildren<HealthBar>()?.gameObject.SetActive(false);
             }
         }
     }

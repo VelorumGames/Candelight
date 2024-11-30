@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UI;
 using UnityEngine;
+using UnityEngine.UIElements;
 using World;
 
 namespace Scoreboard
@@ -71,27 +72,36 @@ namespace Scoreboard
             if (SaveSystem.ScoreboardData != null)
             {
                 _stars = new GameObject[data.Length];
+
+                Vector3 camPosition = new Vector3(-999f, -999f, -999f);
+
                 for (int i = 0; i < data.Length; i++)
                 {
-                    _stars[i] = Instantiate(Star, StarsContainer);
-                    _stars[i].GetComponent<Star>().LoadData(data[i]);
-                    _stars[i].transform.localPosition = new Vector2(data[i].posX, data[i].posY);
-
-                    if (data[i].Name == SaveSystem.ScoreboardData.Name)
+                    if (data[i].Score > 0)
                     {
-                        if (SaveSystem.ScoreboardIntro)
-                        {
-                            _cam.GetActiveCam().transform.position = new Vector3(data[i].posX, data[i].posY, _cam.GetActiveCam().transform.position.z); //Colocamos la camara en la estrella que pertenezca al jugador
-                            _cam.SetActiveCamera(1, 5f);
+                        _stars[i] = Instantiate(Star, StarsContainer);
+                        _stars[i].GetComponent<Star>().LoadData(data[i]);
+                        _stars[i].transform.localPosition = new Vector2(data[i].posX, data[i].posY);
 
-                            SaveSystem.ScoreboardIntro = false;
-                        }
-                        else
+                        if (data[i].Name == SaveSystem.ScoreboardData.Name)
                         {
-                            _cam.SetActiveCamera(1, 0f);
+                            camPosition = new Vector3(data[i].posX, data[i].posY, _cam.GetActiveCam().transform.position.z); //Colocamos la camara en la estrella que pertenezca al jugador
                         }
                     }
                 }
+
+                if (SaveSystem.ScoreboardIntro && camPosition.x != -999f)
+                {
+                    _cam.GetActiveCam().transform.position = camPosition;
+                    _cam.SetActiveCamera(1, 5f);
+
+                    SaveSystem.ScoreboardIntro = false;
+                }
+                else
+                {
+                    _cam.SetActiveCamera(1, 0f);
+                }
+                
             }
             else Debug.LogWarning("ERROR: No se ha encontrado PlayerData en el sistema de guardado.");
         }

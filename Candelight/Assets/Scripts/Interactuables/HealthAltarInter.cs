@@ -16,21 +16,29 @@ namespace Interactuables
 
         [SerializeField] int _minFrags;
 
+        [SerializeField] Color _unused;
+        [SerializeField] Color _used;
+        [SerializeField] MeshRenderer _heart;
+
         private void Awake()
         {
             _inv = FindObjectOfType<Inventory>();
             _ui = FindObjectOfType<UIManager>();
+
+            _heart.sharedMaterial.SetColor("SecondColor", _unused);
         }
 
         public override void Interaction()
         {
-            if (_world.Candle >= _world.MAX_CANDLE) _ui.ShowWarning(NullAction, "Tu vela no ha perdido cera todavía. No puedes activar el altar.", "Ok", "Atrás");
-            else if (_inv.GetFragments() < _minFrags) _ui.ShowWarning(NullAction, "Todavía no posees fragmentos suficientes.", "Ok", "Atrás");
+            if (_world.Candle >= _world.MAX_CANDLE) _ui.ShowWarning(NullAction, "Tu vela no ha perdido cera todavía. No puedes activar el altar.", "Ok");
+            else if (_inv.GetFragments() < _minFrags) _ui.ShowWarning(NullAction, "Todavía no posees fragmentos suficientes.", "Ok");
             else  _ui.ShowWarning(ManageFragments, "Recuperarás un cuarto de tu salud total a cambio de la mitad de tus fragmentos. ¿Estás seguro?");
         }
 
         void ManageFragments()
         {
+            _heart.sharedMaterial.SetColor("SecondColor", _used);
+
             _world.Candle += _world.MAX_CANDLE * 0.25f;
             _inv.AddFragments(-_inv.GetFragments() / 2);
             FindObjectOfType<UIManager>().Back();

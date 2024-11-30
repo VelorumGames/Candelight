@@ -62,6 +62,9 @@ namespace UI
         float _spellTimeScale = 0.4f;
         float _prevTimeScale = 1f;
 
+        [Space(10)]
+        public List<ManageUIMode> UiModeElements = new List<ManageUIMode>();
+
         ShowInstructions _showInstr;
         CameraManager _camMan;
         PlayerController _player;
@@ -178,18 +181,6 @@ namespace UI
             }
         }
 
-        public void ShowItemNotification(AItem item)
-        {
-            InventoryNotif.SetActive(true);
-            InventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
-        }
-
-        public void ShowRemoveItemNotification(AItem item)
-        {
-            RemoveInventoryNotif.SetActive(true);
-            RemoveInventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
-        }
-
         public void RegisterCandle(float candle)
         {
             _candle = candle;
@@ -251,19 +242,6 @@ namespace UI
         {
             if (FadeImage != null) _fade = FadeImage.DOColor(Color.black, duration).Play().OnComplete(() => onEnd()).SetUpdate(true);
         }
-
-        //public void InterruptFade()
-        //{
-        //    GameObject newFade = Instantiate(FadeImage.gameObject, FadeImage.transform.parent);
-        //    Destroy(FadeImage);
-        //    StartCoroutine(ResetImage(newFade.GetComponent<Image>()));
-        //}
-
-        //IEnumerator ResetImage(Image img)
-        //{
-        //    yield return new WaitForSeconds(1f);
-        //    FadeImage = img;
-        //}
 
         public void FadeFromBlack(float duration) //Esto puede lanzar excepcion si el jugador cambia de escena demasiado rapido. Por ahora el safe mode lo mantiene a raya, pero hay que solucionarlo
         {
@@ -424,6 +402,12 @@ namespace UI
             Warning.GetComponent<WarningWindow>().Show(action, desc, yes, no);
         }
 
+        public void ShowWarning(Action action, string desc, string ok)
+        {
+            LoadUIWindow(Warning);
+            Warning.GetComponent<WarningWindow>().Show(action, desc, ok);
+        }
+
         #endregion
 
         #region Feedback
@@ -522,6 +506,20 @@ namespace UI
 
         #endregion
 
+        #region Notifications
+
+        public void ShowItemNotification(AItem item)
+        {
+            InventoryNotif.SetActive(true);
+            InventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
+        }
+
+        public void ShowRemoveItemNotification(AItem item)
+        {
+            RemoveInventoryNotif.SetActive(true);
+            RemoveInventoryNotif.GetComponent<ItemNotification>().LoadItemInfo(item.Data);
+        }
+
         public void ShowTutorial(string s)
         {
             ShowTutorial(s, 8f);
@@ -535,6 +533,125 @@ namespace UI
         }
 
         public void HideTutorial() => TutorialNotif.GetComponent<UIMoveOnDisable>().DisableElement();
+
+        #endregion
+
+        #region UI Modes
+
+        public void ShowUIMode(EUIMode mode)
+        {
+            switch (mode)
+            {
+                case EUIMode.Explore:
+                    ShowMinimapMode();
+                    ShowCandleMode();
+                    break;
+                case EUIMode.Combat:
+                    HideMinimapMode();
+                    ShowCandleMode();
+                    break;
+                case EUIMode.Calm:
+                    ShowMinimapMode();
+                    ShowCandleMode();
+
+                    LocateModeElement("Book")?.Hide();
+                    LocateModeElement("BookText")?.Hide();
+                    break;
+                case EUIMode.Dialogue:
+                    HideMinimapMode();
+                    HideCandleMode();
+                    break;
+                case EUIMode.Inventory:
+                    HideMinimapMode();
+                    HideCandleMode();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        ManageUIMode LocateModeElement(string id)
+        {
+            foreach (var el in UiModeElements)
+            {
+                if (el.Id == id) return el;
+            }
+            return null;
+        }
+
+        void ShowMinimapMode()
+        {
+            LocateModeElement("Minimap")?.Show();
+            LocateModeElement("MinimapBackground")?.Show();
+            LocateModeElement("Book")?.Show();
+            LocateModeElement("BookText")?.Show();
+            LocateModeElement("Inventory")?.Show();
+            LocateModeElement("InventoryText")?.Show();
+
+            LocateModeElement("MinimapPlayer")?.Show();
+            LocateModeElement("MinimapRoom")?.Show();
+            LocateModeElement("MinimapStart")?.Show();
+            LocateModeElement("MinimapRune")?.Show();
+            LocateModeElement("MinimapEvent")?.Show();
+            LocateModeElement("MinimapExit")?.Show();
+        }
+
+        void HideMinimapMode()
+        {
+            LocateModeElement("Minimap")?.Hide();
+            LocateModeElement("MinimapBackground")?.Hide();
+            LocateModeElement("Book")?.Hide();
+            LocateModeElement("BookText")?.Hide();
+            LocateModeElement("Inventory")?.Hide();
+            LocateModeElement("InventoryText")?.Hide();
+
+            LocateModeElement("MinimapPlayer")?.Hide();
+            LocateModeElement("MinimapRoom")?.Hide();
+            LocateModeElement("MinimapStart")?.Hide();
+            LocateModeElement("MinimapRune")?.Hide();
+            LocateModeElement("MinimapEvent")?.Hide();
+            LocateModeElement("MinimapExit")?.Hide();
+        }
+
+        void ShowCandleMode()
+        {
+            LocateModeElement("Fire")?.Show();
+            LocateModeElement("Electric")?.Show();
+            LocateModeElement("Cosmic")?.Show();
+            LocateModeElement("Phantom")?.Show();
+            LocateModeElement("Orb")?.Show();
+            LocateModeElement("DoubleOrb")?.Show();
+            LocateModeElement("TripleOrb")?.Show();
+
+            LocateModeElement("ElementSymbol")?.Show();
+            LocateModeElement("ElementText")?.Show();
+            LocateModeElement("ShapeSymbol")?.Show();
+            LocateModeElement("ShapeText")?.Show();
+
+            LocateModeElement("BottomCandle")?.Show();
+            LocateModeElement("TopCandle")?.Show();
+        }
+
+        void HideCandleMode()
+        {
+            LocateModeElement("Fire")?.Hide();
+            LocateModeElement("Electric")?.Hide();
+            LocateModeElement("Cosmic")?.Hide();
+            LocateModeElement("Phantom")?.Hide();
+            LocateModeElement("Orb")?.Hide();
+            LocateModeElement("DoubleOrb")?.Hide();
+            LocateModeElement("TripleOrb")?.Hide();
+
+            LocateModeElement("ElementSymbol")?.Hide();
+            LocateModeElement("ElementText")?.Hide();
+            LocateModeElement("ShapeSymbol")?.Hide();
+            LocateModeElement("ShapeText")?.Hide();
+
+            LocateModeElement("BottomCandle")?.Hide();
+            LocateModeElement("TopCandle")?.Hide();
+        }
+
+        #endregion
 
         private void OnDisable()
         {
@@ -560,5 +677,15 @@ namespace UI
 
             World.OnPlayerDeath -= Death;
         }
+    }
+
+    public enum EUIMode
+    {
+        None,
+        Explore,
+        Combat,
+        Calm,
+        Dialogue,
+        Inventory
     }
 }

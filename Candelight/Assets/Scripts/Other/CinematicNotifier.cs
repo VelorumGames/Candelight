@@ -22,6 +22,6 @@ public class CinematicNotifier : MonoBehaviour
 
     void Notify()
     {
-        _cine.ShowCinematic(Id, Text, Duration);
+        StartCoroutine(_cine.ShowCinematic(Id, Text, Duration));
     }
 }

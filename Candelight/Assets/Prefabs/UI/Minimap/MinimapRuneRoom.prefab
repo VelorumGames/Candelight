@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2002214671046343631}
   - component: {fileID: 5901895543963832662}
   - component: {fileID: 1596832017062663115}
+  - component: {fileID: 4890260401708652616}
   m_Layer: 0
   m_Name: MinimapRuneRoom
   m_TagString: Untagged
@@ -75,3 +76,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4890260401708652616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3715114208125823160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed2a68543bcdd2d4f86393b2c65730f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: MinimapRune

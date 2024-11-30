@@ -137,7 +137,12 @@ namespace Player
         {
             _UIMan = FindObjectOfType<UIManager>();
             _camMan = FindObjectOfType<CameraManager>();
-            if (_camMan != null) _camMan.AddCamera(_fpCam);
+            if (_camMan != null)
+            {
+                _camMan.AddCamera(_fpCam);
+                _camMan.SafeResetNoise();
+                _camMan.SafeResetNoise(_fpCam);
+            }
 
             _interaction = null;
             CanMove = true;
@@ -150,6 +155,8 @@ namespace Player
                 _rb.useGravity = true;
                 _rb.constraints = RigidbodyConstraints.FreezeRotation;
             }
+
+            
         }
 
         void OnSceneUnloaded(Scene scene)
@@ -494,7 +501,7 @@ namespace Player
             {
                 //Movemos un gameobject invisible
                 _pathChooser.transform.localPosition += new Vector3(direction.x, 0f, direction.y);
-                _pathChooser.transform.localPosition = Vector3.ClampMagnitude(_pathChooser.transform.localPosition, 7f);
+                _pathChooser.transform.localPosition = Vector3.ClampMagnitude(_pathChooser.transform.localPosition, 8f);
 
                 //Comparamos con que nodo conectado al actual esta mas cerca y consideramos ese como la decision del jugador
                 float minDist = 9999f;
@@ -528,12 +535,13 @@ namespace Player
 
         public void OnPause(InputAction.CallbackContext _)
         {
-            UIManager.Instance.LoadUIWindow(UIManager.Instance.PauseMenu);
+            _UIMan.LoadUIWindow(_UIMan.PauseMenu);
         }
 
         public void OnInventory(InputAction.CallbackContext _)
         {
-            UIManager.Instance.LoadUIWindow(UIManager.Instance.InventoryUI, "i");
+            _UIMan.LoadUIWindow(_UIMan.InventoryUI, "i");
+            _UIMan.ShowUIMode(EUIMode.Inventory);
         }
 
         #endregion

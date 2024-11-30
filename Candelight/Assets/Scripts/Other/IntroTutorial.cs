@@ -1,6 +1,7 @@
 using Controls;
 using DG.Tweening;
 using Hechizos;
+using Music;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -36,14 +37,22 @@ public class IntroTutorial : MonoBehaviour
 
     bool _inTutorial = true;
 
+    [Space(10)]
+    public AudioClip _introAmbience;
+    MusicManager _music;
+
     private void Awake()
     {
         _ui = FindObjectOfType<UIManager>();
+        _music = FindObjectOfType<MusicManager>();
     }
 
     private void Start()
     {
         _ui.FadeFromBlack(1.5f, 3f);
+
+        _music.ChangeVolumeFrom(0, 0f, 0.15f, 30f);
+        _music.PlayMusic(0, _introAmbience);
 
         DramaticText.color = new Color(1f, 1f, 1f, 0f);
 

@@ -42,7 +42,7 @@ namespace Enemy
 
             base.Start();
 
-            StartCoroutine(DebugAI());
+            //StartCoroutine(DebugAI());
         }
 
         protected void OnEnable()
@@ -106,7 +106,7 @@ namespace Enemy
                 Collider[] objs = Physics.OverlapSphere(transform.position, 2f);
                 foreach (var col in objs)
                 {
-                    if (col.TryGetComponent<AController>(out var cont) && cont != this)
+                    if (col.TryGetComponent<PlayerController>(out var cont) && cont != this)
                     {
                         cont.RecieveDamage(Info.BaseDamage * _modifier.DamageMod);
                     }

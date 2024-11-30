@@ -51,7 +51,7 @@ namespace Music
 
         void OnSceneUnload(Scene scene)
         {
-            Debug.Log("Quito las canciones");
+            //Debug.Log("Quito las canciones");
 
             StopAllCoroutines();
             ChangeVolumeTo(0, 0f, 0.75f);
