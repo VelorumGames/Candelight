@@ -15,6 +15,11 @@ public static class GameSettings
     public static float MusicVolume;
 
     public static bool Tutorial = true;
+    public static bool FrameTutorial = true;
+    public static bool ItemTutorial = true;
+
     public static bool LoadedWorld = false;
     public static bool CanRevive = true;
+    public static bool LoadedControls = false;
+    public static bool ExistsPreviousGame = false;
 }

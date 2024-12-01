@@ -1,6 +1,7 @@
 using Enemy;
 using Map;
 using Music;
+using Player;
 using SpellInteractuable;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ public class EnemyRoom : ARoom
     {
         base.Awake();
 
-        enemies = GetComponentsInChildren<EnemyController>();
+        enemies = GetComponentsInChildren<EnemyController>(true);
         _enemyCount = enemies.Length;
         foreach (var e in enemies)
         {
@@ -50,22 +51,23 @@ public class EnemyRoom : ARoom
         {
             if (_enemyCount > 0)
             {
-                FindObjectOfType<MapManager>().StartCombat();
                 StartCoroutine(CheckForPlayerDistance());
             }
-
-            _inCombat = true;
         }
     }
 
     IEnumerator CheckForPlayerDistance()
     {
         yield return new WaitUntil(() => Vector3.Distance(_cont.transform.position, transform.position) < 3f);
+
+        FindObjectOfType<MapManager>().StartCombat();
         CloseAllAnchors();
         foreach (var e in enemies)
         {
             e.gameObject.SetActive(true);
         }
+
+        _inCombat = true;
     }
 
     void ResetCheck() => StopAllCoroutines();

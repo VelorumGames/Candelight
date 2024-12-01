@@ -72,22 +72,27 @@ namespace Controls
 
         private void OnEnable()
         {
-            SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.sceneUnloaded += OnSceneUnloaded;
+            if (!GameSettings.LoadedControls)
+            {
+                SceneManager.sceneLoaded += OnSceneLoaded;
+                SceneManager.sceneUnloaded += OnSceneUnloaded;
 
-            OnStartElementMode += _cont.ResetInstructions;
-            OnStartElementMode += _cont.StartSpellMove;
-            OnStartElementMode += _music.EnterSpellModeMusic;
+                OnStartElementMode += _cont.ResetInstructions;
+                OnStartElementMode += _cont.StartSpellMove;
+                OnStartElementMode += _music.EnterSpellModeMusic;
 
-            OnExitElementMode += _cont.OnChooseElements;
-            OnExitElementMode += _music.ExitSpellModeMusic;
+                OnExitElementMode += _cont.OnChooseElements;
+                OnExitElementMode += _music.ExitSpellModeMusic;
 
-            OnStartShapeMode += _cont.ResetInstructions;
-            OnStartShapeMode += _cont.StartSpellMove;
-            OnStartShapeMode += _music.EnterSpellModeMusic;
+                OnStartShapeMode += _cont.ResetInstructions;
+                OnStartShapeMode += _cont.StartSpellMove;
+                OnStartShapeMode += _music.EnterSpellModeMusic;
 
-            OnExitShapeMode += _cont.OnSpellLaunch;
-            OnExitShapeMode += _music.ExitSpellModeMusic;
+                OnExitShapeMode += _cont.OnSpellLaunch;
+                OnExitShapeMode += _music.ExitSpellModeMusic;
+
+                GameSettings.LoadedControls = true;
+            }
         }
 
         private void Awake()
@@ -98,7 +103,7 @@ namespace Controls
 
             DontDestroyOnLoad(gameObject);
 
-            InitializeControls();
+            if (!GameSettings.LoadedControls) InitializeControls();
 
             DOTween.Init();
             Application.targetFrameRate = 60;
@@ -189,6 +194,7 @@ namespace Controls
             InputAction back = _uiMap.FindAction("Back");
             back.performed += UIBack;
             _scroll = _uiMap.FindAction("Scroll");
+            _scroll.performed += UIScroll;
         }
 
         void UnloadControls()
@@ -260,6 +266,7 @@ namespace Controls
             InputAction back = _uiMap.FindAction("Back");
             back.performed -= UIBack;
             _scroll = _uiMap.FindAction("Scroll");
+            _scroll.performed -= UIScroll;
         }
 
         public void LoadControls(EControlMap map)
@@ -293,7 +300,8 @@ namespace Controls
                     _currentMap = _dialogueMap;
 
                     Cursor.visible = false;
-                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.lockState = CursorLockMode.Confined;
+                    //Cursor.lockState = CursorLockMode.Locked;
 
                     _ui.ShowUIMode(EUIMode.Dialogue);
                     break;
@@ -307,7 +315,7 @@ namespace Controls
                     _currentMap = _introMap;
 
                     Cursor.visible = false;
-                    Cursor.lockState = CursorLockMode.Locked;
+                    //Cursor.lockState = CursorLockMode.Locked;
                     break;
                 default:
                     _currentMap = null;
@@ -391,6 +399,11 @@ namespace Controls
         void UIBack(InputAction.CallbackContext _)
         {
             if (_ui != null) _ui.OnUIBack(_);
+        }
+
+        void UIScroll(InputAction.CallbackContext ctx)
+        {
+            if (_ui != null) _ui.Scroll(ctx.ReadValue<Vector2>().y);
         }
 
         private void FixedUpdate()

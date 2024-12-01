@@ -91,7 +91,6 @@ public class DatabaseManager : MonoBehaviour
                 if (_currentUserData != null)
                 {
                     ScoreData newData = new ScoreData(_currentUserData.Name, _currentUserData.Score, _currentUserData.posX, _currentUserData.posY);
-
                     _players.Add(newData);
                 }
             }

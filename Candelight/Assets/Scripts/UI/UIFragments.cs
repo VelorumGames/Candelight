@@ -17,6 +17,8 @@ namespace UI
 
         Vector3 _prevPos;
 
+        public bool OpenInv;
+
         private void Awake()
         {
             _inv = FindObjectOfType<Inventory>();
@@ -58,7 +60,26 @@ namespace UI
 
             _text.text = $"{prev}";
 
-            yield return new WaitForSeconds(3f);
+            if (!OpenInv)
+            {
+                yield return new WaitForSeconds(3f);
+
+                _sprite.DOFade(0f, 0.5f).Play();
+                _text.DOFade(0f, 0.5f).Play();
+            }
+        }
+
+        public void KeepFragments()
+        {
+            OpenInv = true;
+
+            _text.DOFade(1f, 0.2f).Play();
+            _sprite.DOFade(1f, 0.2f).Play();
+        }
+
+        public void HideFragments()
+        {
+            OpenInv = false;
 
             _sprite.DOFade(0f, 0.5f).Play();
             _text.DOFade(0f, 0.5f).Play();

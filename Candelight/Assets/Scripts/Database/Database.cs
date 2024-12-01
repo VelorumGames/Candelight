@@ -105,12 +105,50 @@ public class ScoreData
     public float posX;
     public float posY;
 
+    public bool CanRevive;
+    public int CurrentNode = -1;
+    public int[] CompletedNodes;
+    public int[] ActiveItems;
+    public int[] UnactiveItems;
+    public int[] MarkedItems;
+    public int Fragments;
+    public float Candle;
+    public string Runes;
+
     public ScoreData(string n, int sc, float pX, float pY)
     {
         Name = n;
         Score = sc;
         posX = pX;
         posY = pY;
+    }
+
+    public void ImplementGameData(SaveData data)
+    {
+        CanRevive = data.CanRevive;
+        CurrentNode = data.CurrentNode;
+        CompletedNodes = data.CompletedNodes;
+        ActiveItems = data.ActiveItems;
+        UnactiveItems = data.UnactiveItems;
+        MarkedItems = data.MarkedItems;
+        Fragments = data.Fragments;
+        Candle = data.Candle;
+        Runes = data.Runes;
+    }
+
+    public SaveData GetGameData()
+    {
+        SaveData data = new SaveData();
+        data.CanRevive = CanRevive;
+        data.CurrentNode = CurrentNode;
+        data.CompletedNodes = CompletedNodes;
+        data.ActiveItems = ActiveItems;
+        data.UnactiveItems = UnactiveItems;
+        data.MarkedItems = MarkedItems;
+        data.Fragments = Fragments;
+        data.Candle = Candle;
+        data.Runes = Runes;
+        return data;
     }
 }
 

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using TMPro;
+using UI;
 using UI.Window;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -93,6 +94,13 @@ namespace Items
         {
             _oScale = GetComponent<RectTransform>().localScale.x;
             GetComponent<RectTransform>().DOScale(_oScale * 1.05f, 0.2f);
+
+            if (GameSettings.ItemTutorial)
+            {
+                FindObjectOfType<UIManager>().ShowTutorial("Cada artefacto tiene unas propiedades determinadas, pero solo se les puede sacar partido con la energía de un determinado número de fragmentos.", 10f);
+
+                GameSettings.ItemTutorial = false;
+            }
         }
 
         public void OnPointerExit(PointerEventData _)

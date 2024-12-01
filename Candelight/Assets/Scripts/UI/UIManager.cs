@@ -138,10 +138,10 @@ namespace UI
             {
                 if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<SimpleRoomManager>().EndLevel();
             }
-            if (SceneManager.GetActiveScene().name == "MenuScene")
-            {
-                if (GUI.Button(new Rect(350, 40, 150, 20), "REMOVE DATA")) SaveSystem.RemovePreviousGameData();
-            }
+            //if (SceneManager.GetActiveScene().name == "MenuScene")
+            //{
+            //    if (GUI.Button(new Rect(350, 40, 150, 20), "REMOVE DATA")) SaveSystem.RemovePreviousGameData();
+            //}
             //if (GUI.Button(new Rect(500, 40, 150, 20), "CALM SCENE")) SceneManager.LoadScene("CalmScene");
             if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM")) FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(EItemCategory.Rare));
             if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
@@ -317,6 +317,11 @@ namespace UI
 
         #region UI Menus
 
+        public void Scroll (float scroll)
+        {
+
+        }
+
         public void OnUIBack(InputAction.CallbackContext ctx)
         {
             //Debug.Log("Se intenta hacia atras: " + _windows.Count);
@@ -488,7 +493,7 @@ namespace UI
         void ShowFragmentHalo(int prev, int num)
         {
             float offset = GetScreenSizeOffset();
-            FragmentHalo.transform.localPosition = new Vector3(offset, -offset, offset);
+            FragmentHalo.transform.localPosition = new Vector3(offset * 0.95f, -offset * 0.55f, offset);
             FragmentHalo.SetActive(true);
             Invoke("ResetHalo", 3f);
         }

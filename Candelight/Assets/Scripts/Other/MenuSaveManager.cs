@@ -18,13 +18,21 @@ public class MenuSaveManager : MonoBehaviour
     [SerializeField] GameObject _play;
     [SerializeField] GameObject _loadSave;
 
+    ScoreData _previousData;
+
+    UIManager _ui;
+
     private void Awake()
     {
         //FindObjectOfType<PlayerController>().transform.position = new Vector3(999f, 999f, 999f); 
+        GameSettings.LoadedControls = false;
+        _ui = FindObjectOfType<UIManager>();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        GameSettings.ExistsPreviousGame = false;
+
         GameSettings.LoadedWorld = false;
 
         World.LoadedPreviousGame = false;
@@ -38,14 +46,30 @@ public class MenuSaveManager : MonoBehaviour
         SaveSystem.ScoreboardData = new ScoreData(SaveSystem.PlayerName, -1, 0f, 0f);
         SaveSystem.ScoreboardIntro = false;
 
-        if (SaveSystem.ExistsPreviousGame())
+        if (GameSettings.Online)
         {
-            Vector3 pos = _play.GetComponent<RectTransform>().position;
-            _play.GetComponent<RectTransform>().position = _loadSave.GetComponent<RectTransform>().position;
-            _loadSave.GetComponent<RectTransform>().position = pos;
+            _ui.ShowState(EGameState.Database);
 
-            _loadSave.SetActive(true);
+            yield return Database.Get<ScoreData>($"Players/{SaveSystem.PlayerName}", GetScoreData);
+
+            _ui.HideState();
+
+            if (_previousData != null) //Si ha encontrado una previa partida guardada
+            {
+                GameSettings.ExistsPreviousGame = true;
+
+                Vector3 pos = _play.GetComponent<RectTransform>().position;
+                _play.GetComponent<RectTransform>().position = _loadSave.GetComponent<RectTransform>().position;
+                _loadSave.GetComponent<RectTransform>().position = pos;
+
+                _loadSave.SetActive(true);
+            }
         }
+    }
+
+    void GetScoreData(ScoreData data)
+    {
+        _previousData = data;
     }
 
     /// <summary>

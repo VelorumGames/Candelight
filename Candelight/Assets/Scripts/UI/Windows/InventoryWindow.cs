@@ -16,10 +16,24 @@ namespace UI.Window
         [SerializeField] Image _fragmentSprite;
         [SerializeField] Color _unableColor;
 
+        [SerializeField] ParticleSystem _frameParticles;
+
         Inventory _inv;
+        UIFragments _frag;
 
         bool _shown;
-        public int EternalFrameMode = -1;
+        int m_frame = -1;
+        public int EternalFrameMode
+        {
+            get => m_frame;
+            set
+            {
+                m_frame = value;
+
+                if (value == -1) _frameParticles.Stop();
+                else _frameParticles.Play();
+            }
+        }
 
         [SerializeField] EternalFrame[] _eternalFrames;
         AItem[] _eternalItems = new AItem[3];
@@ -27,17 +41,20 @@ namespace UI.Window
         private void Awake()
         {
             _inv = FindObjectOfType<Inventory>();
+            _frag = FindObjectOfType<UIFragments>();
         }
 
         protected override void OnStart()
         {
             _inv.LoadItems();
+            _frag.KeepFragments();
             _shown = true;
         }
 
         protected override void OnClose()
         {
             _inv.UnloadItems();
+            _frag.HideFragments();
             _shown = false;
         }
 

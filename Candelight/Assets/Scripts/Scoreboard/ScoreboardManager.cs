@@ -112,7 +112,7 @@ namespace Scoreboard
             {
                 if (i < data.Length)
                 {
-                    _bestPlayers[i].text = $"{i + 1}. ({data[i].Score} - {data[i].Name})";
+                    _bestPlayers[i].text = $"{i + 1}. {data[i].Name}: {data[i].Score} pts";
                     if (data[i].Name == SaveSystem.ScoreboardData.Name) _bestPlayers[i].color = Color.yellow;
                     else _bestPlayers[i].color = Color.white;
                 }

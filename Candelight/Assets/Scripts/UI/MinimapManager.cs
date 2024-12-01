@@ -14,7 +14,7 @@ namespace UI
         [SerializeField] Transform _globalContainer;
         Dictionary<int, GameObject> _minimapRooms = new Dictionary<int, GameObject>();
 
-        float _movement = 15f;
+        float _movement = 7f;
         bool _lerping;
 
         /// <summary>
@@ -65,6 +65,8 @@ namespace UI
                 //Debug.Log($"X: {offset.x}; Y: {offset.y}");
 
                 if (offset.x == 0 && offset.y == 0) return;
+
+                Debug.Log(offset.magnitude);
 
                 _lerping = true;
                 target += offset.x == 0 ? new Vector3(0f, offset.y > 0 ? -_movement : _movement, 0f) : new Vector3(offset.x > 0 ? -_movement : _movement, 0f, 0f);
