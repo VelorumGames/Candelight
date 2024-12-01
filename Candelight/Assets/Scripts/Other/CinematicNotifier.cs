@@ -10,6 +10,8 @@ public class CinematicNotifier : MonoBehaviour
     public float Duration;
     public string Text;
 
+    public float InitialWait;
+
     private void Awake()
     {
         _cine = FindObjectOfType<IntroCinema>();
@@ -22,6 +24,6 @@ public class CinematicNotifier : MonoBehaviour
 
     void Notify()
     {
-        StartCoroutine(_cine.ShowCinematic(Id, Text, Duration));
+        StartCoroutine(_cine.ShowCinematic(InitialWait, Id, Text, Duration));
     }
 }

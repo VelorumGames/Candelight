@@ -415,6 +415,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2277223332383960614, guid: 11f9e444f5ee42040a51ba28beefe963,
+        type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 3867493866490079806, guid: 11f9e444f5ee42040a51ba28beefe963,
         type: 3}
       propertyPath: m_Name
@@ -6425,6 +6430,7 @@ GameObject:
   - component: {fileID: 280943474}
   - component: {fileID: 280943473}
   - component: {fileID: 280943476}
+  - component: {fileID: 280943477}
   m_Layer: 5
   m_Name: CREDITOS
   m_TagString: Untagged
@@ -6559,6 +6565,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e624a39bdae51674a8fe69ba882256c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &280943477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280943470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f32d9ee22a925d74bacedda79926b907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: 10
 --- !u!1 &289299131
 GameObject:
   m_ObjectHideFlags: 0
@@ -8685,6 +8704,7 @@ GameObject:
   - component: {fileID: 1031334708}
   - component: {fileID: 1031334707}
   - component: {fileID: 1031334706}
+  - component: {fileID: 1031334709}
   m_Layer: 5
   m_Name: BUY
   m_TagString: Untagged
@@ -8807,6 +8827,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1031334704}
   m_CullTransparentMesh: 1
+--- !u!114 &1031334709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031334704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f32d9ee22a925d74bacedda79926b907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: 10
 --- !u!1 &1034891117
 GameObject:
   m_ObjectHideFlags: 0
@@ -10609,6 +10642,7 @@ GameObject:
   - component: {fileID: 1476731488}
   - component: {fileID: 1476731487}
   - component: {fileID: 1476731486}
+  - component: {fileID: 1476731489}
   - component: {fileID: 1476731485}
   m_Layer: 5
   m_Name: SCOREBOARD
@@ -10744,6 +10778,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1476731483}
   m_CullTransparentMesh: 1
+--- !u!114 &1476731489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476731483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f32d9ee22a925d74bacedda79926b907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: 10
 --- !u!1 &1480649815
 GameObject:
   m_ObjectHideFlags: 0
@@ -11843,6 +11890,7 @@ GameObject:
   - component: {fileID: 1731357533}
   - component: {fileID: 1731357532}
   - component: {fileID: 1731357531}
+  - component: {fileID: 1731357534}
   m_Layer: 5
   m_Name: CARGAR PARTIDA
   m_TagString: Untagged
@@ -11965,6 +12013,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1731357528}
   m_CullTransparentMesh: 1
+--- !u!114 &1731357534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731357528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f32d9ee22a925d74bacedda79926b907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: 10
 --- !u!1 &1805553369
 GameObject:
   m_ObjectHideFlags: 0
@@ -12296,6 +12357,7 @@ GameObject:
   - component: {fileID: 1893781885}
   - component: {fileID: 1893781884}
   - component: {fileID: 1893781887}
+  - component: {fileID: 1893781888}
   m_Layer: 5
   m_Name: JUGAR
   m_TagString: Untagged
@@ -12432,6 +12494,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _world: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
   PlayDirectly: 0
+--- !u!114 &1893781888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893781882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f32d9ee22a925d74bacedda79926b907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: 10
 --- !u!1 &1954516225
 GameObject:
   m_ObjectHideFlags: 0

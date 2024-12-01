@@ -42,10 +42,11 @@ namespace UI
         public GameObject Warning;
         public GameObject Options;
         public GameObject InventoryNotif;
+        public TextMeshProUGUI NameNotif;
         public GameObject RemoveInventoryNotif;
         public GameObject InventoryUI;
-        public GameObject FragmentHalo;
-        public GameObject SpellHalo;
+        GameObject _fragmentHalo;
+        GameObject _spellHalo;
         public DeathWindow _deathWindow;
         public Image FadeImage;
         [SerializeField] MinimapManager _minimap;
@@ -91,6 +92,8 @@ namespace UI
             _inv = FindObjectOfType<Inventory>();
 
             Time.timeScale = 1f;
+
+            NameNotif.color = new Color(NameNotif.color.r, NameNotif.color.g, NameNotif.color.b, 0f);
         }
 
         private void OnEnable()
@@ -120,11 +123,17 @@ namespace UI
 
         private void Start()
         {
-            SpellHalo.transform.parent = Camera.main.transform;
-            SpellHalo.SetActive(false);
+            _spellHalo = GameObject.FindGameObjectWithTag("SpellHalo");
+            _fragmentHalo = GameObject.FindGameObjectWithTag("FragmentHalo");
 
-            FragmentHalo.transform.parent = Camera.main.transform;
-            FragmentHalo.SetActive(false);
+            if (_spellHalo)
+            {
+                _spellHalo.transform.parent = Camera.main.transform;
+                _spellHalo.SetActive(false);
+
+                _fragmentHalo.transform.parent = Camera.main.transform;
+                _fragmentHalo.SetActive(false);
+            }
         }
 
         private void OnGUI()
@@ -469,18 +478,18 @@ namespace UI
             _prevTimeScale = Time.timeScale;
             Time.timeScale = _spellTimeScale;
 
-            SpellHalo.SetActive(true);
-            float offset = GetScreenSizeOffset();
-            SpellHalo.transform.localPosition = new Vector3(0f, -offset, offset);
-
-            GetScreenSizeOffset();
+            _spellHalo.SetActive(true);
+            //float offset = GetScreenSizeOffset();
+            //_spellHalo.transform.localPosition = new Vector3(0f, -offset, offset);
+            //
+            //GetScreenSizeOffset();
         }
 
         void ExitSpellModeFeedback()
         {
             Time.timeScale = _prevTimeScale;
 
-            SpellHalo.SetActive(false);
+            _spellHalo.SetActive(false);
 
             Invoke("AuxiliarTimeReset", 0.5f);
         }
@@ -492,18 +501,18 @@ namespace UI
 
         void ShowFragmentHalo(int prev, int num)
         {
-            float offset = GetScreenSizeOffset();
-            FragmentHalo.transform.localPosition = new Vector3(offset * 0.95f, -offset * 0.55f, offset);
-            FragmentHalo.SetActive(true);
+            //float offset = GetScreenSizeOffset();
+            //_fragmentHalo.transform.localPosition = new Vector3(offset * 0.95f, -offset * 0.55f, offset);
+            _fragmentHalo.SetActive(true);
             Invoke("ResetHalo", 3f);
         }
 
-        float GetScreenSizeOffset()
-        {
-            return (0.38f * Screen.height + 35.66f) / 484f;
-        }
+        //float GetScreenSizeOffset()
+        //{
+        //    return (0.38f * Screen.height + 35.66f) / 484f;
+        //}
 
-        public void ResetHalo() => FragmentHalo.SetActive(false);
+        public void ResetHalo() => _fragmentHalo.SetActive(false);
 
         public void ShowState(EGameState state) => _state.Show(state);
 
@@ -538,6 +547,12 @@ namespace UI
         }
 
         public void HideTutorial() => TutorialNotif.GetComponent<UIMoveOnDisable>().DisableElement();
+
+        public void ShowLevelName(string name)
+        {
+            NameNotif.text = name;
+            NameNotif.DOFade(1f, 3f).SetUpdate(true).Play().OnComplete(() => NameNotif.DOFade(0f, 2f).SetUpdate(true).Play());
+        }
 
         #endregion
 

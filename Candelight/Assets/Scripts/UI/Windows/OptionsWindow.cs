@@ -22,6 +22,7 @@ namespace UI.Window
         [SerializeField] Slider _genVolume;
         [SerializeField] Slider _soundVolume;
         [SerializeField] Slider _musicVolume;
+        [SerializeField] Toggle _autoSave;
 
         private void Awake()
         {
@@ -33,6 +34,8 @@ namespace UI.Window
             _genVolume.value = GameSettings.GeneralVolume;
             _soundVolume.value = GameSettings.SoundVolume;
             _musicVolume.value = GameSettings.MusicVolume;
+
+            _autoSave.isOn = GameSettings.AutoSave;
         }
 
         protected override void OnStart()
@@ -97,6 +100,11 @@ namespace UI.Window
         {
             GameSettings.MusicVolume = value;
             if (_options != null) _options.ApplySettings();
+        }
+
+        public void LoadAutoSave(bool value)
+        {
+            GameSettings.AutoSave = value;
         }
 
         public void ResetSettings()

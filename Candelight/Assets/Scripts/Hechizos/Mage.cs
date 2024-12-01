@@ -157,6 +157,12 @@ namespace Hechizos
 
             _lastProjectile = GetAvailableProjectile();
 
+            if (GameSettings.RemainingMagicTutorial)
+            {
+                FindObjectOfType<UIManager>().ShowTutorial("Algunos hechizos dejarán un resquicio de magia que puedes aprovechar.\n Haz CLICK para invocarlo de nuevo rápidamente.");
+                GameSettings.RemainingMagicTutorial = false;
+            }
+
             StartCoroutine(DelayedProjectile(numProj * 0.5f)); //NumProj es el numero del proyectil
 
             return _lastProjectile;

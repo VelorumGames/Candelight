@@ -25,6 +25,8 @@ namespace Enemy
         bool _invicible;
         float _iFrameDuration = 0.5f;
 
+        public bool LuciernagaPosada;
+
         protected void Awake()
         {
             _uiMan = FindObjectOfType<UIManager>();
@@ -60,6 +62,12 @@ namespace Enemy
         {
             if (!_invicible)
             {
+                if (LuciernagaPosada)
+                {
+                    damage *= 2;
+                    Debug.Log($"{gameObject.name} recibe el doble de dano porque tiene una luciernaga posada.");
+                }
+
                 CurrentHP -= damage;
                 ShowDamage(damage);
                 CallDamageEvent(damage, CurrentHP / MaxHP);

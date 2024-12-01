@@ -5,6 +5,7 @@ using Enemy;
 using Player;
 using Hechizos;
 using Hechizos.Elementales;
+using Animations;
 
 public class InferiIA : EnemyController
 {
@@ -24,6 +25,15 @@ public class InferiIA : EnemyController
 
     private bool auxiliar = true;
     private bool auxiliar2 = true;
+
+    InferiAnimation _anim;
+
+    private new void Awake()
+    {
+        base.Awake();
+
+        _anim = GetComponentInChildren<InferiAnimation>();
+    }
 
     private new void OnEnable() //se ejecuta cada vez que se activan
     {
@@ -77,6 +87,7 @@ public class InferiIA : EnemyController
         //comprobar si está cerca el jugador.
         if (CloseToTargetCheck() && puedeAtacar)
         {
+            _anim.ChangeToAttack();
             OnAttack();
         }
 

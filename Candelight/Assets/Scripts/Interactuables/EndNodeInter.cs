@@ -8,6 +8,7 @@ using DG.Tweening;
 using Cameras;
 using UI;
 using Player;
+using Items;
 
 namespace Interactuables
 {
@@ -16,6 +17,7 @@ namespace Interactuables
         public GameObject Fires;
         public ParticleSystem FireParticles;
         public NodeInfo CurrentNodeInfo;
+        [SerializeField] WorldInfo _world;
 
         UIManager _ui;
 
@@ -46,13 +48,20 @@ namespace Interactuables
 
             yield return new WaitForSeconds(0.5f);
 
-            _ui.FadeToWhite(2.5f, FinishScene);
+            _ui.FadeToWhite(2.5f, () => StartCoroutine(FinishScene()));
             DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 90f, 2.5f);
         }
 
-        void FinishScene()
+        IEnumerator FinishScene()
         {
             FindObjectOfType<PlayerController>().World.Candle -= 5f * FindObjectOfType<PlayerController>().World.NodeCandleFactor;
+
+            if (GameSettings.AutoSave)
+            {
+                _ui.ShowState(EGameState.Saving);
+                yield return StartCoroutine(SaveSystem.Save(new SaveData(CurrentNodeInfo, _world, FindObjectOfType<Inventory>())));
+            }
+
             _ui.ShowState(EGameState.Loading);
             SceneManager.LoadScene("WorldScene");
         }

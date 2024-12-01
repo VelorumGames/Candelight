@@ -478,7 +478,7 @@ namespace Player
 
         public void OnBook(InputAction.CallbackContext _)
         {
-            if (!_isFirstPerson && _book && SceneManager.GetActiveScene().name != "CalmScene")
+            if (!_isFirstPerson && _book && SceneManager.GetActiveScene().name != "CalmScene" && !_inCombat)
             {
                 if (_bookIsOpen)
                 {
@@ -540,8 +540,11 @@ namespace Player
 
         public void OnInventory(InputAction.CallbackContext _)
         {
-            _UIMan.LoadUIWindow(_UIMan.InventoryUI, "i");
-            _UIMan.ShowUIMode(EUIMode.Inventory);
+            if (!_inCombat)
+            {
+                _UIMan.LoadUIWindow(_UIMan.InventoryUI, "i");
+                _UIMan.ShowUIMode(EUIMode.Inventory);
+            }
         }
 
         #endregion
@@ -598,6 +601,8 @@ namespace Player
                 _isFirstPerson = false;
             }
         }
+
+        public bool IsFirstPerson() => _isFirstPerson;
 
 
         #region Item Modifiers
