@@ -3,6 +3,7 @@ using DG.Tweening;
 using Hechizos;
 using Hechizos.DeForma;
 using Hechizos.Elementales;
+using Player;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,6 +32,13 @@ namespace UI
 
         Image _currentShape;
         Sprite _currentSprite;
+
+        PlayerController _player;
+
+        private void Awake()
+        {
+            _player = GetComponent<PlayerController>();
+        }
 
         private void Start()
         {
@@ -156,23 +164,29 @@ namespace UI
         {
             _currentShape = _results[0];
 
+            Debug.Log("Se mostrara sprite de: " + rune.Name);
+
             switch (rune.Name)
             {
                 case "Melee":
                     _currentSprite = _spellResults[1];
+                    ShowSpellSprite(_currentShape, _currentSprite, delay);
                     break;
                 case "Projectile":
                     _currentSprite = _spellResults[0];
+                    ShowSpellSprite(_currentShape, _currentSprite, delay);
                     break;
                 case "Explosion":
                     _currentSprite = _spellResults[2];
+                    ShowSpellSprite(_currentShape, _currentSprite);
                     break;
                 case "Buff":
                     _currentSprite = _spellResults[3];
+                    ShowSpellSprite(_currentShape, _currentSprite);
                     break;
             }
 
-            ShowSpellSprite(_currentShape, _currentSprite, delay);
+            //ShowSpellSprite(_currentShape, _currentSprite, delay);
         }
 
         public void ShowElementsResult(AElementalRune[] runes)
@@ -242,14 +256,15 @@ namespace UI
         void ShowSpellSprite(Image img, Sprite spr)
         {
             img.sprite = spr;
-            img.GetComponent<RectTransform>().DOScale(0.55f, 0.2f).Play().OnComplete(() => img.GetComponent<RectTransform>().DOScale(0.5f, 0.7f).Play().OnComplete(() => 
+            img.GetComponent<RectTransform>().DOScale(0.55f, 0.2f).Play().OnComplete(() => img.GetComponent<RectTransform>().DOScale(0.5f, 0.55f).Play().OnComplete(() => 
                 img.GetComponent<RectTransform>().localScale = new Vector3(0.45f, 0.45f, 0.45f)));
-            img.DOFade(1f, 0.2f).Play().OnComplete(() => img.DOFade(0f, 0.7f).Play());
+            img.DOFade(1f, 0.2f).Play().OnComplete(() => img.DOFade(0f, 0.55f).Play());
         }
 
         bool _auxiliarSpell = true;
         void ShowSpellSprite(Image img, Sprite spr, float delay)
         {
+            Debug.Log("Sprite: " + spr.name);
             if (_auxiliarSpell)
             {
                 img.sprite = spr;
@@ -277,7 +292,7 @@ namespace UI
 
         public void ShowCanThrow(bool b)
         {
-            _currentShape.color = b ? Color.yellow : Color.white;
+            if (_currentShape != null) _currentShape.color = b ? Color.yellow : Color.white;
         }
     }
 }

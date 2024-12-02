@@ -216,7 +216,7 @@ namespace UI
             if (spell != null)
             {
                 StartCoroutine(_showInstr.ShowValidInstructions());
-                if (!(spell is ExplosionRune)) _showInstr.ShowShapeResult(spell, _player.GetLastSpellDelay());
+                /*if (!(spell is ExplosionRune || spell is BuffRune))*/ _showInstr.ShowShapeResult(spell, _player.GetLastSpellDelay());
             }
             else _showInstr.ResetSprites();
         }
