@@ -19,11 +19,14 @@ namespace Interactuables
         public NodeInfo CurrentNodeInfo;
         [SerializeField] WorldInfo _world;
 
+        AudioSource _audio;
+
         UIManager _ui;
 
         private void Awake()
         {
             _ui = FindObjectOfType<UIManager>();
+            _audio = GetComponent<AudioSource>();
         }
 
         public override void Interaction()
@@ -41,6 +44,8 @@ namespace Interactuables
             CurrentNodeInfo.Node.RegisterCompletedNode();
 
             _ui.Back();
+
+            _audio.Play();
 
             yield return new WaitForSeconds(0.5f);
 

@@ -15,11 +15,14 @@ namespace Interactuables
         public GameObject Fires;
         public ParticleSystem FireParticles;
 
+        AudioSource _audio;
+
         public override void Interaction()
         {
             Debug.Log("Se pasa a la siguiente zona");
             FindObjectOfType<PlayerController>().SetMove(false);
             Fires.SetActive(true);
+            _audio.Play();
             FireParticles.Play();
             DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 20f, 2f).OnComplete(TryEndLevel);
         }

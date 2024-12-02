@@ -42,6 +42,8 @@ namespace Hechizos
 
         bool _impacted;
 
+        public AudioClip FireballSound;
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
@@ -54,6 +56,8 @@ namespace Hechizos
             base.OnEnable();
 
             //RegisterTypes(Elements);
+
+            GetComponent<AudioSource>().PlayOneShot(FireballSound);
 
             _impacted = false;
             transform.localScale = _oScale * Vector3.one;
