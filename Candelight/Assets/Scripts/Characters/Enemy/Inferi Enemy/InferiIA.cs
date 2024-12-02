@@ -21,7 +21,7 @@ public class InferiIA : EnemyController
     }
         //todos los inferis tienen la misma referencia del lider.
 
-    private Transform objetivoJugador, objetivoInferi; 
+    private Transform objetivoInferi; 
 
     private bool auxiliar = true;
     private bool auxiliar2 = true;
@@ -44,25 +44,24 @@ public class InferiIA : EnemyController
 
     void Update()
     {
-        if (ClosePlayerCheck() || lider == this) //pasa al estado de ATAQUE
+        if (ClosePlayerCheck() || lider == null || lider == this) //pasa al estado de ATAQUE
         {
             if (auxiliar)
             {
-                if (lider != this) Debug.Log("ATAQUE");
+                //if (lider != this) Debug.Log("ATAQUE");
                 //Ir hacia el jugador.
-                objetivoJugador = Player.transform;
                 StopAllCoroutines();
-                StartCoroutine(MoveToTarget(objetivoJugador, true));
+                StartCoroutine(MoveToTarget(Player.transform, true));
             }
         }
         else //continúa en el estado de MOVIMIENTO
         {
-            if (lider != this) Debug.Log($"MOVIMIENTO: {InferiLeaderCheck()}");
-            if (InferiLeaderCheck())
+            //if (lider != this) Debug.Log($"MOVIMIENTO: {InferiLeaderCheck()}");
+            if (lider != null && InferiLeaderCheck())
             {
                 if (auxiliar)
                 {
-                    if (lider != this) Debug.Log("HACIA EL LIDER");
+                    //if (lider != this) Debug.Log("HACIA EL LIDER");
                     objetivoInferi = lider.transform;
                     StopAllCoroutines();
                     StartCoroutine(MoveToTarget(objetivoInferi, false));
@@ -78,7 +77,10 @@ public class InferiIA : EnemyController
         if (PlayerFireCheck()) Slow(0.75f, 10f);
     }
 
-    bool CloseToTargetCheck() => Vector3.Distance(transform.position, objetivoJugador.position) < 2f;
+    bool CloseToTargetCheck()
+    {
+        return Vector3.Distance(transform.position, Player.transform.position) < 2f;
+    }
 
     IEnumerator MoveToTarget(Transform objetivo, bool puedeAtacar)
     {
@@ -96,14 +98,14 @@ public class InferiIA : EnemyController
 
     bool ClosePlayerCheck()
     {
-        if (lider != this) Debug.Log("A player: " + Vector3.Distance(transform.position, Player.transform.position));
+        //if (lider != this) Debug.Log("A player: " + Vector3.Distance(transform.position, Player.transform.position));
         return Vector3.Distance(transform.position, Player.transform.position) < 2f;
     }
 
     //Ha visto a otro inferi.
     bool InferiLeaderCheck()
     {
-        if (lider != this) Debug.Log("A lider" + Vector3.Distance(transform.position, lider.transform.position));
+        //if (lider != this) Debug.Log("A lider" + Vector3.Distance(transform.position, lider.transform.position));
         return Vector3.Distance(transform.position, lider.transform.position) < 5f && Vector3.Distance(transform.position, lider.transform.position) > 1f;
     }
 
@@ -121,7 +123,7 @@ public class InferiIA : EnemyController
     IEnumerator GoToRandomPos()
     {
         auxiliar2 = false;
-        if (lider != this) Debug.Log($"ALEATORIO: {!InferiLeaderCheck()} && {!ClosePlayerCheck()}");
+        //if (lider != this) Debug.Log($"ALEATORIO: {!InferiLeaderCheck()} && {!ClosePlayerCheck()}");
         while (!InferiLeaderCheck() && !ClosePlayerCheck())
         {
             Vector3 target = transform.position + new Vector3(Random.Range(-2f, 2f), transform.position.y, Random.Range(-2f, 2f));

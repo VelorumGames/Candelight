@@ -88,7 +88,7 @@ namespace Player
         bool _canSpellThrow = true;
 
         bool _invicible;
-        float _iFrameDuration = 0.5f;
+        float _iFrameDuration = 1f;
 
         Vector2 _oldDirection;
 
@@ -205,8 +205,16 @@ namespace Player
             _invicible = false;
         }
 
-        public void RegisterCombat() => _inCombat = true;
-        public void FinishCombat() => _inCombat = false;
+        public void RegisterCombat()
+        {
+            _inCombat = true;
+            _UIMan.ShowUIMode(EUIMode.Combat);
+        }
+        public void FinishCombat()
+        {
+            _inCombat = false;
+            _UIMan.ShowUIMode(EUIMode.Explore);
+        }
 
         public void Revive()
         {
@@ -418,12 +426,12 @@ namespace Player
                         AShapeRune shapeSpell = spell as AShapeRune;
                         if (shapeSpell != null)
                         {
-                            if (!(shapeSpell is ExplosionRune))
+                            if (!(shapeSpell is ExplosionRune || shapeSpell is BuffRune))
                             {
                                 _canLastSpell = true;
                                 Invoke("ResetLastSpellTimer", _lastSpellDuration);
                             }
-
+                            shapeSpell.SetFastDamageFactor(1f);
                             ThrowSpell(shapeSpell);
                         }
                         else if (OnSpell != null) OnSpell(null); //Si no encuentra hechizo valido
@@ -440,6 +448,7 @@ namespace Player
         {
             if (_canLastSpell && CanMove && SceneManager.GetActiveScene().name != "CalmScene" && _lastSpell != null)
             {
+                _lastSpell.SetFastDamageFactor(0.75f);
                 ThrowSpell(_lastSpell);
             }
         }
@@ -464,6 +473,8 @@ namespace Player
                 Invoke("ResetSpellThrowDelay", _spellThrowDelay);
             }
         }
+
+        public AShapeRune GetLastSpell() => _lastSpell;
 
         public void ResetSpellThrowDelay()
         {

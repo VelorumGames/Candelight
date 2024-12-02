@@ -66,7 +66,7 @@ namespace UI
 
                 if (offset.x == 0 && offset.y == 0) return;
 
-                Debug.Log(offset.magnitude);
+                //Debug.Log(offset.magnitude);
 
                 _lerping = true;
                 target += offset.x == 0 ? new Vector3(0f, offset.y > 0 ? -_movement : _movement, 0f) : new Vector3(offset.x > 0 ? -_movement : _movement, 0f, 0f);
