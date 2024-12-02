@@ -106,7 +106,8 @@ public class InferiIA : EnemyController
     bool InferiLeaderCheck()
     {
         //if (lider != this) Debug.Log("A lider" + Vector3.Distance(transform.position, lider.transform.position));
-        return Vector3.Distance(transform.position, lider.transform.position) < 5f && Vector3.Distance(transform.position, lider.transform.position) > 1f;
+        if (lider != null) return Vector3.Distance(transform.position, lider.transform.position) < 5f && Vector3.Distance(transform.position, lider.transform.position) > 1f;
+        else return false;
     }
 
     bool PlayerFireCheck()
