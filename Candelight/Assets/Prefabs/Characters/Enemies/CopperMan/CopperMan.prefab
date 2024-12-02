@@ -1,0 +1,655 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5342641490398162997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5063390100802427459}
+  - component: {fileID: 3938267479470577832}
+  - component: {fileID: 2565286932695769442}
+  - component: {fileID: 4725441190420011988}
+  - component: {fileID: 6260730784542798857}
+  m_Layer: 0
+  m_Name: CopperMan
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5063390100802427459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5342641490398162997}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 432.0299, y: 553.98114, z: -385.6372}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3938267479470577832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5342641490398162997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f3892eca901554b909a194006e97b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  executeOnLoop: 0
+  interruptOptions: 0
+  _enemyController: {fileID: 4725441190420011988}
+--- !u!114 &2565286932695769442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5342641490398162997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7033c32493b38240a6a2c47736ac9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  executeOnLoop: 0
+  interruptOptions: 0
+  _eventHandler:
+    debugStatusChanges: 0
+    identifier: 
+  data:
+    graphs:
+    - name: CopperManMoodFSM
+      id: d38950fd-9bc9-4274-ab7f-137b5b315c0d
+      graph:
+        rid: 3495657588212891648
+      nodes:
+      - name: CalmState
+        id: 478fd436-aff6-4734-bd52-d930f7310d2d
+        position: {x: 594, y: 330}
+        node:
+          rid: 3495657588212891649
+        references:
+        - fieldName: Action
+          value:
+            rid: 3495657588212891656
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 58f829ce-e739-4614-9d1a-7a38acfcaaed
+        childIds:
+        - f4052ea4-f75a-4ed7-9f4e-2e20491739d6
+      - name: AngryState
+        id: ec47721e-60ab-4154-8065-24fb2c2259a6
+        position: {x: 1161, y: 326}
+        node:
+          rid: 3495657588212891657
+        references:
+        - fieldName: Action
+          value:
+            rid: 3495657588212891658
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - f4052ea4-f75a-4ed7-9f4e-2e20491739d6
+        childIds:
+        - 58f829ce-e739-4614-9d1a-7a38acfcaaed
+      - name: CalmToAngryTransition
+        id: f4052ea4-f75a-4ed7-9f4e-2e20491739d6
+        position: {x: 866, y: 181}
+        node:
+          rid: 3495657588212891659
+        references:
+        - fieldName: Perception
+          value:
+            rid: 3495657588212891663
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - fieldName: Action
+          value:
+            rid: -2
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 478fd436-aff6-4734-bd52-d930f7310d2d
+        childIds:
+        - ec47721e-60ab-4154-8065-24fb2c2259a6
+      - name: AngryToCalmTransition
+        id: 58f829ce-e739-4614-9d1a-7a38acfcaaed
+        position: {x: 875, y: 478}
+        node:
+          rid: 3495657588212891660
+        references:
+        - fieldName: Perception
+          value:
+            rid: 3495657588212891664
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - fieldName: Action
+          value:
+            rid: -2
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - ec47721e-60ab-4154-8065-24fb2c2259a6
+        childIds:
+        - 478fd436-aff6-4734-bd52-d930f7310d2d
+    - name: CopperManAngryBT
+      id: 077f76b6-8b8d-49b8-a5da-c5115d035a95
+      graph:
+        rid: 3495657588212891653
+      nodes:
+      - name: AngryInfiniteLoop
+        id: 52b7b280-206c-4437-a76e-83d98b04e8a9
+        position: {x: 926, y: 261}
+        node:
+          rid: 3495657588212891674
+        references: []
+        parentIds: []
+        childIds:
+        - fe142fbb-5aaa-42ff-abe7-d16a3d50696f
+      - name: AngrySelector
+        id: fe142fbb-5aaa-42ff-abe7-d16a3d50696f
+        position: {x: 930, y: 422}
+        node:
+          rid: 3495657588212891675
+        references: []
+        parentIds:
+        - 52b7b280-206c-4437-a76e-83d98b04e8a9
+        childIds:
+        - 6d55b00c-a548-4bbe-86fd-2f96263207ff
+        - de141f10-18c1-4365-8fde-d33129262fe7
+        - a8435ffe-df88-4cd6-aa8f-b234925dc18d
+      - name: AngryPlayerNear
+        id: 6d55b00c-a548-4bbe-86fd-2f96263207ff
+        position: {x: 749, y: 585}
+        node:
+          rid: 3495657588212891676
+        references:
+        - fieldName: Perception
+          value:
+            rid: 3495657588212891677
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - fe142fbb-5aaa-42ff-abe7-d16a3d50696f
+        childIds:
+        - e216c189-2344-44a5-b8b2-321cb31298bf
+      - name: AngryCanFlee
+        id: e216c189-2344-44a5-b8b2-321cb31298bf
+        position: {x: 748, y: 795}
+        node:
+          rid: 3495657588212891678
+        references:
+        - fieldName: Perception
+          value:
+            rid: 3495657588212891679
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 6d55b00c-a548-4bbe-86fd-2f96263207ff
+        childIds:
+        - acd11e0b-e37b-4cc3-bc6f-ca2d8c083b5c
+      - name: AngryFlee
+        id: acd11e0b-e37b-4cc3-bc6f-ca2d8c083b5c
+        position: {x: 753, y: 999}
+        node:
+          rid: 3495657588212891680
+        references:
+        - fieldName: Action
+          value:
+            rid: 3495657588212891681
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - e216c189-2344-44a5-b8b2-321cb31298bf
+        childIds: []
+      - name: AngryPlayerAtRange
+        id: de141f10-18c1-4365-8fde-d33129262fe7
+        position: {x: 1012, y: 619}
+        node:
+          rid: 3495657588212891682
+        references:
+        - fieldName: Perception
+          value:
+            rid: 3495657588212891683
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - fe142fbb-5aaa-42ff-abe7-d16a3d50696f
+        childIds:
+        - 074902e7-d173-42b0-8818-1dd74174f561
+      - name: AngryRangedAttack
+        id: 074902e7-d173-42b0-8818-1dd74174f561
+        position: {x: 1021, y: 841}
+        node:
+          rid: 3495657588212891684
+        references:
+        - fieldName: Action
+          value:
+            rid: 3495657588212891685
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - de141f10-18c1-4365-8fde-d33129262fe7
+        childIds: []
+      - name: AngryMove
+        id: a8435ffe-df88-4cd6-aa8f-b234925dc18d
+        position: {x: 1313, y: 637}
+        node:
+          rid: 3495657588212891686
+        references:
+        - fieldName: Action
+          value:
+            rid: 3495657588212891687
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - fe142fbb-5aaa-42ff-abe7-d16a3d50696f
+        childIds: []
+    - name: CopperManCalmBT
+      id: b5df21a1-1981-43cb-894a-a096d7fc5351
+      graph:
+        rid: 3495657588212891654
+      nodes:
+      - name: CalmInfiniteLoop
+        id: c89f8b7f-fd8a-4af6-9777-0b741afdd570
+        position: {x: 926, y: 152}
+        node:
+          rid: 3495657588212891665
+        references: []
+        parentIds: []
+        childIds:
+        - ab79fd0b-2991-4b53-aed6-638236a90101
+      - name: CalmSelector
+        id: ab79fd0b-2991-4b53-aed6-638236a90101
+        position: {x: 927, y: 305}
+        node:
+          rid: 3495657588212891666
+        references: []
+        parentIds:
+        - c89f8b7f-fd8a-4af6-9777-0b741afdd570
+        childIds:
+        - 401d450d-6b8d-4c57-a269-dbae09fb11ab
+        - 98a85eb0-8958-4e81-8fdf-9a310f20b59d
+      - name: CalmPlayerAtRange
+        id: 401d450d-6b8d-4c57-a269-dbae09fb11ab
+        position: {x: 759, y: 491}
+        node:
+          rid: 3495657588212891668
+        references:
+        - fieldName: Perception
+          value:
+            rid: 3495657588212891669
+          fieldType: BehaviourAPI.Core.Perceptions.Perception, BehaviourAPI.Core,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - ab79fd0b-2991-4b53-aed6-638236a90101
+        childIds:
+        - fc821c66-9977-4e31-9367-039f3bc8355c
+      - name: CalmMeleAttack
+        id: fc821c66-9977-4e31-9367-039f3bc8355c
+        position: {x: 756, y: 700}
+        node:
+          rid: 3495657588212891670
+        references:
+        - fieldName: Action
+          value:
+            rid: 3495657588212891671
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - 401d450d-6b8d-4c57-a269-dbae09fb11ab
+        childIds: []
+      - name: CalmMove
+        id: 98a85eb0-8958-4e81-8fdf-9a310f20b59d
+        position: {x: 1136, y: 499}
+        node:
+          rid: 3495657588212891672
+        references:
+        - fieldName: Action
+          value:
+            rid: 3495657588212891673
+          fieldType: BehaviourAPI.Core.Actions.Action, BehaviourAPI.Core, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        parentIds:
+        - ab79fd0b-2991-4b53-aed6-638236a90101
+        childIds: []
+    pushPerceptions: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3495657588212891648
+      type: {class: FSM, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data: 
+    - rid: 3495657588212891649
+      type: {class: State, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data: 
+    - rid: 3495657588212891653
+      type: {class: BehaviourTree, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891654
+      type: {class: BehaviourTree, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891656
+      type: {class: SubgraphAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        ExecuteOnLoop: 0
+        InterruptOptions: 2
+        subgraphId: b5df21a1-1981-43cb-894a-a096d7fc5351
+    - rid: 3495657588212891657
+      type: {class: State, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data: 
+    - rid: 3495657588212891658
+      type: {class: SubgraphAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        ExecuteOnLoop: 0
+        InterruptOptions: 2
+        subgraphId: 077f76b6-8b8d-49b8-a5da-c5115d035a95
+    - rid: 3495657588212891659
+      type: {class: StateTransition, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data:
+        StatusFlags: 0
+    - rid: 3495657588212891660
+      type: {class: StateTransition, ns: BehaviourAPI.StateMachines, asm: BehaviourAPI.StateMachines}
+      data:
+        StatusFlags: 0
+    - rid: 3495657588212891663
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: CalmToAngryTransitionInit
+        check:
+          componentName: 
+          methodName: CalmToAngryTransitionCheck
+        reset:
+          componentName: 
+          methodName: CalmToAngryTransitionReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3495657588212891664
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: AngryToCalmTransitionInit
+        check:
+          componentName: 
+          methodName: AngryToCalmTransitionCheck
+        reset:
+          componentName: 
+          methodName: AngryToCalmTransitionReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3495657588212891665
+      type: {class: LoopNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        Iterations: -1
+    - rid: 3495657588212891666
+      type: {class: SelectorNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        IsRandomized: 0
+    - rid: 3495657588212891668
+      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891669
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: PlayerAtRangeInit
+        check:
+          componentName: 
+          methodName: PlayerAtRangeCheck
+        reset:
+          componentName: 
+          methodName: PlayerAtRangeReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3495657588212891670
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891671
+      type: {class: CustomAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        start:
+          componentName: 
+          methodName: CalmMeleAttackStart
+        update:
+          componentName: 
+          methodName: CalmMeleAttackUpdate
+        stop:
+          componentName: 
+          methodName: CalmMeleAttackStop
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3495657588212891672
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891673
+      type: {class: CustomAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        start:
+          componentName: 
+          methodName: CalmMoveStart
+        update:
+          componentName: 
+          methodName: CalmMoveUpdate
+        stop:
+          componentName: 
+          methodName: CalmMoveStop
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3495657588212891674
+      type: {class: LoopNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        Iterations: -1
+    - rid: 3495657588212891675
+      type: {class: SelectorNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data:
+        IsRandomized: 0
+    - rid: 3495657588212891676
+      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891677
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: AngryPlayerNearInit
+        check:
+          componentName: 
+          methodName: AngryPlayerNearCheck
+        reset:
+          componentName: 
+          methodName: AngryPlayerNearReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3495657588212891678
+      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891679
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: AngryCanFleeInit
+        check:
+          componentName: 
+          methodName: AngryCanFleeCheck
+        reset:
+          componentName: 
+          methodName: AngryCanFleeReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3495657588212891680
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891681
+      type: {class: CustomAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        start:
+          componentName: 
+          methodName: AngryFleeStart
+        update:
+          componentName: 
+          methodName: AngryFleeUpdate
+        stop:
+          componentName: 
+          methodName: AngryFleeStop
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3495657588212891682
+      type: {class: ConditionNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891683
+      type: {class: CustomPerception, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        init:
+          componentName: 
+          methodName: AngryPlayerAtRangeInit
+        check:
+          componentName: 
+          methodName: AngryPlayerAtRangeCheck
+        reset:
+          componentName: 
+          methodName: AngryPlayerAtRangeReset
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3495657588212891684
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891685
+      type: {class: CustomAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        start:
+          componentName: 
+          methodName: AngryRangedAttackStart
+        update:
+          componentName: 
+          methodName: AngryRangedAttackUpdate
+        stop:
+          componentName: 
+          methodName: AngryRangedAttackStop
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+    - rid: 3495657588212891686
+      type: {class: LeafNode, ns: BehaviourAPI.BehaviourTrees, asm: BehaviourAPI.BehaviourTrees}
+      data: 
+    - rid: 3495657588212891687
+      type: {class: CustomAction, ns: BehaviourAPI.UnityToolkit.GUIDesigner.Framework,
+        asm: BehaviourAPI.UnityToolkit.GUIDesigner.Framework}
+      data:
+        start:
+          componentName: 
+          methodName: AngryMoveStart
+        update:
+          componentName: 
+          methodName: AngryMoveUpdate
+        stop:
+          componentName: 
+          methodName: AngryMoveStop
+        pause:
+          componentName: 
+          methodName: 
+        unpause:
+          componentName: 
+          methodName: 
+--- !u!114 &4725441190420011988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5342641490398162997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7014c8c6b1b71c34c9e9b511163ad18f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  World: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
+  _speed: 5
+  MaxHP: 5
+  m_HP: 5
+  Info: {fileID: 11400000, guid: fbb7c00e7c3cce94d849ac522d494fa3, type: 2}
+  _modifier: {fileID: 11400000, guid: bb9b3c02e6b6ef544a05042cd6ee58fc, type: 2}
+  Fragment: {fileID: 3511583418104216482, guid: f4b15eff24eade8458c13b8996bbdd04,
+    type: 3}
+--- !u!114 &6260730784542798857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5342641490398162997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e927a955025bb4fb32e91977fba152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyController: {fileID: 0}

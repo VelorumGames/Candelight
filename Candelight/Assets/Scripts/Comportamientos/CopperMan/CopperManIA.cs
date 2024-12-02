@@ -7,22 +7,23 @@ using BehaviourAPI.Core.Perceptions;
 using BehaviourAPI.UnityToolkit;
 using BehaviourAPI.StateMachines;
 using BehaviourAPI.BehaviourTrees;
+using Enemy;
 
 public class CopperManIA : BehaviourRunner
 {
-	
-	
+	[SerializeField] private EnemyController _enemyController;
+
 	protected override BehaviourGraph CreateGraph()
 	{
-        FSM CopperManFSMLvel1 = new();
-		BehaviourTree CopperManFSCalmBTLevel2 = new();
-        BehaviourTree CopperManAngryBTLevel2 = new();
+        FSM CopperManMoodFSM = new();
+		BehaviourTree CopperManAngryBT = new();
+        BehaviourTree CopperManCalmBT = new();
 
-        SubsystemAction Angry_action = new(CopperManAngryBTLevel2, true, ExecutionInterruptOptions.Stop);
-		State Angry = CopperManFSMLvel1.CreateState(Angry_action);
+        SubsystemAction CalmState_action = new(CopperManCalmBT);
+		State CalmState = CopperManMoodFSM.CreateState("CalmState", CalmState_action);
 
-        SubsystemAction Calm_action = new(CopperManFSCalmBTLevel2, true, ExecutionInterruptOptions.Stop);
-		State Calm = CopperManFSMLvel1.CreateState(Calm_action);
+        SubsystemAction AngryState_action = new(CopperManAngryBT);
+		State AngryState = CopperManMoodFSM.CreateState("AngryState", AngryState_action);
 
         ConditionPerception CalmToAngryTransition_perception = new()
         {
@@ -30,7 +31,7 @@ public class CopperManIA : BehaviourRunner
             onCheck = CalmToAngryTransitionCheck,
             onReset = CalmToAngryTransitionReset
         };
-        StateTransition CalmToAngryTransition = CopperManFSMLvel1.CreateTransition(Calm, Angry, CalmToAngryTransition_perception, statusFlags: StatusFlags.None);
+        StateTransition CalmToAngryTransition = CopperManMoodFSM.CreateTransition("CalmToAngryTransition", CalmState, AngryState, CalmToAngryTransition_perception, statusFlags: StatusFlags.None);
 
         ConditionPerception AngryToCalmTransition_perception = new()
         {
@@ -38,61 +39,69 @@ public class CopperManIA : BehaviourRunner
             onCheck = AngryToCalmTransitionCheck,
             onReset = AngryToCalmTransitionReset
         };
-        StateTransition AngryToCalmTransition = CopperManFSMLvel1.CreateTransition(Angry, Calm, AngryToCalmTransition_perception, statusFlags: StatusFlags.None);
+        StateTransition AngryToCalmTransition = CopperManMoodFSM.CreateTransition("AngryToCalmTransition", AngryState, CalmState, AngryToCalmTransition_perception, statusFlags: StatusFlags.None);
 
-        FunctionalAction Move_action = new()
+        FunctionalAction AngryFlee_action = new()
         {
-            onStarted = MoveStart,
-            onUpdated = MoveUpdate,
-            onStopped = MoveStop
+            onStarted = AngryFleeStart,
+            onUpdated = AngryFleeUpdate,
+            onStopped = AngryFleeStop
         };
-        LeafNode Move = CopperManFSCalmBTLevel2.CreateLeafNode(Move_action);
+        LeafNode AngryFlee = CopperManAngryBT.CreateLeafNode("AngryFlee", AngryFlee_action);
+		
+		ConditionNode AngryCanFlee = CopperManAngryBT.CreateDecorator<ConditionNode>("AngryCanFlee", AngryFlee);
+		
+		ConditionNode AngryPlayerNear = CopperManAngryBT.CreateDecorator<ConditionNode>("AngryPlayerNear", AngryCanFlee);
 
-        FunctionalAction MeleAttack_action = new()
+        FunctionalAction AngryRangedAttack_action = new()
         {
-            onStarted = MeleAttackStart,
-            onUpdated = MeleAttackUpdate,
-            onStopped = MeleAttackStop
+            onStarted = AngryRangedAttackStart,
+            onUpdated = AngryRangedAttackUpdate,
+            onStopped = AngryRangedAttackStop
         };
-        LeafNode MeleAttack = CopperManFSCalmBTLevel2.CreateLeafNode(MeleAttack_action);
+        LeafNode AngryRangedAttack = CopperManAngryBT.CreateLeafNode("AngryRangedAttack", AngryRangedAttack_action);
 		
-		ConditionNode PlayerAtRange = CopperManFSCalmBTLevel2.CreateDecorator<ConditionNode>(MeleAttack);
-		
-		SelectorNode SelectorNode = CopperManFSCalmBTLevel2.CreateComposite<SelectorNode>(false, Move, PlayerAtRange);
-		SelectorNode.IsRandomized = false;
-		
-		LoopNode InfiniteLoop = CopperManFSCalmBTLevel2.CreateDecorator<LoopNode>(SelectorNode);
-		InfiniteLoop.Iterations = -1;
+		ConditionNode AngryPlayerAtRange = CopperManAngryBT.CreateDecorator<ConditionNode>("AngryPlayerAtRange", AngryRangedAttack);
 
-        FunctionalAction Flee_action = new()
+        FunctionalAction AngryMove_action = new()
         {
-            onStarted = FleeStart,
-            onUpdated = FleeUpdate,
-            onStopped = FleeStop
+            onStarted = AngryMoveStart,
+            onUpdated = AngryMoveUpdate,
+            onStopped = AngryMoveStop
         };
-        LeafNode Flee = CopperManAngryBTLevel2.CreateLeafNode(Flee_action);
+        LeafNode AngryMove = CopperManAngryBT.CreateLeafNode("AngryMove", AngryMove_action);
 		
-		ConditionNode CanFlee = CopperManAngryBTLevel2.CreateDecorator<ConditionNode>(Flee);
+		SelectorNode AngrySelector = CopperManAngryBT.CreateComposite<SelectorNode>("AngrySelector", false, AngryPlayerNear, AngryPlayerAtRange, AngryMove);
+		AngrySelector.IsRandomized = false;
 		
-		ConditionNode PlayerNear = CopperManAngryBTLevel2.CreateDecorator<ConditionNode>(CanFlee);
+		LoopNode AngryInfiniteLoop = CopperManAngryBT.CreateDecorator<LoopNode>("AngryInfiniteLoop", AngrySelector);
+		AngryInfiniteLoop.Iterations = -1;
 
-        FunctionalAction RangedAttack_action = new()
+        FunctionalAction CalmMeleAttack_action = new()
         {
-            onStarted = RangedAttackStart,
-            onUpdated = RangedAttackUpdate,
-            onStopped = RangedAttackStop
+            onStarted = CalmMeleAttackStart,
+            onUpdated = CalmMeleAttackUpdate,
+            onStopped = CalmMeleAttackStop
         };
-        LeafNode RangedAttack = CopperManAngryBTLevel2.CreateLeafNode(RangedAttack_action);
+        LeafNode CalmMeleAttack = CopperManCalmBT.CreateLeafNode("CalmMeleAttack", CalmMeleAttack_action);
 		
-		PlayerAtRange = CopperManAngryBTLevel2.CreateDecorator<ConditionNode>(RangedAttack);
+		ConditionNode CalmPlayerAtRange = CopperManCalmBT.CreateDecorator<ConditionNode>("CalmPlayerAtRange", CalmMeleAttack);
+
+        FunctionalAction CalmMove_action = new()
+        {
+            onStarted = CalmMoveStart,
+            onUpdated = CalmMoveUpdate,
+            onStopped = CalmMoveStop
+        };
+        LeafNode CalmMove = CopperManCalmBT.CreateLeafNode("CalmMove", CalmMove_action);
 		
-		SelectorNode = CopperManAngryBTLevel2.CreateComposite<SelectorNode>(false, PlayerNear, PlayerAtRange, Move);
-		SelectorNode.IsRandomized = false;
+		SelectorNode CalmSelector = CopperManCalmBT.CreateComposite<SelectorNode>("CalmSelector", false, CalmPlayerAtRange, CalmMove);
+		CalmSelector.IsRandomized = false;
 		
-		InfiniteLoop = CopperManAngryBTLevel2.CreateDecorator<LoopNode>(SelectorNode);
-		InfiniteLoop.Iterations = -1;
+		LoopNode CalmInfiniteLoop = CopperManCalmBT.CreateDecorator<LoopNode>("CalmInfiniteLoop", CalmSelector);
+		CalmInfiniteLoop.Iterations = -1;
 		
-		return CopperManFSMLvel1;
+		return CopperManMoodFSM;
 	}
 	
 	private void CalmToAngryTransitionInit()
@@ -125,62 +134,77 @@ public class CopperManIA : BehaviourRunner
 		throw new System.NotImplementedException();
 	}
 	
-	private void MoveStart()
+	private void AngryFleeStart()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private Status MoveUpdate()
+	private Status AngryFleeUpdate()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private void MoveStop()
+	private void AngryFleeStop()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private void MeleAttackStart()
+	private void AngryRangedAttackStart()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private Status MeleAttackUpdate()
+	private Status AngryRangedAttackUpdate()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private void MeleAttackStop()
+	private void AngryRangedAttackStop()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private void FleeStart()
+	private void AngryMoveStart()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private Status FleeUpdate()
+	private Status AngryMoveUpdate()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private void FleeStop()
+	private void AngryMoveStop()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private void RangedAttackStart()
+	private void CalmMeleAttackStart()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private Status RangedAttackUpdate()
+	private Status CalmMeleAttackUpdate()
 	{
 		throw new System.NotImplementedException();
 	}
 	
-	private void RangedAttackStop()
+	private void CalmMeleAttackStop()
+	{
+		throw new System.NotImplementedException();
+	}
+	
+	private void CalmMoveStart()
+	{
+		throw new System.NotImplementedException();
+	}
+	
+	private Status CalmMoveUpdate()
+	{
+		throw new System.NotImplementedException();
+	}
+	
+	private void CalmMoveStop()
 	{
 		throw new System.NotImplementedException();
 	}
