@@ -1,5 +1,6 @@
 using Enemy;
 using Hechizos;
+using Hechizos.Elementales;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,11 +19,13 @@ public class CopperManIA : EnemyController
     [SerializeField] private float _bulletSpeed;
 
     private bool _isAngry;
+    [SerializeField] private float _angryCounterTime;
+    private float _angryCounter;
 
     protected void Awake()
     {
         base.Awake();
-        _isAngry = false;
+        _isAngry = true;
         StartCoroutine(CheckPerceptions());
     }
 
@@ -88,6 +91,32 @@ public class CopperManIA : EnemyController
         {
             transform.position += movPerIter;
             yield return new WaitForSecondsRealtime(0.1f);
+        }
+    }
+
+    private IEnumerator AngryCountDown()
+    {
+        while (_angryCounter > 0)
+        {
+            _angryCounter -= Time.fixedDeltaTime;
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
+        _isAngry = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out ASpell ASpellScript))
+        {
+            foreach (AElementalRune spell in ASpellScript.Elements)
+            {
+                if (spell is ElectricRune)
+                {
+                    _isAngry = false;
+                    _angryCounter = _angryCounterTime;
+                    StartCoroutine(AngryCountDown());
+                }
+            }
         }
     }
 }
