@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UI;
 
 namespace Hechizos
 {
@@ -18,9 +19,13 @@ namespace Hechizos
         private void Start()
         {
             transform.DOScale(MaxSize, _lifeSpan).Play();
-            GetComponentInChildren<MeshRenderer>().sharedMaterial.DOVector(new Vector2(0.99f, 1f), Shader.PropertyToID("_Opacity"), _lifeSpan).Play().OnComplete(Death);
+            GetComponentInChildren<MeshRenderer>().sharedMaterial.DOVector(new Vector2(0.99f, 1f), Shader.PropertyToID("_Opacity"), _lifeSpan).Play().OnComplete(() =>
+            {
+                GetComponentInChildren<MeshRenderer>().sharedMaterial.SetVector("_Opacity", new Vector2(-1.4f, 1f));
+                Death();
+            });
 
-            FindObjectOfType<CameraManager>().Shake(5f, 1f, 2f);
+            FindObjectOfType<CameraManager>().Shake(25f, 10f, 2f);
         }
 
         private void OnTriggerEnter(Collider other)
