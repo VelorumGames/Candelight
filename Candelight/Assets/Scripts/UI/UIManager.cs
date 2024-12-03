@@ -128,10 +128,7 @@ namespace UI
 
             if (_spellHalo)
             {
-                _spellHalo.transform.parent = Camera.main.transform;
                 _spellHalo.SetActive(false);
-
-                _fragmentHalo.transform.parent = Camera.main.transform;
                 _fragmentHalo.SetActive(false);
             }
         }

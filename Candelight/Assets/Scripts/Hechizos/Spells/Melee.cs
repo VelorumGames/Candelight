@@ -26,8 +26,10 @@ namespace Hechizos
 
         [SerializeField] Material[] _materials;
 
-        private void Awake()
+        private new void Awake()
         {
+            base.Awake();
+
             _player = FindObjectOfType<PlayerController>();
         }
 

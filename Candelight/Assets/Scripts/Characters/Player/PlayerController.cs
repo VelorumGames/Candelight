@@ -75,6 +75,7 @@ namespace Player
 
         UIManager _UIMan;
         InputManager _input;
+        PlayerSounds _sound;
 
         SacrificadoAnimation _anim;
 
@@ -120,6 +121,7 @@ namespace Player
 
             _mage = FindObjectOfType<Mage>();
             _input = FindObjectOfType<InputManager>();
+            _sound = GetComponentInChildren<PlayerSounds>();
 
             DontDestroyOnLoad(gameObject);
 
@@ -222,6 +224,8 @@ namespace Player
 
             Debug.Log("SE REVIVE AL JUGADOR");
             World.Candle = World.MAX_CANDLE * 0.5f;
+
+            _sound.PlayReviveSound();
 
             _anim.ChangeToLife();
 

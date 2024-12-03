@@ -54,7 +54,7 @@ namespace Music
                 {
                     case "LevelScene":
                         _music.PlayMusic(0);
-                        _music.PlayMusicAtRandom(10f, 20f);
+                        _music.PlayMusicAtRandom(15f, 30f);
                         break;
                     case "CalmScene":
                         _music.PlayMusic(0);

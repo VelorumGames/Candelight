@@ -21,11 +21,6 @@ namespace Hechizos
 
         [SerializeField] Material[] _materials;
 
-        private void Start()
-        {
-            //Invoke("Death", _lifeSpan);
-        }
-
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Enemy"))

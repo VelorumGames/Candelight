@@ -686,6 +686,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c25925747a7c1047b4af25f342cf1b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _elementSounds:
+  - {fileID: 8300000, guid: 4f3cc5d018c94774080fbff5baa36e1c, type: 3}
+  - {fileID: 8300000, guid: 26100abf61f11144aa5367d53ad97db5, type: 3}
+  - {fileID: 8300000, guid: 6a2544ca21adc3a40903cf9207cc4dc1, type: 3}
+  - {fileID: 8300000, guid: 0ca097ccc89646a4bb4a165ee7aeb47f, type: 3}
   Damage: 0
   Target: {fileID: 0}
   _lifeSpan: 5
@@ -710,7 +715,6 @@ MonoBehaviour:
   - {fileID: 7250409292057764161}
   Direction: {x: 0, y: 0, z: 0}
   AffectsPlayer: 0
-  FireballSound: {fileID: 8300000, guid: 4f3cc5d018c94774080fbff5baa36e1c, type: 3}
 --- !u!54 &6954766349828538020
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -879,7 +883,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.9088864, b: 0.63207537, a: 1}
   m_Intensity: 15
   m_Range: 10
   m_SpotAngle: 30

@@ -684,6 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c25925747a7c1047b4af25f342cf1b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _elementSounds: []
   Damage: 0
   Target: {fileID: 0}
   _lifeSpan: 5
@@ -706,6 +707,7 @@ MonoBehaviour:
   - {fileID: 1373088124293105423}
   - {fileID: 2150081005865245764}
   - {fileID: 7250409292057764161}
+  Direction: {x: 0, y: 0, z: 0}
   AffectsPlayer: 1
 --- !u!54 &6954766349828538020
 Rigidbody:
