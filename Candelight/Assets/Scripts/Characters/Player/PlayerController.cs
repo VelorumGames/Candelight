@@ -75,6 +75,7 @@ namespace Player
 
         UIManager _UIMan;
         InputManager _input;
+        PlayerSounds _sound;
 
         SacrificadoAnimation _anim;
 
@@ -88,7 +89,7 @@ namespace Player
         bool _canSpellThrow = true;
 
         bool _invicible;
-        float _iFrameDuration = 0.5f;
+        float _iFrameDuration = 1f;
 
         Vector2 _oldDirection;
 
@@ -120,6 +121,7 @@ namespace Player
 
             _mage = FindObjectOfType<Mage>();
             _input = FindObjectOfType<InputManager>();
+            _sound = GetComponentInChildren<PlayerSounds>();
 
             DontDestroyOnLoad(gameObject);
 
@@ -205,8 +207,16 @@ namespace Player
             _invicible = false;
         }
 
-        public void RegisterCombat() => _inCombat = true;
-        public void FinishCombat() => _inCombat = false;
+        public void RegisterCombat()
+        {
+            _inCombat = true;
+            _UIMan.ShowUIMode(EUIMode.Combat);
+        }
+        public void FinishCombat()
+        {
+            _inCombat = false;
+            _UIMan.ShowUIMode(EUIMode.Explore);
+        }
 
         public void Revive()
         {
@@ -214,6 +224,8 @@ namespace Player
 
             Debug.Log("SE REVIVE AL JUGADOR");
             World.Candle = World.MAX_CANDLE * 0.5f;
+
+            _sound.PlayReviveSound();
 
             _anim.ChangeToLife();
 
@@ -364,6 +376,8 @@ namespace Player
                         _instrInBook = false;
                         _UIMan.VignetteFeedback(0.25f);
                         Invoke("ResetBookInstructionTimer", 0.25f);
+
+                        _sound.PlayRuneSound(instr);
                     }
                 }
                 else
@@ -391,6 +405,7 @@ namespace Player
                     Debug.Log("Se encuentran elementos que aplicar: " + elements);
                     _mage.SetActiveElements(elements);
                     if (OnElements != null) OnElements(elements);
+                    _sound.PlayElement(elements[0].Name);
                 }
                 else if (OnElements != null) OnElements(null); //Si no encuentra elemento valido
             }
@@ -418,12 +433,12 @@ namespace Player
                         AShapeRune shapeSpell = spell as AShapeRune;
                         if (shapeSpell != null)
                         {
-                            if (!(shapeSpell is ExplosionRune))
+                            if (!(shapeSpell is ExplosionRune || shapeSpell is BuffRune))
                             {
                                 _canLastSpell = true;
                                 Invoke("ResetLastSpellTimer", _lastSpellDuration);
                             }
-
+                            shapeSpell.SetFastDamageFactor(1f);
                             ThrowSpell(shapeSpell);
                         }
                         else if (OnSpell != null) OnSpell(null); //Si no encuentra hechizo valido
@@ -440,6 +455,7 @@ namespace Player
         {
             if (_canLastSpell && CanMove && SceneManager.GetActiveScene().name != "CalmScene" && _lastSpell != null)
             {
+                _lastSpell.SetFastDamageFactor(0.75f);
                 ThrowSpell(_lastSpell);
             }
         }
@@ -465,6 +481,8 @@ namespace Player
             }
         }
 
+        public AShapeRune GetLastSpell() => _lastSpell;
+
         public void ResetSpellThrowDelay()
         {
             _UIMan.ShowCanShoot();
@@ -478,7 +496,7 @@ namespace Player
 
         public void OnBook(InputAction.CallbackContext _)
         {
-            if (!_isFirstPerson && _book && SceneManager.GetActiveScene().name != "CalmScene")
+            if (!_isFirstPerson && _book && SceneManager.GetActiveScene().name != "CalmScene" && !_inCombat)
             {
                 if (_bookIsOpen)
                 {
@@ -490,6 +508,8 @@ namespace Player
                     _book.gameObject.SetActive(true);
                     _bookIsOpen = true;
                 }
+
+                _sound.PlayBookSound();
             }
         }
 
@@ -540,8 +560,11 @@ namespace Player
 
         public void OnInventory(InputAction.CallbackContext _)
         {
-            _UIMan.LoadUIWindow(_UIMan.InventoryUI, "i");
-            _UIMan.ShowUIMode(EUIMode.Inventory);
+            if (!_inCombat)
+            {
+                _UIMan.LoadUIWindow(_UIMan.InventoryUI, "i");
+                _UIMan.ShowUIMode(EUIMode.Inventory);
+            }
         }
 
         #endregion
@@ -598,6 +621,8 @@ namespace Player
                 _isFirstPerson = false;
             }
         }
+
+        public bool IsFirstPerson() => _isFirstPerson;
 
 
         #region Item Modifiers

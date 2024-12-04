@@ -243,6 +243,7 @@ namespace World
         {
             _player.GetComponent<PlayerController>().SetCurrentNode(node);
             NodeData data = node.GetNodeData();
+            CurrentNodeInfo.Name = data.Name;
             CurrentNodeInfo.Levels = data.NumLevels;
             CurrentNodeInfo.LevelTypes = data.LevelTypes;
             CurrentNodeInfo.Seeds = data.SeedExtra;

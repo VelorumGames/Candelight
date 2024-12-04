@@ -63,10 +63,51 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 977927382998836197, guid: fc1258ad5879bc74e897596e724aa665,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 1323022735132582559, guid: fc1258ad5879bc74e897596e724aa665,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1303093238, guid: 393c52a0fc73de74d900a3cf3250974c,
+        type: 3}
+    - target: {fileID: 1923940452591612647, guid: fc1258ad5879bc74e897596e724aa665,
+        type: 3}
+      propertyPath: m_Drag
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1923940452591612647, guid: fc1258ad5879bc74e897596e724aa665,
+        type: 3}
+      propertyPath: m_Mass
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 2150823094058330627, guid: fc1258ad5879bc74e897596e724aa665,
         type: 3}
       propertyPath: m_Name
       value: Inferi
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227180065037824670, guid: fc1258ad5879bc74e897596e724aa665,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227180065037824670, guid: fc1258ad5879bc74e897596e724aa665,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227180065037824670, guid: fc1258ad5879bc74e897596e724aa665,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227180065037824670, guid: fc1258ad5879bc74e897596e724aa665,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8777716911361794912, guid: fc1258ad5879bc74e897596e724aa665, type: 3}
@@ -82,7 +123,54 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3497266136348631854}
+    - targetCorrespondingSourceObject: {fileID: 3787483990786643624, guid: fc1258ad5879bc74e897596e724aa665,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1696793992691079099}
+    - targetCorrespondingSourceObject: {fileID: 3787483990786643624, guid: fc1258ad5879bc74e897596e724aa665,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 248423059691570794}
   m_SourcePrefab: {fileID: 100100000, guid: fc1258ad5879bc74e897596e724aa665, type: 3}
+--- !u!1 &892140686096045260 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3787483990786643624, guid: fc1258ad5879bc74e897596e724aa665,
+    type: 3}
+  m_PrefabInstance: {fileID: 4102319275094344292}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1696793992691079099
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892140686096045260}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 47cdee96ced0abb4390e79549786491f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &248423059691570794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892140686096045260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0786f41a4ed6b3241abf80e6cc9f90a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2681646807182813287 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2150823094058330627, guid: fc1258ad5879bc74e897596e724aa665,
@@ -123,7 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   World: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
-  _speed: 80
+  _speed: 400
   MaxHP: 0
   m_HP: 0
   Info: {fileID: 11400000, guid: 90baca2f489b9c6489d7252047f91b9e, type: 2}
@@ -132,3 +220,4 @@ MonoBehaviour:
     type: 3}
   Fragment: {fileID: 3511583418104216482, guid: f4b15eff24eade8458c13b8996bbdd04,
     type: 3}
+  LuciernagaPosada: 0

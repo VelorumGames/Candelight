@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UI.Window;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace Items
         [SerializeField] bool _active;
         bool _itemMarked;
         [SerializeField] Image _itemImg;
+
+        [SerializeField] ParticleSystem _particles;
 
         float _oScale;
 
@@ -50,6 +53,12 @@ namespace Items
 
                     _itemMarked = true;
                 }
+
+                _particles.Play();
+            }
+            else //Si todavia esta bloqueado
+            {
+                GetComponent<Image>().DOColor(Color.red, 0.5f).Play().OnComplete(() => GetComponent<Image>().DOColor(Color.white, 0.5f).Play());
             }
         }
 
@@ -68,6 +77,12 @@ namespace Items
         public void OnPointerEnter(PointerEventData _)
         {
             GetComponent<RectTransform>().DOScale(_oScale * 1.1f, 0.2f);
+
+            if (GameSettings.FrameTutorial)
+            {
+                FindObjectOfType<UIManager>().ShowTutorial("Los artefactos que protejas en un marco eterno perdurarán tras la muerte, pero no podrás usarlos mientras tanto.", 8f);
+                GameSettings.FrameTutorial = false;
+            }
         }
 
         public void OnPointerExit(PointerEventData _)

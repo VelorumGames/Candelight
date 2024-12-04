@@ -46,6 +46,11 @@ namespace Music
 
         void OnSceneLoad(Scene scene, LoadSceneMode mode)
         {
+            ChangeVolumeTo(0, 0f, 0f);
+            ChangeVolumeTo(1, 0f, 0f);
+            ChangeVolumeTo(2, 0f, 0f);
+            ChangeVolumeTo(3, 0f, 0f);
+
             AuxiliarSpellModeReset();
         }
 
@@ -54,10 +59,10 @@ namespace Music
             //Debug.Log("Quito las canciones");
 
             StopAllCoroutines();
-            ChangeVolumeTo(0, 0f, 0.75f);
-            ChangeVolumeTo(1, 0f, 0.75f);
-            ChangeVolumeTo(2, 0f, 0.75f);
-            ChangeVolumeTo(3, 0f, 0.75f);
+            ChangeVolumeTo(0, 0f, 0f);
+            ChangeVolumeTo(1, 0f, 0f);
+            ChangeVolumeTo(2, 0f, 0f);
+            ChangeVolumeTo(3, 0f, 0f);
         }
 
         public void LoadClip(int id, AudioClip newClip) => _sources[id].clip = newClip;

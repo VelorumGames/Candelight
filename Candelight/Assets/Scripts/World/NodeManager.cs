@@ -91,7 +91,6 @@ namespace World
             _data.Name = names[0];
             _data.Description = names[1];
 
-            _data.EventID = -1;
             //Debug. Deberia ser mas amplio el rango
             if (EventCheck()) _data.EventID = Random.Range(0, 3);
             _data.EventSolution = EEventSolution.None;

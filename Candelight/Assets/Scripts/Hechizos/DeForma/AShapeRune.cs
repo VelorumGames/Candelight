@@ -10,6 +10,7 @@ namespace Hechizos.DeForma
     public abstract class AShapeRune : ARune
     {
         protected Action<Transform>[] ElementActions;
+        protected float FastDamageFactor;
 
         public AShapeRune(Mage m, int complexity, float difficulty) : base(m, complexity, difficulty) { }
 
@@ -24,9 +25,13 @@ namespace Hechizos.DeForma
             float avDam = 0;
             foreach (var el in MageManager.GetActiveElements()) avDam += el.GetDamage();
             avDam /= MageManager.GetActiveElements().Count;
+            avDam *= FastDamageFactor;
             if (MageManager.GetActiveElements().Count > 1) avDam *= 0.75f;
             return avDam;
         }
 
+        public void SetFastDamageFactor(float dam) => FastDamageFactor = dam;
+        public void ResetFastDamageFactor() => FastDamageFactor = 1f;
+        public float GetFastDamageFactor() => FastDamageFactor;
     }
 }

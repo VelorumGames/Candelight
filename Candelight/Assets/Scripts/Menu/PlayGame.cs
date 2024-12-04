@@ -25,7 +25,7 @@ namespace Menu
 
         public void InitializeGame()
         {
-            if (SaveSystem.ExistsPreviousGame())
+            if (GameSettings.ExistsPreviousGame)
             {
                 _ui.ShowWarning(StartGame, "Al iniciar una nueva partida desaparecerán todos tus datos de tu partida anterior. ¿Deseas continuar?");
             }
@@ -37,9 +37,15 @@ namespace Menu
 
         void StartGame()
         {
+            Cursor.lockState = CursorLockMode.Locked;
+
             _ui.Back();
 
             GameSettings.CanRevive = true;
+            GameSettings.FrameTutorial = true;
+            GameSettings.ItemTutorial = true;
+
+            GameSettings.ExistsPreviousGame = false;
 
             _world.Candle = _world.MAX_CANDLE;
             _world.CompletedIds.Clear();

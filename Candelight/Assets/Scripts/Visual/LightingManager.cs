@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using World;
 
 namespace Visual
@@ -67,7 +68,7 @@ namespace Visual
                     break;
                 case EBiome.Idria:
                     RenderSettings.fogColor = _iFog;
-                    RenderSettings.fogEndDistance = _iFogDistance;
+                    RenderSettings.fogEndDistance = SceneManager.GetActiveScene().name == "NodeEndScene" ? _iFogDistance * 2f : _iFogDistance;
 
                     RenderSettings.skybox = _iSkybox;
 

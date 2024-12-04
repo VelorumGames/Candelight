@@ -326,8 +326,8 @@ namespace Map
             baseCol.center = new Vector3(baseCol.center.x, 0f, baseCol.center.z);
 
             //Debug.Log($"({_room.GetID()}) Diferencia en X: {positions[0].x - positions[3].x}");
-            if (Mathf.Abs(positions[0].x - positions[3].x) < 1.4f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
-            else if (Mathf.Abs(positions[0].z - positions[3].z) < 1.4f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
+            if (Mathf.Abs(positions[0].x - positions[3].x) < 1f && Mathf.Abs(positions[0].z - positions[3].z) > 1f) GenerateSimpleCollidersZ(meshGO, positions);
+            else if (Mathf.Abs(positions[0].z - positions[3].z) < 1f && Mathf.Abs(positions[0].x - positions[3].x) > 1f) GenerateSimpleCollidersX(meshGO, positions);
             else GenerateComplexColliders(meshGO, positions, line.endWidth);
 
             return meshGO;
@@ -430,7 +430,10 @@ namespace Map
                     halfSize = ExpandHalfSizeZ(boxes, positions[0], positions[3], (int)EColliderOrientation.Z);
 
                     anchorDeltaX = Mathf.Abs(positions[0].x - positions[3].x);
-                    if (anchorDeltaX > 4f) extraSize = 0.4f * anchorDeltaX; //Valor exacto en >4f encontrado para 7.47
+                    //Debug.Log($"Soy {_room.GetID()} con distancia en X: {anchorDeltaX}");
+                    if (anchorDeltaX > 6f) extraSize = 0.4f * anchorDeltaX; //Valor exacto en >4f encontrado para 7.47
+                    else if (anchorDeltaX > 5f) extraSize = 0.49f * anchorDeltaX;
+                    else if (anchorDeltaX > 4f) extraSize = 0.58f * anchorDeltaX;
                     else if (anchorDeltaX > 2f) extraSize = 0.7f * anchorDeltaX;
                     else extraSize = 0.9f * anchorDeltaX;
 
@@ -444,7 +447,9 @@ namespace Map
                     halfSize = ExpandHalfSizeZ(boxes, positions[0], positions[3], (int)EColliderOrientation.Z);
 
                     anchorDeltaX = Mathf.Abs(positions[0].x - positions[3].x);
-                    if (anchorDeltaX > 4f) extraSize = 0.4f * anchorDeltaX; //Valor exacto en >4f encontrado para 7.47
+                    if (anchorDeltaX > 6f) extraSize = 0.4f * anchorDeltaX; //Valor exacto en >4f encontrado para 7.47
+                    else if (anchorDeltaX > 5f) extraSize = 0.49f * anchorDeltaX;
+                    else if (anchorDeltaX > 4f) extraSize = 0.58f * anchorDeltaX;
                     else if (anchorDeltaX > 2f) extraSize = 0.7f * anchorDeltaX;
                     else extraSize = 0.9f * anchorDeltaX;
 
@@ -457,7 +462,10 @@ namespace Map
 
                     anchorDeltaZ = Mathf.Abs(positions[0].z - positions[3].z);
                     //Debug.Log($"Soy {_room.GetID()} con distancia en Z: {anchorDeltaZ}");
-                    if (anchorDeltaZ > 4f) extraSize = 0.4f * anchorDeltaZ; //Valor exacto en >4f encontrado para 7.47
+                    if (anchorDeltaZ > 6f) extraSize = 0.4f * anchorDeltaZ; //Valor exacto en >4f encontrado para 7.47
+                    else if (anchorDeltaZ > 5f) extraSize = 0.49f * anchorDeltaZ;
+                    else if (anchorDeltaZ > 4f) extraSize = 0.58f * anchorDeltaZ;
+                    else if (anchorDeltaZ > 2f) extraSize = 0.7f * anchorDeltaZ;
                     else extraSize = 0.9f * anchorDeltaZ;
 
                     halfSize = ExpandHalfSizeX(boxes, positions[0], positions[3], (int)EColliderOrientation.X);
@@ -469,7 +477,10 @@ namespace Map
 
                     anchorDeltaZ = Mathf.Abs(positions[0].z - positions[3].z);
                     //Debug.Log($"Soy {_room.GetID()} con distancia en Z: {anchorDeltaZ}");
-                    if (anchorDeltaZ > 4f) extraSize = 0.4f * anchorDeltaZ; //Valor exacto en >4f encontrado para 7.47
+                    if (anchorDeltaZ > 6f) extraSize = 0.4f * anchorDeltaZ; //Valor exacto en >4f encontrado para 7.47
+                    else if (anchorDeltaZ > 5f) extraSize = 0.49f * anchorDeltaZ;
+                    else if (anchorDeltaZ > 4f) extraSize = 0.58f * anchorDeltaZ;
+                    else if (anchorDeltaZ > 2f) extraSize = 0.7f * anchorDeltaZ;
                     else extraSize = 0.9f * anchorDeltaZ;
 
                     halfSize = ExpandHalfSizeX(boxes, positions[0], positions[3], (int)EColliderOrientation.X);
@@ -486,17 +497,30 @@ namespace Map
 
             //La distancia en el eje X entre ambos anchors.
             float anchorDeltaX = Mathf.Abs(positions[0].x - positions[3].x);
-            //Debug.Log($"Soy {_room.GetID()} con distancia en X: {anchorDeltaX}");
+            //Debug.Log($"Soy {_room.GetID()} ({GetDirection()}) con distancia en X: {anchorDeltaX}");
 
             //Se elije segun la distancia.
             // Para deltaX > 4: 1.27f (posicion exacta conseguida en 7.47)
             // Para deltaX > 3: 1.7f
             // Para deltaX <= 3: 1.85f (posicion exacta conseguida en 2.056)
+            float extraXOffset = 0;
+
             float extraDist = 0f;
-            if (anchorDeltaX > 4f) extraDist = 1.27f;
+            if (anchorDeltaX > 6f) extraDist = 1.27f;
+            else if (anchorDeltaX > 5f) extraDist = 1.35f;
+            else if (anchorDeltaX > 4f) extraDist = 1.5f;
             else if (anchorDeltaX > 3f) extraDist = 1.7f;
             else if (anchorDeltaX > 2f) extraDist = 1.85f;
-            else extraDist = 2.2f;
+            else if (anchorDeltaX > 1.2f)
+            {
+                extraDist = 2.4f;
+                extraXOffset = 0.5f;
+            }
+            else
+            {
+                extraDist = 2.7f;
+                extraXOffset = 0.5f;
+            }
 
             //Para elegir el centro de cada conexion, se toma el valor del offset y se multiplica por la distancia
             //Cuanto mas lejos esten los anchors en el eje X, mas se alejaran los colliders
@@ -513,8 +537,9 @@ namespace Map
 
             boxes[2].center += (dirCond ? -1 : 1) * offset;
             boxes[3].center += (!dirCond ? -1 : 1) * offset;
-            boxes[2].center = new Vector3(positions[3].x, boxes[2].center.y, boxes[2].center.z);
-            boxes[3].center = new Vector3(positions[0].x, boxes[3].center.y, boxes[3].center.z);
+            boxes[2].center = new Vector3(positions[3].x, boxes[2].center.y, boxes[2].center.z + ((dirCond ? -1 : 1) * extraXOffset));
+            boxes[3].center = new Vector3(positions[0].x, boxes[3].center.y, boxes[3].center.z + ((!dirCond ? -1 : 1) * extraXOffset));
+
             boxes[2].size = new Vector3(0f, 2f, 0f);
         }
         Vector2 ExpandHalfSizeZ(BoxCollider[] boxes, Vector3 start, Vector3 end, int axis)
@@ -569,11 +594,24 @@ namespace Map
             // Para deltaX > 4: 1.27f (posicion exacta conseguida en 7.47)
             // Para deltaX > 3: 1.7f
             // Para deltaX <= 3: 1.85f (posicion exacta conseguida en 2.056)
+            float extraZOffset = 0;
+
             float extraDist = 0f;
-            if (anchorDeltaZ > 4f) extraDist = 1.27f;
+            if (anchorDeltaZ > 6f) extraDist = 1.27f;
+            else if (anchorDeltaZ > 5f) extraDist = 1.35f;
+            else if (anchorDeltaZ > 4f) extraDist = 1.5f;
             else if (anchorDeltaZ > 3f) extraDist = 1.7f;
             else if (anchorDeltaZ > 2f) extraDist = 1.85f;
-            else extraDist = 2.2f;
+            else if (anchorDeltaZ > 1.2f)
+            {
+                extraDist = 2.4f;
+                extraZOffset = 0.5f;
+            }
+            else
+            {
+                extraDist = 2.7f;
+                extraZOffset = 0.5f;
+            }
 
             boxes[0].center += new Vector3(0f, 0f, anchorDeltaZ * extraDist);
             boxes[1].center -= new Vector3(0f, 0f, anchorDeltaZ * extraDist);
@@ -588,13 +626,10 @@ namespace Map
 
             boxes[2].center += (dirCond ? -1 : 1) * offset;
             boxes[3].center += (!dirCond ? -1 : 1) * offset;
-            boxes[2].center = new Vector3(boxes[2].center.x, boxes[2].center.y, positions[3].z);
-            boxes[3].center = new Vector3(boxes[3].center.x, boxes[3].center.y, positions[0].z);
+            boxes[2].center = new Vector3(boxes[2].center.x, boxes[2].center.y, positions[3].z + ((dirCond ? -1 : 1) * extraZOffset));
+            boxes[3].center = new Vector3(boxes[3].center.x, boxes[3].center.y, positions[0].z + ((!dirCond ? -1 : 1) * extraZOffset));
 
             boxes[2].size = new Vector3(0f, 2f, 0f);
-
-            
-
         }
         Vector2 ExpandHalfSizeX(BoxCollider[] boxes, Vector3 start, Vector3 end, int axis)
         {

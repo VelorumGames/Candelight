@@ -1,16 +1,14 @@
+using Hechizos;
+using Items;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
 using World;
-using Items;
-using Hechizos;
-using Unity.VisualScripting;
 
 public static class SaveSystem
 {
-    public static string path = Application.persistentDataPath + "/player.save";
+    //public static string path = Application.persistentDataPath + "/player.save";
     public static ScoreData ScoreboardData;
     public static SaveData GameData;
 
@@ -22,48 +20,53 @@ public static class SaveSystem
 
     public static IEnumerator Save(SaveData data)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Create);
-
-        formatter.Serialize(stream, data);
-        stream.Close();
+        //BinaryFormatter formatter = new BinaryFormatter();
+        //FileStream stream = new FileStream(path, FileMode.Create);
+        //
+        //formatter.Serialize(stream, data);
+        //stream.Close();
 
         GameData = data;
 
         if (GameSettings.Online)
         {
-
             //Subir info a la base de datos
             Debug.Log("Se guardarán los datos de: " + PlayerName);
-            //Database.Send($"Players/{PlayerData.Name}", PlayerData);
+
+            ScoreboardData.ImplementGameData(GameData);
             yield return Database.SendUserData(ScoreboardData);
         }
     }
 
     public static IEnumerator Load()
     {
-        if (File.Exists(path))
+        if (GameSettings.Online)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
+            yield return Database.Get<ScoreData>($"Players/{PlayerName}", GetPlayerData);
 
-            SaveData save = formatter.Deserialize(stream) as SaveData;
-            stream.Close();
-
-            if (GameSettings.Online)
+            if (ScoreboardData != null) //Si ha encontrado una previa partida guardada
             {
-                //Coger info de la base de datos
-                yield return Database.Get<ScoreData>($"Players/{PlayerName}", GetPlayerData);
+                //BinaryFormatter formatter = new BinaryFormatter();
+                //FileStream stream = new FileStream(path, FileMode.Open);
+                //
+                //SaveData save = formatter.Deserialize(stream) as SaveData;
+                //stream.Close();
+                //
+                //if (GameSettings.Online)
+                //{
+                //    //Coger info de la base de datos
+                //    yield return Database.Get<ScoreData>($"Players/{PlayerName}", GetPlayerData);
+                //}
+                GameData = ScoreboardData.GetGameData();
             }
-
-            GameData = save;
-        }
-        else
-        {
-            Debug.Log("ERROR: No se ha encontrado archivo de guardado");
-            GameData = null;
+            else
+            {
+                Debug.Log("ERROR: No se ha encontrado archivo de guardado");
+                GameData = null;
+            }
         }
     }
+
 
     static void GetPlayerData(ScoreData data)
     {
@@ -84,23 +87,10 @@ public static class SaveSystem
         ScoreboardData.posY = Random.Range(-StarRange, StarRange);
     }
 
-    public static bool RemovePreviousGameData()
-    {
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-            return true;
-        }
-
-        return false;
-    }
-
     public static void RestartDataOnDeath()
     {
         GameData.RestartOnDeath();
     }
-
-    public static bool ExistsPreviousGame() => File.Exists(path);
 }
 
 [System.Serializable]
@@ -115,6 +105,8 @@ public class SaveData
     public int Fragments;
     public float Candle;
     public string Runes;
+
+    public SaveData() { }
 
     public SaveData(NodeInfo node, WorldInfo world, Inventory inventory)
     {
@@ -147,7 +139,7 @@ public class SaveData
         Candle = world.Candle;
 
         Runes = "";
-        foreach(var r in ARune.Spells.Values)
+        foreach (var r in ARune.Spells.Values)
         {
             if (r.IsActivated()) Runes += $"{r.Name},";
         }
@@ -187,7 +179,7 @@ public class SaveData
         ActiveItems = new int[1];
         ActiveItems[0] = -1;
 
-        UnactiveItems= new int[1];
+        UnactiveItems = new int[1];
         UnactiveItems[0] = -1;
 
         Fragments = 0;
@@ -195,3 +187,4 @@ public class SaveData
         Runes = "";
     }
 }
+

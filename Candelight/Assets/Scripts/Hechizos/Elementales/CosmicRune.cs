@@ -7,8 +7,8 @@ namespace Hechizos.Elementales
 {
     public class CosmicRune : AElementalRune
     {
-        float _pullFactor = 1f;
-        float _pushFactor = 1f;
+        float _pullFactor = 0.5f;
+        float _pushFactor = 0.5f;
 
         public CosmicRune(Mage m) : base(m)
         {

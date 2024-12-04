@@ -14,7 +14,15 @@ public static class GameSettings
     public static float SoundVolume;
     public static float MusicVolume;
 
+    public static bool AutoSave = true;
+
     public static bool Tutorial = true;
+    public static bool FrameTutorial = true;
+    public static bool ItemTutorial = true;
+    public static bool RemainingMagicTutorial = true;
+
     public static bool LoadedWorld = false;
     public static bool CanRevive = true;
+    public static bool LoadedControls = false;
+    public static bool ExistsPreviousGame = false;
 }

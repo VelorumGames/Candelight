@@ -55,7 +55,7 @@ namespace Map
         public void SetID(int id)
         {
             ID = id;
-            IdText.text = $"{ID}";
+            //IdText.text = $"{ID}";
         }
 
         public void RemoveEntities()

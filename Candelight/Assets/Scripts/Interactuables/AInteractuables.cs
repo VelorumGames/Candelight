@@ -34,7 +34,6 @@ namespace Interactuables
         {
             if (other.CompareTag("Player"))
             {
-                
                 other.GetComponentInParent<PlayerController>().UnloadInteraction();
             }
         }

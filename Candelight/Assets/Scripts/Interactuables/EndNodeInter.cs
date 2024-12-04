@@ -8,6 +8,7 @@ using DG.Tweening;
 using Cameras;
 using UI;
 using Player;
+using Items;
 
 namespace Interactuables
 {
@@ -16,12 +17,16 @@ namespace Interactuables
         public GameObject Fires;
         public ParticleSystem FireParticles;
         public NodeInfo CurrentNodeInfo;
+        [SerializeField] WorldInfo _world;
+
+        AudioSource _audio;
 
         UIManager _ui;
 
         private void Awake()
         {
             _ui = FindObjectOfType<UIManager>();
+            _audio = GetComponent<AudioSource>();
         }
 
         public override void Interaction()
@@ -40,19 +45,28 @@ namespace Interactuables
 
             _ui.Back();
 
+            _audio.Play();
+
             yield return new WaitForSeconds(0.5f);
 
             FindObjectOfType<CameraManager>().Shake(20f, 0.1f, 2.5f);
 
             yield return new WaitForSeconds(0.5f);
 
-            _ui.FadeToWhite(2.5f, FinishScene);
+            _ui.FadeToWhite(2.5f, () => StartCoroutine(FinishScene()));
             DOTween.To(() => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView, x => CameraManager.Instance.GetActiveCam().m_Lens.FieldOfView = x, 90f, 2.5f);
         }
 
-        void FinishScene()
+        IEnumerator FinishScene()
         {
             FindObjectOfType<PlayerController>().World.Candle -= 5f * FindObjectOfType<PlayerController>().World.NodeCandleFactor;
+
+            if (GameSettings.AutoSave)
+            {
+                _ui.ShowState(EGameState.Saving);
+                yield return StartCoroutine(SaveSystem.Save(new SaveData(CurrentNodeInfo, _world, FindObjectOfType<Inventory>())));
+            }
+
             _ui.ShowState(EGameState.Loading);
             SceneManager.LoadScene("WorldScene");
         }

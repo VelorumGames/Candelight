@@ -9,6 +9,7 @@ using UI;
 using SpellInteractuable;
 using Cameras;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 namespace Hechizos
 {
@@ -30,6 +31,7 @@ namespace Hechizos
         public GameObject Explosion;
         public GameObject Melee;
 
+        float _oProjVolume;
         int _numProjectiles = 1;
         bool _extraProjs;
 
@@ -54,6 +56,8 @@ namespace Hechizos
             ARune.RegisterMage(this);
 
             DontDestroyOnLoad(gameObject);
+
+            _oProjVolume = Projectiles[0].GetComponent<AudioSource>().volume;
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -157,6 +161,12 @@ namespace Hechizos
 
             _lastProjectile = GetAvailableProjectile();
 
+            if (GameSettings.RemainingMagicTutorial)
+            {
+                FindObjectOfType<UIManager>().ShowTutorial("Algunos hechizos dejarán un resquicio de magia que puedes aprovechar.\n Haz CLICK para invocarlo de nuevo rápidamente.");
+                GameSettings.RemainingMagicTutorial = false;
+            }
+
             StartCoroutine(DelayedProjectile(numProj * 0.5f)); //NumProj es el numero del proyectil
 
             return _lastProjectile;
@@ -244,6 +254,9 @@ namespace Hechizos
                 _lastProjectile = Projectiles[Random.Range(0, Projectiles.Length)];
             }
 
+            _lastProjectile.GetComponent<AudioSource>().volume = 0.05f;
+            _lastProjectile.GetComponent<Projectile>().OnEnd += ResetProjVolume;
+
             _lastProjectile.SetActive(true);
             _lastProjectile.transform.position = _cont.transform.position;
             _lastProjectile.GetComponent<Rigidbody>().AddForce(_projectileSpeed * new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)), ForceMode.Impulse);
@@ -251,6 +264,15 @@ namespace Hechizos
             _cam.Shake(5f, 0.4f, 0.5f);
 
             return _lastProjectile;
+        }
+
+        void ResetProjVolume(Transform _)
+        {
+            foreach (var proj in Projectiles)
+            {
+                proj.GetComponent<AudioSource>().volume = _oProjVolume;
+                proj.GetComponent<Projectile>().OnEnd -= ResetProjVolume;
+            }
         }
 
         public GameObject SpawnExplosion()
@@ -404,6 +426,8 @@ namespace Hechizos
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
+
+            ResetProjVolume(null);
         }
     }
 }
