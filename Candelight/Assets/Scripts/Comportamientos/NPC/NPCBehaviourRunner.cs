@@ -22,14 +22,17 @@ public class NPCBehaviourRunner : BehaviourRunner
 	{
 		BehaviourTree AldeanoBT = new BehaviourTree();
 		
-		SimpleAction ObjetivoRandom_action = new SimpleAction();
-		ObjetivoRandom_action.action = m_NPCActions.setRandomTarget;
+		FunctionalAction ObjetivoRandom_action = new FunctionalAction(m_NPCActions.setRandomTarget);
+		//ObjetivoRandom_action.action = m_NPCActions.setRandomTarget;
 		LeafNode ObjetivoRandom = AldeanoBT.CreateLeafNode(ObjetivoRandom_action);
 
-		ConditionNode EstaEnObjetivo = AldeanoBT.CreateDecorator<ConditionNode>(ObjetivoRandom);
+        //ConditionPerception EstaEnObjetivo_perception = new ConditionPerception(); //
+		//EstaEnObjetivo_perception.onCheck = m_NPCActions.hasArrived; //
+        ConditionNode EstaEnObjetivo = AldeanoBT.CreateDecorator<ConditionNode>(ObjetivoRandom); //
+        EstaEnObjetivo.SetPerception(new ConditionPerception(m_NPCActions.hasArrived)); //
 
-        SimpleAction Moverse_action = new SimpleAction();
-		Moverse_action.action = m_NPCActions.move;
+        FunctionalAction Moverse_action = new FunctionalAction(m_NPCActions.move);
+		//Moverse_action.action = m_NPCActions.move;
 		LeafNode Moverse = AldeanoBT.CreateLeafNode(Moverse_action);
 		
 		SequencerNode Sequence = AldeanoBT.CreateComposite<SequencerNode>(false, EstaEnObjetivo, Moverse);
@@ -37,7 +40,9 @@ public class NPCBehaviourRunner : BehaviourRunner
 		
 		LoopNode InfLoop = AldeanoBT.CreateDecorator<LoopNode>(Sequence);
 		InfLoop.Iterations = -1;
-		
-		return AldeanoBT;
+
+        AldeanoBT.SetRootNode(InfLoop); //
+
+        return AldeanoBT;
 	}
 }

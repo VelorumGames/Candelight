@@ -4,22 +4,28 @@ using UnityEngine;
 using Player;
 using System.Threading;
 using Unity.VisualScripting;
+using BehaviourAPI.Core;
 
 [RequireComponent(typeof(NPCController))]
 public class NPCActions : MonoBehaviour
 {
     PlayerController player;
     NPCController controller;
+    protected Rigidbody rb;
 
     Vector3 target, currentPos;
     Vector2 direction;
-
-    int count;
+    [SerializeField] protected float surpriseRange;
+    bool surprised, arrived;
+    float outTime;
 
     private void Awake()
     {
         player = FindObjectOfType<PlayerController>();
         controller = GetComponent<NPCController>();
+        rb = GetComponent<Rigidbody>();
+        outTime = 0;
+        arrived = true;
     }
 
     // Start is called before the first frame update
@@ -28,7 +34,6 @@ public class NPCActions : MonoBehaviour
         
         //currentPos = player.transform.position;
         target = currentPos;
-        count = 0;
 
         setRandomTarget();
         move();
@@ -38,33 +43,62 @@ public class NPCActions : MonoBehaviour
     void Update()
     {
         currentPos = transform.position;
-    }
 
-    public bool isPlayerClose()
-    {
-        return false;
+
+        if (!surprised && Vector3.Distance(transform.position, player.transform.position) < surpriseRange)
+        {
+            surprised = true;
+            if (Random.value < 0.5f) 
+            {
+                //llamar animación sorpresa
+            }
+        }
     }
 
     public bool hasArrived()
     {
-        if(currentPos == target || count >= 500)
+        if (arrived == true || currentPos == target)
         {
+            arrived = false;
             return true;
         }
-        count++;
         return false;
     }
 
-    public void setRandomTarget()
+    public Status setRandomTarget()
     {
-        Vector3 randomPos = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f));
+        Vector3 randomPos = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(-5.0f, 5.0f), Random.Range(-5.0f, 5.0f));
         target = currentPos + randomPos;
-        //Debug.Log("Nuevo objetivo: " + target.x + ", " + target.z);
+        Debug.Log("Nuevo objetivo: " + target.x + ", " + target.z);
+
+        return Status.Success;
     }
 
-    public void move()
+    public Status move()
     {
         //Debug.Log("Entro en rama mover");
-        StartCoroutine(controller.Move(target));
+        Vector3 direction;
+        
+        if (Vector3.Distance(transform.position, target) < 1.5f || outTime >= 5)
+        {
+            Debug.Log("He llegao");
+            outTime = 0;
+            arrived = true;
+            return Status.Success;
+        }
+
+        direction = new Vector3((target - transform.position).x, 0f, (target - transform.position).z).normalized;
+
+        if (!rb) rb = GetComponent<Rigidbody>();
+        Vector3 force = Time.deltaTime * 100f * controller.getSpeed() * new Vector3(direction.x, 0f, direction.z);
+        rb.AddForce(force, ForceMode.Force);
+
+        outTime += Time.deltaTime;
+        return Status.Running;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, surpriseRange);
     }
 }
