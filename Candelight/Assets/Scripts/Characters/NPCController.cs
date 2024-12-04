@@ -56,6 +56,8 @@ public class NPCController : MonoBehaviour
         }
     }
 
+    public float getSpeed() { return _speed; }
+
     public IEnumerator Move(Vector3 target)
     {
         if (CanMoveOnStart)
