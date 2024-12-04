@@ -41,7 +41,7 @@ namespace UI
         {
             if (_updateAction != null) _updateAction();
 
-            if (!_activeItems) Debug.Log(_content.localPosition);
+            //if (!_activeItems) Debug.Log(_content.localPosition);
             _content.localPosition = new Vector3(_content.localPosition.x, Mathf.Clamp(_content.localPosition.y, _activeItems ? -_inv.ActiveItems.Count * 40f : -_inv.UnactiveItems.Count * 40f, 0f), _content.localPosition.z);
         }
 

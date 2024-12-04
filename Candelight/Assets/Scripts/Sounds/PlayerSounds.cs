@@ -72,9 +72,28 @@ public class PlayerSounds : MonoBehaviour
         }
     }
 
-    void PlayRuneSound(ESpellInstruction rune)
+    public void PlayRuneSound(ESpellInstruction rune)
     {
         _audio.PlayOneShot(_bookOpen ? BookWriting[Random.Range(0, BookWriting.Length)] : RuneWriting[Random.Range(0, RuneWriting.Length)]);
+    }
+
+    public void PlayElement(string name)
+    {
+        switch(name)
+        {
+            case "Fire":
+                _audio.PlayOneShot(Elements[0]);
+                break;
+            case "Electric":
+                _audio.PlayOneShot(Elements[1]);
+                break;
+            case "Cosmic":
+                _audio.PlayOneShot(Elements[2]);
+                break;
+            case "Phantom":
+                _audio.PlayOneShot(Elements[3]);
+                break;
+        }
     }
 
     void PlayStartElement()

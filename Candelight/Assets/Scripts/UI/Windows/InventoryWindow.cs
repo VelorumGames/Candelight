@@ -20,6 +20,7 @@ namespace UI.Window
 
         Inventory _inv;
         UIFragments _frag;
+        UISoundManager _sound;
 
         bool _shown;
         int m_frame = -1;
@@ -42,10 +43,14 @@ namespace UI.Window
         {
             _inv = FindObjectOfType<Inventory>();
             _frag = FindObjectOfType<UIFragments>();
+
+            _sound = FindObjectOfType<UISoundManager>();
         }
 
         protected override void OnStart()
         {
+            _sound.PlayOpenInventory();
+
             _inv.LoadItems();
             _frag.KeepFragments();
             _shown = true;
@@ -53,6 +58,8 @@ namespace UI.Window
 
         protected override void OnClose()
         {
+            _sound.PlayCloseInventory();
+
             _inv.UnloadItems();
             _frag.HideFragments();
             _shown = false;

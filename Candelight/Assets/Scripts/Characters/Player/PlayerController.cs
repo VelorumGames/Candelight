@@ -376,6 +376,8 @@ namespace Player
                         _instrInBook = false;
                         _UIMan.VignetteFeedback(0.25f);
                         Invoke("ResetBookInstructionTimer", 0.25f);
+
+                        _sound.PlayRuneSound(instr);
                     }
                 }
                 else
@@ -403,6 +405,7 @@ namespace Player
                     Debug.Log("Se encuentran elementos que aplicar: " + elements);
                     _mage.SetActiveElements(elements);
                     if (OnElements != null) OnElements(elements);
+                    _sound.PlayElement(elements[0].Name);
                 }
                 else if (OnElements != null) OnElements(null); //Si no encuentra elemento valido
             }
@@ -505,6 +508,8 @@ namespace Player
                     _book.gameObject.SetActive(true);
                     _bookIsOpen = true;
                 }
+
+                _sound.PlayBookSound();
             }
         }
 

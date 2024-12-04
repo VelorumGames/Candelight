@@ -14,14 +14,20 @@ namespace UI
         Vector3 _oPos;
         RectTransform _rect;
 
+        UISoundManager _sound;
+
         private void Awake()
         {
+            _sound = FindObjectOfType<UISoundManager>();
+
             _rect = GetComponent<RectTransform>();
             _oPos = _rect.localPosition;
         }
 
         private void OnEnable()
         {
+            _sound.PlayMove();
+
             _rect.localPosition = _oPos;
             _rect.DOLocalMove(_endPos, _duration).SetUpdate(true).SetEase(_easeType).Play();
         }

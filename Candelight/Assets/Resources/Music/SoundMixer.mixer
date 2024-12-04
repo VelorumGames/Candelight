@@ -1,5 +1,47 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!244 &-4564141039137370262
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 06cd1c64f5e1e3b48aa7ebc39c19d8df
+  m_EffectName: SFX Reverb
+  m_MixLevel: 22ca6b4b3bf2d144d93a4e5b7a07f1c8
+  m_Parameters:
+  - m_ParameterName: Dry Level
+    m_GUID: 87f6652f24afd9444be9fb9b54193b4a
+  - m_ParameterName: Room
+    m_GUID: f6ec6fc79a16acc4180bebcf7fb28ae8
+  - m_ParameterName: Room HF
+    m_GUID: 3d986abc8255345469d007d61a34e076
+  - m_ParameterName: Decay Time
+    m_GUID: db2d2af42f8e2f54984548d240481ab3
+  - m_ParameterName: Decay HF Ratio
+    m_GUID: 62e61f280d3447240bedae017e3479db
+  - m_ParameterName: Reflections
+    m_GUID: 0a3814494af15554093c9f3067f34865
+  - m_ParameterName: Reflect Delay
+    m_GUID: 7339d0ec0798a53429ef6401bc7c1ca9
+  - m_ParameterName: Reverb
+    m_GUID: c75777eb546f0794e8989ab1e270f920
+  - m_ParameterName: Reverb Delay
+    m_GUID: 164344faf8341d94f90a009a8f1151ba
+  - m_ParameterName: Diffusion
+    m_GUID: 3748c608001b31e479b0199e04b3fb00
+  - m_ParameterName: Density
+    m_GUID: e47c640be6e6dba4aa918987f8967dd5
+  - m_ParameterName: HF Reference
+    m_GUID: fc703d4649cd8bb459d8fec70639033e
+  - m_ParameterName: Room LF
+    m_GUID: 94bf8c2137c1fe548aec2c4364e49bec
+  - m_ParameterName: LF Reference
+    m_GUID: 65848f4fbb3e9264eb691eb52e6deb0a
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &-4436486785645542185
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -36,6 +78,7 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 8350700602156455585}
+  - {fileID: -4564141039137370262}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
@@ -143,9 +186,16 @@ AudioMixerSnapshotController:
   m_FloatValues:
     85b5ff417c36a464c963a7b4d0b90b32: 515
     39220a22a5c6e194590a3bf91fe0f69f: 22000
+    db2d2af42f8e2f54984548d240481ab3: 1.94
+    f6ec6fc79a16acc4180bebcf7fb28ae8: -1506
+    8f8ef338b1e421d4b8fdaef786381e18: -4326
     0a359709e5827294ab5c817cf2256762: 5872.29
+    164344faf8341d94f90a009a8f1151ba: 0.0327
     6256fb9bb0629cc409a3bcdc15407a4c: 0.93999785
+    c75777eb546f0794e8989ab1e270f920: 787
+    7339d0ec0798a53429ef6401bc7c1ca9: 0.035
     660acead663ae9149aceaff8c7e7f5bd: 1
+    87f6652f24afd9444be9fb9b54193b4a: 0
   m_TransitionOverrides: {}
 --- !u!244 &1293946867612461157
 AudioMixerEffectController:
