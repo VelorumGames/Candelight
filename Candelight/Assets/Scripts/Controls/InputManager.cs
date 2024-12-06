@@ -77,19 +77,23 @@ namespace Controls
                 SceneManager.sceneLoaded += OnSceneLoaded;
                 SceneManager.sceneUnloaded += OnSceneUnloaded;
 
+                OnStartElementMode += _cont.RegisterSpellMode;
                 OnStartElementMode += _cont.ResetInstructions;
                 OnStartElementMode += _cont.StartSpellMove;
                 OnStartElementMode += _music.EnterSpellModeMusic;
 
                 OnExitElementMode += _cont.OnChooseElements;
                 OnExitElementMode += _music.ExitSpellModeMusic;
+                OnExitElementMode += _cont.ExitSpellMode;
 
+                OnStartShapeMode += _cont.RegisterSpellMode;
                 OnStartShapeMode += _cont.ResetInstructions;
                 OnStartShapeMode += _cont.StartSpellMove;
                 OnStartShapeMode += _music.EnterSpellModeMusic;
 
                 OnExitShapeMode += _cont.OnSpellLaunch;
                 OnExitShapeMode += _music.ExitSpellModeMusic;
+                OnExitShapeMode += _cont.ExitSpellMode;
 
                 GameSettings.LoadedControls = true;
             }
@@ -434,6 +438,7 @@ namespace Controls
         {
             if (!_shapeMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
+                Debug.Log("AAAAAAA");
                 if (OnStartElementMode != null) OnStartElementMode();
                 _elementMode = true;
                 _isInSpellMode = true;
@@ -456,6 +461,7 @@ namespace Controls
         {
             if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
+                Debug.Log("AAAAAAA");
                 if (OnStartShapeMode != null) OnStartShapeMode();
 
                 _shapeMode = true;
@@ -507,19 +513,23 @@ namespace Controls
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
 
+            OnStartElementMode -= _cont.RegisterSpellMode;
             OnStartElementMode -= _cont.ResetInstructions;
             OnStartElementMode -= _cont.StartSpellMove;
             OnStartElementMode -= _music.EnterSpellModeMusic;
 
             OnExitElementMode -= _cont.OnChooseElements;
             OnExitElementMode -= _music.ExitSpellModeMusic;
+            OnExitElementMode -= _cont.ExitSpellMode;
 
+            OnStartShapeMode -= _cont.RegisterSpellMode;
             OnStartShapeMode -= _cont.ResetInstructions;
             OnStartShapeMode -= _cont.StartSpellMove;
             OnStartShapeMode -= _music.EnterSpellModeMusic;
 
             OnExitShapeMode -= _cont.OnSpellLaunch;
             OnExitShapeMode -= _music.ExitSpellModeMusic;
+            OnExitShapeMode -= _cont.ExitSpellMode;
 
             if (_cont) UnloadControls();
         }

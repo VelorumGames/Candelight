@@ -331,7 +331,7 @@ GameObject:
   - component: {fileID: 137178348}
   - component: {fileID: 137178347}
   - component: {fileID: 137178346}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +464,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 55
+  field of view: 60
   orthographic: 0
   orthographic size: 1.01
   m_Depth: 0
@@ -597,9 +597,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 8466426061747607947, guid: b87604c02e7f93f4aa94b9f009b80428, type: 3}
   - {fileID: 5488207378174727287, guid: 941fcb5f0cbee464fb7e04f804092545, type: 3}
+  - {fileID: 5632953681543258541, guid: 1cd11c2f7b422ab43ab062dc10a09fea, type: 3}
   _temeriaEvents:
   - {fileID: 2748539731665009197, guid: 1845ef86f5e9f3a459bbb55ebcf17220, type: 3}
   - {fileID: 7530822801860363967, guid: 24aeecf9003219b49bf8298d23dfdcc9, type: 3}
+  - {fileID: 2996249551411420347, guid: ab58db6f2feddab4daced178a91dac59, type: 3}
   _idriaEvents: []
 --- !u!114 &585129103
 MonoBehaviour:
@@ -653,7 +655,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 55
+    FieldOfView: 60
     OrthographicSize: 1.01
     NearClipPlane: 0.3
     FarClipPlane: 1000

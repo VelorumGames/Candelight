@@ -35,5 +35,7 @@ namespace Animations
         public void ChangeToLife() => Anim.SetBool("Death", false);
 
         public void ChangeToMelee() => Anim.SetTrigger("Melee");
+        public void ChangeToProj() => Anim.SetTrigger("Proj");
+        public void ChangeToExpl() => Anim.SetTrigger("Expl");
     }
 }

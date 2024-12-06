@@ -40,7 +40,7 @@ namespace Enemy
         protected new void Start()
         {
             MaxHP = Info.BaseHP;
-            gameObject.name = $"Enemigo {Info.name}";
+            gameObject.name = $"Enemigo {Info.Name}";
 
             base.Start();
 
@@ -92,7 +92,7 @@ namespace Enemy
             float target = dam.transform.position.y + 2f;
             dam.transform.DOMoveY(target, 1f).Play();
 
-            damText.text = $"-{damage.ToString("F1", CultureInfo.InvariantCulture)}";
+            damText.text = $"-{damage:F0}";
             damText.DOFade(0f, 1f).Play().OnComplete(() => Destroy(dam));
             dam.transform.DOLocalMoveY(5f, 1f).Play();
         }

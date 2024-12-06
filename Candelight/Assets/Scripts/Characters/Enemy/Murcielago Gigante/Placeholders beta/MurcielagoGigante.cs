@@ -124,7 +124,7 @@ namespace Enemy
             while (!PhantomCheck() && World.Candle > 0)
             {
                 target = Player.transform.position + new Vector3(UnityEngine.Random.Range(-1f, 1f), 0f, UnityEngine.Random.Range(-1f, 1f)); //Para que tampoco sea exacto (es ciego)
-                yield return StartCoroutine(MoveTowards(target, 3f));
+                yield return StartCoroutine(MoveTowards(target, 1.5f));
                 if (Vector3.Distance(transform.position, Player.transform.position) < _attackRange) //Si entra en rango de ataque
                 {
                     OnAttack(); //Ataca y se espera un poco para que la animacion se reproduzca con normalidad (y para darle tiempo al jugador de escapar)

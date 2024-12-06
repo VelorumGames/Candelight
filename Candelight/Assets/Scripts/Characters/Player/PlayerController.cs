@@ -84,15 +84,28 @@ namespace Player
         [SerializeField] bool _isFirstPerson;
         CameraManager _camMan;
 
-        bool _inCombat;
+        bool m_combat;
+        bool _inCombat
+        {
+            get => m_combat;
+            set
+            {
+                m_combat = value;
+                if (value && _bookIsOpen) ForceBookClose();
+            }
+        }
         float _spellThrowDelay = 0.7f;
         bool _canSpellThrow = true;
 
         bool _invicible;
         float _iFrameDuration = 1f;
 
+        bool _dying;
+        float _deathTimer = 60f;
+
         Vector2 _oldDirection;
 
+        bool _spellMode;
         AShapeRune _lastSpell;
         float _lastSpellDuration = 5f;
         bool _canLastSpell;
@@ -163,6 +176,8 @@ namespace Player
 
         void OnSceneUnloaded(Scene scene)
         {
+            if (_bookIsOpen) ForceBookClose();
+
             UnloadInteraction();
             _pathShower.SetActive(false);
         }
@@ -190,11 +205,12 @@ namespace Player
                 }
 
                 //TODO. Esto cambiara para la gold.
-                if (finalHealth <= 0) //Morira
-                {
-                    CanMove = false;
-                    _anim.ChangeToDeath();
-                }
+                //if (finalHealth <= 0) //Morira
+                //{
+                //    CanMove = false;
+                //    _anim.ChangeToDeath();
+                //}
+                if (_dying) _deathTimer += Time.deltaTime * 10f;
 
                 CallDamageEvent(finalDamage, Mathf.Clamp01(finalHealth / World.MAX_CANDLE));
 
@@ -234,7 +250,43 @@ namespace Player
 
         void Death()
         {
+            //CanMove = false;
+            if (_dying)
+            {
+                _dying = true;
+                StartCoroutine(DeathMode());
+            }
+        }
+
+        IEnumerator DeathMode()
+        {
+            _deathTimer = 00;
+
+            while (_dying)
+            {
+                _deathTimer += Time.deltaTime;
+                if (_deathTimer < 0f) break;
+
+                yield return null;
+            }
+
+            TrueDeath();
+        }
+
+        void TrueDeath()
+        {
             CanMove = false;
+            _anim.ChangeToDeath();
+        }
+
+        public void RegisterSpellMode()
+        {
+            _spellMode = true;
+        }
+
+        public void ExitSpellMode()
+        {
+            _spellMode = false;
         }
 
         #region Actions
@@ -250,6 +302,8 @@ namespace Player
                 _rb.AddForce(force, ForceMode.Force);
 
                 _particles.StartFootParticles();
+
+                if (_dying) force *= (_deathTimer / 60f);
 
                 if (_inCombat && direction != _oldDirection) OnCombatMoveBoost(force);
 
@@ -293,7 +347,7 @@ namespace Player
 
         public void OnInteract(InputAction.CallbackContext _)
         {
-            if (_interaction != null && _selection != null)
+            if (_interaction != null && _selection != null && !_bookIsOpen && !_spellMode)
             {
                 _selection.transform.parent = transform;
                 _selection.transform.localPosition = new Vector3();
@@ -349,7 +403,7 @@ namespace Player
 
         public void OnSpellInstruction(ESpellInstruction instr)
         {
-            if (CanMove && SceneManager.GetActiveScene().name != "CalmScene")
+            if (CanMove && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
                 //Debug.Log("Se ha registrado la instruccion " + instr);
                 if (_bookIsOpen)
@@ -429,10 +483,10 @@ namespace Player
                     //Debug.Log("Se lanza hechizo: " + str);
                     if (ARune.FindSpell(_instructions.ToArray(), out var spell))
                     {
-                        Debug.Log("Hechizo encontrado!!: " + spell.Name);
                         AShapeRune shapeSpell = spell as AShapeRune;
                         if (shapeSpell != null)
                         {
+                            Debug.Log("Hechizo encontrado!!: " + shapeSpell.Name);
                             if (!(shapeSpell is ExplosionRune || shapeSpell is BuffRune))
                             {
                                 _canLastSpell = true;
@@ -453,7 +507,7 @@ namespace Player
 
         public void OnLastSpellLaunch(InputAction.CallbackContext _)
         {
-            if (_canLastSpell && CanMove && SceneManager.GetActiveScene().name != "CalmScene" && _lastSpell != null)
+            if (_canLastSpell && CanMove && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene" && _lastSpell != null)
             {
                 _lastSpell.SetFastDamageFactor(0.75f);
                 ThrowSpell(_lastSpell);
@@ -472,6 +526,8 @@ namespace Player
                 if (OnSpell != null) OnSpell(shapeSpell);
 
                 if (shapeSpell is MeleeRune) _anim.ChangeToMelee();
+                else if (shapeSpell is ProjectileRune) _anim.ChangeToProj();
+                else if (shapeSpell is ExplosionRune) _anim.ChangeToExpl();
 
                 _UIMan.ResetCanShoot();
                 _UIMan.VignetteFeedback(_spellThrowDelay);
@@ -496,7 +552,7 @@ namespace Player
 
         public void OnBook(InputAction.CallbackContext _)
         {
-            if (!_isFirstPerson && _book && SceneManager.GetActiveScene().name != "CalmScene" && !_inCombat)
+            if (!_spellMode && !_isFirstPerson && _book && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene" && !_inCombat)
             {
                 if (_bookIsOpen)
                 {
@@ -508,6 +564,17 @@ namespace Player
                     _book.gameObject.SetActive(true);
                     _bookIsOpen = true;
                 }
+
+                _sound.PlayBookSound();
+            }
+        }
+
+        void ForceBookClose()
+        {
+            if (_bookIsOpen)
+            {
+                _book.gameObject.SetActive(false);
+                _bookIsOpen = false;
 
                 _sound.PlayBookSound();
             }
@@ -560,7 +627,7 @@ namespace Player
 
         public void OnInventory(InputAction.CallbackContext _)
         {
-            if (!_inCombat)
+            if (!_inCombat && !_bookIsOpen && !_spellMode)
             {
                 _UIMan.LoadUIWindow(_UIMan.InventoryUI, "i");
                 _UIMan.ShowUIMode(EUIMode.Inventory);
@@ -640,6 +707,9 @@ namespace Player
         public void AddExtraLife(int n) => _extraLives += n;
 
         public float GetLastSpellDelay() => _lastSpellDuration;
+
+        public void SetFastDelay(float ratio) => _spellThrowDelay *= ratio;
+        public void ResetFastDelay(float ratio) => _spellThrowDelay /= ratio;
 
         #endregion
 

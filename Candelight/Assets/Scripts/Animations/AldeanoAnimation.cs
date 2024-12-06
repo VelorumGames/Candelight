@@ -9,6 +9,8 @@ namespace Animations
         Rigidbody _rb;
         public bool Active;
 
+        public bool Violin;
+
         private new void Awake()
         {
             base.Awake();
@@ -18,9 +20,13 @@ namespace Animations
 
         private void Update()
         {
-            Anim.SetFloat("xVelocity", _rb.velocity.normalized.x);
-            Anim.SetFloat("yVelocity", _rb.velocity.normalized.z);
-            Anim.SetBool("Active", Active);
+            if (Violin) Anim.SetBool("Violin", Violin);
+            else
+            {
+                Anim.SetFloat("xVelocity", _rb.velocity.normalized.x);
+                Anim.SetFloat("yVelocity", _rb.velocity.normalized.z);
+                Anim.SetBool("Active", Active);
+            }
         }
 
         public void ChangeToDown() => Anim.SetTrigger("Down");

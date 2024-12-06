@@ -39,6 +39,9 @@ namespace Hechizos
 
         public event System.Action<ARune> OnNewRuneActivation;
 
+        [Space(10)]
+        public GameObject ElectricArea;
+
         private void OnEnable()
         {
             _cont = FindObjectOfType<PlayerController>();
@@ -199,7 +202,7 @@ namespace Hechizos
                     else if (count == 1) orientation = Quaternion.AngleAxis(-30f, Vector3.up) * orientation;
 
                     proj.GetComponent<Projectile>().Push(orientation, 8f);
-
+                    if (IsActiveElement("Electric")) proj.GetComponent<Projectile>().OnImpact += SpawnElectricArea;
                     //proj.GetComponent<Rigidbody>().velocity = new Vector3(0f, 0f, 0f);
                     //proj.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * orientation.normalized, ForceMode.Impulse);
 
@@ -220,16 +223,22 @@ namespace Hechizos
                 }
 
                 _lastProjectile.transform.position = _cont.transform.position;
-                //Debug.Log("FUERZA: " + _projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation());
-
-                //_lastProjectile.GetComponent<Rigidbody>().maxLinearVelocity = _projectileSpeed * _projectileSpeedFactor * 0.1f;
-                //_lastProjectile.GetComponent<Rigidbody>().AddRelativeForce(_projectileSpeed * _projectileSpeedFactor * _cont.GetOrientation(), ForceMode.Impulse);
-
                 _lastProjectile.GetComponent<Projectile>().Push(_cont.GetOrientation(), 8f);
+                if (IsActiveElement("Electric")) _lastProjectile.GetComponent<Projectile>().OnImpact += SpawnElectricArea;
+
+
 
                 _cam.Shake(6f, 0.1f, 0.4f);
 
                 yield return null;
+            }
+        }
+
+        void SpawnElectricArea(Transform obj)
+        {
+            if (GameSettings.ElectricFingers)
+            {
+                Instantiate(ElectricArea, obj.transform.position, Quaternion.identity);
             }
         }
 
@@ -280,6 +289,7 @@ namespace Hechizos
             GameObject expl = Instantiate(Explosion);
             //expl.GetComponent<Explosion>().RegisterTypes(_activeElements.ToArray());
             expl.transform.position = _cont.transform.position;
+            if (IsActiveElement("Electric")) expl.GetComponent<Explosion>().OnImpact += SpawnElectricArea;
 
             _cam.Shake(20f, 0.2f, 1f);
 
@@ -304,6 +314,7 @@ namespace Hechizos
             mel.transform.position = _cont.transform.position;
 
             mel.GetComponent<Rigidbody>().AddForce(_projectileSpeed * _projectileSpeedFactor * 0.15f * _cont.GetOrientation(), ForceMode.Impulse);
+            if (IsActiveElement("Electric")) mel.GetComponent<Melee>().OnImpact += SpawnElectricArea;
 
             _cam.Shake(2f, 0.1f, 0.3f);
 
@@ -338,6 +349,15 @@ namespace Hechizos
             }
 
             return found;
+        }
+
+        public bool IsActiveElement(string name)
+        {
+            foreach (var rune in GetActiveElements())
+            {
+                if (rune.Name == name) return true;
+            }
+            return false;
         }
 
         public void SetProjectileDrag(float d) => _lastProjectile.GetComponent<Rigidbody>().drag = d;

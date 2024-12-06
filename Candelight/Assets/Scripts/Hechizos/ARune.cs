@@ -167,8 +167,11 @@ namespace Hechizos
                 if (FindSpell(subChain, out ARune element) && element != null)
                 {
                     elements[i] = element as AElementalRune;
-                    Debug.Log(elements[i].Name);
-                    found++;
+                    if (elements[i] != null)
+                    {
+                        Debug.Log(elements[i].Name);
+                        found++;
+                    }
                 }
                 else
                 {

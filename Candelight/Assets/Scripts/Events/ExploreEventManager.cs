@@ -78,6 +78,9 @@ namespace Events
 
                             _currentEvent = Instantiate(_events[2], room.GetRandomSpawnPoint());
                             break;
+                        case 3: //Mascotita Brillante
+                            _currentEvent = Instantiate(_events[3], room.GetRandomSpawnPoint());
+                            break;
                         default:
                             Debug.Log("No se generara ningun evento para este nodo");
                             break;
@@ -101,6 +104,9 @@ namespace Events
                             break;
                         case 1: //Sepultado
                             _currentEvent = Instantiate(_events[1], room.GetRandomSpawnPoint());
+                            break;
+                        case 2: //Muerto en vida
+                            _currentEvent = Instantiate(_events[2], room.GetRandomSpawnPoint());
                             break;
                         default:
                             Debug.Log("No se generara ningun evento para este nodo");

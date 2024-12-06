@@ -18,14 +18,18 @@ namespace Items
         [SerializeField] bool _active;
         bool _itemMarked;
         [SerializeField] Image _itemImg;
+        Image _img;
 
         [SerializeField] ParticleSystem _particles;
+
+        [SerializeField] Sprite[] _frameSprites;
 
         float _oScale;
 
         private void Awake()
         {
             _oScale = GetComponent<RectTransform>().localScale.x;
+            _img = GetComponent<Image>();
         }
 
         private void OnEnable()
@@ -89,5 +93,25 @@ namespace Items
         {
             GetComponent<RectTransform>().DOScale(_oScale, 0.2f);
         }
+
+        public void UnlockFrame()
+        {
+            if (!_active)
+            {
+                _active = true;
+                _img.sprite = _frameSprites[1];
+            }
+        }
+
+        public void LockFrame()
+        {
+            if (_active)
+            {
+                _active = false;
+                _img.sprite = _frameSprites[0];
+            }
+        }
+
+        public bool IsUnlocked() => _active;
     }
 }

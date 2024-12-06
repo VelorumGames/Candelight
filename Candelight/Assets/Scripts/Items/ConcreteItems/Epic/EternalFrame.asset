@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0f338d1c783ab14cb238934043b0280, type: 3}
+  m_Name: EternalFrame
+  m_EditorClassIdentifier: 
+  Id: 15
+  Name: Marco Eterno
+  Description: "Cuando est\xE1 activado proporciona un marco adicional, que servir\xE1
+    para conservar un objeto tras la muerte."
+  SubDescription: "Se dice que las obras enmarcadas se vuelven m\xE1s relevantes
+    tras la muerte."
+  ItemSprite: {fileID: 21300000, guid: 1dbb6552b463bc147b63d5bdb1980add, type: 3}
+  Max: 2
+  Category: 8

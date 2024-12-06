@@ -5,6 +5,7 @@ using UnityEngine;
 public static class GameSettings
 {
     public static bool Online = true;
+    public static int Seed;
 
     public static float Brightness;
     public static float Contrast;
@@ -25,4 +26,8 @@ public static class GameSettings
     public static bool CanRevive = true;
     public static bool LoadedControls = false;
     public static bool ExistsPreviousGame = false;
+
+    //Items
+    public static bool Owl = false;
+    public static bool ElectricFingers = false;
 }

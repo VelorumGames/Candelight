@@ -85,7 +85,7 @@ public class InferiIA : EnemyController
     IEnumerator MoveToTarget(Transform objetivo, bool puedeAtacar)
     {
         auxiliar = false;
-        yield return StartCoroutine(MoveTowards(objetivo.position, 3f)); //MoveTowards termina antes de que llegue exactamente al objetivo.
+        yield return StartCoroutine(MoveTowards(objetivo.position, 1f)); //MoveTowards termina antes de que llegue exactamente al objetivo.
         //comprobar si está cerca el jugador.
         if (CloseToTargetCheck() && puedeAtacar)
         {
@@ -129,7 +129,7 @@ public class InferiIA : EnemyController
         {
             Vector3 target = transform.position + new Vector3(Random.Range(-2f, 2f), transform.position.y, Random.Range(-2f, 2f));
             //Debug.Log("Se encuentra nuevo target: " + target);
-            yield return StartCoroutine(MoveTowards(target, 5f));
+            yield return StartCoroutine(MoveTowards(target, 4f));
         }
         auxiliar2 = true;
     }

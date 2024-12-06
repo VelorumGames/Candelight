@@ -94,6 +94,9 @@ namespace UI
             Time.timeScale = 1f;
 
             NameNotif.color = new Color(NameNotif.color.r, NameNotif.color.g, NameNotif.color.b, 0f);
+
+            _spellHalo = GameObject.FindGameObjectWithTag("SpellHalo");
+            _fragmentHalo = GameObject.FindGameObjectWithTag("FragmentHalo");
         }
 
         private void OnEnable()
@@ -123,14 +126,8 @@ namespace UI
 
         private void Start()
         {
-            _spellHalo = GameObject.FindGameObjectWithTag("SpellHalo");
-            _fragmentHalo = GameObject.FindGameObjectWithTag("FragmentHalo");
-
-            if (_spellHalo)
-            {
-                _spellHalo.SetActive(false);
-                _fragmentHalo.SetActive(false);
-            }
+            _spellHalo?.SetActive(false);
+            _fragmentHalo?.SetActive(false);
         }
 
         private void OnGUI()
@@ -151,7 +148,7 @@ namespace UI
             //if (GUI.Button(new Rect(500, 40, 150, 20), "CALM SCENE")) SceneManager.LoadScene("CalmScene");
             if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM")) FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(EItemCategory.Rare));
             if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
-            GUI.Label(new Rect(10, 140, 200, 500), $"Current elements: {_elements}\nActive runes:\n{_chains}");
+            //GUI.Label(new Rect(10, 140, 200, 500), $"Current elements: {_elements}\nActive runes:\n{_chains}");
         }
 
         int CalculateFPS(float frameSpeed)
@@ -476,17 +473,13 @@ namespace UI
             Time.timeScale = _spellTimeScale;
 
             _spellHalo.SetActive(true);
-            //float offset = GetScreenSizeOffset();
-            //_spellHalo.transform.localPosition = new Vector3(0f, -offset, offset);
-            //
-            //GetScreenSizeOffset();
         }
 
         void ExitSpellModeFeedback()
         {
             Time.timeScale = _prevTimeScale;
 
-            _spellHalo.SetActive(false);
+            _spellHalo?.SetActive(false);
 
             Invoke("AuxiliarTimeReset", 0.5f);
         }
@@ -498,22 +491,19 @@ namespace UI
 
         void ShowFragmentHalo(int prev, int num)
         {
-            //float offset = GetScreenSizeOffset();
-            //_fragmentHalo.transform.localPosition = new Vector3(offset * 0.95f, -offset * 0.55f, offset);
-            _fragmentHalo.SetActive(true);
+            _fragmentHalo?.SetActive(true);
             Invoke("ResetHalo", 3f);
         }
 
-        //float GetScreenSizeOffset()
-        //{
-        //    return (0.38f * Screen.height + 35.66f) / 484f;
-        //}
-
-        public void ResetHalo() => _fragmentHalo.SetActive(false);
+        public void ResetHalo() => _fragmentHalo?.SetActive(false);
 
         public void ShowState(EGameState state) => _state.Show(state);
 
         public void HideState() => _state.Hide();
+
+        public void SetSpellTimeScale(float time) => _spellTimeScale = time;
+
+        public float GetSpellTimeScale() => _spellTimeScale;
 
         #endregion
 
@@ -591,9 +581,27 @@ namespace UI
         {
             foreach (var el in UiModeElements)
             {
-                if (el.Id == id) return el;
+                if (el.Id == id)
+                {
+                    return el;
+                }
             }
             return null;
+        }
+
+        ManageUIMode[] LocateModeElements(string id)
+        {
+            List<ManageUIMode> manageUIs = new List<ManageUIMode>();
+
+            foreach (var el in UiModeElements)
+            {
+                if (el.Id == id)
+                {
+                    manageUIs.Add(el);
+                }
+            }
+
+            return manageUIs.ToArray();
         }
 
         void ShowMinimapMode()
@@ -623,7 +631,7 @@ namespace UI
             LocateModeElement("InventoryText")?.Hide();
 
             LocateModeElement("MinimapPlayer")?.Hide();
-            LocateModeElement("MinimapRoom")?.Hide();
+            foreach (var el in LocateModeElements("MinimapRoom")) el.Hide();
             LocateModeElement("MinimapStart")?.Hide();
             LocateModeElement("MinimapRune")?.Hide();
             LocateModeElement("MinimapEvent")?.Hide();

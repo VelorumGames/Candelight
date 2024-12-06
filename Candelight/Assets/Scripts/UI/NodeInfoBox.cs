@@ -15,8 +15,10 @@ namespace UI
         [SerializeField] TextMeshProUGUI _biome;
         [SerializeField] TextMeshProUGUI _state;
         [SerializeField] TextMeshProUGUI _inputText;
+        [Space(10)]
+        [SerializeField] TextMeshProUGUI _owlText;
 
-        public void RegisterNode(string name, string description, EBiome biome, string state)
+        public void RegisterNode(string name, string description, EBiome biome, string state, ELevel[] levels)
         {
             GetComponent<RectTransform>().localScale = 0f * Vector3.one;
             GetComponent<RectTransform>().DOScale(0.835f, 0.5f).SetUpdate(true).SetEase(Ease.OutBack).Play();
@@ -31,6 +33,47 @@ namespace UI
             for (int i = 0; i < (int)biome; i++)
             {
                 _difficulties[i].SetActive(true);
+            }
+
+            //Tipos de niveles
+            if (GameSettings.Owl)
+            {
+                string s = "Niveles: ";
+                int count = 0;
+                foreach (var level in levels)
+                {
+                    if (count++ < levels.Length - 1)
+                    {
+                        switch (level)
+                        {
+                            case ELevel.Exploration:
+                                s += "Exploración, ";
+                                break;
+                            case ELevel.Calm:
+                                s += "Aldea, ";
+                                break;
+                            case ELevel.Challenge:
+                                s += "Desafío, ";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (level)
+                        {
+                            case ELevel.Exploration:
+                                s += "Exploración.";
+                                break;
+                            case ELevel.Calm:
+                                s += "Aldea.";
+                                break;
+                            case ELevel.Challenge:
+                                s += "Desafío.";
+                                break;
+                        }
+                    }
+                }
+                _owlText.text = s;
             }
         }
 

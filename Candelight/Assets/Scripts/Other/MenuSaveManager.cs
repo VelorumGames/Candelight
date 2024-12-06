@@ -54,22 +54,29 @@ public class MenuSaveManager : MonoBehaviour
 
             _ui.HideState();
 
-            if (_previousData != null) //Si ha encontrado una previa partida guardada
-            {
-                GameSettings.ExistsPreviousGame = true;
-
-                Vector3 pos = _play.GetComponent<RectTransform>().position;
-                _play.GetComponent<RectTransform>().position = _loadSave.GetComponent<RectTransform>().position;
-                _loadSave.GetComponent<RectTransform>().position = pos;
-
-                _loadSave.SetActive(true);
-            }
+            
+        }
+        else
+        {
+            _ui.ShowTutorial("Tu partida no se guardará en el modo Sin Conexión");
         }
     }
 
     void GetScoreData(ScoreData data)
     {
         _previousData = data;
+
+        if (_previousData != null) //Si ha encontrado una previa partida guardada
+        {
+            Debug.Log("PARTIDA ENCONTRADA");
+            GameSettings.ExistsPreviousGame = true;
+
+            Vector3 pos = _play.GetComponent<RectTransform>().position;
+            _play.GetComponent<RectTransform>().position = _loadSave.GetComponent<RectTransform>().position;
+            _loadSave.GetComponent<RectTransform>().position = pos;
+
+            _loadSave.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -84,11 +91,11 @@ public class MenuSaveManager : MonoBehaviour
     {
         yield return StartCoroutine(SaveSystem.Load());
         SaveData data = SaveSystem.GameData;
-
+        
         ARune.CreateAllRunes(FindObjectOfType<Mage>());
-
+        
         GameSettings.CanRevive = data.CanRevive;
-
+        
         FindObjectOfType<Inventory>().LoadInventory(data.ActiveItems, data.UnactiveItems, data.MarkedItems, data.Fragments);
         World.Candle = data.Candle;
         World.CompletedIds.Clear();
@@ -96,9 +103,9 @@ public class MenuSaveManager : MonoBehaviour
         //World.CompletedNodes = World.CompletedIds.Count;
         SaveSystem.ScoreboardData.Score = World.CompletedNodes;
         World.World = null;
-
+        
         World.LoadedPreviousGame = true;
-
+        
         //Debug.Log("Datos de runas: " + data.Runes);
         string[] runeNames = data.Runes.Split(",");
         int count = 0;

@@ -30,7 +30,7 @@ namespace Map
 
         private void Start()
         {
-            FindObjectOfType<UIManager>().FadeFromBlack(2f);
+            FindObjectOfType<UIManager>().FadeFromBlack(1f, 2f);
 
             SpawnRoom();
         }

@@ -5,6 +5,7 @@ using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 namespace Menu.Login
 {
@@ -23,6 +24,8 @@ namespace Menu.Login
         string _password;
 
         UserData _data;
+
+        bool _busy;
 
         private void Awake()
         {
@@ -69,6 +72,11 @@ namespace Menu.Login
 
         bool StringCheck(char l) => (l == '/' || l == '{' || l == '}' || l == '"' || l == '.' || l == ' ');
 
+        private void Update()
+        {
+            if (Keyboard.current.enterKey.isPressed && !_busy) Login();
+        }
+
         public void Login()
         {
             if (GetInfo()) StartCoroutine(TryLogin($"PlayerAccounts/{_playerName}"));
@@ -76,6 +84,8 @@ namespace Menu.Login
 
         IEnumerator TryLogin(string header)
         {
+            _busy = true;
+
             _ui.ShowState(EGameState.Database);
             yield return Database.Get<UserData>(header, GetUserData);
             _ui.HideState();
@@ -102,6 +112,8 @@ namespace Menu.Login
                 _info.text = "No se ha encontrado ningún usuario con este nombre";
                 Invoke("ResetText", _infoTime);
             }
+
+            _busy = false;
         }
 
         void GetUserData(UserData data)
@@ -122,11 +134,13 @@ namespace Menu.Login
 
         public void CreateNewUser()
         {
-            if (GetInfo()) StartCoroutine(TryCreateUser());
+            if (GetInfo() && !_busy) StartCoroutine(TryCreateUser());
         }
 
         IEnumerator TryCreateUser()
         {
+            _busy = true;
+
             _ui.ShowState(EGameState.Database);
 
             //Comprobamos si ya existia este usuario
@@ -135,6 +149,7 @@ namespace Menu.Login
             _data = new UserData(_playerName, _password);
             //Debug.Log($"Se registra usuario con nombre {_playerName} y contraseña {_password}");
             yield return Database.Send($"PlayerAccounts/{_data.Name}", _data);
+            SaveSystem.PlayerName = _data.Name;
 
             _ui.HideState();
 
@@ -145,6 +160,8 @@ namespace Menu.Login
 
             _ui.ShowState(EGameState.Loading);
             SceneManager.LoadScene("MenuScene");
+
+            _busy = false;
         }
 
         public void OfflineMode()

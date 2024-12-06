@@ -64,6 +64,7 @@ namespace World
 
         private void Awake()
         {
+            
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
@@ -90,17 +91,19 @@ namespace World
             {
                 WorldMap.Add(new List<int>());
             }
+            
         }
 
         private void Start()
         {
+            
             FindObjectOfType<UIManager>().FadeFromBlack(0.5f, 4f);
 
             FindObjectOfType<MusicManager>().PlayMusic(0, _worldMusic);
             FindObjectOfType<MusicManager>().ChangeVolumeFrom(0, 0f, 0.5f, 2f);
 
             CurrentNodeInfo.CurrentLevel = 0;
-
+            
             if (!World.World) //Si no se ha generado mundo previamente
             {
                 SpawnRandomNodes();
@@ -115,6 +118,7 @@ namespace World
                 Debug.Log("INFO: El mundo ya se ha generado, por lo que no se vuelve a generar");
                 World.World.SetActive(true);
             }
+            
             try
             {
                 MovePlayerToNode(CurrentNodeInfo.Node.transform);
@@ -123,8 +127,9 @@ namespace World
             {
                 Debug.Log("INFO: Se ha detectado datos de un mundo previo inaccesibles. Se genera un nuevo mundo: " + e);
                 World.World = null;
-                Start();
+                //Start();
             }
+            
         }
 
         /// <summary>

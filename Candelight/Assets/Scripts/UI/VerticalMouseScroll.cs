@@ -39,15 +39,23 @@ namespace UI
 
         private void Update()
         {
-            if (_updateAction != null) _updateAction();
+            if (_activeItems && _inv.ActiveItems.Count > 6)
+            {
+                if (_updateAction != null) _updateAction();
 
-            //if (!_activeItems) Debug.Log(_content.localPosition);
-            _content.localPosition = new Vector3(_content.localPosition.x, Mathf.Clamp(_content.localPosition.y, _activeItems ? -_inv.ActiveItems.Count * 40f : -_inv.UnactiveItems.Count * 40f, 0f), _content.localPosition.z);
+                _content.localPosition = new Vector3(_content.localPosition.x, Mathf.Clamp(_content.localPosition.y, 0f, (_inv.ActiveItems.Count - 6) * 40f), _content.localPosition.z);
+            }
+            else if (!_activeItems && _inv.UnactiveItems.Count > 6)
+            {
+                if (_updateAction != null) _updateAction();
+
+                _content.localPosition = new Vector3(_content.localPosition.x, Mathf.Clamp(_content.localPosition.y, 0f, (_inv.UnactiveItems.Count - 6) * 40f), _content.localPosition.z);
+            }
         }
 
         void RegisterScroll()
         {
-            _content.localPosition += _input.GetScrollData() * _scrollSens * Vector3.up;
+            _content.localPosition -= _input.GetScrollData() * _scrollSens * Vector3.up;
         }
     }
 }

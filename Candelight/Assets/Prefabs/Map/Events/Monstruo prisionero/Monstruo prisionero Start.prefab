@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 699453576493530896}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.64, y: -0.132, z: -0.4}
+  m_LocalPosition: {x: 0.64, y: -0.35, z: -0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -145,7 +145,7 @@ Transform:
   m_GameObject: {fileID: 2878787002089246505}
   serializedVersion: 2
   m_LocalRotation: {x: 0.54780066, y: -0.44711795, z: 0.44711795, w: 0.54780066}
-  m_LocalPosition: {x: -0.532, y: -0.132, z: 0.627}
+  m_LocalPosition: {x: -0.532, y: -0.35, z: 0.627}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -419,6 +419,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -4.41
       objectReference: {fileID: 0}
+    - target: {fileID: -2011753701490239196, guid: d889f30fc781d8a48927769e67c80c82,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f58208ff719a21240913f8a14285e97d, type: 2}
+    - target: {fileID: -893370878647364177, guid: d889f30fc781d8a48927769e67c80c82,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f58208ff719a21240913f8a14285e97d, type: 2}
     - target: {fileID: 919132149155446097, guid: d889f30fc781d8a48927769e67c80c82,
         type: 3}
       propertyPath: m_Name
@@ -429,6 +439,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 1999793858467423555, guid: d889f30fc781d8a48927769e67c80c82,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f58208ff719a21240913f8a14285e97d, type: 2}
     - target: {fileID: 7247298196697772762, guid: d889f30fc781d8a48927769e67c80c82,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -477,6 +492,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dd04af237c2e8a544b0653dac1eac952, type: 2}
   - {fileID: 11400000, guid: 660b79cc67290f44b8e0d682d53c9a53, type: 2}
   LiberatedDialogue: {fileID: 11400000, guid: 6109388e930f28a488954998b6a5992b, type: 2}
+  Prisoner: {fileID: 7207223899057471455}
 --- !u!65 &9053653038144238319
 BoxCollider:
   m_ObjectHideFlags: 0

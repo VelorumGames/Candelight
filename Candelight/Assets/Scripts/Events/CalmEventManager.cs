@@ -106,6 +106,17 @@ namespace Events
                                     break;
                             }
                             break;
+                        case 3: //Mascotita Brillante
+                            switch (GetEventSolution())
+                            {
+                                case EEventSolution.Ignored:
+                                    _currentEvent = Instantiate(_eventEndings[6], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Failed:
+                                    _currentEvent = Instantiate(_eventEndings[7], room.GetRandomSpawnPoint());
+                                    break;
+                            }
+                            break;
                         default:
                             Debug.Log("No se generara ningun evento para este nodo");
                             break;
@@ -144,6 +155,23 @@ namespace Events
                                     break;
                                 case EEventSolution.AltCompleted:
                                     _currentEvent = Instantiate(_eventEndings[6], room.GetRandomSpawnPoint());
+                                    break;
+                            }
+                            break;
+                        case 2: //Muerto en vida
+                            switch (GetEventSolution())
+                            {
+                                case EEventSolution.Ignored:
+                                    _currentEvent = Instantiate(_eventEndings[7], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Failed:
+                                    _currentEvent = Instantiate(_eventEndings[8], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Completed:
+                                    _currentEvent = Instantiate(_eventEndings[9], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.AltCompleted:
+                                    _currentEvent = Instantiate(_eventEndings[10], room.GetRandomSpawnPoint());
                                     break;
                             }
                             break;

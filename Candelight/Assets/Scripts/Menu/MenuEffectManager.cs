@@ -37,6 +37,7 @@ namespace Menu
 
         void ChangeScene()
         {
+            Debug.Log("CAMBIOOO DE ESCENA");
             _ui.ShowState(EGameState.Loading);
             SceneManager.LoadScene(_sceneName);
         }

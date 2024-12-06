@@ -319,12 +319,14 @@ namespace Items
             {
                 //item.GetComponent<RectTransform>().localPosition = Position + count++ * Offset; //Los vectores siempre a la derecha de la multiplicacion
                 _window.ManageItemPosition(item, Position + count++ * Offset, true);
+                item.GetComponent<RectTransform>().localScale = 0.525f * Vector3.one;
             }
             count = 0;
             foreach (var item in ActiveItems)
             {
                 //item.GetComponent<RectTransform>().localPosition = Position + count++ * Offset + new Vector3(300f, 0f, 0f); //Los vectores siempre a la derecha de la multiplicacion
                 _window.ManageItemPosition(item, Position + count++ * Offset, false);
+                item.GetComponent<RectTransform>().localScale = 0.525f * Vector3.one;
             }
         }
 
@@ -367,24 +369,33 @@ namespace Items
         {
             _totalNumFragments = 999999;
 
-            foreach (var id in activeItems)
+            if (activeItems != null)
             {
-                GameObject item = Instantiate(SearchForItem(id));
-                ActiveItems.Add(item);
-                item.GetComponent<AItem>().SetActivation();
+                foreach (var id in activeItems)
+                {
+                    GameObject item = Instantiate(SearchForItem(id));
+                    ActiveItems.Add(item);
+                    item.GetComponent<AItem>().SetActivation();
+                }
             }
 
-            foreach (var id in unactiveItems)
+            if (unactiveItems != null)
             {
-                GameObject item = Instantiate(SearchForItem(id));
-                UnactiveItems.Add(item);
+                foreach (var id in unactiveItems)
+                {
+                    GameObject item = Instantiate(SearchForItem(id));
+                    UnactiveItems.Add(item);
+                }
             }
 
-            int frameId = 0;
-            foreach (var id in markItems)
+            if (markItems != null)
             {
-                GameObject item = Instantiate(SearchForItem(id));
-                MarkItem(item, frameId++);
+                int frameId = 0;
+                foreach (var id in markItems)
+                {
+                    GameObject item = Instantiate(SearchForItem(id));
+                    MarkItem(item, frameId++);
+                }
             }
 
             _totalNumFragments = fragments;

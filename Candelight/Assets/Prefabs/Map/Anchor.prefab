@@ -191,6 +191,7 @@ MonoBehaviour:
   - {fileID: 1045812822, guid: ec61d181856c6e3489675f3ba8f487ee, type: 3}
   - {fileID: -820146555, guid: ec61d181856c6e3489675f3ba8f487ee, type: 3}
   - {fileID: 51620180, guid: ec61d181856c6e3489675f3ba8f487ee, type: 3}
+  _rend: {fileID: 2418848614501401341}
 --- !u!1001 &8059893372038202418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -208,6 +209,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279949770465347141, guid: 2bf62ce3b1f662742889d21ac4cdb3de,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.22089702
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279949770465347141, guid: 2bf62ce3b1f662742889d21ac4cdb3de,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.32099044
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279949770465347141, guid: 2bf62ce3b1f662742889d21ac4cdb3de,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.45911938
       objectReference: {fileID: 0}
     - target: {fileID: 7387903539645293484, guid: 2bf62ce3b1f662742889d21ac4cdb3de,
         type: 3}

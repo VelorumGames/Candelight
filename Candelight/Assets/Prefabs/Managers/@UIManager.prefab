@@ -10364,7 +10364,7 @@ RectTransform:
   m_GameObject: {fileID: 755756799197695597}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.57162684, y: 0.57162684, z: 0.57162684}
+  m_LocalScale: {x: 0.69, y: 0.57162684, z: 0.57162684}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2516265017419155194}
@@ -11608,7 +11608,7 @@ MonoBehaviour:
   _unactiveContainer: {fileID: 3724576392004386723}
   _activeContainer: {fileID: 3407176825388726005}
   _activeParticles: {fileID: 741228937272652888}
-  _fragmentSprite: {fileID: 0}
+  _fragmentSprite: {fileID: 1038138392171109620}
   _unableColor: {r: 1, g: 0.37421376, b: 0.37421376, a: 1}
   _frameParticles: {fileID: 2333796239875342849}
   _eternalFrames:
@@ -13837,6 +13837,9 @@ MonoBehaviour:
   _active: 0
   _itemImg: {fileID: 1628603881115975202}
   _particles: {fileID: 7670582774799534018}
+  _frameSprites:
+  - {fileID: 21300000, guid: 222e08409118e06418db65513f15157a, type: 3}
+  - {fileID: 21300000, guid: f3cffd9978faa264fb56c9a6a16ff70a, type: 3}
 --- !u!114 &1957214094286031205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21075,7 +21078,7 @@ RectTransform:
   m_GameObject: {fileID: 5225117486795221384}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.57162684, y: 0.57162684, z: 0.57162684}
+  m_LocalScale: {x: 0.69, y: 0.57162684, z: 0.57162684}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7769650113114497346}
@@ -21291,6 +21294,9 @@ MonoBehaviour:
   _active: 1
   _itemImg: {fileID: 2207051111976048710}
   _particles: {fileID: 6822444490160566149}
+  _frameSprites:
+  - {fileID: 21300000, guid: 222e08409118e06418db65513f15157a, type: 3}
+  - {fileID: 21300000, guid: f3cffd9978faa264fb56c9a6a16ff70a, type: 3}
 --- !u!114 &6828127088965944820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27064,6 +27070,9 @@ MonoBehaviour:
   _active: 0
   _itemImg: {fileID: 7708874105698353554}
   _particles: {fileID: 5655294556318625053}
+  _frameSprites:
+  - {fileID: 21300000, guid: 222e08409118e06418db65513f15157a, type: 3}
+  - {fileID: 21300000, guid: f3cffd9978faa264fb56c9a6a16ff70a, type: 3}
 --- !u!114 &7660398116293653422
 MonoBehaviour:
   m_ObjectHideFlags: 0

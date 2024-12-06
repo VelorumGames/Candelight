@@ -93,7 +93,7 @@ namespace Items
         public void OnPointerEnter(PointerEventData _)
         {
             _oScale = GetComponent<RectTransform>().localScale.x;
-            GetComponent<RectTransform>().DOScale(_oScale * 1.05f, 0.2f);
+            GetComponent<RectTransform>().DOScale(_oScale * 1.03f, 0.2f);
 
             if (GameSettings.ItemTutorial)
             {

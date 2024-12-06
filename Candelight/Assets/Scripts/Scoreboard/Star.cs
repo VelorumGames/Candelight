@@ -17,7 +17,7 @@ namespace Scoreboard
         [SerializeField] SpriteRenderer _sprite;
         [SerializeField] Sprite[] _startSprites;
 
-        static GameObject _currentInfo;
+        static List<GameObject> _currentInfos = new List<GameObject>();
 
         //bool _shown;
 
@@ -40,21 +40,24 @@ namespace Scoreboard
         }
         private void OnMouseDown()
         {
-            //if (_shown)
-            //{
-            //    _shown = false;
-            //    _currentInfo.SetActive(false);
-            //    _starInfo.SetActive(false);
-            //}
-            //else
-            //{
-            //    _shown = true;
-            //    _starInfo.SetActive(true);
-            //}
+            if (_currentInfos.Contains(_starInfo))
+            {
+                _starInfo.SetActive(false);
+                _currentInfos.Remove(_starInfo);
+            }
+            else
+            {
+                _starInfo.SetActive(true);
+                _currentInfos.Add(_starInfo);
 
-            if (_currentInfo != null) _currentInfo.SetActive(false);
-            _currentInfo = _starInfo;
-            _currentInfo.SetActive(true);
+                foreach (var info in _currentInfos)
+                {
+                    if (info != _starInfo && Vector3.Distance(info.transform.position, _starInfo.transform.position) < 3f)
+                    {
+                        info.SetActive(false);
+                    }
+                }
+            }
         }
     }
 }
