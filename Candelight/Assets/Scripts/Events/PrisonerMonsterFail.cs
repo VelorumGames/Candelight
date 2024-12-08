@@ -51,6 +51,11 @@ namespace Events
             _agent.ChangeDialogue(DistantDialogue);
             _agent.StartDialogue();
 
+            UnloadCall();
+        }
+
+        public void UnloadCall()
+        {
             foreach (var room in _adyRooms)
             {
                 room.OnPlayerEnter -= DistantCall;
@@ -62,10 +67,7 @@ namespace Events
             _room.OnPlayerExit -= SetFailState;
             if (_adyRooms != null)
             {
-                foreach (var room in _adyRooms)
-                {
-                    room.OnPlayerEnter -= DistantCall;
-                }
+                UnloadCall();
             }
         }
     }

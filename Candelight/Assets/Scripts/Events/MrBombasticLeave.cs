@@ -23,7 +23,7 @@ namespace Events
             StartCoroutine(GetComponent<NPCController>().ExitRoom());
 
             Subordinate.ChangeDialogue(NewDialogue);
-            Subordinate.GetComponent<Collider>().enabled = true;
+            //Subordinate.GetComponent<Collider>().enabled = true;
         }
     }
 }

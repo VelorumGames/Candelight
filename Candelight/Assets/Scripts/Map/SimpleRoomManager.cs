@@ -30,7 +30,7 @@ namespace Map
 
         private void Start()
         {
-            FindObjectOfType<UIManager>().FadeFromBlack(2f);
+            FindObjectOfType<UIManager>().FadeFromBlack(1f, 2f);
 
             SpawnRoom();
         }
@@ -53,8 +53,8 @@ namespace Map
                     _currentRoom = Instantiate(DurniaRooms[Random.Range(0, DurniaRooms.Length)]);
                     break;
             }
-            
-            _player.transform.position = _currentRoom.GetComponent<ASimpleRoom>().GetPlayerStart().position;
+
+            _player.transform.position = _currentRoom.GetComponent<ASimpleRoom>().GetPlayerStart().position + 0.25f * Vector3.up;
         }
 
         public void PlaceTorch(Transform tr)

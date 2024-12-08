@@ -16,10 +16,14 @@ namespace Map
         SimpleRoomManager _man;
         MusicManager _music;
 
+        AudioSource _audio;
+
         private void Awake()
         {
             _man = FindObjectOfType<SimpleRoomManager>();
             _music = FindObjectOfType<MusicManager>();
+
+            _audio = GetComponent<AudioSource>();
         }
 
         private void Start()
@@ -36,6 +40,7 @@ namespace Map
             else //Al finalizar el desafio
             {
                 _music.ChangeVolumeTo(2, 0f, 5f);
+                _audio.Play();
 
                 FindObjectOfType<Inventory>().SpawnFragments(_fragReward, 1, GetRandomSpawn());
                 _man.PlaceTorch(GetRandomSpawn());

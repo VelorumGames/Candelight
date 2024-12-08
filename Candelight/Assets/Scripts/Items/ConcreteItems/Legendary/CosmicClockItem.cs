@@ -3,6 +3,7 @@ using Hechizos;
 using SpellInteractuable;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
 namespace Items.ConcreteItems
@@ -13,13 +14,13 @@ namespace Items.ConcreteItems
         protected override void ApplyProperty()
         {
             // Al tener equipado el elemento cosmico, el tiempo se detiene completamente mientras se invocan hechizos o elementos en vez de tan solo ralentizarse. 
-            //_originalTimeScale = FindObjectOfType<InputManager>().GetSpellTimeScale();
-            //FindObjectOfType<InputManager>().SetSpellTimeScale(0.1f);
+            _originalTimeScale = FindObjectOfType<UIManager>().GetSpellTimeScale();
+            FindObjectOfType<UIManager>().SetSpellTimeScale(0.1f);
         }
 
         protected override void ResetProperty()
         {
-            //FindObjectOfType<InputManager>().SetSpellTimeScale(_originalTimeScale);
+            FindObjectOfType<UIManager>().SetSpellTimeScale(_originalTimeScale);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Enemy
@@ -9,6 +10,7 @@ namespace Enemy
     {
         EnemyController _enemy;
         [SerializeField] Transform _mask;
+        [SerializeField] TextMeshPro _owlText;
 
         float _oPos;
         float _endPos = 0.342f;
@@ -28,11 +30,13 @@ namespace Enemy
         void UpdateHealthBar(float dam, float rem)
         {
             _mask.localPosition = new Vector3(Mathf.Lerp(_endPos, _oPos, rem), _mask.localPosition.y, _mask.localPosition.z);
+            if (GameSettings.Owl) _owlText.text = $"HP: {_enemy.CurrentHP}/{_enemy.MaxHP}";
         }
 
         public void ManualUpdateHealthBar(float rem)
         {
             _mask.localPosition = new Vector3(Mathf.Lerp(_endPos, _oPos, rem), _mask.localPosition.y, _mask.localPosition.z);
+            if (GameSettings.Owl) _owlText.text = $"HP: {_enemy.CurrentHP}/{_enemy.MaxHP}";
         }
 
         private void OnDisable()

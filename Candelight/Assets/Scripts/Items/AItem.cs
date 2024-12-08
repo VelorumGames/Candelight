@@ -8,6 +8,7 @@ using UI;
 using UI.Window;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Items 
@@ -28,9 +29,14 @@ namespace Items
         InventoryWindow _invWin;
         Inventory _inv;
 
+        UISoundManager _sound;
+
         private void Awake()
         {
+            SceneManager.sceneLoaded += OnSceneChanged;
             DontDestroyOnLoad(this);
+
+            _sound = FindObjectOfType<UISoundManager>();
 
             _inv = FindObjectOfType<Inventory>();
         }
@@ -39,6 +45,11 @@ namespace Items
         {
             _img = GetComponent<Image>();
             GetComponentInChildren<TextMeshProUGUI>().text = Data.Name;
+        }
+
+        void OnSceneChanged(Scene scene, LoadSceneMode mode)
+        {
+            _sound = FindObjectOfType<UISoundManager>();
         }
 
         protected abstract void ApplyProperty();
@@ -62,14 +73,18 @@ namespace Items
                 _inv.DeactivateItem(this);
 
                 _img.sprite = _buttonSprites[0];
+
+                _sound.PlayDeactivateItem();
             }
             else
             {
                 if (_invWin.EternalFrameMode != -1)
                 {
                     _inv.MarkItem(gameObject);
+
+                    _sound.PlayMarkItem();
                 }
-                else if (_inv.GetFragments() >= (int)Data.Category) //Si activa si estaba activado y hay fragmentos suficientes
+                else if (_inv.GetFragments() >= (int)Data.Category) //Se activa si estaba activado y hay fragmentos suficientes
                 {
                     IsActivated = true;
                     ApplyProperty();
@@ -79,11 +94,15 @@ namespace Items
 
                     if (!_invWin) _invWin = FindObjectOfType<InventoryWindow>();
                     _invWin.ShowActivatedParticles(GetComponent<RectTransform>().position);
+
+                    _sound.PlayActivateItem();
                 }
                 else
                 {
                     Debug.Log("[INFO] NO SE HA PODIDO ACTIVAR EL ITEM");
                     _invWin.ManageUnableFeedback(GetComponent<Image>());
+
+                    _sound.PlayCantButtonSound();
                 }
             }
         }
@@ -93,7 +112,7 @@ namespace Items
         public void OnPointerEnter(PointerEventData _)
         {
             _oScale = GetComponent<RectTransform>().localScale.x;
-            GetComponent<RectTransform>().DOScale(_oScale * 1.05f, 0.2f);
+            GetComponent<RectTransform>().DOScale(_oScale * 1.03f, 0.2f);
 
             if (GameSettings.ItemTutorial)
             {
@@ -101,11 +120,18 @@ namespace Items
 
                 GameSettings.ItemTutorial = false;
             }
+
+            _sound.PlayHoverItem();
         }
 
         public void OnPointerExit(PointerEventData _)
         {
             GetComponent<RectTransform>().DOScale(_oScale, 0.2f);
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneChanged;
         }
     }
 

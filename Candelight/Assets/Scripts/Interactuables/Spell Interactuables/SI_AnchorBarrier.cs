@@ -19,12 +19,14 @@ namespace SpellInteractuable
         [Space(10)]
         [SerializeField] Sprite[] _brokenBlocks;
         HealthBar _bar;
-        SpriteRenderer _rend;
+        [SerializeField] SpriteRenderer _rend;
+
+        AudioSource _audio;
 
         private void Awake()
         {
-            _rend = GetComponentInChildren<SpriteRenderer>();
             _bar = GetComponentInChildren<HealthBar>();
+            _audio = GetComponent<AudioSource>();
 
             _bar.gameObject.SetActive(false);
         }
@@ -33,8 +35,10 @@ namespace SpellInteractuable
         {
             if (_active)
             {
+                _audio.Play();
                 if(++_atCount >= _attackLimit)
                 {
+                    Destroy(_bar.gameObject);
                     Destroy(GetComponent<Collider>());
                     Destroy(_rend);
                 }

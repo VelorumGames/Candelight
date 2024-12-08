@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3061914539317721448}
   - component: {fileID: 881873925451594728}
   - component: {fileID: 3414809862760682190}
+  - component: {fileID: 4252687072004954475}
   m_Layer: 0
   m_Name: Sombra Individual
   m_TagString: Enemy
@@ -113,6 +114,16 @@ MonoBehaviour:
     type: 3}
   Fragment: {fileID: 3511583418104216482, guid: f4b15eff24eade8458c13b8996bbdd04,
     type: 3}
+  LuciernagaPosada: 0
+  Idles:
+  - {fileID: 8300000, guid: c92ee76d8e2162e44995beac4ddf4db8, type: 3}
+  - {fileID: 8300000, guid: 6b3caee8a6b1f3548bd9f4fe2c273514, type: 3}
+  - {fileID: 8300000, guid: 8b1cdd2513f004540a070b3aa73cb934, type: 3}
+  Damages:
+  - {fileID: 8300000, guid: c76bbdb9d336c94459b3e5eb202a4d8b, type: 3}
+  - {fileID: 8300000, guid: 13bc9bb5de312584bac657d2c8e0d988, type: 3}
+  - {fileID: 8300000, guid: 9d24b733a6ae77243a6a86c849e3207a, type: 3}
+  Death: {fileID: 8300000, guid: 816a0e2b913d9d44fa2fbc8165d5bc6f, type: 3}
   _maxScale: {x: 3, y: 3, z: 3}
   _healthIncrease: 20
   _scaleIncrease: 1
@@ -122,6 +133,7 @@ MonoBehaviour:
   _fireRate: 10
   _scSombracomportamiento: {fileID: 0}
   dis: 0
+  Disparo: {fileID: 8300000, guid: 67659c42f69880a498176c00d074f7ba, type: 3}
 --- !u!114 &782116314445987537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +228,103 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!82 &4252687072004954475
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8467932730327082533}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -2960918269842443166, guid: f6317272d0ee82c459c96664b6a5b4e6,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.6
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1415548829644620906
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -32,7 +32,8 @@ namespace Comportamientos.Sombra
 
                 if (value >= _numSombras)
                 {
-                    Muerte();
+                    _audio.PlayOneShot(FinalDeath);
+                    StartCoroutine(Muerte());
                     //gameObject.SetActive(false);
                 }
             }
@@ -62,6 +63,12 @@ namespace Comportamientos.Sombra
 
         List<SombraAnimation> _anims = new List<SombraAnimation>();
         UIManager _ui;
+
+        [SerializeField] AudioSource _enfadoSource;
+        [SerializeField] AudioSource _audio;
+
+        public AudioClip Calma;
+        public AudioClip FinalDeath;
 
         //Array Prefabs Anillos
 
@@ -159,8 +166,11 @@ namespace Comportamientos.Sombra
 
         }
 
-        private void Muerte()
+        IEnumerator Muerte()
         {
+            transform.localScale = new Vector3();
+            yield return new WaitForSeconds(2f);
+
             foreach (SombraRing ring in rings)
             {
                 Destroy(ring.gameObject);
@@ -199,6 +209,17 @@ namespace Comportamientos.Sombra
                     {
                         _ui.ShowTutorial("\"Las sombras chillaron...\"", 3f);
                         scSombra.GoAway(2f);
+
+                        _enfadoSource.volume = 0.3f;
+                    }
+                    else
+                    {
+                        _enfadoSource.volume = 0f;
+                        if (_audio.isPlaying)
+                        {
+                            _audio.clip = Calma;
+                            _audio.Play();
+                        }
                     }
                    
                 }

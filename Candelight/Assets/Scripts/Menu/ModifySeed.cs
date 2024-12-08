@@ -12,8 +12,7 @@ namespace Menu
 
         private void Awake()
         {
-            if (!GameSettings.Online) gameObject.SetActive(true);
-            else
+            if (GameSettings.Online)
             {
                 StartCoroutine(ManageOnlineSeed());
             }
@@ -21,9 +20,14 @@ namespace Menu
 
         IEnumerator ManageOnlineSeed()
         {
+            Debug.Log("Buscando seed");
             yield return Database.Get<OnlineSeed>("Seed", RecieveSeed);
+            Debug.Log("SEED RECIBIDA: " + _onlineSeed);
             Random.InitState(_onlineSeed);
             _world.Seed = _onlineSeed;
+            GameSettings.Seed = _onlineSeed;
+
+            gameObject.SetActive(false);
         }
 
         public void UpdateSeed(string str)

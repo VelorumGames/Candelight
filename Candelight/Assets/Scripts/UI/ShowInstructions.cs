@@ -262,12 +262,15 @@ namespace UI
         }
 
         bool _auxiliarSpell = true;
+        Sprite _lastSpell;
         void ShowSpellSprite(Image img, Sprite spr, float delay)
         {
             Debug.Log("Sprite: " + spr.name);
-            if (_auxiliarSpell)
+            if (_auxiliarSpell || _lastSpell != spr)
             {
                 img.sprite = spr;
+                _lastSpell = spr;
+
                 img.GetComponent<RectTransform>().DOScale(0.55f, 0.2f).Play().OnComplete(() => img.GetComponent<RectTransform>().DOScale(0.5f, delay - 0.2f).Play().SetEase(Ease.InBack).OnComplete(() =>
                     img.GetComponent<RectTransform>().localScale = new Vector3(0.45f, 0.45f, 0.45f)));
                 img.DOFade(1f, 0.2f).Play().OnComplete(() => img.DOFade(0f, delay - 0.2f).SetEase(Ease.InBack).Play().OnComplete(() => img.color = new Color(1f, 1f, 1f, 0f)));

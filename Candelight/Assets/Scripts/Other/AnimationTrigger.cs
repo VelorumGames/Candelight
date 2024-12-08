@@ -7,10 +7,12 @@ public class AnimationTrigger : MonoBehaviour
     bool _triggered;
 
     Animator _anim;
+    AudioSource _audio;
 
     private void Awake()
     {
         _anim = GetComponent<Animator>();
+        _audio = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -19,6 +21,7 @@ public class AnimationTrigger : MonoBehaviour
         {
             _triggered = true;
             _anim.SetTrigger("Trigger");
+            _audio?.Play();
         }
     }
 }

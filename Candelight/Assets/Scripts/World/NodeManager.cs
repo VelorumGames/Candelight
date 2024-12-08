@@ -92,7 +92,7 @@ namespace World
             _data.Description = names[1];
 
             //Debug. Deberia ser mas amplio el rango
-            if (EventCheck()) _data.EventID = Random.Range(0, 3);
+            if (EventCheck()) _data.EventID = Random.Range(0, 4);
             _data.EventSolution = EEventSolution.None;
 
             CheckForPreviousGameNode();

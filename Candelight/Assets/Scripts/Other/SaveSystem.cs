@@ -12,7 +12,7 @@ public static class SaveSystem
     public static ScoreData ScoreboardData;
     public static SaveData GameData;
 
-    public static string PlayerName;
+    public static string PlayerName = "Carlos4";
 
     public static float StarRange = 10f;
 
@@ -46,6 +46,7 @@ public static class SaveSystem
 
             if (ScoreboardData != null) //Si ha encontrado una previa partida guardada
             {
+                Debug.Log("Se ha encontrado data");
                 //BinaryFormatter formatter = new BinaryFormatter();
                 //FileStream stream = new FileStream(path, FileMode.Open);
                 //
@@ -83,8 +84,10 @@ public static class SaveSystem
     public static void GenerateNewPlayerData(WorldInfo world)
     {
         ScoreboardData.Score = world.CompletedNodes;
+        Random.InitState((int) Time.time);
         ScoreboardData.posX = Random.Range(-StarRange, StarRange);
         ScoreboardData.posY = Random.Range(-StarRange, StarRange);
+        Random.InitState(GameSettings.Seed);
     }
 
     public static void RestartDataOnDeath()

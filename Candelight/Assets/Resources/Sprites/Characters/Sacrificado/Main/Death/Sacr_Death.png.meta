@@ -1,0 +1,516 @@
+fileFormatVersion: 2
+guid: ea53fc24243a4f84298ab2731d680648
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 23
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Sacr_Death_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 26
+        height: 49
+      alignment: 9
+      pivot: {x: 0.5, y: 0.53061223}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f678c9a33733f724d9859d703c67569f
+      internalID: -1917811606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_1
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 1
+        width: 27
+        height: 48
+      alignment: 9
+      pivot: {x: 0.4814815, y: 0.5416667}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b03eb05e132ead45ba35fe7c0062f1f
+      internalID: 658524568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_2
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 11
+        width: 30
+        height: 38
+      alignment: 9
+      pivot: {x: 0.43333337, y: 0.68421054}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa13a0976d5dd784ca51a05bc1d44c2e
+      internalID: 1281473972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_3
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 23
+        width: 37
+        height: 26
+      alignment: 9
+      pivot: {x: 0.45945948, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ec4704af6df6d84ca84a51378409bc1
+      internalID: -416613270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_4
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 24
+        width: 36
+        height: 25
+      alignment: 9
+      pivot: {x: 0.5, y: 1.04}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b2d3fe48463d674a89c1daddc0b7338
+      internalID: -1603610583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_5
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 25
+        width: 36
+        height: 24
+      alignment: 9
+      pivot: {x: 0.5, y: 1.0833334}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 472f6f9b1470ef04aa28fec197ca265c
+      internalID: 83437366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_6
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 24
+        width: 36
+        height: 25
+      alignment: 9
+      pivot: {x: 0.5, y: 1.04}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5094177adcfafb4b9dd261350121fbb
+      internalID: 1093516050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_7
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 25
+        width: 36
+        height: 24
+      alignment: 9
+      pivot: {x: 0.5, y: 1.0833334}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18c2d4dcab70c03408fba5fdfcbfe642
+      internalID: 839759488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_8
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 26
+        width: 36
+        height: 23
+      alignment: 9
+      pivot: {x: 0.5, y: 1.1304348}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac7a79b831b48634882613d127bf523c
+      internalID: 2031940067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_9
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 27
+        width: 38
+        height: 22
+      alignment: 9
+      pivot: {x: 0.5, y: 1.1818182}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5974f08619bc21f44b48b84732245a5d
+      internalID: -1268285049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_10
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 26
+        width: 38
+        height: 23
+      alignment: 9
+      pivot: {x: 0.5, y: 1.1304348}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52e54cadf00835a4eae65c826afbfd8f
+      internalID: 1937281662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_11
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 27
+        width: 38
+        height: 22
+      alignment: 9
+      pivot: {x: 0.5, y: 1.1818182}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a798b325b5d6a5344bb041b3b3dd3828
+      internalID: -817847978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_12
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 26
+        width: 38
+        height: 23
+      alignment: 9
+      pivot: {x: 0.5, y: 1.1304348}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef6e856af9a586f4bbcb927348ef1527
+      internalID: 862042114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_13
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 9
+        width: 38
+        height: 22
+      alignment: 9
+      pivot: {x: 0.5, y: 1.1818182}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 157e74eb40618eb46a159aa530f8e10e
+      internalID: 1790657796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_14
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 30
+        width: 37
+        height: 19
+      alignment: 9
+      pivot: {x: 0.4864865, y: 1.3684211}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96941558f8303b6478e815326c3efe5b
+      internalID: 766348887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_15
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 38
+        width: 39
+        height: 11
+      alignment: 9
+      pivot: {x: 0.51282054, y: 2.3636365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52a7a26fff9fdf5498e7d19aa1a28d6a
+      internalID: 443293913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sacr_Death_16
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 39
+        width: 39
+        height: 10
+      alignment: 9
+      pivot: {x: 0.51282054, y: 2.6000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6256d3794f4a044f98ee23a98263e90
+      internalID: -480086064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: beb951750fe1328438d9e22690bda608
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Sacr_Death_0: -1917811606
+      Sacr_Death_1: 658524568
+      Sacr_Death_10: 1937281662
+      Sacr_Death_11: -817847978
+      Sacr_Death_12: 862042114
+      Sacr_Death_13: 1790657796
+      Sacr_Death_14: 766348887
+      Sacr_Death_15: 443293913
+      Sacr_Death_16: -480086064
+      Sacr_Death_17: 814923094
+      Sacr_Death_18: 1423690557
+      Sacr_Death_2: 1281473972
+      Sacr_Death_3: -416613270
+      Sacr_Death_4: -1603610583
+      Sacr_Death_5: 83437366
+      Sacr_Death_6: 1093516050
+      Sacr_Death_7: 839759488
+      Sacr_Death_8: 2031940067
+      Sacr_Death_9: -1268285049
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

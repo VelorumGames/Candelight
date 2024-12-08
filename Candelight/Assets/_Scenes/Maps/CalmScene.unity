@@ -570,7 +570,7 @@ PrefabInstance:
     - target: {fileID: 1715412528331508257, guid: a2d7ecb99edabb54e8b25285f5684a20,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8147891273866984173, guid: a2d7ecb99edabb54e8b25285f5684a20,
         type: 3}
@@ -2119,6 +2119,8 @@ MonoBehaviour:
   - {fileID: 8223062985383306659, guid: 0f67b932a2b67b24cbecf384c8c3324a, type: 3}
   - {fileID: 3528324369033875260, guid: 483886a22aad7b549936bbbe8d46c419, type: 3}
   - {fileID: 3528324369033875260, guid: 00c59c1ed8eb1ab408e21ccee0d5f74c, type: 3}
+  - {fileID: 103572870913773564, guid: 49872c5d89cde244d83a206cc431c07f, type: 3}
+  - {fileID: 5480869826261108484, guid: e1c003b983c1b274fb78636de100908c, type: 3}
   _temeriaEventEndings:
   - {fileID: 8398081505582705840, guid: cb105daa7f949a54ba150e916521be31, type: 3}
   - {fileID: 8645943586739260207, guid: 2e7d8a7b19a7a9a498a8f40b9bd56678, type: 3}
@@ -2127,7 +2129,13 @@ MonoBehaviour:
   - {fileID: 7493125197821289505, guid: 42566293fc5b7694b8ce7da7df2a7867, type: 3}
   - {fileID: 7493125197821289505, guid: 89796c8a3273d114c99fcbddf1562470, type: 3}
   - {fileID: 7493125197821289505, guid: ffb0d8dad6b056e4ebfef759e159458a, type: 3}
-  _idriaEventEndings: []
+  - {fileID: 4159609541620478422, guid: 2ece9299551a5fa4da02817d8a2d0a9f, type: 3}
+  - {fileID: 8026105868681021378, guid: 4ab253c1d982c124da1813637f7044fe, type: 3}
+  - {fileID: 3608978979421454424, guid: cf1cd9a55a248e84ebb53d5649a4a52b, type: 3}
+  - {fileID: 522848965771792688, guid: 7c580b72a2665a94db545198dfdf29bb, type: 3}
+  _idriaEventEndings:
+  - {fileID: 3462341000010152935, guid: 675c5ee3dfbdaaf45b3c5c35147ad98c, type: 3}
+  - {fileID: 3600974145030128365, guid: 4c4ccebc7bcaebb4bb185f25dfede3f0, type: 3}
   _durniaRewards:
   - {fileID: 6448967847911273602, guid: 52b5ee9823bb6fb4f954be84b6c79ef8, type: 3}
   _temeriaRewards:

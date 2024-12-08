@@ -14,6 +14,8 @@ namespace SpellInteractuable
         public Dialogue LiberatedDialogue;
         int count;
 
+        public PrisonerMonsterFail Prisoner;
+
         protected override void ApplyInteraction(ASpell spell)
         {
             if (count < 2)
@@ -24,6 +26,7 @@ namespace SpellInteractuable
             else
             {
                 Agent.ChangeDialogue(LiberatedDialogue);
+                Prisoner.UnloadCall();
                 FindObjectOfType<ExploreEventManager>().LoadEventResult(World.EEventSolution.Completed);
                 gameObject.SetActive(false);
             }

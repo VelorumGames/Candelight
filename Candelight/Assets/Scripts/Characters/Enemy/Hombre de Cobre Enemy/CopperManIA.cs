@@ -1,3 +1,4 @@
+using Animations;
 using Enemy;
 using Hechizos;
 using Hechizos.Elementales;
@@ -22,10 +23,13 @@ public class CopperManIA : EnemyController
     [SerializeField] private float _angryCounterTime;
     private float _angryCounter;
 
-    protected void Awake()
+    CopperManAnimation _anim;
+
+    protected new void Awake()
     {
         base.Awake();
         _isAngry = true;
+        _anim = GetComponentInChildren<CopperManAnimation>();
         StartCoroutine(CheckPerceptions());
     }
 
@@ -33,17 +37,23 @@ public class CopperManIA : EnemyController
     {
         while (true)
         {
-            bool playerNear = false, canFlee = false, playerAtRange = false, playerCanBeSeen = false;
-            var hits = Physics.RaycastAll(transform.position, Player.transform.position - transform.position, _visionDistance);
-            if (hits.Length == 1 && hits[0].collider.gameObject.GetComponent<PlayerController>() != null)
-                playerCanBeSeen = true;
+            bool playerNear, canFlee, playerAtRange, playerCanBeSeen;
+            float distToPlayer = Vector3.Distance(Player.transform.position, transform.position);
+            //var hits = Physics.RaycastAll(transform.position, Player.transform.position - transform.position, _visionDistance);
 
-            if (Physics.OverlapSphere(transform.position, _playerNearDistance, 6) != null)
-            {
-                playerNear = true;
-                canFlee = Physics.Raycast(transform.position, transform.position - Player.transform.position, _canFleeDistance);
-            }
-            playerAtRange = Physics.OverlapSphere(transform.position, _playerAtRangeDistance, 6) != null;
+            playerAtRange = distToPlayer < _playerAtRangeDistance;
+            playerCanBeSeen = distToPlayer < _visionDistance;
+            playerNear = distToPlayer < _playerNearDistance;
+            canFlee = distToPlayer < _canFleeDistance;
+
+            //if (Physics.OverlapSphere(transform.position, _playerNearDistance, 6) != null)
+            //{
+            //    playerNear = true;
+            //    canFlee = Physics.Raycast(transform.position, transform.position - Player.transform.position, _canFleeDistance);
+            //}
+            //playerAtRange = Physics.OverlapSphere(transform.position, _playerAtRangeDistance, 6) != null;
+
+            Debug.Log($"ESTA ENFADADO: {_isAngry}\nVE AL JUGADOR: {playerCanBeSeen}\nJUGADOR CERCA: {playerNear}");
 
             if (_isAngry)
             {
@@ -51,11 +61,11 @@ public class CopperManIA : EnemyController
                 {
                     if (playerNear)
                     {
-                        if (canFlee)
-                            StartCoroutine(MoveToPosition(transform.position - Player.transform.position));
+                        if (canFlee) StartCoroutine(MoveToPosition(transform.position - Player.transform.position));
                     }
                     else
                     {
+                        Debug.Log("Dispara proyectil");
                         var proyectile = Instantiate(_bullet).GetComponent<Projectile>();
                         proyectile.Push((Player.transform.position - transform.position).normalized, _bulletSpeed);
                     }
@@ -66,14 +76,14 @@ public class CopperManIA : EnemyController
                 if (playerCanBeSeen)
                 {
                     if ((Player.transform.position - transform.position).magnitude < 1.5f)
-                        Player.GetComponent<PlayerController>().RecieveDamage(Info.BaseDamage);
+                        Player.RecieveDamage(Info.BaseDamage);
                     else
                         StartCoroutine(MoveToPosition(Player.transform.position));
                 }
                 else
                 {
-                    float xMod = Random.Range(-5, 5);
-                    float zMod = Random.Range(-5, 5);
+                    float xMod = Random.Range(-5f, 5f);
+                    float zMod = Random.Range(-5f, 5f);
                     StartCoroutine(MoveToPosition(new Vector3(transform.position.x + xMod, transform.position.y, transform.position.z + zMod)));
                 }
 
@@ -85,7 +95,7 @@ public class CopperManIA : EnemyController
 
     private IEnumerator MoveToPosition(Vector3 pos)
     {
-
+        Debug.Log("Me muevo hacia jugador");
         var movPerIter = (((pos - transform.position).normalized / 10f) * speed / 10) / 5f;
         for (int i = 0; i < 5; i++)
         {

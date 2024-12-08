@@ -31,6 +31,10 @@ namespace Enemy
 
         bool _attackNotif = true;
 
+        public AudioClip Confundido;
+        public AudioClip Atacar;
+        public AudioClip Ataque;
+
         private new void Awake()
         {
             base.Awake();
@@ -66,6 +70,7 @@ namespace Enemy
                     NormalStart();
                     break;
                 case EMurcielagoState.Attack:
+                    Audio.PlayOneShot(Atacar);
                     if (_attackNotif)
                     {
                         _ui.ShowTutorial("\"Y el murciélago enfureció...\"", 2f);
@@ -75,6 +80,7 @@ namespace Enemy
                     AttackStart();
                     break;
                 case EMurcielagoState.Confused:
+                    Audio.PlayOneShot(Confundido);
                     _ui.ShowTutorial("\"El murciélago quedó confundido.\"", 2f);
                     ConfusedStart();
                     break;
@@ -124,9 +130,10 @@ namespace Enemy
             while (!PhantomCheck() && World.Candle > 0)
             {
                 target = Player.transform.position + new Vector3(UnityEngine.Random.Range(-1f, 1f), 0f, UnityEngine.Random.Range(-1f, 1f)); //Para que tampoco sea exacto (es ciego)
-                yield return StartCoroutine(MoveTowards(target, 3f));
+                yield return StartCoroutine(MoveTowards(target, 1.5f));
                 if (Vector3.Distance(transform.position, Player.transform.position) < _attackRange) //Si entra en rango de ataque
                 {
+                    Audio.PlayOneShot(Ataque);
                     OnAttack(); //Ataca y se espera un poco para que la animacion se reproduzca con normalidad (y para darle tiempo al jugador de escapar)
                     CanMove = false;
                     _anim.ChangeToAttack();

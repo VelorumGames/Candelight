@@ -26,7 +26,7 @@ namespace UI
 
         private void OnEnable()
         {
-            _sound.PlayMove();
+            _sound?.PlayMove();
 
             _rect.localPosition = _oPos;
             _rect.DOLocalMove(_endPos, _duration).SetUpdate(true).SetEase(_easeType).Play();

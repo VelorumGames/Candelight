@@ -11,7 +11,7 @@ public class PlayerSounds : MonoBehaviour
 {
     public NodeInfo CurrentNodeInfo;
 
-    public AudioClip[] Book; //0: Open, 1: Close
+    public AudioClip[] Book; //0: Open, 1: Close, 2: Acierto
     public AudioClip[] BookWriting;
     [Space(10)]
     public AudioClip[] Elements; //0: Fire, 1: Electric, 2: Cosmic, 3: Phantom
@@ -21,6 +21,7 @@ public class PlayerSounds : MonoBehaviour
     AudioClip[] _footsteps;
     [Space(10)]
     public AudioClip[] SpellMode; //0: Enter element, //1: Enter shape, 2: Stay, 3: Exit, 4: Successful
+    public AudioClip[] SuccessSpell;
     public AudioClip[] RuneWriting;
     [Space(10)]
     public AudioClip DeathSound;
@@ -28,6 +29,7 @@ public class PlayerSounds : MonoBehaviour
 
     [SerializeField] AudioSource _audio;
     [SerializeField] AudioSource _constAudio;
+    [SerializeField] AudioSource _stepAudio;
 
     InputManager _input;
     PlayerController _player;
@@ -72,6 +74,11 @@ public class PlayerSounds : MonoBehaviour
         }
     }
 
+    public void PlayBookSuccess()
+    {
+        _audio.PlayOneShot(Book[2]);
+    }
+
     public void PlayRuneSound(ESpellInstruction rune)
     {
         _audio.PlayOneShot(_bookOpen ? BookWriting[Random.Range(0, BookWriting.Length)] : RuneWriting[Random.Range(0, RuneWriting.Length)]);
@@ -114,7 +121,7 @@ public class PlayerSounds : MonoBehaviour
 
     void PlaySuccesfulSpell()
     {
-        _audio.PlayOneShot(SpellMode[4]);
+        _audio.PlayOneShot(SuccessSpell[Random.Range(0, SuccessSpell.Length)]);
         _constAudio.volume = 0f;
     }
 
@@ -126,7 +133,7 @@ public class PlayerSounds : MonoBehaviour
 
     public void PlayFootstepSound()
     {
-        _audio.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
+        _stepAudio.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
     }
 
     void LoadBiomeSounds()

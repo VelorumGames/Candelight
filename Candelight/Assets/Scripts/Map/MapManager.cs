@@ -177,12 +177,12 @@ namespace Map
             //Debug. Las condiciones deben estar sin comentar
 
             //Si el penultimo nivel es de exploracion, generamos el evento que corresponda
-            if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 2 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration && TryGetComponent<ExploreEventManager>(out var eventMan))
+            if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 2 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Exploration && CurrentNodeInfo.EventID != -1 && TryGetComponent<ExploreEventManager>(out var eventMan))
             {
                 eventMan.GenerateEvent();
             }
             //Si es el ultimo nivel y es de calma, generamos el evento que corresponda
-            else if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 1 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Calm && TryGetComponent<CalmEventManager>(out var calmEventMan))
+            else if (CurrentNodeInfo.CurrentLevel == CurrentNodeInfo.Levels - 1 && CurrentNodeInfo.LevelTypes[CurrentNodeInfo.CurrentLevel] == ELevel.Calm && CurrentNodeInfo.EventID != -1 && TryGetComponent<CalmEventManager>(out var calmEventMan))
             {
                 calmEventMan.GenerateEvent();
             }
@@ -273,7 +273,7 @@ namespace Map
             startRoom.IdText.text += " START";
             startRoom.gameObject.name = "START ROOM";
             _uiMan.UpdateMinimapRoom(startRoom.GetID(), ERoomType.Start);
-            _cont.transform.position = startRoom.GetRandomSpawnPoint().position + 0.75f * Vector3.up;
+            _cont.transform.position = startRoom.GetRandomSpawnPoint().position + 0.35f * Vector3.up;
 
             ARoom endRoom = rooms[Random.Range(rooms.Count / 2, rooms.Count)];
             rooms.Remove(endRoom);

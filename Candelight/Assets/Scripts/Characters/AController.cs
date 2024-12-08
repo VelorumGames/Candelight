@@ -24,7 +24,10 @@ public abstract class AController : MonoBehaviour
                 if (m_HP == 0)
                 {
                     if (OnDeath != null) OnDeath(this);
-                    Destroy(gameObject);
+                    transform.localScale = new Vector3();
+                    CanMove = false;
+                    StopAllCoroutines();
+                    Invoke("DelayedDeath", 2f); //Se da un segundo para que suenen efectos de sonido relacionados con morir
                 }
             }
         }
@@ -57,6 +60,8 @@ public abstract class AController : MonoBehaviour
         if (OnDamage != null) OnDamage(dam, health);
     }
 
+    public void DelayedDeath() => Destroy(gameObject);
+
     public abstract void RecieveDamage(float damage);
 
     public void RecieveTemporalDamage(float damage, float time, float interval)
@@ -78,7 +83,7 @@ public abstract class AController : MonoBehaviour
     public void Paralize(float time)
     {
         //if (_paralize != null) StopCoroutine(_paralize);
-        if (!_isParalized) _paralize = StartCoroutine(ProcessParalize(time));
+        if (!_isParalized && !(this is HombreDeCobreIA)) _paralize = StartCoroutine(ProcessParalize(time));
     }
 
     IEnumerator ProcessParalize(float time)
@@ -172,7 +177,7 @@ public abstract class AController : MonoBehaviour
     {
         if (CanMove)
         {
-            float outTime = 0;
+            float outTime = 0f;
             Vector3 direction;
             while (Vector3.Distance(transform.position, target) > 1.5f && outTime < timeOut)
             {
@@ -180,6 +185,19 @@ public abstract class AController : MonoBehaviour
                 OnMove(new Vector2(direction.x, direction.z));
                 outTime += Time.deltaTime;
                 yield return null;
+            }
+
+            if (outTime >= timeOut && _rb.velocity.magnitude < 0.5f) //Si se ha quedado atascado por el camino
+            {
+                outTime = 0f;
+                target = transform.position + new Vector3(UnityEngine.Random.Range(1f, 2f), 0f, UnityEngine.Random.Range(1f, 2f));
+                while (Vector3.Distance(transform.position, target) > 1.5f && outTime < timeOut * 0.5f)
+                {
+                    direction = new Vector3((target - transform.position).x, 0f, (target - transform.position).z).normalized * 2f; //Se multiplica por 2 para que se aparte rapido
+                    OnMove(new Vector2(direction.x, direction.z));
+                    outTime += Time.deltaTime;
+                    yield return null;
+                }
             }
         }
     }

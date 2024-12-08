@@ -18,14 +18,22 @@ namespace Items
         [SerializeField] bool _active;
         bool _itemMarked;
         [SerializeField] Image _itemImg;
+        Image _img;
 
         [SerializeField] ParticleSystem _particles;
 
+        [SerializeField] Sprite[] _frameSprites;
+
         float _oScale;
+
+        UISoundManager _sound;
 
         private void Awake()
         {
             _oScale = GetComponent<RectTransform>().localScale.x;
+            _img = GetComponent<Image>();
+
+            _sound = FindObjectOfType<UISoundManager>();
         }
 
         private void OnEnable()
@@ -42,6 +50,7 @@ namespace Items
                 if (_itemMarked) //Quitar el item seleccionado
                 {
                     _invWin.ReturnItemFromFrame(Id);
+                    _sound.PlayDemarkItem();
 
                     HideItem();
 
@@ -50,6 +59,7 @@ namespace Items
                 else //Preparar para seleccionar un item
                 {
                     _invWin.EternalFrameMode = Id;
+                    _sound.PlayActivateFrame();
 
                     _itemMarked = true;
                 }
@@ -59,6 +69,7 @@ namespace Items
             else //Si todavia esta bloqueado
             {
                 GetComponent<Image>().DOColor(Color.red, 0.5f).Play().OnComplete(() => GetComponent<Image>().DOColor(Color.white, 0.5f).Play());
+                _sound.PlayCantButtonSound();
             }
         }
 
@@ -89,5 +100,25 @@ namespace Items
         {
             GetComponent<RectTransform>().DOScale(_oScale, 0.2f);
         }
+
+        public void UnlockFrame()
+        {
+            if (!_active)
+            {
+                _active = true;
+                _img.sprite = _frameSprites[1];
+            }
+        }
+
+        public void LockFrame()
+        {
+            if (_active)
+            {
+                _active = false;
+                _img.sprite = _frameSprites[0];
+            }
+        }
+
+        public bool IsUnlocked() => _active;
     }
 }
