@@ -26,10 +26,14 @@ namespace Items
 
         float _oScale;
 
+        UISoundManager _sound;
+
         private void Awake()
         {
             _oScale = GetComponent<RectTransform>().localScale.x;
             _img = GetComponent<Image>();
+
+            _sound = FindObjectOfType<UISoundManager>();
         }
 
         private void OnEnable()
@@ -46,6 +50,7 @@ namespace Items
                 if (_itemMarked) //Quitar el item seleccionado
                 {
                     _invWin.ReturnItemFromFrame(Id);
+                    _sound.PlayDemarkItem();
 
                     HideItem();
 
@@ -54,6 +59,7 @@ namespace Items
                 else //Preparar para seleccionar un item
                 {
                     _invWin.EternalFrameMode = Id;
+                    _sound.PlayActivateFrame();
 
                     _itemMarked = true;
                 }
@@ -63,6 +69,7 @@ namespace Items
             else //Si todavia esta bloqueado
             {
                 GetComponent<Image>().DOColor(Color.red, 0.5f).Play().OnComplete(() => GetComponent<Image>().DOColor(Color.white, 0.5f).Play());
+                _sound.PlayCantButtonSound();
             }
         }
 

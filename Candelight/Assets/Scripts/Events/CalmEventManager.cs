@@ -183,6 +183,23 @@ namespace Events
 
                 // === IDRIA ===
                 case EBiome.Idria:
+                    switch (_map.CurrentNodeInfo.EventID)
+                    {
+                        case 0: //Herramienta sin dueno
+                            switch (GetEventSolution())
+                            {
+                                case EEventSolution.Ignored:
+                                    _currentEvent = Instantiate(_eventEndings[0], room.GetRandomSpawnPoint());
+                                    break;
+                                case EEventSolution.Failed:
+                                    _currentEvent = Instantiate(_eventEndings[1], room.GetRandomSpawnPoint());
+                                    break;
+                            }
+                            break;
+                        default:
+                            Debug.Log("No se generara ningun evento para este nodo");
+                            break;
+                    }
                     break;
             }
 

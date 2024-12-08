@@ -24,7 +24,10 @@ public abstract class AController : MonoBehaviour
                 if (m_HP == 0)
                 {
                     if (OnDeath != null) OnDeath(this);
-                    Destroy(gameObject);
+                    transform.localScale = new Vector3();
+                    CanMove = false;
+                    StopAllCoroutines();
+                    Invoke("DelayedDeath", 2f); //Se da un segundo para que suenen efectos de sonido relacionados con morir
                 }
             }
         }
@@ -56,6 +59,8 @@ public abstract class AController : MonoBehaviour
     {
         if (OnDamage != null) OnDamage(dam, health);
     }
+
+    public void DelayedDeath() => Destroy(gameObject);
 
     public abstract void RecieveDamage(float damage);
 

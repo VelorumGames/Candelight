@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UI;
 
 namespace Auxiliar
 {
@@ -19,9 +20,12 @@ namespace Auxiliar
 		public event Action OnTextStart;
 		public event Action OnTextComplete;
 
+		UISoundManager _sound;
+
         private void Awake()
 		{
 			_textComponent = GetComponent<TextMeshProUGUI>();
+			_sound = FindObjectOfType<UISoundManager>();
 		}
 
         private void OnEnable()
@@ -52,7 +56,9 @@ namespace Auxiliar
             _originalText = s;
 			_showingText = true;
 
-			yield return new WaitForSecondsRealtime(0.5f);
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            _sound?.PlayVoice();
 
             if (OnTextStart != null) OnTextStart();
 
@@ -64,6 +70,8 @@ namespace Auxiliar
 
 				++numCharsRevealed;
 				_textComponent.text = _originalText.Substring(0, numCharsRevealed);
+
+				if (numCharsRevealed % 3 == 0) _sound?.PlayVoice();
 
 				yield return new WaitForSecondsRealtime(0.025f / _speed);
 

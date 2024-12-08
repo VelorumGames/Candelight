@@ -26,6 +26,7 @@ public class InferiIA : EnemyController
     private bool auxiliar = true;
     private bool auxiliar2 = true;
 
+    public AudioClip Attack;
     InferiAnimation _anim;
 
     private new void Awake()
@@ -89,6 +90,7 @@ public class InferiIA : EnemyController
         //comprobar si está cerca el jugador.
         if (CloseToTargetCheck() && puedeAtacar)
         {
+            Audio.PlayOneShot(Attack);
             _anim.ChangeToAttack();
             OnAttack();
         }

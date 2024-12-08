@@ -1,5 +1,6 @@
 using Dialogues;
 using Items;
+using Map;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

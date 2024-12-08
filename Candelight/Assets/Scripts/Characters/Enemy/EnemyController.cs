@@ -18,6 +18,7 @@ namespace Enemy
         [SerializeField] GameObject _damagePrefab;
         protected PlayerController Player;
         UIManager _uiMan;
+        protected AudioSource Audio;
 
         public GameObject Fragment;
         float _fragDropRate = 0.5f;
@@ -26,10 +27,15 @@ namespace Enemy
         float _iFrameDuration = 0.5f;
 
         public bool LuciernagaPosada;
+        [Space(10)]
+        public AudioClip[] Idles;
+        public AudioClip[] Damages;
+        public AudioClip Death;
 
         protected void Awake()
         {
             _uiMan = FindObjectOfType<UIManager>();
+            Audio = GetComponent<AudioSource>();
 
             _rb = GetComponent<Rigidbody>();
             Orientation = transform.forward;
@@ -44,12 +50,13 @@ namespace Enemy
 
             base.Start();
 
-            //StartCoroutine(DebugAI());
+            StartCoroutine(IdleSound());
         }
 
         protected void OnEnable()
         {
             OnDeath += SpawnFragments;
+            OnDeath += PlayDeathSound;
             OnDamage += _uiMan.EnemyDamageFeedback;
         }
 
@@ -57,6 +64,8 @@ namespace Enemy
         {
             FindObjectOfType<Inventory>().SpawnFragments(Random.Range(Info.MinFragments, Info.MaxFragments), _fragDropRate * _modifier.FragDropMod, transform);
         }
+
+        void PlayDeathSound(AController _) => Audio.PlayOneShot(Death);
 
         public override void RecieveDamage(float damage)
         {
@@ -71,6 +80,7 @@ namespace Enemy
                 CurrentHP -= damage;
                 ShowDamage(damage);
                 CallDamageEvent(damage, CurrentHP / MaxHP);
+                Audio.PlayOneShot(Damages[Random.Range(0, Damages.Length)]);
 
                 _invicible = true;
                 Invoke("ManageIFrames", _iFrameDuration);
@@ -140,9 +150,19 @@ namespace Enemy
             }
         }
 
+        IEnumerator IdleSound()
+        {
+            while (true)
+            {
+                Audio.PlayOneShot(Idles[Random.Range(0, Idles.Length)]);
+                yield return new WaitForSeconds(Random.Range(1f, 6f));
+            }
+        }
+
         protected void OnDisable()
         {
             OnDeath -= SpawnFragments;
+            OnDeath -= PlayDeathSound;
             OnDamage -= _uiMan.EnemyDamageFeedback;
         }
     }

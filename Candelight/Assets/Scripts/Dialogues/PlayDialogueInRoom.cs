@@ -42,6 +42,12 @@ namespace Map
             _endAction = act;
         }
 
+        public void ChangeDialogue(Dialogue dial)
+        {
+            _dialogue = dial;
+            _room.OnPlayerEnter += PlayDialogue;
+        }
+
         private void OnDisable()
         {
             _room.OnPlayerEnter -= PlayDialogue;

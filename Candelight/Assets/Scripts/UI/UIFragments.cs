@@ -24,6 +24,8 @@ namespace UI
             _inv = FindObjectOfType<Inventory>();
 
             _prevPos = _sumText.GetComponent<RectTransform>().localPosition;
+
+            _text.text = $"{_inv.GetFragments()}";
         }
 
         private void OnEnable()

@@ -24,12 +24,16 @@ namespace Scoreboard
         CameraManager _cam;
         UIManager _ui;
 
+        AudioSource _audio;
+
         private void Awake()
         {
             _cam = FindObjectOfType<CameraManager>();
             _ui = FindObjectOfType<UIManager>();
 
             ResetPlayers();
+
+            _audio = GetComponent<AudioSource>();
         }
 
         private void Start()
@@ -38,6 +42,7 @@ namespace Scoreboard
             {
                 if (_world.CompletedNodes > 0) _ui.FadeFromWhite(3f);
                 else _ui.FadeFromBlack(3f);
+                _audio.Play();
             }
         }
 

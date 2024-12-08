@@ -11,7 +11,7 @@ namespace Interactuables
 
         public override void Interaction()
         {
-            FindObjectOfType<Inventory>().AddItem(_itemButton);
+            FindObjectOfType<Inventory>().AddItem(_itemButton, EItemCategory.Rare);
         }
     }
 }

@@ -44,6 +44,9 @@ public class HombreDeCobreIA : EnemyController
 
     CopperManAnimation _anim;
 
+    public AudioClip[] State; //0: Angry, 1: Calma
+    public AudioClip[] AttackSound; //0: Melee, 1: Shoot
+
     private new void Awake()
     {
         base.Awake();
@@ -69,10 +72,13 @@ public class HombreDeCobreIA : EnemyController
         switch (state)
         {
             case ECopperState.Normal:
+                Audio.PlayOneShot(State[1]);
                 StartCoroutine(NormalBehaviour());
                 _updateAction = null;
                 break;
             case ECopperState.Angry:
+                Audio.PlayOneShot(State[0]);
+                StopAllCoroutines();
                 _updateAction = AngryUpdate;
                 break;
         }
@@ -103,6 +109,8 @@ public class HombreDeCobreIA : EnemyController
 
     IEnumerator Attack()
     {
+        Audio.PlayOneShot(AttackSound[0]);
+
         OnAttack(); //Ataca y se espera un poco para que la animacion se reproduzca con normalidad (y para darle tiempo al jugador de escapar)
         CanMove = false;
         _anim.ChangeToMelee();
@@ -159,6 +167,8 @@ public class HombreDeCobreIA : EnemyController
 
         _proyectiles[id].SetActive(true);
         StartCoroutine(ResetProjectile(_proyectiles[id]));
+
+        Audio.PlayOneShot(AttackSound[1]);
     }
 
     IEnumerator ResetProjectile(GameObject proj)

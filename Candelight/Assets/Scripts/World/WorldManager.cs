@@ -60,11 +60,12 @@ namespace World
         public NodeInfo CurrentNodeInfo;
         [SerializeField] AudioClip _worldMusic;
 
+        UISoundManager _sound;
+
         //public bool Loaded;
 
         private void Awake()
         {
-            
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
@@ -91,7 +92,8 @@ namespace World
             {
                 WorldMap.Add(new List<int>());
             }
-            
+
+            _sound = FindObjectOfType<UISoundManager>();
         }
 
         private void Start()
@@ -117,18 +119,26 @@ namespace World
             {
                 Debug.Log("INFO: El mundo ya se ha generado, por lo que no se vuelve a generar");
                 World.World.SetActive(true);
+                if (CurrentNodeInfo.Node != null) MovePlayerToNode(CurrentNodeInfo.Node.transform);
+
+                _sound.PlayCompletedNode();
             }
-            
-            try
-            {
-                MovePlayerToNode(CurrentNodeInfo.Node.transform);
-            }
-            catch (System.Exception e)
-            {
-                Debug.Log("INFO: Se ha detectado datos de un mundo previo inaccesibles. Se genera un nuevo mundo: " + e);
-                World.World = null;
-                //Start();
-            }
+            //try
+            //{
+            //    MovePlayerToNode(CurrentNodeInfo.Node.transform);
+            //}
+            //catch (System.Exception e)
+            //{
+            //    Debug.Log("INFO: Se ha detectado datos de un mundo previo inaccesibles. Se genera un nuevo mundo: " + e);
+            //    //World.World = null;
+            //    //Start();
+            //
+            //    SpawnRandomNodes();
+            //
+            //    _biomeOffset = Random.Range(0f, 100f);
+            //    GenerateBiomes();
+            //    World.World = _worldParent.gameObject;
+            //}
             
         }
 
@@ -262,6 +272,8 @@ namespace World
         /// </summary>
         public void LoadNode()
         {
+            _sound.PlayEnterNode();
+            FindObjectOfType<NodeInfoBox>().HideBox();
             FindObjectOfType<UIManager>().FadeToBlack(1f, LoadNextScene);
         }
 

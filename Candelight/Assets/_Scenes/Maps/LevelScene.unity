@@ -602,7 +602,8 @@ MonoBehaviour:
   - {fileID: 2748539731665009197, guid: 1845ef86f5e9f3a459bbb55ebcf17220, type: 3}
   - {fileID: 7530822801860363967, guid: 24aeecf9003219b49bf8298d23dfdcc9, type: 3}
   - {fileID: 2996249551411420347, guid: ab58db6f2feddab4daced178a91dac59, type: 3}
-  _idriaEvents: []
+  _idriaEvents:
+  - {fileID: 7110358090387252334, guid: f261a670d474ffb448a052e92445512e, type: 3}
 --- !u!114 &585129103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1547,6 +1548,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4203424544705001236, guid: c46c020e6f24e1a43b957187b5e7e93a,
+        type: 3}
+      propertyPath: m_text
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: 4837140164548524455, guid: c46c020e6f24e1a43b957187b5e7e93a,
         type: 3}

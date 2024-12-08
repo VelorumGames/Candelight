@@ -10,6 +10,7 @@ using Items;
 using World;
 using System;
 using Music;
+using UI;
 
 namespace Dialogues
 {
@@ -32,12 +33,11 @@ namespace Dialogues
         PlayerController _cont;
         Inventory _inventory;
         MusicManager _music;
+        UISoundManager _sound;
 
         System.Action _onEndDialogue;
 
         Image _spriteRend;
-
-        
 
         public event Action OnDialogueStart;
         public event Action OnDialogueEnd;
@@ -51,6 +51,7 @@ namespace Dialogues
 
             _cont = FindObjectOfType<PlayerController>();
             _music = FindObjectOfType<MusicManager>();
+            _sound = FindObjectOfType<UISoundManager>();
         }
 
         private void Start()
@@ -94,19 +95,24 @@ namespace Dialogues
 
             if (_currentBlock.item != null)
             {
-                _inventory.AddItem(_currentBlock.item);
+                _inventory.AddItem(_currentBlock.item, EItemCategory.Rare);
             }
         }
 
         private void NextBlock()
         {
             Debug.Log("Siguiente bloque");
-            if (_currentBlock.nextBlock != null) LoadBlockInfo(_currentBlock.nextBlock);
+            if (_currentBlock.nextBlock != null)
+            {
+                LoadBlockInfo(_currentBlock.nextBlock);
+                _sound.PlayDialogueNext();
+            }
             else
             {
                 EndDialogue();
                 if (_currentBlock.nextDialogue != null && _currentAgent != null) _currentAgent.ChangeDialogue(_currentBlock.nextDialogue);
                 else if (_onEndDialogue != null) _onEndDialogue();
+                _sound.PlayDialogueEnd();
             }
         }
 

@@ -43,13 +43,13 @@ namespace UI
             {
                 if (_updateAction != null) _updateAction();
 
-                _content.localPosition = new Vector3(_content.localPosition.x, Mathf.Clamp(_content.localPosition.y, 0f, (_inv.ActiveItems.Count - 6) * 40f), _content.localPosition.z);
+                _content.localPosition = new Vector3(_content.localPosition.x, Mathf.Clamp(_content.localPosition.y, 0f, (_inv.ActiveItems.Count - 6) * 30f), _content.localPosition.z);
             }
             else if (!_activeItems && _inv.UnactiveItems.Count > 6)
             {
                 if (_updateAction != null) _updateAction();
 
-                _content.localPosition = new Vector3(_content.localPosition.x, Mathf.Clamp(_content.localPosition.y, 0f, (_inv.UnactiveItems.Count - 6) * 40f), _content.localPosition.z);
+                _content.localPosition = new Vector3(_content.localPosition.x, Mathf.Clamp(_content.localPosition.y, 0f, (_inv.UnactiveItems.Count - 6) * 30f), _content.localPosition.z);
             }
         }
 

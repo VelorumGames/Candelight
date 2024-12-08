@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1854413165180117290}
   - component: {fileID: 5825156161640651642}
   - component: {fileID: 4498283737385564169}
+  - component: {fileID: 3623610940408654963}
   m_Layer: 0
   m_Name: CopperMan
   m_TagString: Enemy
@@ -120,6 +121,17 @@ MonoBehaviour:
   Fragment: {fileID: 3511583418104216482, guid: f4b15eff24eade8458c13b8996bbdd04,
     type: 3}
   LuciernagaPosada: 0
+  Idles:
+  - {fileID: 8300000, guid: c3169b5fb042b5e49a8ce1f38d3e6944, type: 3}
+  - {fileID: 8300000, guid: b1b89a6211ddf7c4aa8eae7f48b6529d, type: 3}
+  - {fileID: 8300000, guid: b56cc4d94c8f4524382b74f6a4bdf271, type: 3}
+  - {fileID: 8300000, guid: c6005df6207a0724696c62a05366f374, type: 3}
+  Damages:
+  - {fileID: 8300000, guid: 87347e0af61fb2f448af46cb40c67fa1, type: 3}
+  - {fileID: 8300000, guid: 555223236d578504b93d4bdff04d33da, type: 3}
+  - {fileID: 8300000, guid: 2c313c08c297763499815740a50d7a20, type: 3}
+  - {fileID: 8300000, guid: 2df9ae38bb0a92c46aa509372b090c73, type: 3}
+  Death: {fileID: 8300000, guid: 7b82c657bf9e4f446b8d0da7a676ae74, type: 3}
   _proyectiles:
   - {fileID: 8677957574431978312}
   - {fileID: 836321170754168919}
@@ -134,6 +146,109 @@ MonoBehaviour:
   - {fileID: 2689662675106078218}
   - {fileID: 857670395201615991}
   - {fileID: 4496358060243528195}
+  State:
+  - {fileID: 8300000, guid: 1340f7fd9a356024086b07eba3e0e85f, type: 3}
+  - {fileID: 8300000, guid: edf05fd164ff22343b7a3397b6d74d8b, type: 3}
+  AttackSound:
+  - {fileID: 8300000, guid: d66a6be8465d01a4d9a28888e2f09982, type: 3}
+  - {fileID: 8300000, guid: 22fb20e7c261b9b43ae6f890623036f5, type: 3}
+--- !u!82 &3623610940408654963
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3149567633751435244}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -2960918269842443166, guid: f6317272d0ee82c459c96664b6a5b4e6,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3835612107957991362
 GameObject:
   m_ObjectHideFlags: 0

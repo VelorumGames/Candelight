@@ -71,6 +71,7 @@ namespace UI
         PlayerController _player;
         InputManager _input;
         Inventory _inv;
+        UISoundManager _sound;
 
         Coroutine _timeFreeze;
 
@@ -90,6 +91,7 @@ namespace UI
             _player = FindObjectOfType<PlayerController>();
             _input = FindObjectOfType<InputManager>();
             _inv = FindObjectOfType<Inventory>();
+            _sound = GetComponent<UISoundManager>();
 
             Time.timeScale = 1f;
 
@@ -146,7 +148,7 @@ namespace UI
             //    if (GUI.Button(new Rect(350, 40, 150, 20), "REMOVE DATA")) SaveSystem.RemovePreviousGameData();
             //}
             //if (GUI.Button(new Rect(500, 40, 150, 20), "CALM SCENE")) SceneManager.LoadScene("CalmScene");
-            if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM")) FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(EItemCategory.Rare));
+            if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM")) FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(), EItemCategory.Rare);
             if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
             //GUI.Label(new Rect(10, 140, 200, 500), $"Current elements: {_elements}\nActive runes:\n{_chains}");
         }
@@ -472,7 +474,7 @@ namespace UI
             _prevTimeScale = Time.timeScale;
             Time.timeScale = _spellTimeScale;
 
-            _spellHalo.SetActive(true);
+            _spellHalo?.SetActive(true);
         }
 
         void ExitSpellModeFeedback()
@@ -537,6 +539,7 @@ namespace UI
 
         public void ShowLevelName(string name)
         {
+            _sound.PlayLevelName();
             NameNotif.text = name;
             NameNotif.DOFade(1f, 3f).SetUpdate(true).Play().OnComplete(() => NameNotif.DOFade(0f, 2f).SetUpdate(true).Play());
         }
@@ -571,6 +574,10 @@ namespace UI
                 case EUIMode.Inventory:
                     HideMinimapMode();
                     HideCandleMode();
+                    break;
+                case EUIMode.Book:
+                    LocateModeElement("Inventory")?.Hide();
+                    LocateModeElement("InventoryText")?.Hide();
                     break;
                 default:
                     break;
@@ -614,7 +621,7 @@ namespace UI
             LocateModeElement("InventoryText")?.Show();
 
             LocateModeElement("MinimapPlayer")?.Show();
-            LocateModeElement("MinimapRoom")?.Show();
+            foreach (var el in LocateModeElements("MinimapRoom")) el.Show();
             LocateModeElement("MinimapStart")?.Show();
             LocateModeElement("MinimapRune")?.Show();
             LocateModeElement("MinimapEvent")?.Show();
@@ -711,6 +718,7 @@ namespace UI
         Combat,
         Calm,
         Dialogue,
-        Inventory
+        Inventory,
+        Book
     }
 }

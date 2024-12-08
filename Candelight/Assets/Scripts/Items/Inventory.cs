@@ -256,16 +256,22 @@ namespace Items
             _totalNumFragments = 0;
         }
 
-        public void AddItem(GameObject item)
+        int timeout = 50;
+        public string AddItem(GameObject item, EItemCategory catIfUnable)
         {
-            Debug.Log("Nuevo objeto en el inventario: " + item.name);
-            if(MaxCheck(item.GetComponent<AItem>()))
+            while(!MaxCheck(item.GetComponent<AItem>()) && timeout-- > 0)
             {
-                _uiMan.ShowItemNotification(item.GetComponent<AItem>());
-
-                GameObject button = Instantiate(item);
-                UnactiveItems.Add(button);
+                item = GetRandomItem(catIfUnable);
             }
+            timeout = 50;
+
+            Debug.Log("Nuevo objeto en el inventario: " + item.name);
+            _uiMan.ShowItemNotification(item.GetComponent<AItem>());
+
+            GameObject button = Instantiate(item);
+            UnactiveItems.Add(button);
+
+            return item.GetComponent<AItem>().Data.Name;
         }
 
         public void LoadItems() => RelocateItems();
@@ -359,6 +365,27 @@ namespace Items
                     item = EpicItemPool[Random.Range(0, EpicItemPool.Length)];
                     break;
                 case EItemCategory.Legendary:
+                    item = LegendaryItemPool[Random.Range(0, LegendaryItemPool.Length)];
+                    break;
+            }
+            return item;
+        }
+
+        public GameObject GetRandomItem()
+        {
+            GameObject item = null;
+            switch (Random.Range(0, 4))
+            {
+                case 0:
+                    item = CommonItemPool[Random.Range(0, CommonItemPool.Length)];
+                    break;
+                case 1:
+                    item = RareItemPool[Random.Range(0, RareItemPool.Length)];
+                    break;
+                case 2:
+                    item = EpicItemPool[Random.Range(0, EpicItemPool.Length)];
+                    break;
+                case 3:
                     item = LegendaryItemPool[Random.Range(0, LegendaryItemPool.Length)];
                     break;
             }

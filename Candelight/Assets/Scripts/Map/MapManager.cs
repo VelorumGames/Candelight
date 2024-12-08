@@ -273,7 +273,7 @@ namespace Map
             startRoom.IdText.text += " START";
             startRoom.gameObject.name = "START ROOM";
             _uiMan.UpdateMinimapRoom(startRoom.GetID(), ERoomType.Start);
-            _cont.transform.position = startRoom.GetRandomSpawnPoint().position + 0.75f * Vector3.up;
+            _cont.transform.position = startRoom.GetRandomSpawnPoint().position + 0.35f * Vector3.up;
 
             ARoom endRoom = rooms[Random.Range(rooms.Count / 2, rooms.Count)];
             rooms.Remove(endRoom);

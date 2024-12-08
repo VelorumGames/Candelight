@@ -36,6 +36,7 @@ namespace Comportamientos.Sombra
         public float dis;
 
         SombraAnimation _anim;
+        public AudioClip Disparo;
 
         private new void OnEnable()
         {
@@ -151,6 +152,8 @@ namespace Comportamientos.Sombra
                 yield return new WaitForSeconds(1f);
 
                 //_myDarkFireball = Instantiate(_darkFireball, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
+
+                Audio.PlayOneShot(Disparo);
 
                 //Ahora con pool
                 _myDarkFireball.SetActive(true);

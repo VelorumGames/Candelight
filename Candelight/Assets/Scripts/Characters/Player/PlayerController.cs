@@ -333,12 +333,12 @@ namespace Player
 
         public void OnCombatMoveBoost(Vector3 force)
         {
-            _maxSpeed *= 1.1f;
+            _maxSpeed *= 1.05f;
             _rb.AddForce(force, ForceMode.Impulse);
             Invoke("ResetMaxVelocity", 0.5f);
         }
 
-        public void ResetMaxVelocity() => _maxSpeed /= 1.1f;
+        public void ResetMaxVelocity() => _maxSpeed /= 1.05f;
 
         public void OnStopMove()
         {
@@ -449,7 +449,11 @@ namespace Player
             if (_bookIsOpen) //Se registra un nuevo elemento
             {
                 ARune.Activate(_instructions.ToArray(), out var rune);
-                if (rune != null) _book.ShowResult(rune);
+                if (rune != null)
+                {
+                    _book.ShowResult(rune);
+                    _sound.PlayBookSuccess();
+                }
                 else _book.ResetText();
             }
             else //Se activa un elemento(s)
@@ -471,7 +475,11 @@ namespace Player
             if (_bookIsOpen) //Se registra una nueva forma
             {
                 ARune.Activate(_instructions.ToArray(), out var rune);
-                if (rune != null) _book.ShowResult(rune);
+                if (rune != null)
+                {
+                    _book.ShowResult(rune);
+                    _sound.PlayBookSuccess();
+                }
                 else _book.ResetText();
             }
             else //Se lanza un hechizo
@@ -525,9 +533,9 @@ namespace Player
                 shapeSpell.ThrowSpell();
                 if (OnSpell != null) OnSpell(shapeSpell);
 
-                if (shapeSpell is MeleeRune) _anim.ChangeToMelee();
-                else if (shapeSpell is ProjectileRune) _anim.ChangeToProj();
-                else if (shapeSpell is ExplosionRune) _anim.ChangeToExpl();
+                /*if (shapeSpell is MeleeRune)*/ _anim.ChangeToMelee();
+                //else if (shapeSpell is ProjectileRune) _anim.ChangeToProj();
+                //else if (shapeSpell is ExplosionRune) _anim.ChangeToExpl();
 
                 _UIMan.ResetCanShoot();
                 _UIMan.VignetteFeedback(_spellThrowDelay);

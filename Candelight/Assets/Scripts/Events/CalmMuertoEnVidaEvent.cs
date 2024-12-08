@@ -1,4 +1,5 @@
 using Dialogues;
+using Map;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Events
 
         private void Start()
         {
-            _agent.LoadActionOnEnd(() => StartCoroutine(Cinematic()));
+            _agent.GetComponent<PlayDialogueInRoom>().LoadEndAction(() => StartCoroutine(Cinematic()));
         }
 
         IEnumerator Cinematic()
