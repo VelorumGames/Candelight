@@ -33,5 +33,6 @@ namespace Animations
         public void ChangeToUp() => Anim.SetTrigger("Up");
         public void ChangeToRight() => Anim.SetTrigger("Right");
         public void ChangeToLeft() => Anim.SetTrigger("Left");
+        public void ChangeToSurprise() => Anim.SetTrigger("Surprise");
     }
 }

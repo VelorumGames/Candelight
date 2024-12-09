@@ -3072,6 +3072,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2800979700702684246, guid: dabd4e5cc44ce9945a7d912b8fffed7d,
         type: 3}
+      propertyPath: _speed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2800979700702684246, guid: dabd4e5cc44ce9945a7d912b8fffed7d,
+        type: 3}
       propertyPath: InitialOrientation
       value: -2
       objectReference: {fileID: 0}
@@ -3143,6 +3148,11 @@ PrefabInstance:
     - target: {fileID: 4207769810961355878, guid: dabd4e5cc44ce9945a7d912b8fffed7d,
         type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7289031640151494900, guid: dabd4e5cc44ce9945a7d912b8fffed7d,
+        type: 3}
+      propertyPath: CanBeSurprised
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -81,6 +81,13 @@ public class NPCController : MonoBehaviour
         }
     }
 
+    public IEnumerator Surprise()
+    {
+        StopAllCoroutines();
+        yield return StartCoroutine(MoveTowards(_player.transform.position, 0.5f));
+        _anim.ChangeToSurprise();
+    }
+
     public void OnMove(Vector2 direction)
     {
         if (!_rb) _rb = GetComponent<Rigidbody>();

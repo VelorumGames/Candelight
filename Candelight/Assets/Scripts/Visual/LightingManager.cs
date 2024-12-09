@@ -64,6 +64,7 @@ namespace Visual
                     RenderSettings.skybox = _tSkybox;
 
                     _ground.material = _tGround;
+                    _ground.enabled = false;
 
                     break;
                 case EBiome.Idria:

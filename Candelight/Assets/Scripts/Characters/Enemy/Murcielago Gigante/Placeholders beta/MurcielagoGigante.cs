@@ -71,6 +71,8 @@ namespace Enemy
                     break;
                 case EMurcielagoState.Attack:
                     Audio.PlayOneShot(Atacar);
+                    EnState.ShowState("MurcDetectado");
+
                     if (_attackNotif)
                     {
                         _ui.ShowTutorial("\"Y el murciélago enfureció...\"", 2f);
@@ -81,6 +83,8 @@ namespace Enemy
                     break;
                 case EMurcielagoState.Confused:
                     Audio.PlayOneShot(Confundido);
+                    EnState.ShowState("MurcConfuso");
+
                     _ui.ShowTutorial("\"El murciélago quedó confundido.\"", 2f);
                     ConfusedStart();
                     break;

@@ -46,6 +46,15 @@ namespace Hechizos
             }
         }
 
+        protected bool FindElement(string elName)
+        {
+            foreach (var el in Elements)
+            {
+                if (el.Name == elName) return true;
+            }
+            return false;
+        }
+
         protected abstract void RegisterTypes(AElementalRune[] runes);
 
     }

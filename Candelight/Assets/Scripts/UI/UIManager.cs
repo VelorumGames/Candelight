@@ -148,7 +148,11 @@ namespace UI
             //    if (GUI.Button(new Rect(350, 40, 150, 20), "REMOVE DATA")) SaveSystem.RemovePreviousGameData();
             //}
             //if (GUI.Button(new Rect(500, 40, 150, 20), "CALM SCENE")) SceneManager.LoadScene("CalmScene");
-            if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM")) FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(), EItemCategory.Rare);
+            if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM"))
+            {
+                FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(), EItemCategory.Rare);
+                FindObjectOfType<Inventory>().AddFragments(20);
+            }
             if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
             //GUI.Label(new Rect(10, 140, 200, 500), $"Current elements: {_elements}\nActive runes:\n{_chains}");
         }

@@ -41,6 +41,16 @@ public class InferiIA : EnemyController
         base.OnEnable();
 
         lider = this; //el último inferi que se active se queda como líder.
+        Invoke("LeaderState", 0.2f);
+    }
+
+    public void LeaderState()
+    {
+        if (lider == this)
+        {
+            EnState.ShowState("InferiLider");
+        }
+        else EnState.ResetState();
     }
 
     void Update()

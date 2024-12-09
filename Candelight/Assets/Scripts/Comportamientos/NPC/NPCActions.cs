@@ -17,6 +17,7 @@ public class NPCActions : MonoBehaviour
     Vector2 direction;
     [SerializeField] protected float surpriseRange;
     bool surprised, arrived;
+    public bool CanBeSurprised;
     float outTime;
 
     private void Awake()
@@ -45,13 +46,15 @@ public class NPCActions : MonoBehaviour
         currentPos = transform.position;
 
 
-        if (!surprised && Vector3.Distance(transform.position, player.transform.position) < surpriseRange)
+        if (CanBeSurprised && !surprised && Vector3.Distance(transform.position, player.transform.position) < surpriseRange)
         {
             surprised = true;
-            if (Random.value < 0.5f) 
-            {
-                //llamar animación sorpresa
-            }
+            //if (Random.value < 0.5f) 
+            //{
+            //    //llamar animación sorpresa
+            //    StartCoroutine(controller.Surprise());
+            //}
+            StartCoroutine(controller.Surprise());
         }
     }
 
@@ -69,7 +72,7 @@ public class NPCActions : MonoBehaviour
     {
         Vector3 randomPos = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(-5.0f, 5.0f), Random.Range(-5.0f, 5.0f));
         target = currentPos + randomPos;
-        Debug.Log("Nuevo objetivo: " + target.x + ", " + target.z);
+        //Debug.Log("Nuevo objetivo: " + target.x + ", " + target.z);
 
         return Status.Success;
     }
@@ -81,7 +84,6 @@ public class NPCActions : MonoBehaviour
         
         if (Vector3.Distance(transform.position, target) < 1.5f || outTime >= 5)
         {
-            Debug.Log("He llegao");
             outTime = 0;
             arrived = true;
             return Status.Success;

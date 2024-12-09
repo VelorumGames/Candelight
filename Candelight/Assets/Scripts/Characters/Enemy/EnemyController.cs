@@ -32,10 +32,13 @@ namespace Enemy
         public AudioClip[] Damages;
         public AudioClip Death;
 
+        protected EnemyState EnState;
+
         protected void Awake()
         {
             _uiMan = FindObjectOfType<UIManager>();
             Audio = GetComponent<AudioSource>();
+            EnState = GetComponentInChildren<EnemyState>();
 
             _rb = GetComponent<Rigidbody>();
             Orientation = transform.forward;
@@ -85,6 +88,22 @@ namespace Enemy
                 _invicible = true;
                 Invoke("ManageIFrames", _iFrameDuration);
                 
+            }
+        }
+
+        public void RegisterDamageType(string type)
+        {
+            switch(type)
+            {
+                case "Fire":
+                    EnState.ShowState("Quemadura");
+                    break;
+                case "Paralize":
+                    EnState.ShowState("Paralizado");
+                    break;
+                case "Slowness":
+                    EnState.ShowState("Ralentizado");
+                    break;
             }
         }
 

@@ -50,7 +50,6 @@ public class HombreDeCobreIA : EnemyController
     private new void Awake()
     {
         base.Awake();
-
         _anim = GetComponentInChildren<CopperManAnimation>();
     }
 
@@ -73,11 +72,15 @@ public class HombreDeCobreIA : EnemyController
         {
             case ECopperState.Normal:
                 Audio.PlayOneShot(State[1]);
+                EnState.ShowState("CobreNormal");
+
                 StartCoroutine(NormalBehaviour());
                 _updateAction = null;
                 break;
             case ECopperState.Angry:
                 Audio.PlayOneShot(State[0]);
+                EnState.ShowState("CobreEnfadado");
+
                 StopAllCoroutines();
                 _updateAction = AngryUpdate;
                 break;

@@ -57,11 +57,21 @@ namespace Hechizos
                 if (Target != null && Target.TryGetComponent<EnemyController>(out var enemy))
                 {
                     enemy.RecieveDamage(Damage);
+
+                    if (FindElement("Fire")) enemy.RegisterDamageType("Fire");
+                    if (FindElement("Electric")) enemy.RegisterDamageType("Paralize");
+                    if (FindElement("Phantom")) enemy.RegisterDamageType("Slowness");
+
                     if (OnImpact != null) OnImpact(Target);
                 }
                 else if (other.transform.TryGetComponent(out enemy))
                 {
                     enemy.RecieveDamage(Damage);
+
+                    if (FindElement("Fire")) enemy.RegisterDamageType("Fire");
+                    if (FindElement("Electric")) enemy.RegisterDamageType("Paralize");
+                    if (FindElement("Phantom")) enemy.RegisterDamageType("Slowness");
+
                     if (OnImpact != null) OnImpact(other.transform);
                 }
 
