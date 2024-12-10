@@ -57,6 +57,7 @@ namespace Enemy
                     _rend.sprite = _sprites[7];
                     break;
             }
+            _rend.color = new Color(1f, 1f, 1f, 1f);
 
             yield return new WaitForSeconds(4f);
 

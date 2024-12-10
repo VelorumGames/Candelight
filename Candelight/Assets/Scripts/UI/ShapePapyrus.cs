@@ -3,6 +3,7 @@ using DG.Tweening;
 using Hechizos;
 using Hechizos.DeForma;
 using Hechizos.Elementales;
+using Player;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,10 +15,15 @@ namespace UI
     public class ShapePapyrus : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI[] _runeTexts;
+        [SerializeField] TextMeshProUGUI[] _runeFeedbackTexts;
         [SerializeField] Image[] _runeImages;
         [SerializeField] Sprite[] _runeSprites;
         InputManager _input;
         Mage _mage;
+        PlayerController _cont;
+
+        string _feedback;
+        int _instrCount;
 
         float _oPos;
 
@@ -30,6 +36,7 @@ namespace UI
         {
             _input = FindObjectOfType<InputManager>();
             _mage = FindObjectOfType<Mage>();
+            _cont = FindObjectOfType<PlayerController>();
 
             _oPos = GetComponent<RectTransform>().position.y;
 
@@ -42,6 +49,7 @@ namespace UI
         private void Start()
         {
             ResetRunes();
+            ResetFeedback();
 
             if (_mage != null) LoadRunes(null);
         }
@@ -52,7 +60,11 @@ namespace UI
             {
                 _input.OnStartShapeMode += Show;
                 _input.OnExitShapeMode += Hide;
+                _input.OnExitShapeMode += ResetFeedback;
+
                 _mage.OnNewRuneActivation += LoadRunes;
+
+                _cont.OnNewInstruction += LoadFeedback;
             }
         }
 
@@ -120,13 +132,58 @@ namespace UI
             }
         }
 
+        void ResetFeedback()
+        {
+            _instrCount = 1;
+            _feedback = "";
+            foreach (var t in _runeFeedbackTexts) t.text = "";
+        }
+
+
+        void LoadFeedback(ESpellInstruction instr)
+        {
+            if (_shown)
+            {
+                switch (instr)
+                {
+                    case ESpellInstruction.Up:
+                        _feedback += "W";
+                        break;
+                    case ESpellInstruction.Down:
+                        _feedback += "S";
+                        break;
+                    case ESpellInstruction.Right:
+                        _feedback += "D";
+                        break;
+                    case ESpellInstruction.Left:
+                        _feedback += "A";
+                        break;
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    //if (_instrCount <= _runeTexts[i].text.Length) Debug.Log($"FEEDBACK: {_feedback} == {_runeTexts[i].text.Substring(0, _instrCount)}: {_instrCount < _runeTexts[i].text.Length && _feedback == _runeTexts[i].text.Substring(0, _instrCount)}");
+                    if (_instrCount <= _runeTexts[i].text.Length && _feedback == _runeTexts[i].text.Substring(0, _instrCount)) _runeFeedbackTexts[i].text = _feedback;
+                    else _runeFeedbackTexts[i].text = "";
+
+                    Debug.Log($"{_runeFeedbackTexts[i].name}, Completado: {_runeFeedbackTexts[i].text}");
+                }
+
+                _instrCount++;
+            }
+        }
+
         private void OnDisable()
         {
             if (_input != null)
             {
                 _input.OnStartShapeMode -= Show;
                 _input.OnExitShapeMode -= Hide;
+                _input.OnExitShapeMode -= ResetFeedback;
+
                 _mage.OnNewRuneActivation -= LoadRunes;
+
+                _cont.OnNewInstruction -= LoadFeedback;
             }
         }
     }

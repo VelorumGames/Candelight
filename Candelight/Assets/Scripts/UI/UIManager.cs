@@ -130,6 +130,9 @@ namespace UI
         {
             _spellHalo?.SetActive(false);
             _fragmentHalo?.SetActive(false);
+
+            for (int i = 0; i < 6; i++)FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(), EItemCategory.Rare);
+            FindObjectOfType<Inventory>().AddFragments(50);
         }
 
         private void OnGUI()

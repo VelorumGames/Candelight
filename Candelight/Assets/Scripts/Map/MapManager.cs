@@ -270,7 +270,7 @@ namespace Map
             rooms.Remove(startRoom);
             _rooms.Remove(startRoom.gameObject);
             startRoom.RoomType = ERoomType.Start;
-            startRoom.IdText.text += " START";
+            //if (startRoom.IdText) startRoom.IdText.text += " START";
             startRoom.gameObject.name = "START ROOM";
             _uiMan.UpdateMinimapRoom(startRoom.GetID(), ERoomType.Start);
             _cont.transform.position = startRoom.GetRandomSpawnPoint().position + 0.35f * Vector3.up;
@@ -279,7 +279,7 @@ namespace Map
             rooms.Remove(endRoom);
             _rooms.Remove(endRoom.gameObject);
             endRoom.RoomType = ERoomType.Exit;
-            endRoom.IdText.text += " EXIT";
+            //if (endRoom.IdText) endRoom.IdText.text += " EXIT";
             endRoom.gameObject.name = "EXIT ROOM";
             _uiMan.UpdateMinimapRoom(endRoom.GetID(), ERoomType.Exit);
             endRoom.RemoveEntities(); //Eliminamos los enemigos o npcs que pueda haber en la sala de salida
@@ -293,7 +293,7 @@ namespace Map
                 rooms.Remove(runeRoom);
                 _rooms.Remove(runeRoom.gameObject);
                 runeRoom.RoomType = ERoomType.Rune;
-                runeRoom.IdText.text += " RUNE";
+                //runeRoom.IdText.text += " RUNE";
                 runeRoom.gameObject.name = "RUNE ROOM";
                 _uiMan.UpdateMinimapRoom(runeRoom.GetID(), ERoomType.Rune);
 

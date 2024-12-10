@@ -25,6 +25,9 @@ public class EnemyRoom : ARoom
         }
     }
 
+    [SerializeField] GameObject _spawnEffect;
+    GameObject[] _spawns;
+
     bool _inCombat;
 
     private new void Awake()
@@ -38,6 +41,8 @@ public class EnemyRoom : ARoom
             e.OnDeath += NotifyEnemyDeath;
             e.gameObject.SetActive(false);
         }
+
+        _spawns = new GameObject[_enemyCount];
     }
 
     private void OnEnable()
@@ -62,6 +67,17 @@ public class EnemyRoom : ARoom
 
         FindObjectOfType<MapManager>().StartCombat();
         CloseAllAnchors();
+
+        int count = 0;
+        foreach (var e in enemies)
+        {
+            _spawns[count++] = Instantiate(_spawnEffect, e.transform.position - Vector3.up, Quaternion.Euler(-90f, 0f, 0f));
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        foreach (var s in _spawns) Destroy(s);
+
         foreach (var e in enemies)
         {
             e.gameObject.SetActive(true);
