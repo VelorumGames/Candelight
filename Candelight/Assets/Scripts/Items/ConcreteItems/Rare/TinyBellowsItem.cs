@@ -4,6 +4,7 @@ using Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using World;
 
 namespace Items.ConcreteItems
 {
@@ -11,6 +12,7 @@ namespace Items.ConcreteItems
     {
         BuffRune _buff;
         PlayerController _cont;
+        public WorldInfo World;
 
         protected override void ApplyProperty()
         {
@@ -23,7 +25,7 @@ namespace Items.ConcreteItems
                 if (_buff != null)
                 {
                     _buff.AddNewFactor(_buff.GetNewFactor() * 1.1f);
-                    _cont.AddCandleFactor(_cont.GetCandleFactor() * 1.1f);
+                    World.NodeCandleFactor *= 1.1f;
                 }
                 else Debug.LogWarning("ERROR: No se ha podido aplicar TinyBellows porque el casteo a BuffRune no ha sido exitoso o no se ha encontrado en el diccionario de runas");
             }
@@ -34,7 +36,7 @@ namespace Items.ConcreteItems
             if (_buff != null)
             {
                 _buff.RemoveNewFactor(_buff.GetNewFactor() * 1.1f);
-                _cont.RemoveCandleFactor(_cont.GetCandleFactor() * 1.1f);
+                World.NodeCandleFactor /= 1.1f;
             }
             else Debug.LogWarning("ERROR: No se ha encontrado BuffRune");
         }

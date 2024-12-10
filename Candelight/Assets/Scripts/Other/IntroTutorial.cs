@@ -40,6 +40,12 @@ public class IntroTutorial : MonoBehaviour
     [Space(10)]
     public AudioClip _introAmbience;
     MusicManager _music;
+    [Space(10)]
+    public Image B;
+    public Image LeftClick;
+    public Image RightClick;
+    public Image MovedRightClick;
+    public Image Wasd;
 
     private void Awake()
     {
@@ -90,9 +96,9 @@ public class IntroTutorial : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
-        ShowText("[ B ]");
+        ShowImage(B);
         yield return new WaitUntil(() => Keyboard.current.bKey.isPressed);
-        HideText();
+        HideImage(B);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -106,12 +112,14 @@ public class IntroTutorial : MonoBehaviour
 
         Element.sprite = SymbolSprites[0];
 
-        ShowText("\\/[ ESPACIO ]\\/\n[ W, A, S, D ]");
+        ShowImage(Wasd);
+        ShowImage(MovedRightClick);
         GetRuneString();
         ActivateInstructionsText();
         yield return StartCoroutine(ShowSpell());
         EndInstructions();
-        HideText();
+        HideImage(Wasd);
+        HideImage(MovedRightClick);
 
         //_ui.FadeToBlack(1f, () =>
         //{
@@ -120,7 +128,7 @@ public class IntroTutorial : MonoBehaviour
         //});
         EnergyImage.DOFade(0f, 2f);
 
-        Debug.Log("ANIMACION DE SER UNO CON LA LLAMA");
+        //Debug.Log("ANIMACION DE SER UNO CON LA LLAMA");
 
         yield return new WaitForSeconds(3f);
 
@@ -132,23 +140,21 @@ public class IntroTutorial : MonoBehaviour
         });
     }
 
-    void ShowText(string t)
+    void ShowImage(Image img)
     {
-        DramaticText.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
-
-        DramaticText.text = t;
-        DramaticText.DOFade(1f, 0.5f).Play();
+        img.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
+        img.DOFade(1f, 0.5f).Play();
     }
 
-    void HideText()
+    void HideImage(Image img)
     {
-        DramaticText.GetComponent<RectTransform>().DOScale(1.5f, 0.5f).SetEase(Ease.OutCirc).Play();
-        DramaticText.DOFade(0f, 0.5f).SetEase(Ease.OutCirc).Play();
+        img.GetComponent<RectTransform>().DOScale(1.5f, 0.5f).SetEase(Ease.OutCirc).Play();
+        img.DOFade(0f, 0.5f).SetEase(Ease.OutCirc).Play();
     }
 
     void ManageEnterSpell()
     {
-        if (Keyboard.current.spaceKey.isPressed)
+        if (Mouse.current.rightButton.isPressed)
         {
             _spellTime += Time.deltaTime;
             Element.color = new Color(1f, 1f, 1f, 0.5f * _spellTime / _maxSpellTime);
@@ -164,7 +170,7 @@ public class IntroTutorial : MonoBehaviour
 
     void ManageEnterSpell2()
     {
-        if (Keyboard.current.shiftKey.isPressed)
+        if (Mouse.current.leftButton.isPressed)
         {
             _spellTime += Time.deltaTime;
             Element.color = new Color(1f, 1f, 1f, 0.5f * _spellTime / _maxSpellTime);
@@ -182,7 +188,7 @@ public class IntroTutorial : MonoBehaviour
     {
         while(!_instrTest)
         {
-            if (Keyboard.current.spaceKey.isPressed)
+            if (Mouse.current.rightButton.isPressed)
             {
                 _spellTime += Time.deltaTime;
                 Element.color = new Color(1f, 1f, 1f, 0.5f * _spellTime / _maxSpellTime);
@@ -235,7 +241,7 @@ public class IntroTutorial : MonoBehaviour
 
     IEnumerator SpellTest()
     {
-        ShowText("\\/[ ESPACIO ]\\/");
+        ShowImage(RightClick);
 
         Element.sprite = SymbolSprites[0];
 
@@ -246,20 +252,21 @@ public class IntroTutorial : MonoBehaviour
             ManageEnterSpell();
             yield return null;
         }
-        yield return new WaitUntil(() => !Keyboard.current.spaceKey.isPressed);
-        HideText();
+        yield return new WaitUntil(() => !Mouse.current.rightButton.isPressed);
+        HideImage(RightClick);
+
         Element.color = new Color(1f, 1f, 1f, 1f);
         Element.DOFade(0f, 1f).Play();
         float oScale = Element.GetComponent<RectTransform>().localScale.x;
         Element.GetComponent<RectTransform>().DOScale(1.2f * oScale, 0.1f).Play().OnComplete(() => Element.GetComponent<RectTransform>().DOScale(0.8f * oScale, 1f).Play());
-        yield return new WaitUntil(() => !Keyboard.current.spaceKey.isPressed);
+        yield return new WaitUntil(() => !Mouse.current.rightButton.isPressed);
 
         //Debug.Log("SPELL TEST COMPLETADO");
     }
 
     IEnumerator SpellTest2()
     {
-        ShowText("\\/[ SHIFT ]\\/");
+        ShowImage(LeftClick);
 
         Element.sprite = SymbolSprites[1];
 
@@ -270,13 +277,14 @@ public class IntroTutorial : MonoBehaviour
             ManageEnterSpell2();
             yield return null;
         }
-        yield return new WaitUntil(() => !Keyboard.current.shiftKey.isPressed);
-        HideText();
+        yield return new WaitUntil(() => !Mouse.current.leftButton.isPressed);
+        HideImage(LeftClick);
+
         Element.color = new Color(1f, 1f, 1f, 1f);
         Element.DOFade(0f, 1f).Play();
         float oScale = Element.GetComponent<RectTransform>().localScale.x;
         Element.GetComponent<RectTransform>().DOScale(1.2f * oScale, 0.1f).Play().OnComplete(() => Element.GetComponent<RectTransform>().DOScale(0.8f * oScale, 1f).Play());
-        yield return new WaitUntil(() => !Keyboard.current.spaceKey.isPressed);
+        yield return new WaitUntil(() => !Mouse.current.leftButton.isPressed);
 
         //Debug.Log("SPELL TEST COMPLETADO");
     }
@@ -285,7 +293,7 @@ public class IntroTutorial : MonoBehaviour
 
     void OnW(InputAction.CallbackContext _)
     {
-        if (Keyboard.current.spaceKey.isPressed)
+        if (Mouse.current.rightButton.isPressed)
         {
             _playerInstructions += "Up";
             InstrText.text += "W";
@@ -294,7 +302,7 @@ public class IntroTutorial : MonoBehaviour
 
     void OnA(InputAction.CallbackContext _)
     {
-        if (Keyboard.current.spaceKey.isPressed)
+        if (Mouse.current.rightButton.isPressed)
         {
             _playerInstructions += "Left";
             InstrText.text += "A";
@@ -303,7 +311,7 @@ public class IntroTutorial : MonoBehaviour
 
     void OnS(InputAction.CallbackContext _)
     {
-        if (Keyboard.current.spaceKey.isPressed)
+        if (Mouse.current.rightButton.isPressed)
         {
             _playerInstructions += "Down";
             InstrText.text += "S";
@@ -312,7 +320,7 @@ public class IntroTutorial : MonoBehaviour
 
     void OnD(InputAction.CallbackContext _)
     {
-        if (Keyboard.current.spaceKey.isPressed)
+        if (Mouse.current.rightButton.isPressed)
         {
             _playerInstructions += "Right";
             InstrText.text += "D";

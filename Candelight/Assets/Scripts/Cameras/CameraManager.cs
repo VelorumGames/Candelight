@@ -36,8 +36,8 @@ namespace Cameras
             _input = FindObjectOfType<InputManager>();
 
             DOTween.defaultAutoPlay = AutoPlay.None;
-            _spellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f).SetAutoKill(false);
-            _resetSpellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 60f, 0.1f).SetAutoKill(false);
+            _spellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 55f, 0.3f).SetAutoKill(false).SetUpdate(true);
+            _resetSpellTween = DOTween.To(() => GetActiveCam().m_Lens.FieldOfView, x => GetActiveCam().m_Lens.FieldOfView = x, 60f, 0.1f).SetAutoKill(false).SetUpdate(true);
             DOTween.defaultAutoPlay = AutoPlay.All;
 
             _brain = FindObjectOfType<CinemachineBrain>();

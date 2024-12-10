@@ -99,7 +99,7 @@ public class MenuSaveManager : MonoBehaviour
         FindObjectOfType<Inventory>().LoadInventory(data.ActiveItems, data.UnactiveItems, data.MarkedItems, data.Fragments);
         World.Candle = data.Candle;
         World.CompletedIds.Clear();
-        foreach (var node in data.CompletedNodes) World.CompletedIds.Add(node);
+        if (data.CompletedNodes != null) foreach (var node in data.CompletedNodes) World.CompletedIds.Add(node);
         //World.CompletedNodes = World.CompletedIds.Count;
         SaveSystem.ScoreboardData.Score = World.CompletedNodes;
         World.World = null;

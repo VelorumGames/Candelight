@@ -16,7 +16,8 @@ namespace World
 
         public List<List<int>> WorldMap = new List<List<int>>();
         List<GameObject> _nodes = new List<GameObject>();
-        GameObject _player;
+        PlayerController _player;
+        
 
         [Header("===NODE GENERATION===")]
         [Space(10)]
@@ -69,7 +70,7 @@ namespace World
             if (Instance != null) Destroy(gameObject);
             else Instance = this;
 
-            _player = FindObjectOfType<PlayerController>().gameObject;
+            _player = FindObjectOfType<PlayerController>();
             FindObjectOfType<InputManager>().LoadControls(EControlMap.World);
 
             _durniaTakenNames = new bool[DurniaNodeNames.Length];
@@ -94,6 +95,11 @@ namespace World
             }
 
             _sound = FindObjectOfType<UISoundManager>();
+        }
+
+        private void OnEnable()
+        {
+            _player.OnRevive += RevivePlayerToNode;
         }
 
         private void Start()
@@ -228,6 +234,11 @@ namespace World
             _player.transform.position = new Vector3(node.position.x, 2f, node.position.z);
         }
 
+        void RevivePlayerToNode(float _)
+        {
+            MovePlayerToNode(_player.GetCurrentNode().transform);
+        }
+
         /// <summary>
         /// Comprobacion de la distancia de un nodo al nodo mas cercano
         /// </summary>
@@ -256,7 +267,7 @@ namespace World
         /// <param name="biome"></param>
         public void SetCurrentNode(NodeManager node)
         {
-            _player.GetComponent<PlayerController>().SetCurrentNode(node);
+            _player.SetCurrentNode(node);
             NodeData data = node.GetNodeData();
             CurrentNodeInfo.Name = data.Name;
             CurrentNodeInfo.Levels = data.NumLevels;
@@ -367,6 +378,11 @@ namespace World
             }
 
             return false;
+        }
+
+        private void OnDisable()
+        {
+            _player.OnRevive += RevivePlayerToNode;
         }
     }
 }

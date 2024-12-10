@@ -495,6 +495,26 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1.28
       objectReference: {fileID: 0}
+    - target: {fileID: 2720711677590031006, guid: 11f9e444f5ee42040a51ba28beefe963,
+        type: 3}
+      propertyPath: Damage
+      value: 
+      objectReference: {fileID: 8300000, guid: ebf07885b1400284981534c8647cbec6, type: 3}
+    - target: {fileID: 2720711677590031006, guid: 11f9e444f5ee42040a51ba28beefe963,
+        type: 3}
+      propertyPath: _damAudio
+      value: 
+      objectReference: {fileID: 1427924975}
+    - target: {fileID: 2720711677590031006, guid: 11f9e444f5ee42040a51ba28beefe963,
+        type: 3}
+      propertyPath: DeathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 7d7ce46fc2a739b438b9a922eb044b21, type: 3}
+    - target: {fileID: 2720711677590031006, guid: 11f9e444f5ee42040a51ba28beefe963,
+        type: 3}
+      propertyPath: ReviveSound
+      value: 
+      objectReference: {fileID: 8300000, guid: edd369dc4b86aba4699f89b23b339c09, type: 3}
     - target: {fileID: 3867493866490079806, guid: 11f9e444f5ee42040a51ba28beefe963,
         type: 3}
       propertyPath: m_Name
@@ -563,7 +583,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2588152376837393862, guid: 11f9e444f5ee42040a51ba28beefe963,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1427924975}
   m_SourcePrefab: {fileID: 100100000, guid: 11f9e444f5ee42040a51ba28beefe963, type: 3}
 --- !u!1 &117138170
 GameObject:
@@ -10753,6 +10777,108 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337778838}
   m_CullTransparentMesh: 1
+--- !u!1 &1427924964 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2588152376837393862, guid: 11f9e444f5ee42040a51ba28beefe963,
+    type: 3}
+  m_PrefabInstance: {fileID: 108371076}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1427924975
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427924964}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1433735441
 GameObject:
   m_ObjectHideFlags: 0

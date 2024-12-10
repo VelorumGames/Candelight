@@ -6,12 +6,15 @@ using DG.Tweening;
 using Hechizos;
 using Hechizos.DeForma;
 using Hechizos.Elementales;
+using Items;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using World;
 
@@ -71,6 +74,7 @@ namespace Player
         public event Action<ESpellInstruction> OnNewInstruction;
         public event Action<AShapeRune> OnSpell;
         public event Action<AElementalRune[]> OnElements;
+        public event Action OnTruePlayerDeath;
         public event Action<float> OnRevive;
 
         UIManager _UIMan;
@@ -99,6 +103,9 @@ namespace Player
 
         bool _invicible;
         float _iFrameDuration = 1f;
+
+        Volume _volume;
+        float _oSaturation;
 
         bool _dying;
         float _deathTimer = 60f;
@@ -150,6 +157,8 @@ namespace Player
 
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
         {
+            _volume = FindObjectOfType<Volume>();
+
             _UIMan = FindObjectOfType<UIManager>();
             _camMan = FindObjectOfType<CameraManager>();
             if (_camMan != null)
@@ -170,8 +179,6 @@ namespace Player
                 _rb.useGravity = true;
                 _rb.constraints = RigidbodyConstraints.FreezeRotation;
             }
-
-            
         }
 
         void OnSceneUnloaded(Scene scene)
@@ -202,15 +209,12 @@ namespace Player
                 {
                     _extraLives--;
                     finalHealth = 0.25f * World.MAX_CANDLE;
-                }
 
-                //TODO. Esto cambiara para la gold.
-                //if (finalHealth <= 0) //Morira
-                //{
-                //    CanMove = false;
-                //    _anim.ChangeToDeath();
-                //}
-                if (_dying) _deathTimer += Time.deltaTime * 10f;
+                    FindObjectOfType<Inventory>().RemoveItem("WaxButterfly");
+                }
+                _sound.PlayDamage();
+
+                if (_dying) _deathTimer -= Time.deltaTime * 200f;
 
                 CallDamageEvent(finalDamage, Mathf.Clamp01(finalHealth / World.MAX_CANDLE));
 
@@ -242,7 +246,7 @@ namespace Player
             World.Candle = World.MAX_CANDLE * 0.5f;
 
             _sound.PlayReviveSound();
-
+            ReviveColors();
             _anim.ChangeToLife();
 
             if (OnRevive != null) OnRevive(World.Candle);
@@ -250,21 +254,32 @@ namespace Player
 
         void Death()
         {
-            //CanMove = false;
-            if (_dying)
+            ColorAdjustments color = null;
+            if (_volume != null && _volume.sharedProfile.TryGet(out color))
+            {
+                _oSaturation = color.saturation.GetValue<float>();
+            }
+            if (!_dying)
             {
                 _dying = true;
-                StartCoroutine(DeathMode());
+                StartCoroutine(DeathMode(color));
             }
         }
 
-        IEnumerator DeathMode()
+        IEnumerator DeathMode(ColorAdjustments color)
         {
-            _deathTimer = 00;
+            _deathTimer = 59;
 
             while (_dying)
             {
-                _deathTimer += Time.deltaTime;
+                Debug.Log("MUERTE: " + _deathTimer);
+
+                _deathTimer -= Time.deltaTime * 10;
+                if (color != null)
+                {
+                    color.saturation.Override(Mathf.Lerp(-100f, 0f, _deathTimer / 59f));
+                }
+                _UIMan.ShowDeathTime((int)_deathTimer);
                 if (_deathTimer < 0f) break;
 
                 yield return null;
@@ -273,9 +288,18 @@ namespace Player
             TrueDeath();
         }
 
+        void ReviveColors()
+        {
+            if (_volume != null && _volume.sharedProfile.TryGet(out ColorAdjustments color))
+            {
+                color.saturation.Override(_oSaturation);
+            }
+        }
+
         void TrueDeath()
         {
             CanMove = false;
+            if (OnTruePlayerDeath != null) OnTruePlayerDeath();
             _anim.ChangeToDeath();
         }
 
@@ -604,7 +628,7 @@ namespace Player
 
                 foreach (var node in _currentNode.ConnectedNodes)
                 {
-                    if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Sin_Descubrir && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado) ||
+                    if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Inexplorado && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado) ||
                         (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Explorado) )
                     {
                         float dist = Vector3.Distance(_pathChooser.transform.position, node.transform.position);

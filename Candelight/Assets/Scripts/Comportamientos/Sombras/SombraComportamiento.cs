@@ -1,4 +1,5 @@
 using Animations;
+using BehaviourAPI.Core.Actions;
 using Enemy;
 using Hechizos;
 using Hechizos.Elementales;
@@ -32,6 +33,8 @@ namespace Comportamientos.Sombra
 
                 if (value >= _numSombras)
                 {
+                    if (OnDeath != null) OnDeath(this);
+
                     _audio.PlayOneShot(FinalDeath);
                     StartCoroutine(Muerte());
                     //gameObject.SetActive(false);
@@ -69,6 +72,8 @@ namespace Comportamientos.Sombra
 
         public AudioClip Calma;
         public AudioClip FinalDeath;
+
+        public event System.Action<SombraComportamiento> OnDeath;
 
         //Array Prefabs Anillos
 

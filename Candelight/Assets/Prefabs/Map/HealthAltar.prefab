@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4973381453757677618}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.139, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -164,7 +164,7 @@ Transform:
   m_GameObject: {fileID: 7672547129822246539}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.01, y: 1.342, z: 0}
+  m_LocalPosition: {x: -0.01, y: 1.2030001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -201,7 +201,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3ff16302c05d9484c86b0eb11956e309,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.163
+      value: -0.302
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3ff16302c05d9484c86b0eb11956e309,
         type: 3}
@@ -211,7 +211,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3ff16302c05d9484c86b0eb11956e309,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3ff16302c05d9484c86b0eb11956e309,
         type: 3}
@@ -221,7 +221,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3ff16302c05d9484c86b0eb11956e309,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3ff16302c05d9484c86b0eb11956e309,
         type: 3}
@@ -236,7 +236,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3ff16302c05d9484c86b0eb11956e309,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3ff16302c05d9484c86b0eb11956e309,
         type: 3}

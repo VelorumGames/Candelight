@@ -30,10 +30,10 @@ namespace UI
 
         public void UpdateHealth(float hp)
         {
-            _hp.text = $"HP: {_world.Candle} / {_world.MAX_CANDLE}";
+            _hp.text = $"HP: {_world.Candle:F1} / {_world.MAX_CANDLE}";
         }
 
-        void UpdateHealth() => _hp.text = $"HP: {_world.Candle} / {_world.MAX_CANDLE}";
+        void UpdateHealth() => _hp.text = $"HP: {_world.Candle:F1} / {_world.MAX_CANDLE}";
 
         private void OnDestroy()
         {

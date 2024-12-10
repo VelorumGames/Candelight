@@ -24,12 +24,14 @@ public class PlayerSounds : MonoBehaviour
     public AudioClip[] SuccessSpell;
     public AudioClip[] RuneWriting;
     [Space(10)]
+    public AudioClip Damage;
     public AudioClip DeathSound;
     public AudioClip ReviveSound;
 
     [SerializeField] AudioSource _audio;
     [SerializeField] AudioSource _constAudio;
     [SerializeField] AudioSource _stepAudio;
+    [SerializeField] AudioSource _damAudio;
 
     InputManager _input;
     PlayerController _player;
@@ -49,12 +51,20 @@ public class PlayerSounds : MonoBehaviour
 
     private void OnEnable()
     {
+        SceneManager.sceneLoaded += OnLoadScene;
+
         _player.OnNewInstruction += PlayRuneSound;
         _player.OnSpell += ManageSpellExit;
 
         _input.OnStartElementMode += PlayStartElement;
         _input.OnStartShapeMode += PlayStartShape;
         _input.OnExitElementMode += PlayExitSpell;
+    }
+
+    void OnLoadScene(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "IntroScene") _stepAudio.volume = 0.1f;
+        else _stepAudio.volume = 0.3f;
     }
 
     public void PlayDeathSound() => _audio.PlayOneShot(DeathSound);
@@ -136,6 +146,12 @@ public class PlayerSounds : MonoBehaviour
         _stepAudio.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
     }
 
+    public void PlayDamage()
+    {
+        _damAudio.pitch = Random.Range(0.75f, 1.25f);
+        _damAudio.PlayOneShot(Damage);
+    }
+
     void LoadBiomeSounds()
     {
         switch(CurrentNodeInfo.Biome)
@@ -149,11 +165,16 @@ public class PlayerSounds : MonoBehaviour
             case EBiome.Idria:
                 _footsteps = IdriaFootsteps;
                 break;
+            default:
+                _footsteps = DurniaFootsteps;
+                break;
         }
     }
 
     private void OnDisable()
     {
+        SceneManager.sceneLoaded -= OnLoadScene;
+
         _player.OnNewInstruction -= PlayRuneSound;
         _player.OnSpell -= ManageSpellExit;
 

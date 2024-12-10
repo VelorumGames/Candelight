@@ -116,6 +116,16 @@ namespace Items
             {
                 _active = false;
                 _img.sprite = _frameSprites[0];
+
+                if (_itemMarked) //Quitar el item seleccionado
+                {
+                    _invWin.ReturnItemFromFrame(Id);
+                    _sound.PlayDemarkItem();
+
+                    HideItem();
+
+                    _itemMarked = false;
+                }
             }
         }
 

@@ -103,8 +103,8 @@ namespace Hechizos.Elementales
         public void RemoveMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion -= n;
         public int GetMaxSpellsOnExplosion(int n) => _maxSpellsOnExplosion;
 
-        public void AddSlowness(float slow) => _slowness /= slow;
-        public void RemoveSlowness(float slow) => _slowness *= slow;
+        public void AddSlowness(float slow) => _slowness *= slow;
+        public void RemoveSlowness(float slow) => _slowness /= slow;
 
     }
 }

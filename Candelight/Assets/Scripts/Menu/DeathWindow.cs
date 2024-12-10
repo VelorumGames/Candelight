@@ -1,3 +1,4 @@
+using Player;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,11 +9,12 @@ namespace Menu
 {
     public class DeathWindow : MonoBehaviour
     {
-        [SerializeField] WorldInfo _world;
+        PlayerController _cont;
 
         private void Awake()
         {
-            _world.OnPlayerDeath += ManageDeath;
+            _cont = FindObjectOfType<PlayerController>();
+            _cont.OnTruePlayerDeath += ManageDeath;
         }
 
         void ManageDeath()
@@ -22,7 +24,7 @@ namespace Menu
 
         private void OnDestroy()
         {
-            _world.OnPlayerDeath -= ManageDeath;
+            _cont.OnTruePlayerDeath -= ManageDeath;
         }
     }
 }

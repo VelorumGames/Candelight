@@ -19,7 +19,7 @@ namespace World
     }
     public enum ENodeState
     {
-        Sin_Descubrir,
+        Inexplorado,
         Explorado,
         Completado
     }
@@ -90,6 +90,8 @@ namespace World
             string[] names = WorldManager.Instance.GetRandomNames(_data.Biome);
             _data.Name = names[0];
             _data.Description = names[1];
+
+            _data.EventID = -1;
 
             //Debug. Deberia ser mas amplio el rango
             if (EventCheck()) _data.EventID = Random.Range(0, 4);

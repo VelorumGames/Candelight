@@ -1,6 +1,7 @@
 using Animations;
 using Hechizos;
 using Hechizos.Elementales;
+using Player;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace Enemy
         public AudioClip Atacar;
         public AudioClip Ataque;
 
+        bool _trueDeath;
+
         private new void Awake()
         {
             base.Awake();
@@ -48,10 +51,14 @@ namespace Enemy
             base.OnEnable();
 
             OnDamage += ChangeToAttackOnDamage;
+
+            Player.OnTruePlayerDeath += RegisterPlayerDeath;
             Player.OnRevive += AttackOnRevive;
         }
 
         void ChangeToAttackOnDamage(float dam, float rem) => ChangeState(EMurcielagoState.Attack);
+
+        void RegisterPlayerDeath() => _trueDeath = true;
 
         private new void Start()
         {
@@ -131,7 +138,7 @@ namespace Enemy
         IEnumerator ManageAttack()
         {
             Vector3 target;
-            while (!PhantomCheck() && World.Candle > 0)
+            while (!PhantomCheck() && !_trueDeath)
             {
                 target = Player.transform.position + new Vector3(UnityEngine.Random.Range(-1f, 1f), 0f, UnityEngine.Random.Range(-1f, 1f)); //Para que tampoco sea exacto (es ciego)
                 yield return StartCoroutine(MoveTowards(target, 1.5f));
@@ -204,6 +211,7 @@ namespace Enemy
             base.OnDisable();
 
             OnDamage -= ChangeToAttackOnDamage;
+            Player.OnTruePlayerDeath -= RegisterPlayerDeath;
             Player.OnRevive -= AttackOnRevive;
         }
 

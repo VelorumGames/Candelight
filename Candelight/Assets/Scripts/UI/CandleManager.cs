@@ -41,7 +41,7 @@ namespace UI
 
             if (candle < _prevCandle)
             {
-                _damageNotif.text = $"- {_prevCandle - candle} HP";
+                _damageNotif.text = $"- {(_prevCandle - candle):F1} HP";
                 _damageNotif.gameObject.SetActive(true);
                 Invoke("ResetDamageNotif", 1f);
             }

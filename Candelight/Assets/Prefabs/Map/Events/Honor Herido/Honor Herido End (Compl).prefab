@@ -59,6 +59,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 2800979700702684246, guid: dabd4e5cc44ce9945a7d912b8fffed7d,
         type: 3}
+      propertyPath: _speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2800979700702684246, guid: dabd4e5cc44ce9945a7d912b8fffed7d,
+        type: 3}
       propertyPath: InitialOrientation
       value: -1
       objectReference: {fileID: 0}
@@ -159,11 +164,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6763103402395880935}
     m_Modifications:
-    - target: {fileID: 7566546573828897371, guid: a0e54595dc4fedc42a8dc12149af4bbc,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 183760301017377350, guid: dabd4e5cc44ce9945a7d912b8fffed7d,
         type: 3}
       propertyPath: m_Enabled
@@ -173,6 +173,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Durniano (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2800979700702684246, guid: dabd4e5cc44ce9945a7d912b8fffed7d,
+        type: 3}
+      propertyPath: _speed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2800979700702684246, guid: dabd4e5cc44ce9945a7d912b8fffed7d,
         type: 3}
@@ -228,6 +233,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566546573828897371, guid: a0e54595dc4fedc42a8dc12149af4bbc,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6235025818474390183, guid: dabd4e5cc44ce9945a7d912b8fffed7d, type: 3}

@@ -24,6 +24,7 @@ namespace Enemy
         float _fragDropRate = 0.5f;
 
         bool _invicible;
+        bool _canAttack = true;
         float _iFrameDuration = 0.5f;
 
         public bool LuciernagaPosada;
@@ -60,6 +61,7 @@ namespace Enemy
         {
             OnDeath += SpawnFragments;
             OnDeath += PlayDeathSound;
+            OnDeath += FakeDeath;
             OnDamage += _uiMan.EnemyDamageFeedback;
         }
 
@@ -87,8 +89,13 @@ namespace Enemy
 
                 _invicible = true;
                 Invoke("ManageIFrames", _iFrameDuration);
-                
             }
+        }
+
+        void FakeDeath(AController _)
+        {
+            _invicible = true;
+            _canAttack = false;
         }
 
         public void RegisterDamageType(string type)
@@ -138,7 +145,7 @@ namespace Enemy
 
         public void OnAttack()
         {
-            if (CanMove)
+            if (CanMove && _canAttack)
             {
                 Collider[] objs = Physics.OverlapSphere(transform.position, 2f);
                 foreach (var col in objs)
@@ -182,6 +189,7 @@ namespace Enemy
         {
             OnDeath -= SpawnFragments;
             OnDeath -= PlayDeathSound;
+            OnDeath -= FakeDeath;
             OnDamage -= _uiMan.EnemyDamageFeedback;
         }
     }

@@ -121,12 +121,11 @@ public abstract class AController : MonoBehaviour
     {
 
         _isSlowed = true;
-        float oSpeed = _speed;
         _speed *= ratio;
         GetComponentInChildren<SpriteRenderer>().color = Color.gray;
         yield return new WaitForSeconds(time);
         GetComponentInChildren<SpriteRenderer>().color = Color.white;
-        _speed = oSpeed;
+        _speed /= ratio;
         _isSlowed = false;
     }
 

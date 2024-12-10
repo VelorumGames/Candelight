@@ -438,7 +438,6 @@ namespace Controls
         {
             if (!_shapeMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
-                Debug.Log("AAAAAAA");
                 if (OnStartElementMode != null) OnStartElementMode();
                 _elementMode = true;
                 _isInSpellMode = true;
@@ -461,7 +460,6 @@ namespace Controls
         {
             if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
-                Debug.Log("AAAAAAA");
                 if (OnStartShapeMode != null) OnStartShapeMode();
 
                 _shapeMode = true;

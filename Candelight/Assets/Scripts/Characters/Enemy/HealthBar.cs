@@ -24,6 +24,7 @@ namespace Enemy
 
         private void OnEnable()
         {
+            if (GameSettings.Owl && _enemy) _owlText.text = $"HP: {_enemy.CurrentHP}/{_enemy.MaxHP}";
             if (_enemy) _enemy.OnDamage += UpdateHealthBar;
         }
 

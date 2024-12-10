@@ -1,3 +1,4 @@
+using Comportamientos.Sombra;
 using Enemy;
 using Map;
 using Music;
@@ -9,7 +10,8 @@ using UnityEngine;
 
 public class EnemyRoom : ARoom
 {
-    EnemyController[] enemies;
+    EnemyController[] _enemies;
+    SombraComportamiento[] _shadows;
 
     [SerializeField] int _eCount;
     int _enemyCount
@@ -34,15 +36,21 @@ public class EnemyRoom : ARoom
     {
         base.Awake();
 
-        enemies = GetComponentsInChildren<EnemyController>(true);
-        _enemyCount = enemies.Length;
-        foreach (var e in enemies)
+        _enemies = GetComponentsInChildren<EnemyController>(true);
+        _shadows = GetComponentsInChildren<SombraComportamiento>(true);
+
+        _enemyCount = _enemies.Length + _shadows.Length;
+        foreach (var e in _enemies)
         {
             e.OnDeath += NotifyEnemyDeath;
             e.gameObject.SetActive(false);
         }
+        foreach (var s in _shadows)
+        {
+            s.OnDeath += NotifyShadowDeath;
+        }
 
-        _spawns = new GameObject[_enemyCount];
+        _spawns = new GameObject[_enemies.Length];
     }
 
     private void OnEnable()
@@ -69,7 +77,7 @@ public class EnemyRoom : ARoom
         CloseAllAnchors();
 
         int count = 0;
-        foreach (var e in enemies)
+        foreach (var e in _enemies)
         {
             _spawns[count++] = Instantiate(_spawnEffect, e.transform.position - Vector3.up, Quaternion.Euler(-90f, 0f, 0f));
         }
@@ -78,9 +86,13 @@ public class EnemyRoom : ARoom
 
         foreach (var s in _spawns) Destroy(s);
 
-        foreach (var e in enemies)
+        foreach (var e in _enemies)
         {
             e.gameObject.SetActive(true);
+        }
+        foreach (var s in _shadows)
+        {
+            s.gameObject.SetActive(true);
         }
 
         _inCombat = true;
@@ -108,10 +120,10 @@ public class EnemyRoom : ARoom
 
     void OpenAllAnchors()
     {
-        Debug.Log($"Se abriran {AvailableAnchors.Count} anchors");
+        //Debug.Log($"Se abriran {AvailableAnchors.Count} anchors");
         foreach (var anchor in AvailableAnchors)
         {
-            Debug.Log("Anchor: " + anchor);
+            //Debug.Log("Anchor: " + anchor);
             if (anchor != null)
             {
                 anchor.OpenAnchor();
@@ -127,11 +139,21 @@ public class EnemyRoom : ARoom
         _enemyCount--;
     }
 
+    void NotifyShadowDeath(SombraComportamiento shadow)
+    {
+        shadow.OnDeath -= NotifyShadowDeath;
+        _enemyCount--;
+    }
+
     private void OnDisable()
     {
-        foreach (var e in enemies)
+        foreach (var e in _enemies)
         {
             if (e != null) e.OnDeath -= NotifyEnemyDeath;
+        }
+        foreach (var s in _shadows)
+        {
+            if (s != null) s.OnDeath -= NotifyShadowDeath;
         }
 
         OnPlayerExit -= ResetCheck;

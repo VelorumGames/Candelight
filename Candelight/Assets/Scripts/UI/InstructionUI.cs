@@ -29,9 +29,9 @@ namespace UI
 
             float oScale = _trans.localScale.x;
 
-            _scale = _trans.DOScale(oScale, _animTime).SetAutoKill(false).OnPlay(() => GetComponent<Image>().SetNativeSize());
-            _move = _trans.DOLocalMove(_oPos, _animTime).SetAutoKill(false);
-            _rotate = _trans.DOLocalRotate(new Vector3(0f, 0f, 0f), _animTime).SetAutoKill(false);
+            _scale = _trans.DOScale(oScale, _animTime).SetAutoKill(false).OnPlay(() => GetComponent<Image>().SetNativeSize()).SetUpdate(true);
+            _move = _trans.DOLocalMove(_oPos, _animTime).SetAutoKill(false).SetUpdate(true);
+            _rotate = _trans.DOLocalRotate(new Vector3(0f, 0f, 0f), _animTime).SetAutoKill(false).SetUpdate(true);
 
             _oColor = GetComponent<Image>().color;
         }

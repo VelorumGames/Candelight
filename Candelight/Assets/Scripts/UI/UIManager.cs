@@ -57,6 +57,7 @@ namespace UI
 
         [Space(10)]
         [Header("FEEDBACK")]
+        public TextMeshProUGUI DeathTimer;
         public Image RedFilter;
         public Image WhiteFilter;
         Volume _vol;
@@ -109,6 +110,7 @@ namespace UI
                 _player.OnNewInstruction += ShowNewInstruction;
                 _player.OnSpell += ShowValidSpell;
                 _player.OnElements += ShowValidElements;
+                _player.OnTruePlayerDeath += Death;
                 World.OnCandleChanged += RegisterCandle;
             }
             if (_input != null)
@@ -123,7 +125,7 @@ namespace UI
                 _inv.OnFragmentsChange += ShowFragmentHalo;
             }
 
-            World.OnPlayerDeath += Death;
+            
         }
 
         private void Start()
@@ -131,8 +133,8 @@ namespace UI
             _spellHalo?.SetActive(false);
             _fragmentHalo?.SetActive(false);
 
-            for (int i = 0; i < 6; i++)FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(), EItemCategory.Rare);
-            FindObjectOfType<Inventory>().AddFragments(50);
+            //for (int i = 0; i < 6; i++)FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(), EItemCategory.Rare);
+            //FindObjectOfType<Inventory>()?.AddFragments(50);
         }
 
         private void OnGUI()
@@ -156,7 +158,7 @@ namespace UI
                 FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(), EItemCategory.Rare);
                 FindObjectOfType<Inventory>().AddFragments(20);
             }
-            if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
+            ///if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
             //GUI.Label(new Rect(10, 140, 200, 500), $"Current elements: {_elements}\nActive runes:\n{_chains}");
         }
 
@@ -200,7 +202,13 @@ namespace UI
 
         void Death()
         {
-            Invoke("DelayedDeath", 2f);
+            DeathTimer.text = "";
+            Invoke("DelayedDeath", 8f);
+        }
+
+        public void ShowDeathTime(int t)
+        {
+            DeathTimer.text = t < 10 ? $"00:0{t}" : $"00:{t}";
         }
 
         public void DelayedDeath() => _deathWindow.gameObject.SetActive(true);
@@ -700,6 +708,7 @@ namespace UI
                 _player.OnNewInstruction -= ShowNewInstruction;
                 _player.OnSpell -= ShowValidSpell;
                 _player.OnElements -= ShowValidElements;
+                _player.OnTruePlayerDeath -= Death;
                 World.OnCandleChanged -= RegisterCandle;
             }
             if (_input != null)
@@ -714,7 +723,7 @@ namespace UI
                 _inv.OnFragmentsChange -= ShowFragmentHalo;
             }
 
-            World.OnPlayerDeath -= Death;
+            
         }
     }
 

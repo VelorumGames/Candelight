@@ -59,7 +59,7 @@ namespace Interactuables
 
         IEnumerator FinishScene()
         {
-            FindObjectOfType<PlayerController>().World.Candle -= 5f * FindObjectOfType<PlayerController>().World.NodeCandleFactor;
+            _world.Candle -= 5f * _world.NodeCandleFactor;
 
             if (GameSettings.AutoSave)
             {

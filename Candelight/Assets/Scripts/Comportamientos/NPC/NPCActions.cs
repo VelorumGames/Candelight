@@ -37,7 +37,7 @@ public class NPCActions : MonoBehaviour
         target = currentPos;
 
         setRandomTarget();
-        move();
+        if (controller.CanMoveOnStart) move();
     }
 
     // Update is called once per frame
@@ -79,24 +79,28 @@ public class NPCActions : MonoBehaviour
 
     public Status move()
     {
-        //Debug.Log("Entro en rama mover");
-        Vector3 direction;
-        
-        if (Vector3.Distance(transform.position, target) < 1.5f || outTime >= 5)
+        if (controller.CanMoveOnStart)
         {
-            outTime = 0;
-            arrived = true;
-            return Status.Success;
+            //Debug.Log("Entro en rama mover");
+            Vector3 direction;
+
+            if (Vector3.Distance(transform.position, target) < 1.5f || outTime >= 5)
+            {
+                outTime = 0;
+                arrived = true;
+                return Status.Success;
+            }
+
+            direction = new Vector3((target - transform.position).x, 0f, (target - transform.position).z).normalized;
+
+            if (!rb) rb = GetComponent<Rigidbody>();
+            Vector3 force = Time.deltaTime * 100f * controller.getSpeed() * new Vector3(direction.x, 0f, direction.z);
+            rb.AddForce(force, ForceMode.Force);
+
+            outTime += Time.deltaTime;
+            return Status.Running;
         }
-
-        direction = new Vector3((target - transform.position).x, 0f, (target - transform.position).z).normalized;
-
-        if (!rb) rb = GetComponent<Rigidbody>();
-        Vector3 force = Time.deltaTime * 100f * controller.getSpeed() * new Vector3(direction.x, 0f, direction.z);
-        rb.AddForce(force, ForceMode.Force);
-
-        outTime += Time.deltaTime;
-        return Status.Running;
+        return Status.Success;
     }
 
     private void OnDrawGizmos()

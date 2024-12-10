@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 261843330875723204, guid: cc59c0c23c9150849958561210294239,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2845574984086248080, guid: cc59c0c23c9150849958561210294239,
         type: 3}
       propertyPath: m_Name
@@ -156,3 +161,4 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 883fec35ec6547541a4af98d057cb176, type: 3}
   - {fileID: 21300000, guid: 7530a378e57e49643b5def50ffa2cd9a, type: 3}
   IsNew: 1
+  World: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}

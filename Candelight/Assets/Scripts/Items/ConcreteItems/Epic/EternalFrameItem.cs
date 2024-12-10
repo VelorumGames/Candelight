@@ -19,6 +19,7 @@ namespace Items
                 {
                     _frame = f;
                     _frame.UnlockFrame();
+                    break;
                 }
             }
         }

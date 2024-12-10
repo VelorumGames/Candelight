@@ -1,4 +1,5 @@
 using Items;
+using Player;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
@@ -25,7 +26,7 @@ namespace Interactuables
             _inv = FindObjectOfType<Inventory>();
             _ui = FindObjectOfType<UIManager>();
 
-            _heart.sharedMaterial.SetColor("SecondColor", _unused);
+            _heart.sharedMaterial.SetColor("_SecondColor", _unused);
         }
 
         public override void Interaction()
@@ -37,13 +38,14 @@ namespace Interactuables
 
         void ManageFragments()
         {
-            _heart.sharedMaterial.SetColor("SecondColor", _used);
+            _heart.sharedMaterial.SetColor("_SecondColor", _used);
 
             _world.Candle += _world.MAX_CANDLE * 0.25f;
             _inv.AddFragments(-_inv.GetFragments() / 2);
             FindObjectOfType<UIManager>().Back();
+            FindObjectOfType<PlayerController>().UnloadInteraction();
 
-            FindObjectOfType<Collider>().enabled = false;
+            GetComponent<Collider>().enabled = false;
         }
 
         void NullAction()
