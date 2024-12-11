@@ -211,7 +211,11 @@ namespace UI
             DeathTimer.text = t < 10 ? $"00:0{t}" : $"00:{t}";
         }
 
-        public void DelayedDeath() => _deathWindow.gameObject.SetActive(true);
+        public void DelayedDeath()
+        {
+            InterruptFade();
+            _deathWindow.gameObject.SetActive(true);
+        }
 
         #region Spell UI
 

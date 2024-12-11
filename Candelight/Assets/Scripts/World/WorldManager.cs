@@ -175,6 +175,7 @@ namespace World
         /// <summary>
         /// Se generan los biomas a raiz de ruido perlin
         /// </summary>
+        int dur, tem, idr;
         void GenerateBiomes()
         {
             foreach (var node in _nodes)
@@ -188,15 +189,20 @@ namespace World
                 {
                     case EBiome.Durnia:
                         node.GetComponent<Renderer>().material = biomeA;
+                        dur++;
                         break;
                     case EBiome.Temeria:
                         node.GetComponent<Renderer>().material = biomeB;
+                        tem++;
                         break;
                     case EBiome.Idria:
                         node.GetComponent<Renderer>().material = biomeC;
+                        idr++;
                         break;
                 }
             }
+
+            //Debug.Log($"DURNIA ({dur}); TEMERIA ({tem}); IDRIA ({idr})");
 
             if (World.LoadedPreviousGame && SaveSystem.GameData.CurrentNode != -1)
             {
@@ -226,6 +232,16 @@ namespace World
                 }
             }
             Debug.LogWarning("ERROR: No se ha encontrado ningun nodo de entrada valido");
+            GameObject randNode = _nodes[Random.Range(0, _nodes.Count)];
+
+            if (randNode.TryGetComponent<NodeManager>(out var nodeM) && nodeM.StartNodeCheck())
+            {
+                nodeM.gameObject.name += " START";
+                nodeM.SetState(ENodeState.Explorado);
+                CurrentNodeInfo.Node = nodeM; //Marcamos este como nodo inicial
+
+                MovePlayerToNode(randNode.transform);
+            }
         }
 
         void MovePlayerToNode(Transform node)

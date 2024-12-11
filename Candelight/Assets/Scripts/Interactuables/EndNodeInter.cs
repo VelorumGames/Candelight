@@ -18,6 +18,7 @@ namespace Interactuables
         public ParticleSystem FireParticles;
         public NodeInfo CurrentNodeInfo;
         [SerializeField] WorldInfo _world;
+        PlayerController _cont;
 
         AudioSource _audio;
 
@@ -27,6 +28,8 @@ namespace Interactuables
         {
             _ui = FindObjectOfType<UIManager>();
             _audio = GetComponent<AudioSource>();
+
+            _cont = FindObjectOfType<PlayerController>();
         }
 
         public override void Interaction()
@@ -39,7 +42,8 @@ namespace Interactuables
             Fires.SetActive(true);
             FireParticles.Play();
 
-            FindObjectOfType<PlayerController>().SetMove(false);
+            _cont.SetMove(false);
+            _cont.UnloadInteraction();
 
             CurrentNodeInfo.Node.RegisterCompletedNode();
 

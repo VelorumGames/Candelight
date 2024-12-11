@@ -44,7 +44,11 @@ public class IntroBlock : MonoBehaviour
             {
                 if (!spell.IsActivated())
                 {
-                    _ui.ShowTutorial("Pulsa B para abrir tus apuntes.\nMantén CLICK e invoca las runas para memorizar una nueva magia.", 10f);
+                    if (GameSettings.HelpMessages)
+                    {
+                        if (Application.isMobilePlatform) _ui.ShowTutorial("Pulsa el icono del libro para tus apuntes.\nMantén pulsado uno de los símbolos (abajo a la izquierda) e invoca las runas para memorizar una nueva magia.", 10f);
+                        else _ui.ShowTutorial("Pulsa B para abrir tus apuntes.\nMantén CLICK e invoca las runas para memorizar una nueva magia.", 10f);
+                    }
                     yield return new WaitForSecondsRealtime(13f);
                 }
             }
@@ -57,7 +61,11 @@ public class IntroBlock : MonoBehaviour
     {
         while (true)
         {
-            _ui.ShowTutorial("Para cambiar de elemento, mantén CLK DER e invoca sus runas.\n Para lanzar un hechizo de ese elemento, mantén CLK IZQ e invoca sus runas.", 10f);
+            if (GameSettings.HelpMessages)
+            {
+                if (Application.isMobilePlatform) _ui.ShowTutorial("Para cambiar de elemento, mantén el símbolo correspondiente e invoca sus runas.\n Para lanzar un hechizo de ese elemento, mantén el otro símbolo e invoca sus runas.", 10f);
+                else _ui.ShowTutorial("Para cambiar de elemento, mantén CLK DER e invoca sus runas.\n Para lanzar un hechizo de ese elemento, mantén CLK IZQ e invoca sus runas.", 10f);
+            }
             yield return new WaitForSecondsRealtime(13f);
         }
     }

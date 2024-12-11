@@ -17,6 +17,8 @@ public static class GameSettings
 
     public static bool AutoSave = true;
 
+    public static bool HelpMessages = true;
+
     public static bool Tutorial = true;
     public static bool FrameTutorial = true;
     public static bool ItemTutorial = true;

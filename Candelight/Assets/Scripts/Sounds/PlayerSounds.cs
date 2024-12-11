@@ -1,4 +1,5 @@
 using Controls;
+using DG.Tweening;
 using Hechizos.DeForma;
 using Player;
 using System.Collections;
@@ -32,6 +33,7 @@ public class PlayerSounds : MonoBehaviour
     [SerializeField] AudioSource _constAudio;
     [SerializeField] AudioSource _stepAudio;
     [SerializeField] AudioSource _damAudio;
+    [SerializeField] AudioSource _deathAudio;
 
     InputManager _input;
     PlayerController _player;
@@ -169,6 +171,11 @@ public class PlayerSounds : MonoBehaviour
                 _footsteps = DurniaFootsteps;
                 break;
         }
+    }
+
+    public void StartDeathAudio()
+    {
+        _deathAudio.DOFade(0.3f, 10f);
     }
 
     private void OnDisable()

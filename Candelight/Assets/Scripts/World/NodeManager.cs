@@ -93,8 +93,24 @@ namespace World
 
             _data.EventID = -1;
 
-            //Debug. Deberia ser mas amplio el rango
-            if (EventCheck()) _data.EventID = Random.Range(0, 4);
+            if (EventCheck())
+            {
+                switch(_data.Biome)
+                {
+                    case EBiome.Durnia:
+                        _data.EventID = Random.Range(0, 4);
+                        //Debug.Log($"({Id}) HE GENERADO EL EVENTO EN DURNIA: " + _data.EventID);
+                        break;
+                    case EBiome.Temeria:
+                        _data.EventID = Random.Range(0, 4);
+                        //Debug.Log($"({Id}) HE GENERADO EL EVENTO EN TEMERIA: " + _data.EventID);
+                        break;
+                    case EBiome.Idria:
+                        _data.EventID = Random.Range(0, 2);
+                        //Debug.Log($"({Id}) HE GENERADO EL EVENTO EN IDRIA: " + _data.EventID);
+                        break;
+                }
+            }
             _data.EventSolution = EEventSolution.None;
 
             CheckForPreviousGameNode();

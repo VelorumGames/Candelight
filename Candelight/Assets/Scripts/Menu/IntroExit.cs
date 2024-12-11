@@ -23,7 +23,9 @@ namespace Menu
 
         void ManageSkip()
         {
-            if (ARune.FindSpell("Fire", out var spell)) spell.Activate(true);
+            Debug.Log("Elemento de inicio: " + Upgrades.StartElement.ToString());
+            if (ARune.FindSpell(Upgrades.StartElement.ToString(), out var spell)) spell.Activate(true);
+            //if (ARune.FindSpell("Fire", out spell)) spell.Activate(true);
             if (ARune.FindSpell("Electric", out spell)) spell.Activate(true);
             if (ARune.FindSpell("Projectile", out spell)) spell.Activate(true);
 

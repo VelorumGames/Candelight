@@ -53,7 +53,7 @@ namespace UI
                 yield return null;
             }
             //Debug.Log($"COMPR_TRUE ({_node.gameObject.name}): {_node.GetNodeData().Name}");
-            _box.RegisterNode(data.Name, data.Description, data.Biome, data.State.ToString(), data.LevelTypes);
+            _box.RegisterNode(_node, data.Name, data.Description, data.Biome, data.State.ToString(), data.LevelTypes);
             _box.ShowBox(true);
         }
 

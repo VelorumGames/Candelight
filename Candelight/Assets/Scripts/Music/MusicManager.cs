@@ -65,6 +65,8 @@ namespace Music
             ChangeVolumeTo(1, 0f, 0.1f);
             ChangeVolumeTo(2, 0f, 0.1f);
             ChangeVolumeTo(3, 0f, 0.1f);
+
+            foreach (var source in _sources) source.Stop();
         }
 
         public void LoadClip(int id, AudioClip newClip) => _sources[id].clip = newClip;

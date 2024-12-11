@@ -123,6 +123,8 @@ namespace Player
         float _fpOrientation;
         float _mouseSens = 0.2f;
 
+        MobileInteract _mobileInter;
+
         #endregion
 
         private void OnEnable()
@@ -179,6 +181,10 @@ namespace Player
                 _rb.useGravity = true;
                 _rb.constraints = RigidbodyConstraints.FreezeRotation;
             }
+
+            if (_dying && _deathTimer <= 0) TrueDeath();
+
+            if (Application.isMobilePlatform) _mobileInter = FindObjectOfType<MobileInteract>(true);
         }
 
         void OnSceneUnloaded(Scene scene)
@@ -188,6 +194,8 @@ namespace Player
             UnloadInteraction();
             _pathShower.SetActive(false);
         }
+
+        public bool IsDying() => _dying;
 
         public NodeManager GetCurrentNode() => _currentNode;
         public void SetCurrentNode(NodeManager node) => _currentNode = node;
@@ -254,6 +262,8 @@ namespace Player
 
         void Death()
         {
+            _sound.StartDeathAudio();
+
             ColorAdjustments color = null;
             if (_volume != null && _volume.sharedProfile.TryGet(out color))
             {
@@ -272,9 +282,9 @@ namespace Player
 
             while (_dying)
             {
-                Debug.Log("MUERTE: " + _deathTimer);
+                //Debug.Log("MUERTE: " + _deathTimer);
 
-                _deathTimer -= Time.deltaTime * 10;
+                _deathTimer -= Time.deltaTime;
                 if (color != null)
                 {
                     color.saturation.Override(Mathf.Lerp(-100f, 0f, _deathTimer / 59f));
@@ -319,7 +329,7 @@ namespace Player
 
         public new void OnMove(Vector2 direction)
         {
-            if (CanMove)
+            if (CanMove && !_spellMode)
             {
                 if (!_rb) _rb = GetComponent<Rigidbody>();
                 force = (_bookIsOpen || _isFirstPerson ? 0.25f : 1f) * Time.deltaTime * 100f * _speed * _speedFactor * new Vector3(direction.x, 0f, direction.y);
@@ -329,7 +339,7 @@ namespace Player
 
                 if (_dying) force *= (_deathTimer / 60f);
 
-                if (_inCombat && direction != _oldDirection) OnCombatMoveBoost(force);
+                if (!Application.isMobilePlatform && _inCombat && direction != _oldDirection) OnCombatMoveBoost(force);
 
                 _oldDirection = direction;
             }
@@ -387,6 +397,11 @@ namespace Player
                 Debug.Log("Se carga interaccion de " + gameObject.name);
                 _interaction = interaction;
 
+                if (Application.isMobilePlatform && _mobileInter && SceneManager.GetActiveScene().name != "WorldScene")
+                {
+                    _mobileInter.Show(interaction);
+                }
+
                 _selection.SetActive(true);
                 _selection.transform.parent = obj;
                 _selection.transform.position = obj.transform.position;
@@ -397,6 +412,11 @@ namespace Player
         {
             Debug.Log("Se descarga interaccion de " + gameObject.name);
             _interaction = null;
+
+            if (Application.isMobilePlatform && _mobileInter)
+            {
+                _mobileInter.Hide();
+            }
 
             _selection.transform.parent = transform;
             _selection.transform.localPosition = new Vector3();
@@ -654,7 +674,7 @@ namespace Player
 
         public void OnPause(InputAction.CallbackContext _)
         {
-            _UIMan.LoadUIWindow(_UIMan.PauseMenu);
+            if (!_dying) _UIMan.LoadUIWindow(_UIMan.PauseMenu);
         }
 
         public void OnInventory(InputAction.CallbackContext _)
@@ -742,6 +762,9 @@ namespace Player
 
         public void SetFastDelay(float ratio) => _spellThrowDelay *= ratio;
         public void ResetFastDelay(float ratio) => _spellThrowDelay /= ratio;
+
+        public void AddLastSpellTime(float ratio) => _lastSpellDuration *= ratio;
+        public void RemoveLastSpellTime(float ratio) => _lastSpellDuration /= ratio;
 
         #endregion
 

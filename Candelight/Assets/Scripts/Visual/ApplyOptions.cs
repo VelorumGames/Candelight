@@ -1,3 +1,4 @@
+using Controls;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -29,12 +30,11 @@ namespace Visual
 
         private void Start()
         {
-            if (SystemInfo.deviceType == DeviceType.Handheld) //Si es movil, quitar el post procesado
+            if (Application.isMobilePlatform) //Si es movil, quitar el post procesado
             {
                 _postVolume.enabled = false;
             }
 
-            //Tomamos los valores originales
             if (_postVolume.sharedProfile.TryGet(out ColorAdjustments color))
             {
                 _oBright = color.postExposure.GetValue<float>();

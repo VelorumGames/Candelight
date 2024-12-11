@@ -23,9 +23,12 @@ namespace Menu.Shop
 
         bool _active;
 
+        ShopItem[] _items;
+
         private void Awake()
         {
             _shop = FindObjectOfType<ShopManager>();
+            _items = FindObjectsOfType<ShopItem>(true);
         }
 
         private void Start()
@@ -40,13 +43,33 @@ namespace Menu.Shop
 
         public void Activate()
         {
+            if (_active && _bought) Deactivate();
+            else if (_bought)
+            {
+                foreach (var item in _items)
+                {
+                    if (item != this) item.Deactivate();
+                }
+
+                _active = true;
+
+                Debug.Log("Se registra como elemento: " + Element);
+                Upgrades.StartElement = Element;
+                _desc.text = "MEJORA ACTIVADA";
+                Selector.SetActive(true);
+            }
+        }
+
+        public void Deactivate()
+        {
             if (_bought)
             {
-                _active = !_active;
+                _active = false;
 
-                Upgrades.StartElement = _active ? EStartingElement.Fire : Element;
-                _desc.text = _active ? "MEJORA ACTIVADA" : "MEJORA DESACTIVADA";
-                Selector.SetActive(_active);
+                Debug.Log("Se vuelve a Fire");
+                Upgrades.StartElement = EStartingElement.Fire;
+                _desc.text = "MEJORA DESACTIVADA";
+                Selector.SetActive(false);
             }
         }
 

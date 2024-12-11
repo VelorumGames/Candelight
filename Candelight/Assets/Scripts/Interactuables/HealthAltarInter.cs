@@ -14,6 +14,7 @@ namespace Interactuables
 
         Inventory _inv;
         UIManager _ui;
+        PlayerController _cont;
 
         [SerializeField] int _minFrags;
 
@@ -25,13 +26,15 @@ namespace Interactuables
         {
             _inv = FindObjectOfType<Inventory>();
             _ui = FindObjectOfType<UIManager>();
+            _cont = FindObjectOfType<PlayerController>();
 
             _heart.sharedMaterial.SetColor("_SecondColor", _unused);
         }
 
         public override void Interaction()
         {
-            if (_world.Candle >= _world.MAX_CANDLE) _ui.ShowWarning(NullAction, "Tu vela no ha perdido cera todavía. No puedes activar el altar.", "Ok");
+            if (_cont.IsDying()) _ui.ShowWarning(NullAction, "Alzas tu vela, pero el altar no responde. Suplicas por una llama más, pero el altar no responde. El silencio ahoga tu garganta.\nEl altar no responde.", "Irse");
+            else if (_world.Candle >= _world.MAX_CANDLE) _ui.ShowWarning(NullAction, "Tu vela no ha perdido cera todavía. No puedes activar el altar.", "Ok");
             else if (_inv.GetFragments() < _minFrags) _ui.ShowWarning(NullAction, "Todavía no posees fragmentos suficientes.", "Ok");
             else  _ui.ShowWarning(ManageFragments, "Recuperarás un cuarto de tu salud total a cambio de la mitad de tus fragmentos. ¿Estás seguro?");
         }

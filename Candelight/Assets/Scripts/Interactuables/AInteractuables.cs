@@ -25,7 +25,7 @@ namespace Interactuables
 
                 if (SceneManager.GetActiveScene().name == "TutorialScene")
                 {
-                    FindObjectOfType<UIManager>().ShowTutorial("Pulsa E para interactuar");
+                    if (!Application.isMobilePlatform && GameSettings.HelpMessages) FindObjectOfType<UIManager>().ShowTutorial("Pulsa E para interactuar");
                 }
             }
         }

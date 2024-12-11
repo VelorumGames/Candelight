@@ -164,7 +164,7 @@ namespace Hechizos
 
             _lastProjectile = GetAvailableProjectile();
 
-            if (GameSettings.RemainingMagicTutorial)
+            if (GameSettings.RemainingMagicTutorial && GameSettings.HelpMessages)
             {
                 FindObjectOfType<UIManager>().ShowTutorial("Algunos hechizos dejarán un resquicio de magia que puedes aprovechar.\n Haz CLICK para invocarlo de nuevo rápidamente.");
                 GameSettings.RemainingMagicTutorial = false;
@@ -439,7 +439,7 @@ namespace Hechizos
 
         void ElementsMixTutorial()
         {
-            FindObjectOfType<UIManager>().ShowTutorial("Activa varios elementos a la vez combinando sus instrucciones");
+            if (GameSettings.HelpMessages) FindObjectOfType<UIManager>().ShowTutorial("Activa varios elementos a la vez combinando sus instrucciones");
         }
 
         private void OnDisable()

@@ -691,6 +691,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 26100abf61f11144aa5367d53ad97db5, type: 3}
   - {fileID: 8300000, guid: 6a2544ca21adc3a40903cf9207cc4dc1, type: 3}
   - {fileID: 8300000, guid: 0ca097ccc89646a4bb4a165ee7aeb47f, type: 3}
+  AffectsPlayer: 0
   Damage: 0
   Target: {fileID: 0}
   _lifeSpan: 5
@@ -714,7 +715,6 @@ MonoBehaviour:
   - {fileID: 2150081005865245764}
   - {fileID: 7250409292057764161}
   Direction: {x: 0, y: 0, z: 0}
-  AffectsPlayer: 0
 --- !u!54 &6954766349828538020
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -850,6 +850,7 @@ GameObject:
   - component: {fileID: 6286894133782991302}
   - component: {fileID: 7052849430161482446}
   - component: {fileID: 4631011015376494420}
+  - component: {fileID: 8488573980021205284}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -957,6 +958,18 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!114 &8488573980021205284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6570556366139539968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 780827e1409064542ae37e8c5544c57b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6855484873817130984
 GameObject:
   m_ObjectHideFlags: 0

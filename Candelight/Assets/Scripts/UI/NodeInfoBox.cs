@@ -20,14 +20,17 @@ namespace UI
         [SerializeField] TextMeshProUGUI _owlText;
 
         UISoundManager _sound;
+        NodeManager _currentNode;
 
         private void Awake()
         {
             _sound = FindObjectOfType<UISoundManager>();
         }
 
-        public void RegisterNode(string name, string description, EBiome biome, string state, ELevel[] levels)
+        public void RegisterNode(NodeManager node, string name, string description, EBiome biome, string state, ELevel[] levels)
         {
+            _currentNode = node;
+
             GetComponent<RectTransform>().localScale = 0f * Vector3.one;
             GetComponent<RectTransform>().DOScale(0.835f, 0.5f).SetUpdate(true).SetEase(Ease.OutBack).Play();
 
@@ -101,6 +104,15 @@ namespace UI
             {
                 gameObject.SetActive(true);
                 _sound.PlayShowNodeInfo();
+            }
+        }
+
+        public void EnterNodeThroughButton()
+        {
+            if (_currentNode.GetNodeData().State != ENodeState.Completado)
+            {
+                WorldManager.Instance.SetCurrentNode(_currentNode);
+                WorldManager.Instance.LoadNode();
             }
         }
     }

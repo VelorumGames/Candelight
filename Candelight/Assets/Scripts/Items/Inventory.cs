@@ -460,5 +460,4 @@ namespace Items
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
     }
-
 }

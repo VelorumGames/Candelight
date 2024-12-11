@@ -326,6 +326,13 @@ namespace Controls
                     break;
             }
             //Debug.Log("Mapa colocado: " + _currentMap);
+
+            if (Application.isMobilePlatform)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+
             try
             {
                 _currentMap.Enable();
@@ -434,7 +441,7 @@ namespace Controls
 
         #region Spell Modes
 
-        void StartElementMode(InputAction.CallbackContext _)
+        public void StartElementMode(InputAction.CallbackContext _)
         {
             if (!_shapeMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
@@ -445,7 +452,7 @@ namespace Controls
             }
         }
 
-        void StopElementMode(InputAction.CallbackContext _)
+        public void StopElementMode(InputAction.CallbackContext _)
         {
             if (!_shapeMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
@@ -456,7 +463,7 @@ namespace Controls
             }
         }
 
-        void StartSpellMode(InputAction.CallbackContext _)
+        public void StartSpellMode(InputAction.CallbackContext _)
         {
             if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
@@ -468,7 +475,7 @@ namespace Controls
             }
         }
 
-        void StopSpellMode(InputAction.CallbackContext _)
+        public void StopSpellMode(InputAction.CallbackContext _)
         {
             if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
@@ -483,21 +490,21 @@ namespace Controls
 
         #region Spells
 
-        void RegisterSpellUp(InputAction.CallbackContext ctx)
+        public void RegisterSpellUp(InputAction.CallbackContext ctx)
         {
-            if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Up);
+            if (_shapeMode || _elementMode) _cont.OnSpellInstruction(ESpellInstruction.Up);
         }
-        void RegisterSpellDown(InputAction.CallbackContext ctx)
+        public void RegisterSpellDown(InputAction.CallbackContext ctx)
         {
-            if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Down);
+            if (_shapeMode || _elementMode) _cont.OnSpellInstruction(ESpellInstruction.Down);
         }
-        void RegisterSpellRight(InputAction.CallbackContext ctx)
+        public void RegisterSpellRight(InputAction.CallbackContext ctx)
         {
-            if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Right);
+            if (_shapeMode || _elementMode) _cont.OnSpellInstruction(ESpellInstruction.Right);
         }
-        void RegisterSpellLeft(InputAction.CallbackContext ctx)
+        public void RegisterSpellLeft(InputAction.CallbackContext ctx)
         {
-            if (_spell.IsPressed() || _element.IsPressed()) _cont.OnSpellInstruction(ESpellInstruction.Left);
+            if (_shapeMode || _elementMode) _cont.OnSpellInstruction(ESpellInstruction.Left);
         }
 
         #endregion

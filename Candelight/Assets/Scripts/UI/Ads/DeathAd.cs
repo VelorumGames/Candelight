@@ -1,9 +1,15 @@
+using Cameras;
 using Controls;
+using DG.Tweening;
+using Hechizos;
+using Items;
 using Menu;
+using Music;
 using Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using World;
 
 namespace UI.Ads
@@ -11,6 +17,7 @@ namespace UI.Ads
     public class DeathAd : MonoBehaviour
     {
         [SerializeField] WorldInfo _world;
+        public NodeInfo CurrentNodeInfo;
         UIManager _ui;
         [SerializeField] GameObject _ad;
 
@@ -46,11 +53,61 @@ namespace UI.Ads
         /// </summary>
         public void PostAd()
         {
-            GameSettings.CanRevive = false;
-
             _ad.SetActive(false);
-            FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);
-            FindObjectOfType<PlayerController>().Revive();
+
+            _ui.ShowWarning(() => StartCoroutine(LoadRest()), "Para poder continuar tu partida regresarás al menú principal.", "Ok");
+            /*
+            GameSettings.CanRevive = false;
+            FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);*/
+            FindObjectOfType<PlayerSounds>().PlayReviveSound();
+            
+        }
+
+        IEnumerator LoadRest()
+        {
+            yield return StartCoroutine(SavePlayerData());
+
+            _ui.Back();
+            _ui.Back();
+
+            if (_world.CompletedNodes > 5)
+            {
+                _ui.FadeToWhite(3f, Ease.InCirc, () =>
+                {
+                    ResetPermanentGameObjects();
+                    _ui.ShowState(EGameState.Loading);
+                    SceneManager.LoadScene("ScoreboardScene");
+                });
+            }
+            else
+            {
+                _ui.FadeToBlack(3f, () =>
+                {
+                    ResetPermanentGameObjects();
+                    _ui.ShowState(EGameState.Loading);
+                    SceneManager.LoadScene("ScoreboardScene");
+                });
+            }
+        }
+
+        IEnumerator SavePlayerData()
+        {
+            SaveSystem.GenerateNewPlayerData(_world);
+            SaveSystem.ScoreboardIntro = true;
+            _ui.ShowState(EGameState.Saving);
+            yield return StartCoroutine(SaveSystem.Save(new SaveData(CurrentNodeInfo, _world, FindObjectOfType<Inventory>())));
+
+            Debug.Log("Se termina de guardar");
+        }
+
+        void ResetPermanentGameObjects()
+        {
+            Destroy(_world.World);
+            Destroy(FindObjectOfType<PlayerController>().gameObject);
+            Destroy(FindObjectOfType<MusicManager>().gameObject);
+            Destroy(FindObjectOfType<InputManager>().gameObject);
+            Destroy(FindObjectOfType<Mage>().gameObject);
+            Destroy(FindObjectOfType<Inventory>().gameObject);
         }
     }
 }

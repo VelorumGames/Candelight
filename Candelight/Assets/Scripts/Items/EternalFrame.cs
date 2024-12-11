@@ -89,7 +89,7 @@ namespace Items
         {
             GetComponent<RectTransform>().DOScale(_oScale * 1.1f, 0.2f);
 
-            if (GameSettings.FrameTutorial)
+            if (GameSettings.FrameTutorial && GameSettings.HelpMessages)
             {
                 FindObjectOfType<UIManager>().ShowTutorial("Los artefactos que protejas en un marco eterno perdurarán tras la muerte, pero no podrás usarlos mientras tanto.", 8f);
                 GameSettings.FrameTutorial = false;
