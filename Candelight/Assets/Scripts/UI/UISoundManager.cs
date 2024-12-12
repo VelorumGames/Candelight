@@ -22,6 +22,8 @@ namespace UI
         public AudioClip[] Dialogue; //0: Next, 1: End
         public AudioClip[] Voices;
 
+        public AudioClip IdrianExplosion;
+
         [SerializeField] AudioSource _audio;
         [SerializeField] AudioSource _voicesAudio;
 
@@ -47,6 +49,8 @@ namespace UI
         public void PlayEnterNode() => _audio.PlayOneShot(NodeInfo[1]);
         public void PlayCompletedNode() => _audio.PlayOneShot(NodeInfo[2]);
         public void PlayLevelName() => _audio.PlayOneShot(LevelName);
+
+        public void PlayIdrianExplosion() => _audio.PlayOneShot(IdrianExplosion);
 
         public void PlayDialogueNext() => _audio.PlayOneShot(Dialogue[0]);
         public void PlayDialogueEnd() => _audio.PlayOneShot(Dialogue[1]);

@@ -97,6 +97,13 @@ namespace Music
             foreach (var s in _sources) s.Play();
         }
 
+        public void SilenceMusic()
+        {
+            ChangeVolumeTo(1, 0f, 1f);
+            ChangeVolumeTo(2, 0f, 1f);
+            ChangeVolumeTo(3, 0f, 1f);
+        }
+
         public void PlayMusicAtRandom(float minTime, float maxTime)
         {
             StopAllCoroutines();

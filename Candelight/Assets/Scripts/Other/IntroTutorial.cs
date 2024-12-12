@@ -69,6 +69,12 @@ public class IntroTutorial : MonoBehaviour
 
         //Debug. Deberia estar desactivado
         //_ui.FadeToWhite(1f, () => StartCoroutine(Tutorial()));
+        //_ui.FadeToWhite(1f, () =>
+        //{
+        //    FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
+        //    FindObjectOfType<IntroGravity>().ResetPlayer();
+        //    SceneManager.LoadScene("TutorialScene");
+        //});
     }
 
     private void OnTriggerEnter(Collider other)
@@ -77,7 +83,13 @@ public class IntroTutorial : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
-                _ui.FadeToWhite(7f, () => StartCoroutine(Tutorial()));
+                if (Application.isMobilePlatform) _ui.FadeToWhite(7f, () =>
+                {
+                    FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
+                    FindObjectOfType<IntroGravity>().ResetPlayer();
+                    SceneManager.LoadScene("TutorialScene");
+                });
+                else _ui.FadeToWhite(7f, () => StartCoroutine(Tutorial()));
             }
 
             _inTutorial = false;

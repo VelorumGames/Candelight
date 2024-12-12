@@ -14,6 +14,8 @@ public class IntroBlock : MonoBehaviour
 
     UIManager _ui;
 
+    bool _active = true;
+
     //TODO
     //Recuerda cambiar de nuevo el material para que no salga el highlight
 
@@ -24,13 +26,15 @@ public class IntroBlock : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && _active)
         {
+            _active = false;
+
             _block.SetActive(true);
             _block.transform.DOMoveY(1.25f, 0.5f).Play();
 
-            _runes.SetActive(true);
-            _runes.transform.DOMoveY(1.5f, 4f).Play();
+            _runes?.SetActive(true);
+            _runes?.transform.DOMoveY(1.5f, 4f).Play();
 
             StartCoroutine(BookHelp());
         }
@@ -63,8 +67,8 @@ public class IntroBlock : MonoBehaviour
         {
             if (GameSettings.HelpMessages)
             {
-                if (Application.isMobilePlatform) _ui.ShowTutorial("Para cambiar de elemento, mantén el símbolo correspondiente e invoca sus runas.\n Para lanzar un hechizo de ese elemento, mantén el otro símbolo e invoca sus runas.", 10f);
-                else _ui.ShowTutorial("Para cambiar de elemento, mantén CLK DER e invoca sus runas.\n Para lanzar un hechizo de ese elemento, mantén CLK IZQ e invoca sus runas.", 10f);
+                if (Application.isMobilePlatform) _ui.ShowTutorial("Cierra tus apuntes pulsando B de nuevo.\nPara lanzar un hechizo, mantén el símbolo de forma e invoca sus runas.", 10f);
+                else _ui.ShowTutorial("Cierra tus apuntes pulsando el libro de nuevo.\nPara lanzar un hechizo, mantén CLK IZQ e invoca sus runas.", 10f);
             }
             yield return new WaitForSecondsRealtime(13f);
         }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cameras;
 using DG.Tweening;
+using UI;
 
 namespace SpellInteractuable
 {
@@ -16,6 +17,8 @@ namespace SpellInteractuable
 
         CameraManager _cam;
 
+        bool _active = true;
+
         private void Awake()
         {
             _cam = FindObjectOfType<CameraManager>();
@@ -23,23 +26,29 @@ namespace SpellInteractuable
 
         protected override void ApplyInteraction(ASpell spell)
         {
-            StartCoroutine(ManageExplosion());
+            if (_active)
+            {
+                StartCoroutine(ManageExplosion());
+                _active = false;
+            }
         }
 
         IEnumerator ManageExplosion()
         {
-            foreach(var e in _energies)
+            FindObjectOfType<UISoundManager>().PlayIdrianExplosion();
+
+            foreach (var e in _energies)
             {
                 e.SetActive(true);
                 _cam.Shake(Random.Range(1f, 2f), Random.Range(5f, 8f), Random.Range(0.1f, 0.5f));
 
-                yield return new WaitForSeconds(0.75f);
+                yield return new WaitForSeconds(1.2f);
             }
 
             _initialExpl.gameObject.SetActive(true);
             _initialExpl.DOScale(0.4f, 0.3f);
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(1f);
 
             GameObject expl = Instantiate(_explosion, transform.position, Quaternion.identity);
             Destroy(gameObject);

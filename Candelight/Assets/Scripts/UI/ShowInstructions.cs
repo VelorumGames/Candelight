@@ -29,6 +29,7 @@ namespace UI
         [Space(10)]
         [SerializeField] Image[] _results;
         [SerializeField] Sprite[] _spellResults;
+        [SerializeField] ParticleSystem _elParticles;
 
         Image _currentShape;
         Sprite _currentSprite;
@@ -191,7 +192,9 @@ namespace UI
 
         public void ShowElementsResult(AElementalRune[] runes)
         {
-            switch(runes.Length)
+            _elParticles?.Play();
+
+            switch (runes.Length)
             {
                 case 1:
                     switch (runes[0].Name)

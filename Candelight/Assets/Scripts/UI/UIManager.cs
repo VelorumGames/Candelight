@@ -547,14 +547,21 @@ namespace UI
             ShowTutorial(s, 8f);
         }
 
+        Coroutine _hideTut;
         public void ShowTutorial(string s, float duration)
         {
             TutorialNotif.SetActive(true);
             TutorialNotif.GetComponentInChildren<TextMeshProUGUI>().text = s;
-            Invoke("HideTutorial", duration);
+
+            if (_hideTut != null) StopCoroutine(_hideTut);
+            _hideTut = StartCoroutine(HideTutorial(duration));
         }
 
-        public void HideTutorial() => TutorialNotif.GetComponent<UIMoveOnDisable>().DisableElement();
+        IEnumerator HideTutorial(float time)
+        {
+            yield return new WaitForSeconds(time);
+            TutorialNotif.GetComponent<UIMoveOnDisable>().DisableElement();
+        }
 
         public void ShowLevelName(string name)
         {

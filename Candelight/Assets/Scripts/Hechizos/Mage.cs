@@ -166,13 +166,19 @@ namespace Hechizos
 
             if (GameSettings.RemainingMagicTutorial && GameSettings.HelpMessages)
             {
-                FindObjectOfType<UIManager>().ShowTutorial("Algunos hechizos dejarán un resquicio de magia que puedes aprovechar.\n Haz CLICK para invocarlo de nuevo rápidamente.");
+                StartCoroutine(RemainingMagicTutorial());
                 GameSettings.RemainingMagicTutorial = false;
             }
 
             StartCoroutine(DelayedProjectile(numProj * 0.5f)); //NumProj es el numero del proyectil
 
             return _lastProjectile;
+        }
+
+        IEnumerator RemainingMagicTutorial()
+        {
+            yield return new WaitForSeconds(4f);
+            FindObjectOfType<UIManager>().ShowTutorial("Algunos hechizos dejarán un resquicio de magia que puedes aprovechar.\n Haz CLICK para invocarlo de nuevo rápidamente.", 10f);
         }
 
         IEnumerator DelayedProjectile(float time)
@@ -439,7 +445,11 @@ namespace Hechizos
 
         void ElementsMixTutorial()
         {
-            if (GameSettings.HelpMessages) FindObjectOfType<UIManager>().ShowTutorial("Activa varios elementos a la vez combinando sus instrucciones");
+            if (GameSettings.HelpMessages)
+            {
+                if (Application.isMobilePlatform) FindObjectOfType<UIManager>().ShowTutorial("Mantén el símbolo de elemento para cambiar de elemento. Puedes activar dos elementos a la vez combinando sus runas.");
+                else FindObjectOfType<UIManager>().ShowTutorial("Mantén CLK DER para cambiar de elemento. Puedes activar dos elementos a la vez combinando sus runas.");
+            }
         }
 
         private void OnDisable()

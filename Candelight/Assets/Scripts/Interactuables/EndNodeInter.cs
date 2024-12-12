@@ -9,6 +9,7 @@ using Cameras;
 using UI;
 using Player;
 using Items;
+using Music;
 
 namespace Interactuables
 {
@@ -32,9 +33,20 @@ namespace Interactuables
             _cont = FindObjectOfType<PlayerController>();
         }
 
+        private void OnEnable()
+        {
+            OnTrigger += SilenceMusic;
+        }
+
         public override void Interaction()
         {
             _ui.ShowWarning(() => StartCoroutine(StartTransition()), "Entrega parte de tu alma y prende la Gran Pira.");
+        }
+
+        void SilenceMusic()
+        {
+            FindObjectOfType<MusicManager>().SilenceMusic();
+            OnTrigger -= SilenceMusic;
         }
 
         IEnumerator StartTransition()
@@ -73,6 +85,11 @@ namespace Interactuables
 
             _ui.ShowState(EGameState.Loading);
             SceneManager.LoadScene("WorldScene");
+        }
+
+        private void OnDisable()
+        {
+            OnTrigger -= SilenceMusic;
         }
     }
 }

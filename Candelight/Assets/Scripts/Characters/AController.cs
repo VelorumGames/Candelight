@@ -43,6 +43,8 @@ public abstract class AController : MonoBehaviour
     bool _isBurned;
     bool _isParalized;
 
+    public SpriteRenderer Body;
+
     protected bool CanMove = true;
 
     public event Action<float, float> OnDamage; //Primer float: el dano; Segundo float: la vida restante
@@ -83,38 +85,49 @@ public abstract class AController : MonoBehaviour
     public void Paralize(float time)
     {
         //if (_paralize != null) StopCoroutine(_paralize);
-        if (!_isParalized && !(this is HombreDeCobreIA)) _paralize = StartCoroutine(ProcessParalize(time));
+        if (!_isParalized && !(this is HombreDeCobreIA))
+        {
+            _paralize = StartCoroutine(ProcessParalize(time));
+            Invoke("SafeColorReset", time + 1f);
+        }
     }
 
     IEnumerator ProcessParalize(float time)
     {
         _isParalized = true;
         CanMove = false;
-        GetComponentInChildren<SpriteRenderer>().color = Color.yellow;
+        Body.color = Color.yellow;
         yield return new WaitForSeconds(time);
-        GetComponentInChildren<SpriteRenderer>().color = Color.white;
+        Body.color = Color.white;
         CanMove = true;
         _isParalized = false;
     }
     public void Burn(float time)
     {
         //if (_burn != null) StopCoroutine(_burn);
-        if (!_isBurned) _burn = StartCoroutine(ProcessBurn(time));
+        if (!_isBurned)
+        {
+            _burn = StartCoroutine(ProcessBurn(time));
+            Invoke("SafeColorReset", time + 1f);
+        }
     }
     IEnumerator ProcessBurn(float time)
     {
         _isBurned = true;
-        GetComponentInChildren<SpriteRenderer>().color = Color.red;
+        Body.color = Color.red;
         yield return new WaitForSeconds(time);
-        GetComponentInChildren<SpriteRenderer>().color = Color.white;
+        Body.color = Color.white;
         _isBurned = false;
     }
-
 
     public void Slow(float ratio, float time)
     {
         //if (_slowness != null) StopCoroutine(_slowness);
-        if (!_isSlowed) _slowness = StartCoroutine(ProcessSlowness(ratio, time));
+        if (!_isSlowed)
+        {
+            _slowness = StartCoroutine(ProcessSlowness(ratio, time));
+            Invoke("SafeColorReset", time + 1f);
+        }
     }
 
     IEnumerator ProcessSlowness(float ratio, float time)
@@ -122,11 +135,16 @@ public abstract class AController : MonoBehaviour
 
         _isSlowed = true;
         _speed *= ratio;
-        GetComponentInChildren<SpriteRenderer>().color = Color.gray;
+        Body.color = Color.gray;
         yield return new WaitForSeconds(time);
-        GetComponentInChildren<SpriteRenderer>().color = Color.white;
+        Body.color = Color.white;
         _speed /= ratio;
         _isSlowed = false;
+    }
+
+    public void SafeColorReset()
+    {
+        GetComponentInChildren<SpriteRenderer>().color = Color.white;
     }
 
     public void Push(float force, Vector3 direction)

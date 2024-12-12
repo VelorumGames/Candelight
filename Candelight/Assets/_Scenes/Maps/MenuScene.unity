@@ -490,6 +490,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2788586297716780750, guid: 11f9e444f5ee42040a51ba28beefe963,
+        type: 3}
+      propertyPath: Body
+      value: 
+      objectReference: {fileID: 108371077}
     - target: {fileID: 3867493866490079806, guid: 11f9e444f5ee42040a51ba28beefe963,
         type: 3}
       propertyPath: m_Name
@@ -550,6 +555,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11f9e444f5ee42040a51ba28beefe963, type: 3}
+--- !u!212 &108371077 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7654645008546645530, guid: 11f9e444f5ee42040a51ba28beefe963,
+    type: 3}
+  m_PrefabInstance: {fileID: 108371076}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &117138170
 GameObject:
   m_ObjectHideFlags: 0

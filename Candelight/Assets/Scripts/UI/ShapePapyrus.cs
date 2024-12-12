@@ -165,8 +165,6 @@ namespace UI
                     //if (_instrCount <= _runeTexts[i].text.Length) Debug.Log($"FEEDBACK: {_feedback} == {_runeTexts[i].text.Substring(0, _instrCount)}: {_instrCount < _runeTexts[i].text.Length && _feedback == _runeTexts[i].text.Substring(0, _instrCount)}");
                     if (_instrCount <= _runeTexts[i].text.Length && _feedback == _runeTexts[i].text.Substring(0, _instrCount)) _runeFeedbackTexts[i].text = _feedback;
                     else _runeFeedbackTexts[i].text = "";
-
-                    Debug.Log($"{_runeFeedbackTexts[i].name}, Completado: {_runeFeedbackTexts[i].text}");
                 }
 
                 _instrCount++;

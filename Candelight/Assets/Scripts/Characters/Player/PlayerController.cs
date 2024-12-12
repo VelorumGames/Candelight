@@ -102,7 +102,7 @@ namespace Player
         bool _canSpellThrow = true;
 
         bool _invicible;
-        float _iFrameDuration = 1f;
+        float _iFrameDuration = 1.5f;
 
         Volume _volume;
         float _oSaturation;
@@ -117,6 +117,8 @@ namespace Player
         float _lastSpellDuration = 5f;
         bool _canLastSpell;
         Vector3 force;
+
+        [SerializeField] Transform _orArrow;
 
         [Space(10)]
         [Header("FIRST PERSON")]
@@ -157,6 +159,11 @@ namespace Player
             _rb.maxLinearVelocity = _maxSpeed;
         }
 
+        private void Update()
+        { 
+            if (_spellMode) _orArrow.transform.rotation = Quaternion.Euler(0f, -Mathf.Rad2Deg * Mathf.Atan2(Orientation.z, Orientation.x) + 90f, 0f);
+        }
+
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
         {
             _volume = FindObjectOfType<Volume>();
@@ -192,6 +199,8 @@ namespace Player
             if (_bookIsOpen) ForceBookClose();
 
             UnloadInteraction();
+            HideOrientationArrow();
+
             _pathShower.SetActive(false);
         }
 
@@ -244,6 +253,16 @@ namespace Player
         {
             _inCombat = false;
             _UIMan.ShowUIMode(EUIMode.Explore);
+        }
+
+        public void ShowOrientationArrow()
+        {
+            _orArrow.gameObject.SetActive(true);
+        }
+
+        public void HideOrientationArrow()
+        {
+            _orArrow.gameObject.SetActive(false);
         }
 
         public void Revive()

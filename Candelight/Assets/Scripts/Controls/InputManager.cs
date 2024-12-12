@@ -89,11 +89,13 @@ namespace Controls
                 OnStartShapeMode += _cont.RegisterSpellMode;
                 OnStartShapeMode += _cont.ResetInstructions;
                 OnStartShapeMode += _cont.StartSpellMove;
+                OnStartShapeMode += _cont.ShowOrientationArrow;
                 OnStartShapeMode += _music.EnterSpellModeMusic;
 
                 OnExitShapeMode += _cont.OnSpellLaunch;
                 OnExitShapeMode += _music.ExitSpellModeMusic;
                 OnExitShapeMode += _cont.ExitSpellMode;
+                OnExitShapeMode += _cont.HideOrientationArrow;
 
                 GameSettings.LoadedControls = true;
             }
@@ -530,11 +532,13 @@ namespace Controls
             OnStartShapeMode -= _cont.RegisterSpellMode;
             OnStartShapeMode -= _cont.ResetInstructions;
             OnStartShapeMode -= _cont.StartSpellMove;
+            OnStartShapeMode -= _cont.ShowOrientationArrow;
             OnStartShapeMode -= _music.EnterSpellModeMusic;
 
             OnExitShapeMode -= _cont.OnSpellLaunch;
             OnExitShapeMode -= _music.ExitSpellModeMusic;
             OnExitShapeMode -= _cont.ExitSpellMode;
+            OnExitShapeMode -= _cont.HideOrientationArrow;
 
             if (_cont) UnloadControls();
         }

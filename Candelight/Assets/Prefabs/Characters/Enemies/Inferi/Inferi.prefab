@@ -223,6 +223,7 @@ MonoBehaviour:
   _speed: 400
   MaxHP: 0
   m_HP: 0
+  Body: {fileID: 3076538605362700539}
   Info: {fileID: 11400000, guid: 90baca2f489b9c6489d7252047f91b9e, type: 2}
   _modifier: {fileID: 11400000, guid: 314947d4c5801e845baef021bf95f797, type: 2}
   _damagePrefab: {fileID: 1610509842107165697, guid: 621e3f04119846e41ae8265e7ba62d34,
@@ -337,3 +338,9 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!212 &3076538605362700539 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1323022735132582559, guid: fc1258ad5879bc74e897596e724aa665,
+    type: 3}
+  m_PrefabInstance: {fileID: 4102319275094344292}
+  m_PrefabAsset: {fileID: 0}

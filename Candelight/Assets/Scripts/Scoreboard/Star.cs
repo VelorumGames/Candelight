@@ -1,12 +1,14 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using World;
 
 namespace Scoreboard
 {
-    public class Star : MonoBehaviour
+    public class Star : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         WorldInfo _world;
 
@@ -18,6 +20,8 @@ namespace Scoreboard
         [SerializeField] Sprite[] _startSprites;
 
         static List<GameObject> _currentInfos = new List<GameObject>();
+
+        float _oScale;
 
         //bool _shown;
 
@@ -37,6 +41,8 @@ namespace Scoreboard
             else _sprite.sprite = _startSprites[5];
 
             if (_data.Score > 0) _sprite.color = new Color(1f, 1f, 1f, 1f);
+
+            _oScale = transform.localScale.x;
         }
         private void OnMouseDown()
         {
@@ -58,6 +64,16 @@ namespace Scoreboard
                     }
                 }
             }
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            transform.DOScale(_oScale * 1.1f, 0.5f);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            transform.DOScale(_oScale / 1.1f, 0.5f);
         }
     }
 }

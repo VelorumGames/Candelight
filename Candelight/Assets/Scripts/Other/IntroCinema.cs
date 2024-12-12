@@ -15,10 +15,13 @@ public class IntroCinema : MonoBehaviour
 
     List<int> _takenIds = new List<int>();
 
+    AudioSource _audio;
+
     private void Awake()
     {
         _img = GetComponent<Image>();
         _text = GetComponentInChildren<TextMeshProUGUI>();
+        _audio = GetComponent<AudioSource>();
 
         _oColor = _img.color;
         
@@ -35,6 +38,9 @@ public class IntroCinema : MonoBehaviour
 
             _img.sprite = _cinems[id];
             _img.DOFade(1f, 0.01f);
+
+            _audio.Play();
+            _audio.volume -= 0.5f;
 
             _text.text = s;
             _text.DOFade(1f, 0.01f);
