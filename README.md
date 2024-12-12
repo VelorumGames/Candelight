@@ -1,304 +1,442 @@
 Este GDD no contiene imágenes. Para ver el GDD completo, consultar el PDF de la entrega.
 
-Versión 0.2.8
+Versión 1.0
 
 **_ÍNDICE_**
 
-[RESUMEN 2](#_Toc628238059)
+[RESUMEN 2](#_Toc1446404725)
 
-[Concepto de juego 2](#_Toc833591514)
+[Concepto de juego 2](#_Toc1995958493)
 
-[Ficha descriptiva 2](#_Toc778574296)
+[Ficha descriptiva 2](#_Toc1286942034)
 
-[Experiencia de juego 3](#_Toc1824374219)
+[Experiencia de juego 3](#_Toc1367766432)
 
-[HISTORIA 3](#_Toc1533871092)
+[NARRATIVA 3](#_Toc439795348)
 
-[Trama principal 3](#_Toc1712859091)
+[Trama principal 3](#_Toc442024396)
 
-[La Guerra 3](#_Toc234459644)
+[La Guerra 4](#_Toc1124500076)
 
-[Idria 4](#_Toc939943110)
+[Idria 5](#_Toc1366495573)
 
-[Los Núcleos 5](#_Toc2003947985)
+[Los Núcleos 5](#_Toc2116921407)
 
-[DISEÑO DE NIVELES 5](#_Toc285896660)
+[Tramas secundarias 6](#_Toc1393846593)
 
-[Mapa de mundo 5](#_Toc652013313)
+[DISEÑO DE NIVELES 6](#_Toc1605119947)
 
-[Fase de Exploración y Combate 5](#_Toc994801342)
+[Tutorial 6](#_Toc802318931)
 
-[Fase de Calma y Diálogo 6](#_Toc1360907887)
+[Primera parte 7](#_Toc2103710668)
 
-[Fase de Desafío 6](#_Toc1912376602)
+[Tercera parte 10](#_Toc1142973087)
 
-[Fases 6](#_Toc387530304)
+[1ª Prueba 10](#_Toc1321959498)
 
-[Fase de Combate y Exploración 6](#_Toc1286830973)
+[2ª Prueba 11](#_Toc2058734843)
 
-[Fase de Calma y Diálogo 7](#_Toc2101792321)
+[3ª Prueba 11](#_Toc1445562592)
 
-[Fase de Desafío 8](#_Toc1989358201)
+[Mapa de mundo 13](#_Toc479628604)
 
-[Sala de la Gran Pira 8](#_Toc1227745595)
+[Fase de Exploración y Combate 14](#_Toc2087208338)
 
-[MECÁNICAS 9](#_Toc1264523689)
+[Fase de Calma y Diálogo 14](#_Toc141718193)
 
-[Mecánicas Principales 9](#_Toc1319790177)
+[Fase de Desafío 15](#_Toc1229029536)
 
-[Vela 9](#_Toc1798986953)
+[Fases 16](#_Toc1375808513)
 
-[Hechizos 9](#_Toc785658574)
+[Fase de Combate y Exploración 16](#_Toc1470014528)
 
-[Elementales 9](#_Toc1160431850)
+[Fase de Calma y Diálogo 17](#_Toc246855066)
 
-[De forma 11](#_Toc120593802)
+[Fase de Desafío 18](#_Toc941484741)
 
-[Libro 11](#_Toc27412353)
+[Sala de la Gran Pira 18](#_Toc1282653079)
 
-[Mapa 11](#_Toc1541076372)
+[MECÁNICAS 18](#_Toc2054248099)
 
-[Mecánicas Secundarias 12](#_Toc1975398438)
+[Mecánicas Principales 18](#_Toc63506264)
 
-[Objetos 13](#_Toc200123561)
+[Vela 18](#_Toc1609148120)
 
-[Enmarcar objetos 13](#_Toc1123375023)
+[Hechizos 19](#_Toc220321765)
 
-[Obtención de fragmentos 13](#_Toc923350107)
+[Elementales 19](#_Toc1606100798)
 
-[Lista de objetos 13](#_Toc1980388618)
+[De forma 20](#_Toc1520820715)
 
-[Común 14](#_Toc2073431059)
+[Magia Residual 21](#_Toc1980986118)
 
-[Raro 14](#_Toc2032471153)
+[Libro 22](#_Toc1053324472)
 
-[Épico 15](#_Toc1121436235)
+[Mapa 25](#_Toc693793899)
 
-[Legendario 16](#_Toc802981324)
+[Altar de Curación 26](#_Toc1125637516)
 
-[Eventos 17](#_Toc1824318996)
+[Mecánicas Secundarias 27](#_Toc1793271105)
 
-[Puntuaciones 17](#_Toc1642541372)
+[Objetos 27](#_Toc1688140035)
 
-[Scoreboard 17](#_Toc1845406106)
+[Enmarcar objetos 28](#_Toc1804444214)
 
-[CONTROLES 18](#_Toc373166217)
+[Obtención de fragmentos 28](#_Toc419530844)
 
-[INTERFAZ 19](#_Toc1911663961)
+[Lista de objetos 29](#_Toc1697304922)
 
-[Flujo del Juego 19](#_Toc2049909938)
+[Común 29](#_Toc186086819)
 
-[Pantalla de bienvenida 19](#_Toc692137952)
+[Raro 31](#_Toc309872435)
 
-[Menú principal o Menú inicio 19](#_Toc998045216)
+[Épico 33](#_Toc322304498)
 
-[Diagrama de flujo 22](#_Toc1876274556)
+[Legendario 35](#_Toc29243634)
 
-[PERSONAJES 23](#_Toc2056240142)
+[Minimapa 37](#_Toc1923127123)
 
-[Jugador 23](#_Toc2143594762)
+[Eventos 38](#_Toc253659792)
 
-[Ficha de personaje 23](#_Toc453157104)
+[Scoreboard 39](#_Toc968608095)
 
-[Sprite sheet 23](#_Toc1018978873)
+[CONTROLES 40](#_Toc455601079)
 
-[Enemigos 24](#_Toc1049411558)
+[INTERFAZ 42](#_Toc1044212809)
 
-[Inferi 24](#_Toc1934060478)
+[Flujo del Juego 42](#_Toc816525909)
 
-[Descripción 24](#_Toc249289771)
+[Pantalla de bienvenida 42](#_Toc128055857)
 
-[Diagrama descriptivo: Máquina de estados jerárquica y Behaviour Tree 24](#_Toc808994783)
+[Pantalla de inicio de sesión 42](#_Toc1530680146)
 
-[Interacción con el Mundo 26](#_Toc235909762)
+[Menú principal o Menú inicio 42](#_Toc1375525036)
 
-[Murciélago gigante 27](#_Toc434043373)
+[Diagrama de flujo 51](#_Toc370837959)
 
-[Descripción 27](#_Toc7177317)
+[PERSONAJES 52](#_Toc1365222114)
 
-[Diagrama descriptivo: Árbol de toma de decisiones binario 28](#_Toc2014312038)
+[Jugador 52](#_Toc463930235)
 
-[Interacción con el Mundo 29](#_Toc1918428548)
+[Ficha de personaje 52](#_Toc1006449887)
 
-[Vampiro 30](#_Toc1527466808)
+[Sprite sheet 52](#_Toc646157270)
 
-[Descripción 30](#_Toc1869589061)
+[Enemigos 52](#_Toc1432209650)
 
-[Diagrama descriptivo: Máquina de estados jerárquica 30](#_Toc906577275)
+[Inferi 53](#_Toc860448528)
 
-[Interacción con el Mundo 31](#_Toc723150661)
+[Descripción 53](#_Toc335913682)
 
-[Hombre de cobre 31](#_Toc1460993096)
+[Diagrama descriptivo: Máquina de estados jerárquica y Behaviour Tree 53](#_Toc1159580921)
 
-[Descripción 31](#_Toc1329582460)
+[Interacción con el Mundo 54](#_Toc1776327927)
 
-[Diagrama descriptivo: Máquina de estados jerárquica 32](#_Toc2081647416)
+[Murciélago gigante 55](#_Toc2130159609)
 
-[Interacción con el Mundo 33](#_Toc585808750)
+[Sprite sheet 55](#_Toc1263483602)
 
-[Sombras 34](#_Toc1815572458)
+[Descripción 55](#_Toc1517528227)
 
-[Descripción 34](#_Toc916347829)
+[Diagrama descriptivo: Máquina de estados 56](#_Toc938219720)
 
-[Diagrama descriptivo: Máquina de estados jerárquica 35](#_Toc1691450450)
+[Interacción con el Mundo 56](#_Toc765820306)
 
-[Interacción con el Mundo 36](#_Toc688341446)
+[Vampiro 57](#_Toc1679631080)
 
-[Aliados 37](#_Toc2005873864)
+[Descripción 57](#_Toc800784944)
 
-[Luciérnaga 37](#_Toc1215227866)
+[Diagrama descriptivo: Máquina de estados jerárquica 57](#_Toc1015332220)
 
-[Descripción 37](#_Toc782716410)
+[Interacción con el Mundo 58](#_Toc777580830)
 
-[Diagrama descriptivo: Máquina de estados 37](#_Toc691429687)
+[Hombre de cobre 58](#_Toc488284028)
 
-[Interacción con el Mundo 38](#_Toc1523419517)
+[Descripción 59](#_Toc953017820)
 
-[Aldeano 38](#_Toc2059934143)
+[Diagrama descriptivo: Máquina de estados jerárquicas 59](#_Toc415686646)
 
-[Descripción 38](#_Toc1282503670)
+[Interacción con el Mundo 61](#_Toc497968415)
 
-[Diagrama descriptivo: Behaviour Tree 38](#_Toc348612728)
+[Sombras 61](#_Toc728663328)
 
-[Interacción con el Mundo 39](#_Toc1358076720)
+[Sprite sheet 61](#_Toc1730969053)
 
-[ESTÉTICA VISUAL 40](#_Toc1472945186)
+[Descripción 62](#_Toc1866574552)
 
-[Moodboard 40](#_Toc1110496331)
+[Diagrama descriptivo: Máquina de estados jerárquica 62](#_Toc1995452560)
 
-[Concept Art 41](#_Toc362976478)
+[Interacción con el Mundo 63](#_Toc1501576566)
 
-[Arte 2D 42](#_Toc1344002422)
+[Aliados 64](#_Toc290876895)
 
-[Diseño de Personajes 42](#_Toc210194862)
+[Luciérnaga 64](#_Toc475315007)
 
-[Personaje principal 42](#_Toc1403074340)
+[Descripción 64](#_Toc858938046)
 
-[Arte 3D 44](#_Toc1470739980)
+[Diagrama descriptivo: Máquina de estados jerárquica 64](#_Toc1788934263)
 
-[Logotipo 45](#_Toc1320781543)
+[Interacción con el Mundo 65](#_Toc1357403223)
 
-[Elementos de UI 46](#_Toc1962987132)
+[Aldeano 65](#_Toc1881076617)
 
-[Fondo para el menú de inicio 46](#_Toc1682328389)
+[Descripción 65](#_Toc1737749954)
 
-[Botones y desplegables 46](#_Toc709988483)
+[Estética de cada una de las civilizaciones 66](#_Toc245540376)
 
-[Iconos 46](#_Toc1786221638)
+[Diagrama descriptivo: Behaviour Tree 67](#_Toc28641108)
 
-[ESTÉTICA SONORA 46](#_Toc519375372)
+[Interacción con el Mundo 68](#_Toc806637177)
 
-[Música 47](#_Toc619239416)
+[ESTÉTICA VISUAL 69](#_Toc1099699732)
 
-[Efectos de sonido 47](#_Toc1624233944)
+[Moodboard 69](#_Toc1105022564)
 
-[VERSIONES 47](#_Toc104122257)
+[Concept Art 70](#_Toc1365643974)
 
-[Planteamiento 47](#_Toc1718900565)
+[Arte 2D 71](#_Toc992200816)
 
-[Alfa 49](#_Toc2066631623)
+[Diseño de Personajes 71](#_Toc581621594)
 
-[Generación de Mundo 49](#_Toc2018905399)
+[Personaje principal 72](#_Toc119128175)
 
-[Mapa del Mundo 49](#_Toc402022435)
+[Enemigo: Inferi 73](#_Toc1564811352)
 
-[Generación de nivel 49](#_Toc1054102856)
+[Enemigo: Murciélago gigante 74](#_Toc771804171)
 
-[Sistema de hechizos 49](#_Toc2074749151)
+[Enemigo: Hombre de Cobre 76](#_Toc1497549273)
 
-[Sistema de combate 49](#_Toc1263869300)
+[Enemigo: Sombras 79](#_Toc2094793755)
 
-[Movimiento por el mapa 49](#_Toc377760707)
+[Aldeano: Drunia 81](#_Toc1502912052)
 
-[Libro de hechizos 49](#_Toc88469750)
+[Aldeano: Temeria 84](#_Toc856288283)
 
-[Beta 49](#_Toc643906367)
+[Aldeano: Idria 87](#_Toc990135865)
 
-[Sustituir Placeholders 49](#_Toc1381871973)
+[Arte 3D 90](#_Toc1527290406)
 
-[Diseño e implementación de habitaciones 49](#_Toc1549286779)
+[Estética de los niveles 92](#_Toc86179593)
 
-[Añadir diálogos 49](#_Toc1629786812)
+[Bioma del Alba 93](#_Toc910950760)
 
-[Implementar inventario 49](#_Toc964711224)
+[Bioma de Temeria 93](#_Toc931417500)
 
-[Comportamiento de enemigos 49](#_Toc2085436964)
+[Bioma de Idria 94](#_Toc195737909)
 
-[Detalles del funcionamiento de habitaciones 49](#_Toc1692647428)
+[Elementos adicionales 95](#_Toc300560781)
 
-[Interacción con Interfaces 49](#_Toc245650330)
+[Logotipo 95](#_Toc2083353780)
 
-[Retroalimentación visual 49](#_Toc2145689675)
+[Elementos de UI 96](#_Toc2143975550)
 
-[Scoreboard online 49](#_Toc462764078)
+[Fondo para el menú de inicio 96](#_Toc830574903)
 
-[“Mi Firmamento” 49](#_Toc1942080431)
+[Fondo para el menú de inicio de sesión 96](#_Toc329520707)
 
-[Añadir Bestiario 49](#_Toc493501935)
+[Botones y desplegables 97](#_Toc1600858698)
 
-[Expandir el GDD 49](#_Toc232304178)
+[Iconos 97](#_Toc782883012)
 
-[Gold 49](#_Toc934618178)
+[Elementos de la partida 97](#_Toc1510567721)
 
-[Implementar shaders y sistema de partículas 49](#_Toc263718537)
+[Elementos del inventario 98](#_Toc775674615)
 
-[Mejora visual 49](#_Toc1154745065)
+[ESTÉTICA SONORA 98](#_Toc837283057)
 
-[Añadir contenido extra 49](#_Toc347234325)
+[Música 98](#_Toc2068576784)
 
-[Añadir logros y mejora de “Mi Firmamento” 49](#_Toc1795941036)
+[Efectos de sonido 99](#_Toc939313826)
 
-[Reglas de torneo 49](#_Toc995669372)
+[VERSIONES 99](#_Toc765456196)
 
-[Efectos de sonido y música 49](#_Toc494895342)
+[Planteamiento 99](#_Toc388203965)
 
-[Bugs resueltos y videojuego adaptado a distintos dispositivos, navegadores web y controles 49](#_Toc773401104)
+[Alfa 101](#_Toc110934122)
 
-[POST-MORTEM 49](#_Toc641611136)
+[Generación de Mundo 101](#_Toc760707668)
 
-[MODELO DE NEGOCIO 49](#_Toc1519294515)
+[Mapa del Mundo 101](#_Toc1239709268)
 
-[Público objetivo 49](#_Toc1498389998)
+[Generación de nivel 101](#_Toc1275114243)
 
-[Mapa de empatía 49](#_Toc2598382)
+[Sistema de hechizos 101](#_Toc1094934034)
 
-[¿Qué piensa y siente? 49](#_Toc1463805417)
+[Sistema de combate 101](#_Toc291913727)
 
-[¿Qué oye? 49](#_Toc1070603469)
+[Movimiento por el mapa 101](#_Toc309601009)
 
-[¿Qué ve? 49](#_Toc1143957330)
+[Libro de hechizos 101](#_Toc673940692)
 
-[¿Qué dice y hace? 49](#_Toc203734813)
+[Beta 101](#_Toc1956248462)
 
-[Caja de herramientas 49](#_Toc440904776)
+[Sustituir Placeholders 101](#_Toc836196759)
 
-[Lienzo o Canvas 49](#_Toc1873703614)
+[Diseño e implementación de habitaciones 101](#_Toc463906522)
 
-[Socios Clave 49](#_Toc1200018565)
+[Añadir diálogos y descripciones 101](#_Toc486858846)
 
-[Actividades Clave 49](#_Toc1772308198)
+[Implementar inventario 101](#_Toc1032593437)
 
-[Recursos Clave 49](#_Toc991168052)
+[Tutorial 101](#_Toc1173166578)
 
-[Propuesta de Valor 49](#_Toc1095760457)
+[Comportamiento de enemigos 101](#_Toc1791395297)
 
-[Relación con el Cliente 49](#_Toc729359776)
+[Detalles del funcionamiento de habitaciones 101](#_Toc2002126731)
 
-[Canales de Distribución 49](#_Toc1295039087)
+[Interacción con Interfaces 101](#_Toc1786664465)
 
-[Segmentos de Clientes 49](#_Toc108661033)
+[Retroalimentación visual 101](#_Toc1501831422)
 
-[Estructura de Costes 49](#_Toc1711660209)
+[Modelos 3D 101](#_Toc54422673)
 
-[Fuentes de Ingresos 49](#_Toc75725724)
+[Implementar shaders y sistema de partículas 101](#_Toc749636890)
 
-[MONETIZACIÓN 49](#_Toc72574399)
+[Scoreboard online 101](#_Toc202879620)
 
-[REDES SOCIALES 49](#_Toc1864426528)
+[Música 101](#_Toc584032356)
 
-[Cuenta de Velorum 49](#_Toc1208703897)
+[Expandir el GDD 101](#_Toc676805098)
 
-[Posts 49](#_Toc1605355994)
+[Gold 101](#_Toc1557347064)
+
+[Rediseño del personaje principal 101](#_Toc1325750790)
+
+[Artefactos idrianos 101](#_Toc658456770)
+
+[Mejora visual general 101](#_Toc58507573)
+
+[Implementación de obstáculos 101](#_Toc85191408)
+
+[Iteración del tutorial 101](#_Toc813076042)
+
+[Magia Residual 101](#_Toc1074763119)
+
+[Retroalimentación visual mejorada 101](#_Toc76023668)
+
+[Incorporación de anuncios, tienda y donaciones 101](#_Toc2009571059)
+
+[Añadir el resto de los enemigos y comportamiento de aliados 101](#_Toc1126412617)
+
+[Objetos 101](#_Toc1796757331)
+
+[Añadir contenido extra 101](#_Toc1552282878)
+
+[Enmarcar objetos 101](#_Toc618821162)
+
+[Efectos de sonido y música adicional 101](#_Toc51389796)
+
+[Bugs resueltos 101](#_Toc554790222)
+
+[Pruebas de jugabilidad, accesibilidad y balanceo 101](#_Toc552803458)
+
+[Adaptación a distintos dispositivos, navegadores web y controles 101](#_Toc1201285435)
+
+[Futuras actualizaciones 101](#_Toc1070552811)
+
+[Puntuaciones 101](#_Toc985996462)
+
+[“Mi Firmamento” 101](#_Toc1071318454)
+
+[Bestiario 101](#_Toc476933212)
+
+[Añadir logros y mejora de “Mi Firmamento” 101](#_Toc1349509472)
+
+[Reglas de torneo 101](#_Toc844255299)
+
+[Animaciones adicionales del personaje principal 101](#_Toc400977336)
+
+[Bioma de las Cataratas del Borde 101](#_Toc1832547726)
+
+[Enemigo Vampiro 101](#_Toc1894811774)
+
+[Jefes 101](#_Toc459069954)
+
+[Animación de la vela del HUD 101](#_Toc1874736034)
+
+[Mejora de la experiencia en móviles 101](#_Toc1279207181)
+
+[Controles de mando 101](#_Toc1523212309)
+
+[Traducción a otros idiomas 101](#_Toc1437781951)
+
+[POST-MORTEM 101](#_Toc103834281)
+
+[Protipo / Alfa 101](#_Toc1185872614)
+
+[Visión individual 101](#_Toc1259142727)
+
+[¿Qué cosas han ido bien? 101](#_Toc858567601)
+
+[¿Qué cosas habría que mejorar? 101](#_Toc132583221)
+
+[Retroalimentación externa 101](#_Toc204094516)
+
+[Visión grupal 101](#_Toc1399253499)
+
+[¿Qué cosas han ido mal? 101](#_Toc603594235)
+
+[Lecciones aprendidas 101](#_Toc371674553)
+
+[Beta 101](#_Toc1818416410)
+
+[Visión individual 101](#_Toc180297663)
+
+[¿Qué cosas han ido bien? 101](#_Toc1787123075)
+
+[¿Qué cosas habría que mejorar? 101](#_Toc113583254)
+
+[Retroalimentación externa 101](#_Toc1170391230)
+
+[Visión grupal 101](#_Toc426968316)
+
+[¿Qué cosas han ido mal? 101](#_Toc1389804357)
+
+[Lecciones aprendidas 101](#_Toc1252209019)
+
+[MODELO DE NEGOCIO 101](#_Toc1352092757)
+
+[Público objetivo 101](#_Toc1508831631)
+
+[Mapa de empatía 101](#_Toc368494617)
+
+[¿Qué piensa y siente? 101](#_Toc796569596)
+
+[¿Qué oye? 101](#_Toc997826961)
+
+[¿Qué ve? 101](#_Toc2146139946)
+
+[¿Qué dice y hace? 101](#_Toc1774142605)
+
+[Caja de herramientas 101](#_Toc815560658)
+
+[Lienzo o Canvas 101](#_Toc525066927)
+
+[Socios Clave 101](#_Toc156013887)
+
+[Actividades Clave 101](#_Toc1631769878)
+
+[Recursos Clave 101](#_Toc1951945980)
+
+[Propuesta de Valor 101](#_Toc1297456267)
+
+[Relación con el Cliente 101](#_Toc2012804676)
+
+[Canales de Distribución 101](#_Toc386875336)
+
+[Segmentos de Clientes 101](#_Toc691921744)
+
+[Estructura de Costes 101](#_Toc452316765)
+
+[Fuentes de Ingresos 101](#_Toc434692449)
+
+[MONETIZACIÓN 101](#_Toc656494021)
+
+[REDES SOCIALES 101](#_Toc685377177)
+
+[Cuenta de Velorum 101](#_Toc393319452)
+
+[Posts 101](#_Toc926909897)
 
 # RESUMEN
 
@@ -402,9 +540,9 @@ Si es la primera vez que el jugador se adentra en el mundo de Candelight, se le 
 
 ### Primera parte
 
-La primera parte del tutorial está enfocada en brindar al jugador un primer contacto con la narrativa del juego. Además, se la cámara se encuentra en primera persona, pues la intención es lograr una mayor inmersión del jugador.
+La primera parte del tutorial está enfocada en brindar al jugador un primer contacto con la narrativa del juego. Además, la cámara se encuentra en primera persona, pues la intención es lograr una mayor inmersión del jugador.
 
-El jugador aparecerá en una plataforma oscura desde donde, al comienzo, solo verá pilares blancos en la lejanía. Puede moverse, caminar hacia adelante. Y conforme avanza, verá que la plataforma tiene un final. Al asomarse, podrá ver el Núcleo.
+El jugador aparecerá en una plataforma oscura desde donde, al comienzo, solo verá pilares blancos en la lejanía. Puede moverse, caminar hacia adelante, y para ello se muestra una guía para que el jugador sepa que debe accionar las teclas W A S y D. Y conforme avanza, verá que la plataforma tiene un final. Al asomarse, podrá ver el Núcleo.
 
 No tendrá otra opción que tirarse, sacrificarse al Núcleo. Y, al tomar esa decisión, se escuchará una música de tensión mientras se precipita a la enorme esfera de magma.
 
@@ -418,11 +556,11 @@ La sucesión de pasos a realizar es:
 
 \- Pulsar tecla B.
 
-\- Mantener pulsado Espacio y después soltarlo.
+\- Mantener pulsado el click derecho y después soltarlo.
 
-\- Mantener pulsado Shift y después soltarlo.
+\- Mantener pulsado el click izquierdo y después soltarlo.
 
-\- Por último, mantener pulsado Espacio y se mostrará una sucesión de flechas que se corresponden a las teclas AWSD.
+\- Por último, mantener pulsado el click derecho y se mostrará una sucesión de flechas que se corresponden a las teclas WASD.
 
 ### Tercera parte
 
@@ -432,9 +570,9 @@ La tercera y última parte del tutorial se divide en diferentes pruebas que se r
 
 #### 1ª Prueba
 
-#### Se bloquean las salidas y se muestra un mural en el que aparece una combinación de flechas. Para completar la prueba, el jugador debe abrir su página de anotaciones con la tecla B y, mientras presiona Shift o Espacio, anotar despacio la combinación que se indica. Así aprenderá su primer hechizo de forma, el Proyectil.
+Se bloquean las salidas y se muestra un mural en el que aparece una combinación de flechas. Para completar la prueba, el jugador debe abrir su página de anotaciones con la tecla B y, mientras presiona el click izquierdo o derecho, anotar despacio la combinación que se indica. Así aprenderá su primer hechizo de forma, el Proyectil.
 
-Para invocarlo se debe mantener la tecla Shift, que va asociada a los hechizos de Forma, y realizar mientras tanto la combinación de flechas con AWSD. El proyectil debe impactar contra los obstáculos para romperlos y así pasar a la siguiente prueba.
+Para invocarlo se debe mantener el click izquierdo, que va asociado a los hechizos de Forma, y realizar mientras tanto la combinación de flechas con WASD. El proyectil debe impactar contra los obstáculos para romperlos y así pasar a la siguiente prueba.
 
 Para dejar de mirar la página, hay que volver a pulsar la tecla B.
 
@@ -446,7 +584,7 @@ Una vez el jugador destruye ambos obstáculos pequeños, el grande desaparece y 
 
 #### 3ª Prueba
 
-El jugador se enfrenta a un enemigo común del videojuego: el Murciélago Gigante. Para derrotarle, tendrá que hacer uso de los conocimientos que ha aprendido.
+El jugador se enfrenta a un enemigo común del videojuego: el Murciélago Gigante. Para derrotarle, tendrá que hacer uso de los conocimientos que ha aprendido. Al comienzo, el Murciélago Gigante se encontrará tras una barrera, pero cuando se encuentre a menos de la mitad de la vida este la romperá e irá a atacarte.
 
 Una vez el jugador le derrota, podrá recolectar sus fragmentos e irse. Sin embargo, en el camino de salida se le dejará una pista al jugador para que aprenda un nuevo elemento.
 
@@ -466,7 +604,7 @@ Centrada en enfrentarse a enemigos y avanzar por una mazmorra.
 
 ### Fase de Calma y Diálogo
 
-Donde se puede interactuar con aldeanos y recuperar parte de la vida.
+Donde se puede interactuar con aldeanos y recuperar parte de la vida en altares de Curación.
 
 ### Fase de Desafío
 
@@ -629,6 +767,16 @@ Genera un ataque en área en torno al jugador.
 **Potenciación**  
 Aviva el fuego de la vela, provocando que los ataques del elemento o elementos equipados causen más daño.
 
+### Magia Residual
+
+Para favorecer la comodidad en la jugabilidad se ha implementado una nueva mecánica. Esta consiste en que una vez el jugador un hechizo de bajo nivel, melée o proyectil, puede quedar magia residual. Esto permite al jugador poder invocar de nuevo el conjuro sin necesidad de realizar de nuevo la combinación de teclas; simplemente tiene que pulsar el click izquierdo del ratón.
+
+La magia residual tiene un cooldown de invocación del hechizo y se va extinguiendo con el tiempo. Una vez se acaba, es necesario volver a conjurar de la forma tradicional con la combinación de flechas.
+
+Cuando el símbolo está en amarillo, es que el tiempo de espera entre lanzamiento se ha agotado y se puede volver a invocar el conjuro con el click izquierdo del ratón.
+
+El símbolo de magia residual se irá desvaneciendo hasta que desaparezca y ya no se pueda usar.
+
 ### Libro
 
 Es una herramienta que permite al jugador registrar nuevas recetas de hechizos y así poder ejecutarlos.
@@ -661,6 +809,14 @@ Los niveles completados quedan marcados y se desbloqueará el acceso a niveles a
 
 Por último, cabe mencionar que, en cuanto a narrativa del juego, las historias contadas en los niveles serán cortas e independientes, favoreciendo así su rol como piezas que repartir aleatoriamente por el mapa. Girarán alrededor de eventos concretos o sobre el trasfondo del mundo.
 
+### Altar de Curación
+
+En las salas de Calma aparece un Altar de Curación. El jugador puede interactuar con él para optar por entregar la mitad de sus fragmentos a cambio de recuperar un cuarto de la vida.
+
+Esta interacción solo se puede cumplir si el jugador tiene suficientes fragmentos y si ha perdido vida previamente.
+
+Es importante recalcar que una vez usado, el Altar de Curación se queda sin energía y se desactiva. Es decir, cada Altar de Curación solo puede usarse una única vez.
+
 ## Mecánicas Secundarias
 
 ### Objetos
@@ -685,9 +841,9 @@ Aunque solo se pueda enmarcar un objeto por defecto, existe un objeto que permit
 
 ### Obtención de fragmentos
 
-Los enemigos tienen una probabilidad de soltar un fragmento al morir. Dependiendo de la clase de enemigo que sea, puede tener mayor probabilidad de soltar un fragmento. Además, el completar una Fase de Desafío, otorga un fragmento al jugador.
+Los enemigos tienen una probabilidad de soltar un fragmento al morir. Dependiendo de la clase de enemigo que sea, puede tener mayor probabilidad de soltar un fragmento. Además, el completar una Fase de Desafío, otorga al menos un fragmento al jugador.
 
-Los fragmentos se conservan durante la partida. Existe un balance, a nivel de diseño de juego, entre el número de fragmentos que se consiguen, frente al número de fragmentos requeridos para activar cada objeto. Los fragmentos también sirven como moneda de cambio para regenerar parcialmente vida en los Altares de Curación.
+Los fragmentos se conservan durante la partida. Existe un balance, a nivel de diseño de juego, entre el número de fragmentos que se consiguen, frente al número de fragmentos requeridos para activar cada objeto. Los fragmentos también sirven como moneda de cambio para regenerar parcialmente la vida en los Altares de Curación.
 
 Los fragmentos no se conservan entre partidas.
 
@@ -718,7 +874,7 @@ Si la vela tiene más de la mitad vida, la velocidad del jugador aumenta un 10%.
 “La gente no se extraña porque te vea correr descalzo, sino porque vas más rápido”.
 
 **Emblema del Alba** (Máx 3):  
-Si el jugador mata a 15 enemigos en el plazo de 10 segundos, su siguiente ataque hará más daño. Mejóralo para que el plazo de matanza se amplíe a 15 segundos y, tras una última mejora, a 20 segundos. Cada vez que se complete el requisito, el tiempo se reinicia.
+Se reduce el cooldown para lanzar hechizos con la magia residual.
 
 “Acabar con los hijos de la noche traerá al mundo un nuevo amanecer”.
 
@@ -728,7 +884,7 @@ El impacto de los ataques de fuego hace un 5% más de daño.
 “Se la quitaron a un gato chamuscado. Éste tenía flores azules por todo su cuerpo y sus garras seguían en llamas.”
 
 **Fierro de valentía** (Único):  
-Los proyectiles de fuego dejan un charco de fuego. (Se ajusta a su rango de impacto; por ejemplo, si se usa Bomba de Pólvora el proyectil dejará un charco más grande al impactar.)
+Aumenta el tiempo disponible para aprovechar la magia residual.
 
 “Antes se usaba para marcar ganado. Ahora, se usa para marcar a los valientes.”
 
@@ -785,7 +941,7 @@ Revolotea alrededor del jugador. Evita que el jugador muera y le regenera un 25%
 “Salió de la boca de un inferi, lo vi con mis propios ojos.”
 
 **Marco Eterno** (Máximo 3):  
-Cuando está activado, proporciona un marco adicional, que servirá para conservar un objeto tras la muerte. El Marco Eterno está enmarcado por defecto y no se puede quitar su marco. Si el Marco Eterno se desactiva, el marco del objeto en el que se haya usado su marco adicional se eliminará.
+Cuando está activado proporciona un marco adicional, que servirá para conservar un objeto tras la muerte. El Marco Eterno está enmarcado por defecto y no se puede quitar su marco. Si el Marco Eterno se desactiva, el marco del objeto en el que se haya usado su marco adicional se eliminará.
 
 Si el Marco Eterno se vuelve a activar, el jugador tendrá que seleccionar de nuevo manualmente el objeto que desea proteger con ese marco extra.
 
@@ -826,7 +982,7 @@ Recibes un 15% menos de daño de ataques enemigos.
 **Ojos de búho** (Único):  
 Otorga una visión especial, más información al jugador. Por ejemplo, puede ver cuántas fases tiene un nodo, cuánta vida tienen los enemigos, cuánta vida le queda a la vela...
 
-“Una visión especial, que va más allá de lo trasmundano”.
+“Una visión especial, que va más allá de lo transmundano”.
 
 **Vial Idriano** (Único):  
 Se pueden combinar hasta tres elementos distintos en vez de dos.
@@ -843,6 +999,14 @@ Todos los ataques de electricidad se propagan a enemigos cercanos. Pero la vela 
 
 “Pertenecieron al primer héroe del Alba. Sus esfuerzos no serán en vano”.
 
+### Minimapa
+
+Se trata de una ayuda visual para que el jugador pueda orientarse con mayor facilidad en los niveles.
+
+Se marca con un símbolo de un fuego la sala en donde se encuentra el jugador, mientras que las salas que ya haya visitado y que no tengan ningún elemento interesante se mostrarán en el mapa de color gris.
+
+Por otro lado, existen salas que tienen una cierta relevancia son aquellas marcadas con: S de salida, la sala en la que ha aparecido el jugador, en la que ha empezado el nivel; E de Exit, que es donde se encuentra la Antorcha de Salida para pasar a la siguiente fase; y R de Runa, que marca una sala en donde haya una pista para aprender una nueva runa con el libro de hechizos.
+
 ### Eventos
 
 Los eventos aparecen con poca frecuencia, en la Fase de Combate y Exploración. El evento tiene una sala en la mazmorra reservada para ello y solo puede aparecer como máximo una Sala de Evento por fase.
@@ -852,10 +1016,6 @@ Son sucesos que involucran personajes y elementos narrativos y que hacen tomar a
 Los eventos son de carácter variado y no son de obligado cumplimiento, el jugador puede optar por ignorar el evento, pero esto quizás involucre que no obtenga una posible recompensa en el futuro.
 
 Dependiendo de cómo actúe el jugador, se puede tanto completar un evento, como ignorarlo o fallarlo. Además, algunos eventos cuentan con un desenlace alternativo.
-
-### Puntuaciones
-
-Al terminar definitivamente la partida, al jugador se le mostrarán en pantalla sus estadísticas y resultados. La información que se refleja será principalmente cuántos niveles ha completado, iluminado, en la partida y cuántos lleva acumulados entre todas las partidas. También pueden aparecer otras estadísticas, como fragmentos conseguidos, monstruos eliminados, la lista de objetos conseguidos, todas las recetas desbloqueadas, eventos completados, el tiempo en partida...
 
 ### Scoreboard
 
@@ -876,19 +1036,20 @@ El firmamento funciona a modo de comparativa entre jugadores, para fomentar la c
 | CONTROLES |
 | --- |
 |  | Teclado | Mando | Dispositivos táctiles |
-| Moverse hacia delante | W | Joystick izquierdo | Joystick virtual en la esquina inferior izquierda |
-| Moverse hacia atrás | S | Joystick izquierdo | Joystick virtual en la esquina inferior izquierda |
-| Moverse hacia la derecha | D | Joystick izquierdo | Joystick virtual en la esquina inferior izquierda |
-| Moverse hacia la izquierda | A | Joystick izquierdo | Joystick virtual en la esquina inferior izquierda |
-| Interactuar | E | (por determinar) | Pulsar botón emergente sobre el elemento con el que se interactúa |
-| Desplazarse hacia el nodo seleccionado en el mapa del mundo / Entrar modo Elementos | Espacio | (por determinar) | (por determinar) |
-| Entrar modo Hechizos de Forma | Shift | (por determinar) | (por determinar) |
-| Combinación para elegir un elemento a activar | Ctrl + W/A/S/D | Mantener L1 | (por determinar) |
-| Combinación para hacer un hechizo de forma | Shift + W/A/S/D | Mantener L2 | (por determinar) |
-| Apuntar en una dirección | Posición del ratón | (por determinar) | Gatillo virtual en la esquina inferior izquierda |
-| Abrir el libro de hechizos para registrar hechizos | F | (por determinar) | (por determinar) |
-| Abrir el inventario | I | (por determinar) | (por determinar) |
-| Atajo de salida / Activar Pausa / Desactivar Pausa | ESC | (por determinar) | (por determinar) |
+| Moverse hacia delante | W | (por determinar) | Joystick virtual en la esquina inferior derecha |
+| Moverse hacia atrás | S | (por determinar) | Joystick virtual en la esquina inferior derecha |
+| Moverse hacia la derecha | D | (por determinar) | Joystick virtual en la esquina inferior derecha |
+| Moverse hacia la izquierda | A | (por determinar) | Joystick virtual en la esquina inferior derecha |
+| Interactuar/Entrar en al nivel | E | (por determinar) | Pulsar botón emergente de la derecha |
+| Desplazarse por el camino seleccionado en el mapa del mundo | F | (por determinar) | Pulsar botón emergente de desplazamiento |
+| Entrar en modo Hechizos Elementales | Click derecho | (por determinar) | Pulsar icono de pergamino de Hechizos Elementales |
+| Entrar modo Hechizos de Forma | Click izquierdo | (por determinar) | Pulsar icono de pergamino de Hechizos de Forma |
+| Combinación para elegir elemento/elementos | Click izquierdo+W/A/S/D | (por determinar) | Pulsar icono de pergamino de Hechizos Elementales y luego introducir combinación con botones emergentes de flechas |
+| Combinación para hechizo de forma | Click derecho+W/A/S/D | (por determinar) | Pulsar icono de pergamino de Hechizos de Forma y luego introducir combinación con botones emergentes de flechas |
+| Apuntar en una dirección | Posición del ratón | (por determinar) | Joystick virtual en la esquina inferior derecha |
+| Abrir/cerrar el libro de aprender hechizos | B | (por determinar) | Pulsar icono de libro / flecha de regreso |
+| Abrir/cerrar el inventario | I | (por determinar) | Pulsar icono de inventario / flecha de regreso |
+| Atajo de salida / Activar Pausa / Desactivar Pausa | ESC | (por determinar) | Pulsar icono de pausa / flecha de regreso |
 
 # INTERFAZ
 
@@ -898,34 +1059,52 @@ El firmamento funciona a modo de comparativa entre jugadores, para fomentar la c
 
 Se mostrará una cinemática en la que aparecerá el logotipo de la empresa desarrolladora del videojuego, Velorum, con transiciones de fade in (aparición progresiva) y fade out (desvanecimiento) a negro.
 
-(meter imagen de la pantalla de bienvenida)
+### Pantalla de inicio de sesión
+
+Para guardar tanto los progresos de la partida como la puntuación, se ha decidido incluir un sistema de inicio de sesión con usuario y contraseña. También se ha incluido un botón para jugar sin conexión, aunque esto implica que la partida no se guardará. Este es el aspecto de la interfaz de inicio de sesión implementada en el juego:
 
 ### Menú principal o Menú inicio
 
-Se tratará de una pantalla con una imagen de fondo con estilo Pixel Art 2D, el logotipo del juego en la esquina superior izquierda y una serie de botones en la esquina inferior derecha. Dichos botones estarán diferenciados con relación a su tamaño. Los siguientes botones poseerán un tamaño alargado y mostrarán el nombre de la acción en texto:
+Se tratará de una pantalla con una imagen de fondo con estilo Pixel Art 2D, el logotipo del juego en la esquina superior izquierda y una serie de botones en la esquina inferior derecha. Dichos botones estarán diferenciados con relación a su tamaño. Al hacer clic en una opción de las descritas, se llevará al jugador a la pantalla de juego o a una pantalla secundaria. El flujo del juego se trata de forma más detallada en el diagrama de flujo, que se explica más adelante.
+
+Los siguientes botones poseerán un tamaño alargado y mostrarán el nombre de la acción en texto:
 
 **Jugar**:  
 Comienza una partida, llevando al jugador a la pantalla de mapa del mundo. Siempre y cuando juegue en la misma semilla, conservará tanto los niveles que ya haya completado, así como los objetos “enmarcados” y las recetas de hechizos que previamente haya desbloqueado. La semilla del mundo también marca cuál es el nodo de nivel sobre el que aparece.
 
 Dentro del juego, se muestra una interfaz a modo de HUD (Heads Up Display) que contiene información como el nivel de vida que le resta al jugador (en forma de la cantidad de cera que le queda a la vela), el elemento o elementos que se tienen seleccionados (en forma de orbe de hechizos debajo de la vela), las combinaciones que se han descubierto (en un pergamino), los movimientos que se están realizando, el número de fragmentos que el jugador posee cuando encuentra nuevos, el minimapa y accesos directos al inventario y al libro de hechizos.
 
-Otra interfaz que aparece en el modo de juego es la del inventario. Esta se divide en 4 secciones: objetos no activados, objetos activados, descripción del objeto seleccionado y marcos eternos. Cada objeto muestra el número de fragmentos necesarios para activar dicho objeto y la rareza de este. Los ítems arrastrados a un marco eterno se pueden eliminar con el icono de X que se sitúa sobre estos.
+Para la implementación de esta interfaz en el juego, se optó por cambiar los iconos del inventario y de las flechas. Además, se decidió incluir un botón de pausa en la esquina superior izquierda. Así es como se ve finalmente:
+
+En el menú de pausa aparecen botones para continuar la partida, acceder al menú de opciones para customizar aspectos del juego y salir de la partida. Asimismo, aparece un botón para regresar del menú de pausa en la esquina inferior izquierda.
+
+Otra interfaz que aparece en el modo de juego es la del inventario. Esta se divide en 4 secciones: objetos no activados, objetos activados, descripción del objeto seleccionado y marcos eternos. Cada objeto muestra el número de fragmentos necesarios para activar dicho objeto y la rareza de este. Los ítems arrastrados a un marco eterno se pueden eliminar con el icono de X que se sitúa sobre estos. Este es el prototipo ideado para el menú de inventario:
+
+Y este es el menú de inventario implementado en el juego:
 
 **Scoreboard**:  
 Redirige a una pantalla donde se muestra a cada jugador como una estrella en un firmamento. El tamaño e intensidad de la estrella de un jugador es un indicador de su puntuación en el juego. También existirá un botón en la esquina inferior derecha con la que se podrá visualizar el scoreboard como la típica tabla con nombre de usuario y puntuación.
 
-**Créditos**:  
-Es una pantalla en la que aparecerán los nombres de los miembros del equipo desarrollador con sus roles principales.
+Cuando se hace click en una estrella aparecen el nombre de usuario del jugador y la puntuación obtenida. A continuación, se muestra el prototipo de la interfaz de la pantalla de scoreboard:
 
-Además, al lado de estos botones aparecerán otros 2 botones de aspecto cuadrado y con un icono en vez de texto. Son los siguientes:
+A la hora de incorporar esta interfaz al juego, se ha optado por usar las zonas iluminadas como medida de puntuación en lugar de los puntos que se muestran en el prototipo. Este es el aspecto de la pantalla de scoreboard una vez ha sido implementada dentro del juego (nótese que todas las estrellas son del mismo tamaño pues todas tienen 1 zona iluminada mientras que en el prototipo se muestra estrellas para diferentes puntuaciones):
+
+Y así es como se muestra cuando se acciona el botón de la derecha para mostrar el leaderboard en una tabla:
+
+**Créditos**:  
+Es una pantalla en la que aparecerán los nombres de los miembros del equipo desarrollador con sus roles principales. Este es el prototipo antes de ser implementado en el juego:
+
+A la hora de introducir la pantalla de créditos a Unity se optó por un estilo de créditos más parecido al usado en cine, en el que cada departamento de desarrollo del juego aparece con el nombre de aquellos miembros que han participado en él. Este es el aspecto de los créditos una vez incorporados al juego:
+
+Además, al lado de estos botones en el menú principal aparecerán otros 2 botones de aspecto cuadrado y con un icono en vez de texto. Son los siguientes:
 
 **Donaciones**:  
-Será un botón con un icono de dólar. Al pulsar en él, los jugadores serán llevados a una pasarela de pago en la que podrán donar dinero al equipo de desarrollo.
+Se trata de un botón con un icono de dólar. Al pulsar en él, los jugadores serán llevados a una pasarela de pago en la que podrán donar dinero a una causa benéfica.
 
 **Ajustes**:  
-Es un botón con icono de engranaje. Redirige a una pantalla con varias opciones que el jugador podrá modificar a su elección para mejorar la experiencia de uso. Tales opciones incluirán la modificación de los controles, ajustes de audio y video, afinaciones de gameplay y preferencias de accesibilidad.
+Es un botón con icono de engranaje. Redirige a una pantalla con varias opciones que el jugador podrá modificar a su elección para mejorar la experiencia de uso. Tales opciones incluirán la modificación de los controles, ajustes de audio y video, afinaciones de gameplay y preferencias de accesibilidad. Así es el prototipo de esta pantalla:
 
-Al hacer clic en una opción de las descritas, se llevará al jugador a la pantalla de juego o a una pantalla secundaria. El flujo del juego se trata de forma más detallada en el diagrama de flujo, que se explica más adelante.
+En la versión de este menú implementada en el juego se puede apreciar que tiene menos ajustes. Esto es debido a las restricciones propias de desarrollar para la plataforma web en itch.io, en lugar de ser un juego para PC. Al ser un juego basado en navegador, se han encontrado limitaciones por factores como el rendimiento, la compatibilidad entre navegadores y la optimización de recursos, lo que reduce las opciones de personalización y ajustes gráficos o de control en comparación con una versión para PC que podría aprovechar mejor el hardware y ofrecer una experiencia más ajustada. Aquí se muestra el menú de ajustes en el juego:
 
 ## Diagrama de flujo
 
@@ -987,7 +1166,7 @@ Atacan cuerpo a cuerpo y, si ya están atacando, te localizarán mientras estés
 
 Usar el elemento fantasmal evita que oigan al jugador, y no pueden localizarlo. Mirarán confundidos a su alrededor frente a los sonidos fantasmales.
 
-#### Diagrama descriptivo: Árbol de toma de decisiones binario
+#### Diagrama descriptivo: Máquina de estados
 
 #### Interacción con el Mundo
 
@@ -1020,6 +1199,12 @@ Si pasa un tiempo sin que les dé con un ataque de electricidad, volverán a est
 Al morir, estallan en una explosión, haciendo daño al jugador si está demasiado cerca.
 
 #### Diagrama descriptivo: Máquina de estados jerárquicas
+
+Nivel 1: Máquina de Estados Jerárquica
+
+Nivel 2: Árboles de Comportamiento (Estado Calmado)
+
+Nivel 2: Árboles de Comportamiento (Estado Enfadado)
 
 #### Interacción con el Mundo
 
@@ -1055,7 +1240,7 @@ Sigue al jugador a una pequeña distancia, revoloteando detrás de él. Se acerc
 
 Si ya hay una luciérnaga francotirador posada en el enemigo al que va, irá a otro que tampoco sea objetivo de otra luciérnaga. Si no hay ninguno disponible, seguirá revoloteando detrás del jugador.
 
-#### Diagrama descriptivo: Máquina de estados
+#### Diagrama descriptivo: Máquina de estados jerárquica
 
 #### Interacción con el Mundo
 
@@ -1095,15 +1280,15 @@ Adornan su cara y piel con plantas y flores pegadas. Sus ojos son verdes.
 
 # ESTÉTICA VISUAL
 
-Para el aspecto visual del juego se ha elegido la estética Píxel Art 2D. La paleta de colores escogida se basa en la gama de los morados y amarillos, colores que son complementarios entre sí. Esto garantiza que su combinación creará una apariencia agradable y cohesiva para el usuario.
+Para el aspecto visual del juego se ha elegido la estética Píxel Art 2D. La paleta de colores escogida se basa en la gama de los morados y amarillos, colores que son complementarios entre sí. Esto garantiza que su combinación creará una apariencia agradable y cohesiva para el usuario. Pero esta esta paleta de colores es meramente de guía inicial y luego en el juego se ha empleado mucha más variedad.
 
-Algunos ejemplos de juegos que siguen una estética similar son Lucky Luna (Netflix) y Virtuaverse:
+En donde se ha mantenido esta paleta de colores es en las publicaciones de redes sociales.
 
 ## Moodboard
 
 ## Concept Art
 
-En este apartado se presentan una selección de ilustraciones de arte conceptual creadas durante el desarrollo del videojuego. Estas imágenes capturan la visión artística y los elementos estéticos establecidos. También aparecen imágenes realizadas de ciertos elementos descartados durante su diseño.
+En este apartado se presenta una selección de ilustraciones de arte conceptual creadas durante el desarrollo del videojuego. Estas imágenes capturan la visión artística y los elementos estéticos establecidos. También aparecen imágenes realizadas de ciertos elementos descartados durante su diseño.
 
 En el apartado de Enemigos se pueden encontrar concept art de los enemigos del videojuego. Esas imágenes no están en este apartado hasta que se desarrolle el PixelArt (su apariencia en el gameplay) de cada uno de ellos.
 
@@ -1119,45 +1304,29 @@ Esta imagen se trata del diseño antiguo del enemigo ”Hombre de Cobre”.
 
 #### Personaje principal
 
-**Siluetas**:  
-Para comenzar el diseño del personaje principal se realizaron las siguientes siluetas, de las cuales se eligió una para desarrollar el concept art a color:
-
-**Color**:  
-Finalmente se decantó por la primera silueta y se continuó con el desarrollo a color:
-
 **Turnaround**:  
 Con el desarrollo a color de referencia se prosiguió con el turnaround:
 
-**Movimiento**:
-
 **Animación de caminar**:
 
-Spritesheet de la animación de desplazamiento del jugador. Debido a que carece de piernas, se ha animado el tornado de luz en su lugar.
+**Animación de ataque**:
 
-**Animación de ataque cuerpo a cuerpo**:
-
-Spritesheet de la animación de ataque melé (o cuerpo a cuerpo) del personaje principal.
-
-**Animación de levitar (IDLE)**:
-
-Spritesheet de la animación del personaje cuando no camina ni ataca.
+**Animación IDLE**:
 
 **Animación de muerte**:
-
-Spritesheet de la animación del personaje principal cuando es derrotado.
 
 **Herramientas y accesorios**:
 
 **Vela mágica**:  
 El personaje principal siempre tiene en su poder una vela mágica con la que crea los hechizos para acabar con los enemigos.
 
-#### Enemigo: Sombras
+#### Enemigo: Inferi
 
-**Dividirse**:  
-Spritesheet de la animación de las sombras cuando van a multiplicarse y a rodear al jugador:
+**Moverse**:  
+Spritesheet de la animación del inferi para desplazarse:
 
 **Atacar**:  
-Spritesheet de la animación de las sombras cuando van a atacar al jugador:
+Spritesheet de la animación del inferi para atacar al jugador:
 
 #### Enemigo: Murciélago gigante
 
@@ -1167,6 +1336,25 @@ Spritesheet de la animación del murciélago gigante para desplazarse:
 **Atacar**:  
 Spritesheet de la animación del murciélago gigante para atacar al jugador:
 
+#### Enemigo: Hombre de Cobre
+
+**Moverse**:  
+Spritesheet de la animación del hombre de cobre para desplazarse:
+
+**Atacar**:  
+Spritesheet de la animación del hombre de cobre para atacar al jugador:
+
+**Atacar a distancia**:  
+Spritesheet de la animación del hombre de cobre para atacar al jugador a distancia:
+
+#### Enemigo: Sombras
+
+**Dividirse**:  
+Spritesheet de la animación de las sombras cuando van a multiplicarse y a rodear al jugador:
+
+**Atacar**:  
+Spritesheet de la animación de las sombras cuando van a atacar al jugador:
+
 #### Aldeano: Drunia
 
 **Moverse**:  
@@ -1174,6 +1362,9 @@ Spritesheet de la animación del aldeano para desplazarse:
 
 **Sorprenderse**:  
 Spritesheet de la animación del aldeano al sorprenderse cuando interactúa con el jugador:
+
+**Tocar violín**:  
+Spritesheet de la animación del aldeano tocando un violín:
 
 **Imágenes en Diálogos**:  
 Estas son las distintas imágenes introducidas para la representación de los aldeanos de Drunia en los posibles diálogos dentro del juego:
@@ -1186,6 +1377,9 @@ Spritesheet de la animación del aldeano para desplazarse:
 **Sorprenderse**:  
 Spritesheet de la animación del aldeano al sorprenderse cuando interactúa con el jugador:
 
+**Pose sentada**:  
+Esta es la imagen introducida para la representación de los aldeanos de Temeria sentados en algunas zonas del mapa:
+
 **Imágenes en Diálogos**:  
 Estas son las distintas imágenes introducidas para la representación de los aldeanos de Temeria en los posibles diálogos dentro del juego:
 
@@ -1197,12 +1391,15 @@ Spritesheet de la animación del aldeano para desplazarse:
 **Sorprenderse**:  
 Spritesheet de la animación del aldeano al sorprenderse cuando interactúa con el jugador:
 
+**Pose arrodillada**:  
+Esta es la imagen introducida para la representación de los aldeanos de Idira arrodillados en algunas zonas del mapa:
+
 **Imágenes en Diálogos**:  
 Estas son las distintas imágenes introducidas para la representación de los aldeanos de Idria en los posibles diálogos dentro del juego:
 
 ## Arte 3D
 
-El arte 3D incorporada en el juego desempeña el papel tanto de guiar como se sorprender al jugador. Y eso es porque la mayor parte del juego es en 2D, por lo que los elementos en 3D quedan resaltados e impactan al jugador, saliéndose de las normas establecidas, pero, a su vez, encajando con la estética del videojuego.
+El arte 3D incorporada en el juego desempeña el papel tanto de guiar como de sorprender al jugador. Y eso es porque la mayor parte del juego es en 2D, por lo que los elementos en 3D quedan resaltados e impactan al jugador, saliéndose de las normas establecidas, pero, a su vez, encajando con la estética del videojuego.
 
 En primer lugar, cabe destacar que la primera escena del tutorial del juego se ha realizado enteramente en 3D, usando figuras sencillas creadas en Unity y shaders personalizados.
 
@@ -1211,6 +1408,8 @@ El resto del juego sigue una estética 2D, a excepción de elementos importantes
 He aquí los modelos 3D clave empleados en el juego:
 
 **Altar de Curación**
+
+**Artefacto Idriano**
 
 **Antorcha de Salida**
 
@@ -1236,13 +1435,13 @@ Por otro lado, la Fase de Calma y Diálogo se desarrolla en aldeas subterráneas
 
 ### Bioma de Idria
 
-La Fase de Exploración y Combate se sitúa en ciudadelas de altos muros de piedra piedra abandonadas. La arquitectura de las casas está mucho más desarrollada que las de Temeria, el suelo está pavimentado con piedras.
+La Fase de Exploración y Combate se sitúa en ciudadelas de altos muros de piedra abandonadas. La arquitectura de las casas está mucho más desarrollada que las de Temeria, el suelo está pavimentado con piedras.
 
 La Fase de Desafío se desarrolla o en una plaza o en una planicie de tierra.
 
 ### Elementos adicionales
 
-Las zonas quemadas por la guerra se encuentran cubiertas de flores azules brillantes.
+Las zonas quemadas por la guerra se encuentran cubiertas de flores azules brillantes. Y estas, por ende, también conducen a Grandes Piras.
 
 ## Logotipo
 
@@ -1251,6 +1450,8 @@ Aquí se muestra el logotipo creado para el juego Candelight:
 ## Elementos de UI
 
 ### Fondo para el menú de inicio
+
+### Fondo para el menú de inicio de sesión
 
 ### Botones y desplegables
 
@@ -1268,15 +1469,20 @@ La música buscará un sonido orquestal neoclásico (producido digitalmente medi
 
 Cada bioma tiene una composición y elección de instrumentos distinta, enfatizando la distinción entre ellos.
 
-**El Alba**: La composición de su tema principal se basa en su deseo de alcanzar lo más alto pero sin poder escapar la tragedia de su pasado: a pesar de haber salido victoriosos en la guerra, ha sido a través de incontables muertes tanto aliadas como enemigas y tras una fachada de orgullo yace la tristeza. La melodía principal asciende por una tonalidad mayor, intentando animar a su gente, pero siempre termina descendiendo de nuevo. La canción toma un giro trágico en su clímax, la segunda mitad.
+**El Alba**: La composición de su tema principal se basa en su deseo de alcanzar lo más alto pero sin poder escapar la tragedia de su pasado: a pesar de haber salido victoriosos en la guerra, ha sido a través de incontables muertes, tanto aliadas como enemigas, y tras una fachada de orgullo yace la tristeza. La melodía principal asciende por una tonalidad mayor, intentando animar a su gente, pero siempre termina descendiendo de nuevo. La canción toma un giro trágico en su clímax, la segunda mitad.  
+Principal instrumento: violín.
 
-**Temeria**: La instrumentación del tema principal es sencilla en cuanto a que únicamente suena una guitarra clásica. Los temerios se han visto obligados a huir a las antiguas catacumbas de Candelight y la progresión de acordes hace referencia a su tragedia. A pesar de sus condiciones intentan salir adelante, ayudándose los unos a los otros, y eso representa la segunda mitad de la canción, cuando progresivamente se unen más guitarras a tocar.
+**Temeria**: La instrumentación del tema principal es sencilla en cuanto a que únicamente suena una guitarra clásica. Los temerios se han visto obligados a huir a las antiguas catacumbas de Candelight y la progresión de acordes hace referencia a su tragedia. A pesar de sus condiciones intentan salir adelante, ayudándose los unos a los otros, y eso representa la segunda mitad de la canción, cuando progresivamente se unen más guitarras a tocar.  
+Principal instrumento: guitarra.
 
-**Idria**: El tema principal busca enfatizar la soledad de las calles abandonadas, la melancólica tristeza de aquellos idrianos que todavía permanecen con vida. Cabe destacar que los temas de exploración y combate de este bioma son el tema principal pero invertido y modificado, haciendo un guiño a los misteriosos motivos de la desolación de Idria y el destino de sus habitantes.
+**Idria**: El tema principal busca enfatizar la soledad de las calles abandonadas, la melancólica tristeza de aquellos idrianos que todavía permanecen con vida. Cabe destacar que los temas de exploración y combate de este bioma son el tema principal pero invertido y modificado, haciendo un guiño a los misteriosos motivos de la desolación de Idria y el destino de sus habitantes.  
+Principal instrumento: sintetizador.
+
+Por otra parte, existen varias piezas musicales que acompañan al menú principal, varios cortos movimientos para la introducción y en la escena de tutorial (una versión distorsionada de la del menú principal).
 
 ## Efectos de sonido
 
-Se generan sonido aleatoriamente durante la partida para aumentar la inmersión del jugador en el mundo de Candelight, dependientes del bioma en el que se encuentra.
+Todos los biomas poseen sonidos ambientales en estéreo para aumentar la inmersión del jugador.
 
 # VERSIONES
 
@@ -1432,53 +1638,229 @@ También se han refinado los apartados ya redactados, aportando por ejemplo desc
 
 ## Gold
 
+### Rediseño del personaje principal
+
+Se ha optado por rediseñar el personaje principal por una serie de motivos: para que no haya tanto contraste de paletas de colores, para que encaje mejor en la trama, para que disponga de piernas, para que tenga animaciones más fluidas y para que sea más sencillo para el jugador identificarse con él o ella.
+
+Se han elaborado nuevos sprite sheets que contienen el nuevo diseño y las animaciones, ahora dotadas de mayor dinamismo y claridad.
+
+He aquí algunos de los spritesheets:
+
+Así es como se ve el protagonista en animación iddle dentro de un de los escenarios:
+
+### Artefactos idrianos
+
+Se han añadido artefactos repartidos por el mapa que estallan cuando reciben un hechizo del jugador. Esto otorga mayor dinamismo, tensión y divertimento al combate. Además, ensalza la utilidad de los hechizos.
+
+Estos artefactos idrianos, al ser un elemento interactuable y de relevancia, se tratan de modelos 3D para que el jugador los pueda distinguir bien.
+
 ### Mejora visual general
 
-Se hará un repaso a todos los elementos visuales: modelado de escenarios, sprites de entidades y ornamentos, interfaces...
+Se han iterado todos los elementos visuales:
+
+\- Mejora de mapa de mundo:
+
+Se ha usado el sprite de una flecha tanto para indicar el camino seleccionado por el jugador dentro del mapa del mundo como a la hora de lanzar hechizos de forma. Y en la escena del mapa se han diseminado fragmentos que emergen del suelo, para que el el mapa del mundo no quede tan vacío y se lleve a cabo una mayor narrativa ambiental.
+
+Estos detalles aportan mayor inmersión al jugador y calidad artística.
+
+Ahora además figuran la cantidad de zonas que ya han sido iluminadas por el jugador:
+
+  
+
+\- Mejora de menús:
+
+Ahora todos los menús tienen un botón de flecha de salida para hacer más flexible los controles para manejar el flujo de interfaces. Además, se han rediseñado algunos elementos concretos, como por ejemplo se han añadido sprites que representan las teclas e instrucciones en la segunda parte del tutorial. He incluso se ha añadido un fondo a la pantalla de login:
+
+\- Nombres de niveles:
+
+Ahora aparecerá un texto al entrar en una fase, que reza el nombre del nivel en el que se encuentra el jugador. Además, añadirá información sobre la fase concreta en la que se encuentra. Por ejemplo, si es una de las primeras fases y es de combate, serán “los alrededores”; si está en un asentamiento humano, solo será el nombre del nivel; si es la sala de la Gran Pira, el encabezado incluirá “Gran Pira”.
+
+\- Encender Antorchas de Salida y Grandes Piras:
+
+Ahora tanto las Antorchas de Salida como las Grandes Piras tienen animación de encendido y el fuego se mueve. Esta implementación aporta mayor feedback visual al jugador, inmersión, realismo y narrativa ambiental para encauzar la trama. De esta forma, queda bien definido el objetivo del jugador.
+
+  
+
+\- Flores azules:
+
+Se han añadido las flores azules que aparecen en zonas quemadas. y en este caso tienen la función de adornar el sendero a una Gran Pira. Estas se abren con el paso del jugador:
+
+  
+
+\- Skyboxes y decorado de escenarios:
+
+Se ha añadido a cada bioma un elemento ambiental distinto: En Durnia se ha dispuesto una skybox de un cielo estrellado para dar la sensación al jugador de encontrarse en un espacio abierto.
+
+En Temeria se ha mantenido un fondo negro para dar la sensación de grutas, pero ahora cada sala queda sostenida por pilares de piedra. Y además hay cascadas de polvo blanco que caen a lo largo del escenario.
+
+Y en idria se ha mantenido una niebla densa para que no se vea el fondo, se cree un aura de misterio y para que el avance del jugador sea más tenso.
+
+\- Mejora de la intro:
+
+Ahora aparecen nuevos elementos en la introducción de la partida. Por ejemplo, hay corrientes de luz azuladas que surcan el aire y fluyen hacia el Núcleo, conduciendo al jugador hacia él:
+
+Y, más importante aún, ahora aparecen murales y textos exponiendo parte de la historia al jugador y determinando su objetivo:
+
+### Implementación de obstáculos
+
+Ahora aparecen obstáculos cuando el jugador entra en combate. A diferencia de otros roguelikes, se le da la oportunidad al jugador de abandonar la habitación. Pero tan solo si destruye el obstáculo, mediante hechizos.
+
+Estos cuentan con una barra de vida, cambian de aspecto cuando se destruyen y se escucha cómo se resquebrajan con cada golpe. De esta forma, se aporta feedback tanto visual como auditivo al jugador.
+
+### Iteración del tutorial
+
+Se han realizado pruebas a personas con poca experiencia en videojuegos para saber si el tutorial les resultaba intuitivo y sencillo. Los resultados obtenidos no aportaron ideas para mejorarlo y rediseñar algunas partes de este.
+
+### Magia Residual
+
+Para favorecer la comodidad en la jugabilidad se ha implementado una nueva mecánica. Esta consiste en que una vez has lanzado un hechizo de bajo nivel (melée o proyectil), puede quedar magia residual. Esto permite al jugador poder invocar de nuevo el conjuro sin necesidad de realizar de nuevo la combinación de teclas; simplemente tiene que pulsar el click izquierdo del ratón.
+
+La magia residual tiene un cooldown de invocación del hechizo y se va extinguiendo con el tiempo. Una vez se acaba, es necesario volver a conjurar de la forma tradicional con la combinación de flechas.
+
+Cuando el símbolo está en amarillo, es que el tiempo de espera entre lanzamiento se ha agotado y se puede volver a invocar el conjuro con el click izquierdo del ratón.
+
+El símbolo de magia residual se irá desvaneciendo hasta que desaparezca y ya no se pueda usar.
 
 ### Retroalimentación visual mejorada
 
-Se añadirán efectos visuales que proporcionen información más precisa al jugador sobre lo que está pasando en el juego.
+Se añadirán efectos visuales que proporcionen información más precisa al jugador sobre lo que está pasando en el juego. Algunos de los cambios son:
 
-### Incorporación de anuncios y donaciones
+\- Aparecen partículas donde van a aparecer los enemigos.
 
-Se simulará de forma lo más cercana a la realidad la incorporación de anuncios y colaboración con una ONG.
+\- Se indica con partículas el manejo de los Marcos Eternos en la interfaz.
 
-### Añadir el resto de los enemigos
+\- Al pasar el cursor por encima, se resaltan los objetos del inventario y se iluminan cuando se seleccionan.
 
-Se incorporará al juego los enemigos que faltan por implementar.
+\- Se han añadido iconos encima de los enemigos para indicar afecciones que sufran por hechizos y acciones del personaje. E incluso también simbolizan algunos estados de su comportamiento.
+
+\- También se han introducido mensajes de apoyo para: indicar el estado de los enemigos, dar instrucciones y consejos dentro y fuera del tutorial, otorgar información sobre el modo Sin Conexión y a modo de notificación.
+
+\- Además de incluir que aparezcan iluminadas de dorado las flechas que se van completando acorde a las recetas, se ha incluido para los hechizos de forma una flecha que indique hacia dónde va a salir disparado el hechizo:
+
+### Incorporación de anuncios, tienda y donaciones
+
+Se ha simulado de forma lo más cercana a la realidad la incorporación de anuncios y colaboración con una ONG. Para la ONG, el botón de donaciones del menú principal te redirige a una página externa, en blanco.
+
+La tienda consta de dos elementos que se pueden comprar para empezar la partida con ellos.
+
+Y, por último, se han reservado apartados del juego donde se podrían incluir banners e imágenes. Básicamente, una aproximación de cómo sería la visualización de anuncios.
+
+También se ha cambiado la mecánica de revivir por la de guardar el inventario al morir, viendo un anuncio.
+
+### Añadir el resto de los enemigos y comportamiento de aliados
+
+Han quedado añadidos al videojuego los enemigos que faltaban por implementar, a excepción del Vampiro, que se reservará para futuras actualizaciones.
+
+Los enemigos añadidos han sido:
+
+\-Los Hombres de Cobre
+
+\- Los Inferi
+
+Y se ha implementado un comportamiento de movimiento aleatorio para los aldeanos, así como nuevas animaciones para que tengan posturas más vriadas. También se les ha añadido una animación de sorprenderse que tiene una probabilidad de ejecutarse al ver al jugador.
+
+Por último, decir que se ha implementado la luciérnaga en el juego junto a su comportamiento, funcionalidades y animaciones correspondientes.
+
+### Objetos
+
+Se han añadido al juego y testeado todos y cada uno de los 27 tipos de objetos que puede obtener el jugador en la partida.
 
 ### Añadir contenido extra
 
-Incorporación de más variedad de descripciones de localizaciones, salas prefabricadas, sprites nuevos de aldeanos... Todo, con el objetivo de enriquecer el juego.
+Se han incorporado mayor cantidad de descripciones de localizaciones, salas prefabricadas para las Grandes Piras, sprites nuevos de aldeanos y rostros adicionales... Todo, con el objetivo de enriquecer el juego.
+
+Ahora en total hay 8 rostros de aldeanos y 110 descripciones de niveles.
 
 ### Enmarcar objetos
 
-Se añadirá la mecánica de “enmarcar” objetos para salvaguardarlos y que perduren para las próximas partidas en esa semilla.
+Se ha añadido la mecánica de “enmarcar” objetos para salvaguardarlos en Marcos Eternos y que estos perduren para las próximas partidas en esa semilla, aunque el jugador muera. Se podrán ir desbloqueando nuevos Marcos Eternos obteniendo el objeto.
+
+Los objetos que se enmarquen quedarán desactivados.
+
+He aquí unas imágenes de los Marcos Eternos implementados en la interfaz del inventario:
+
+### Efectos de sonido y música adicional
+
+Se ha añadido una extensa colección de efectos de sonido al juego. Estos se han tomado de la aplicación FreeSound, garantizando que fuesen de licencia Creative Commons. Y, posteriormente, para que encajasen en el juego, se han editado en Reaper. Una vez ajustados a las necesidades del videojuego, se han implementado para otorgar no solo mayor inmersión al jugador, sino también para proporcionarle feedback auditivo.
+
+Por otro lado, la banda sonora del videojuego es completamente original.
+
+Aunque el grueso de la banda sonora se encontraba ya compuesta e implementada para la versión beta, se han compuesto un par de piezas más para mejorar la ambientación del juego y así rellenar los espacios de silencio.
+
+### Bugs resueltos
+
+Se han llevado a cabo una serie de testeos exhaustivos para localizar y resolver todos los errores de código que puedan surgir.
+
+### Pruebas de jugabilidad, accesibilidad y balanceo
+
+Se han realizado pruebas de todos los tipos para garantizar que el jugador cuenta con una experiencia gratificante. Todos los aspectos a mejorar que se han encontrado, se han iterado. Así los tres pilares de la experiencia de juego están cubiertos.
+
+### Adaptación a distintos dispositivos, navegadores web y controles
+
+El videojuego se adaptará a dispositivos móviles y a los controles de mando. De esta forma, se mejorará la accesibilidad y flexibilidad.
+
+## Futuras actualizaciones
+
+### Puntuaciones
+
+Se podrían consultar en un apartado de Puntuaciones dentro de un menú de Progreso, al cual se accedería desde el Menú Principal.
+
+Al jugador se le mostrarían en pantalla sus estadísticas y resultados. La información que se refleja será principalmente cuántos niveles ha completado en la semilla actual y el conjunto con todas las semillas. También pueden aparecer otras estadísticas, como fragmentos conseguidos, monstruos eliminados, cuántas veces se obtenido cada objeto, todas las recetas desbloqueadas, eventos completados, el tiempo de juego...
+
+Este apartado de puntuaciones formaría parte de un menú de Progreso en donde se encontraría el apartado de Bestiario, Mi Firmamento y Logros.
 
 ### “Mi Firmamento”
 
-Se añadirá un nuevo apartado en el menú principal del juego llamado “Mi Firmamento”. Si se accede a él, se mostrará al jugador un canvas vacío, un lienzo negro. Funcionará de forma muy similar al scoreboard online; sin embargo, cuenta con unas diferencias fundamentales.
+Se añadirá un nuevo apartado en el menú de Progreso llamado “Mi Firmamento”. Si se accede a él, se mostraría al jugador un canvas vacío, un lienzo negro. Funcionaría de forma muy similar al scoreboard online; sin embargo, cuenta con unas diferencias fundamentales.
 
-Mi Firmamento dispondrá en un borde el número de estrellas acumuladas sin colocar. Cada estrella representa las partidas del jugador en una semilla concreta. Para conseguir más, el jugador deberá intentar jugar todas las semanas que pueda.
+Mi Firmamento dispondría en un borde el número de estrellas acumuladas sin colocar. Cada estrella representa las partidas del jugador en una semilla concreta. Para conseguir más, el jugador deberá intentar jugar todas las semanas que pueda.
 
-Este firmamento es propio, exclusivo del jugador y no se mostrarán las puntuaciones ni estrellas de otros usuarios. Su función es mostrar al jugador su progreso.
+Este firmamento es propio, exclusivo del jugador y no se mostrarían las puntuaciones ni estrellas de otros usuarios. Su función es mostrar al jugador su progreso.
 
 Además, dejará paso a la expresión y creatividad del jugador, ya que, a diferencia del scoreboard, el jugador podrá escoger dónde aparece cada una de sus estrellas y recolocarlas a su antojo. Esto podría hacer que haga dibujos únicos, personalizando el canvas a su manera.
 
-### Añadir Bestiario
+### Bestiario
 
-Para fomentar la sensación de coleccionismo entre los jugadores, se añadirá una nueva interfaz, un apartado en el que se visualice el progreso del jugador respecto a qué elementos se ha encontrado en las partidas. Se tratará de un libro, un Bestiario que marcará la apariencia y descripciones de los objetos y enemigos que el jugador se haya encontrado en la totalidad de sus partidas
+Para fomentar la sensación de coleccionismo entre los jugadores, se añadiría una nueva interfaz, un apartado en el que se visualice el progreso del jugador respecto a qué elementos se ha encontrado en las partidas. Este apartado, Bestiario, se encontraría en el menú de Progreso.
+
+Se trataría de una enciclopedia, un Bestiario que marcaría la apariencia y descripciones de diferentes elementos del juego. Si estos están sin desbloquear, solo se vería una silueta negra en su lugar en vez del sprite representativo.
+
+Si se cliquea en el sprite correspondiente, se mostraría una descripción tanto narrativa como informativa del elemento.
+
+Las diferentes secciones de páginas del Bestiario irían dedicadas a:
+
+\- Objetos:
+
+Estarían en silueta negra los no encontrados, en escala de grises los obtenidos pero que nunca han sido activados y en color los objetos que en algújn mom,ento haya activado el jugador.
+
+\- Enemigos:
+
+Si el jugador aún no se ha topado con ese tipo de enemigo, se vería la silueta negra; si se ha topado con él, pero no le ha derrotado, se vería en escala de grises; y si le ha derrotado en alguna ocasión, se vería a color.
+
+\- Jefes:
+
+Si se han añadido bosses al juego, su visualización en el Bestiario sería de funcionamiento idéntico a la del resto de enemigos.
+
+\- Eventos:
+
+Habría sprites que representarían a cada uno de los eventos. Y solo se iluminarían si se han completado todos los finales posibles. Para más información sobre los finales que alguna vez haya realizado el jugador, habría que cliquear en el sprite. Y en la descripción se especificaría cada uno de los que hayan sido completados con las descripciones de lo acontecido en los que se han resuelto.
+
+\- Zonas:
+
+Un sprite representaría la descripción de cada una de las zonas. Y estas irían ordenadas por su tipo de bioma. Si se nunca se ha entrado a la zona, aparecerá el sprite como una silueta negra; si se ha entrado a la zona, pero no se ha encendido su Gran Pira, el sprite aparecerá en escala de grises; y si se ha encendido su Gran Pira, el sprite pasará a color.
 
 ### Añadir logros y mejora de “Mi Firmamento”
 
-Los jugadores podrán completar logros, cada uno con un requisito distinto.
+Dentro del menú de Progreso se encontraría el apartado Logros, en donde se visualizaría la lista de estos.
 
-Los logros completados pueden desbloquear nuevos aspectos visuales para las estrellas que se colocan en el canvas de “Mi Firmamento”. De esta forma, los jugadores tendrán más variedad de formas de estrellas con las que decorar su lienzo.
+Los jugadores podrían completar logros, cada uno con un requisito distinto.
+
+Los logros completados pueden desbloquear nuevos aspectos visuales para las estrellas que se colocan en el canvas de “Mi Firmamento”. De esta forma, los jugadores dispondrían de mayor variedad de formas de estrellas con las que decorar su lienzo.
 
 ### Reglas de torneo
 
-Como se trata de un juego que también es de carácter competitivo, se aplicarán normas personalizadas exclusivas de torneos. Irán enfocadas a facilitar el trabajo de los organizadores a la hora de implementar reglas para la competición. Algunos ejemplos de opciones personalizadas para torneos son:
+Como se trata de un juego que también es de carácter competitivo, se aplicarían normas personalizadas exclusivas de torneos. Irían enfocadas a facilitar el trabajo de los organizadores a la hora de implementar reglas para la competición. Algunos ejemplos de opciones personalizadas para torneos son:
 
 Opciones personalizadas para torneo:
 
@@ -1500,23 +1882,63 @@ Se podrían otorgar cosméticos únicos al ganador o ganadores del torneo.
 
 Los organizadores pueden modificar los porcentajes de los tipos de biomas en la generación de mundo. Además, también tienen la opción de deshabilitar rarezas de objetos u objetos concretos.
 
-### Efectos de sonido y música adicional
+### Animaciones adicionales del personaje principal
 
-Aunque se empiece a desarrollar el apartado musical en la beta, para la versión Golden se implementarán toda la banda sonora y los efectos de sonido. También se tendrá en cuenta la retroalimentación auditiva respecto a la interacción del jugador con el videojuego.
+Se podría añadir una animación para cuando el jugador abre el Libro y también animaciones extra en el movimiento, que hagan más dinámico al personaje. Por ejemplo, una animación para cuando empieza a caminar, otra para cuando coge velocidad y otra derrapando por si frena en seco yendo a gran velocidad.
 
-### Bugs resueltos y videojuego
+También se podrían diversificar las animaciones de lanzamiento de conjuros, para que sea una animación distinta por cada tipo de hechizo de forma que realice el protagonista.
 
-Se llevará a cabo un testeo exhaustivo para localizar y resolver todos los errores de código que puedan surgir. Para prevenir incompatibilidades entre navegadores, se testeará en diversos navegadores.
+E incluso se podría añadir una animación para cuando el jugador interactúa, para cuando entra a un nodo o para cuando acaba de completar uno.
 
-### Adaptación a distintos dispositivos, navegadores web y controles
+### Bioma de las Cataratas del Borde
 
-El videojuego se adaptará a dispositivos móviles y a los controles de mando. De esta forma, se mejorará la accesibilidad y flexibilidad.
+Se añadiría un borde al mapa del mundo, que estaría decorado por cataratas de agua cayendo. Se verían las estrellas y que el mundo se trata de un disco flotante en el espacio.
+
+Los niveles que se encuentren en el límite del mapa serán de un nuevo bioma: Las cataratas del Borde. Este bioma contaría con sus propias salas, decoración, enemigos habituales... La dificultad podría ser más elevada que los nodos de idria o ser de dificultad aleatoria.
+
+### Enemigo Vampiro
+
+Se incluiría un nuevo enemigo al juego, para que hubiese mayor variedad: el vampiro. Es un enemigo que ya cuenta con su concept art, diagrama y descripción de comportamiento. Y pasaría a elaborarse sprite sheet y a programarse para introducirse en el juego.
+
+La novedosa aparición de este enemigo iría ligado a un desarrollo en la trama, en la que los Murciélagos Gigantes han mutado al beber gran cantidad de sangre humana.
+
+### Jefes
+
+Meter jefes en el juego le aportaría mayor variedad, tensión y desafío al videojuego.
+
+Se podría añadir una Fase en los niveles con una sala de preámbulo que conduzca a una sala de boss.
+
+Los bosses que se haya encontrado el jugador podrían figurar también en el Bestiario.
+
+Los jefes podrían contar con diferentes fases, comportamiento y diseño propio y ataques únicos.
+
+### Animación de la vela del HUD
+
+Para conseguir un mayor atractivo visual y que la interfaz de juego, el HUD, no quede tan estática, se podría animar el fuego de la vela. Y que incluso se agite con cada golpe recibido.
+
+Es más, el color del fuego de la vela podría depender del tipo de elemento primario que se lleva equipado.
+
+### Mejora de la experiencia en móviles
+
+Se plantea el iterar sobre los controles móviles e incluso adaptar la jugabilidad a la plataforma cuando ésta se esté usando. Se pretendería aumentar la comodidad del jugador y ofrecer una interfaz aún más intuitiva para la plataforma de móviles. De esta forma, el juego podría llegar a más público.
+
+### Controles de mando
+
+Se ha considerado en brindar la oportunidad al jugador de jugar al videojuego conectando un mando al ordenador. De esta forma, quizás tuviese mayor agilidad para algunas acciones y se captaría la atención de todos aquellos jugadores que prefieran jugar con mando de consola.
+
+### Traducción a otros idiomas
+
+Si el juego adquiere un cierto éxito y en un momento dado se publicase en otras plataformas, lo más probable es que se añada la opción de accesibilidad de jugarlo tanto en español como en inglés.
+
+El inglés sería el idioma prioritario de traducción.
 
 # POST-MORTEM
 
-## Visión individual
+## Protipo / Alfa
 
-### ¿Qué cosas han ido bien?
+### Visión individual
+
+#### ¿Qué cosas han ido bien?
 
 Carlos: “Hemos logrado que ya estén implementados prácticamente todos los sistemas en los que se basa el juego para funcionar”.
 
@@ -1534,7 +1956,7 @@ Elena: “Organizar las tareas con Trello ha sido de lo mejor que hemos hecho”
 
 Ha sido clave el uso la herramienta de Trello para etiquetar las tareas, asignárselas a cada miembro del equipo correspondiente y marcar fechas fijas de entrega. Esto ha facilitado que se cumplan los requisitos para el desarrollo dentro de un plazo establecido y ha mejorado la organización de manera incalculable. La existencia de una fecha límite ha creado una sensación de urgencia que ha incrementado la productividad de los miembros del equipo.
 
-### ¿Qué cosas habría que mejorar?
+#### ¿Qué cosas habría que mejorar?
 
 Carlos: “Hemos tardado mucho en empezar.”
 
@@ -1568,7 +1990,7 @@ La solución más lógica, según mi criterio, sería reducir el contenido del j
 
 La solución aplicada tiene menos sentido sabiendo que la mayoría de las integrantes del grupo tenemos otros trabajos de distintas asignaturas de los que preocuparnos, provocando que los que tengan más tiempo que dedicar a esta asignatura y más nivel / rapidez realizando sus tareas tengan al final mayor carga de trabajo que los demás.
 
-### Retroalimentación externa
+#### Retroalimentación externa
 
 Carlos: “Temo que las personas ajenas al game design intenten imponer sus ideas”.
 
@@ -1586,9 +2008,9 @@ Ese fue el recibimiento que recibió la idea que se tenía al comienzo. Faltaba 
 
 Así que se diseñó la idea de mostrar el scoreboard mediante un firmamento, donde cada estrella representa de forma visual con su tamaño la puntuación aproximada de cada jugador. Este nuevo diseño fue todo un acierto, y satisfizo la necesidad de fomentar el aspecto competitivo del juego.
 
-## Visión grupal
+### Visión grupal
 
-### ¿Qué cosas han ido mal?
+#### ¿Qué cosas han ido mal?
 
 Todos los integrantes del equipo de desarrollo coincidimos en que el desarrollo del videojuego ha sido mayormente de carácter caótico. Y el principal motivo es que fue enormemente ralentizado por un miembro que ya no forma parte del equipo. Debido a las críticas tempranas del diseño, a la poca flexibilidad sobre la idea del juego y su énfasis en que no se realicen prototipos, se prorrogó la programación hasta pasadas dos semanas. Además, no comunicó al grupo que mientras tanto, se encontraba haciendo un prototipo muy distinto a las ideas que tardaron horas intensas de reuniones en establecerse.
 
@@ -1602,13 +2024,141 @@ Sin embargo, con el tiempo surgió un grave problema, era el que iba a ser el pr
 
 Al ir añadiendo complejidad mediante mayor número de elementos y características distintas al juego se consigue que la carga de trabajo sea demasiado grande teniendo en cuenta los tiempos establecidos de entregas y el tiempo disponible para afrontar las demás asignaturas.
 
-### Lecciones aprendidas
+#### Lecciones aprendidas
 
 En primer lugar, antes de conformar un grupo de desarrollo, sería necesario que investigásemos sobre cada uno de los integrantes. Es importante averiguar sus fortalezas y debilidades respecto al desarrollo del producto. Y así se hizo, todos los sectores: diseño, arte y programación; quedaron cubiertos y en manos competentes. Sin embargo, aunque se lograse esa estabilidad, pasamos completamente por alto la capacidad de trabajo en equipo de los integrantes. Solo conocíamos resultados de prácticas anteriores, sin indagar realmente en el comportamiento y actitud de cada uno de ellos. Deberíamos haber consultado a compañeros sobre su experiencia de trabajo con cada uno de los miembros antes de tomar decisiones definitivas.
 
 En segundo lugar, la mayoría de los integrantes deberíamos asentar mejor las bases de programación. Antes de enfrentar un proyecto de tal magnitud, deberíamos de haber partido de un nivel de programación a la altura de la exigencia del código del videojuego. Una posible solución es que más allá de dedicarnos a las tareas de desarrollo relacionadas con nuestra rama, podríamos emplear el tiempo restante en formarnos aprendiendo correctamente el lenguaje de C# y el cómo usar Unity en profundidad.
 
 También podríamos haber tenido en cuenta las cualidades y limitaciones de cada integrante del equipo a la hora de realizar el contenido del videojuego para haber podido aprovechar mejor su potencial. Ya que no todos los integrantes parten con la mejor base en programación, se podría haber enfocado el videojuego mediante mecánicas más accesibles y resaltando aún más otros aspectos, sin dejar que la ambición en cuanto a contenido llegue a abrumar el desarrollo.
+
+## Beta
+
+### Visión individual
+
+#### ¿Qué cosas han ido bien?
+
+Adrián: Durante el desarrollo de la beta se han realizado más reuniones lo que ayuda a recibir feedback más a menudo entre los miembros del equipo sobre el trabajo realizado.
+
+También se han establecido un número de tareas más razonable teniendo en cuenta el tiempo establecido para realizar la entrega.
+
+En resumen, se han comprendido y corregido los principales errores que se realizaron en la anterior entrega.
+
+Sandro: “Durante el desarrollo de la beta de este juego, ha sido un proceso desafiante pero sumamente gratificante ver cómo poco a poco todo el contenido que habíamos planeado se fue materializando de la forma en que lo esperábamos. Desde el principio, sabíamos que había un largo camino por recorrer, pero al final todas las mecánicas, los biomas, los personajes, e incluso los diálogos que teníamos pensados, finalmente han encontrado su lugar dentro del juego.
+
+A pesar de algunos contratiempos durante el proceso, hemos logrado integrar todo lo que se había proyectado sin sacrificar la calidad ni la experiencia del jugador. Es increíble ver cómo todas esas piezas que solo existían como ideas y bocetos en un principio ahora están funcionando de manera cohesiva, y me siento bastante satisfecho de que hemos alcanzado el nivel de contenido que nos habíamos propuesto para esta etapa del proyecto.
+
+Mi trabajo en este proyecto ha sido una fuente constante de aprendizaje. Cada desafío ha sido una oportunidad para mejorar mis habilidades y comprender más a fondo los procesos que conlleva crear un videojuego. Me he dado cuenta asimismo de que aprender a utilizar Unity con más profundidad es una de mis prioridades en el futuro cercano. Siento que, si pudiera dominar mejor esta herramienta, podría colaborar directamente en el área de programación y aliviar la carga de trabajo en este departamento, aunque eso supondría tener un menor tiempo disponible para las tareas que he estado realizando en el desarrollo.
+
+Me gustaría mencionar que a lo largo del proceso, he sido testigo del increíble trabajo y dedicación de todos mis compañeros, quienes han puesto todo su empeño en sacar el proyecto adelante, y sin ellos, no habríamos llegado a sacar el proyecto en el estado en que se encuentra. También ha habido momentos difíciles, como cuando se tomaron decisiones unilaterales que afectaron al flujo de trabajo, especialmente en cuanto al cambio de sprites del personaje principal sin consultar al equipo, lo que generó confusión. A pesar de eso, logré sobrellevar estas situaciones de forma satisfactoria y seguir adelante con una actitud positiva.
+
+A pesar de los obstáculos puntuales, el trabajo de todos ha sido enorme e invaluable, y me siento orgulloso del trabajo que hemos logrado como equipo”.
+
+Elena: Las tareas han estado más repartidas durante el desarrollo de la beta. Es decir, ya no recaía todo el peso en la programación, que era un problema que surgió tras el diseño de juego. Y de cara a la beta se organizaron muchas más tareas relacionadas con el añadir contenido al juego.
+
+En cuanto al trabajo que he realizado, he de decir que jamás había aprendido tanto sobre el desarrollo de videojuegos hasta ahora. Me he atrevido a adentrarme en campos que no manejaba y me gustaría seguir haciéndolo.
+
+Candelight ha sido uno de los mayores pasos que he tomado en mi vida de cara al desarrollo profesional y me ha servido para estar en contacto con una experiencia real.
+
+Por otro lado, decir que estoy muy satisfecha con los contenidos del juego. No solo se ha logrado una estética cautivadora, sino que la banda sonora que ha realizado mi compañero es excepcional. Yo he trabajado exhaustivamente en elaborar diálogos de calidad, alcanzando cifras de más de trecientos y más de cien descripciones de niveles. No era algo necesario, pero quería dar todo de mí para ofrecer una experiencia de calidad al jugador.
+
+Carlos: Con respecto a mi papel en Candelight, puedo asegurar que ha sido el mayor trabajo que he realizado en mi vida, tanto para lo bueno como para lo malo. Ha sido increíble ver cómo las ideas han ido tomando forma durante el desarrollo.
+
+Por otra parte, he aprendido mucho en múltiples ámbitos del desarrollo de videojuegos, especialmente en cuanto a la programación. Aunque no he podido aplicar la mayoría de las lecciones aprendidas en Candelight por falta de tiempo, me llevo valiosa experiencia que aplicar en mis próximos proyectos.
+
+A nivel personal, estoy orgulloso del trabajo realizado y ansioso por ver qué depara el futuro.
+
+#### ¿Qué cosas habría que mejorar?
+
+Adrián: Habría que mejorar la planificación a la hora de hacer testing para poder tener mayor tiempo de prueba para realizar una corrección de errores más temprana.
+
+Sandro: “La programación de este juego ha sido una gran tarea, ya que se ha tenido que gestionar desde las mecánicas principales hasta la integración de diversos sistemas, como la implementación de interfaces, los controles y la optimización de rendimiento. Si bien la beta ha estado más enfocada en aumentar el contenido del juego (nuevos sprites de personajes, animaciones, interfaces, diálogos, eventos, biomas, artefactos, etc), la falta de experiencia en Unity ha estado presente y ha sido en cierto modo un detrimento para el desarrollo. Si se hubiera contado con más manos en ese departamento, sin duda se habría podido avanzar de manera más fluida en el desarrollo del juego. A pesar de la total dedicación y el esfuerzo de los miembros en sus respectivas áreas de trabajo, ha habido una percepción de que faltan fuerzas en esa área específica, especialmente en cuanto a Unity. Hubiera sido óptimo que más miembros del equipo tuvieran un conocimiento más profundo de la herramienta, lo que habría aligerado la carga de programación y permitido una integración más eficiente de ciertos elementos.
+
+En el proceso de desarrollo de la beta del juego, se han presentado situaciones puntuales en las que algunos miembros del equipo pudieron llegar a tomar decisiones unilaterales que afectaron el flujo de trabajo y la cohesión del proyecto. Un ejemplo claro de esto ocurrió cuando se decidió, sin realmente consultarlo con el equipo, sustituir todos los sprites del personaje principal cuando ya estaban incluidas todas las animaciones en el juego. Este tipo de decisiones, aunque tomadas con la mejor intención de aumentar la posible percepción de calidad individual del producto, provocaron confusión y descoordinación, ya que no se discutieron previamente las implicaciones de los cambios en el estilo visual ni en la consistencia del diseño del juego. Estos cambios unilaterales pueden haber surgido por una interpretación personal de lo que sería mejor para el juego, pero decisiones como estas deben ser tomadas de manera colaborativa. La falta de comunicación previa y el no consultar con los demás miembros del equipo antes de realizar cambios significativos generaron desafíos adicionales, lo que podría haberse evitado con un enfoque más inclusivo y coordinado en la toma de decisiones”.
+
+Elena: Personalmente, creo que la mayor parte del peso de la práctica ha estado desbalanceado, pues considero que no todos los miembros han aportado un trabajo equitativo. Y creo que esto principalmente se debe a la falta de experiencia.
+
+Es más, durante el desarrollo de la práctica han existido numerosos cuellos de botella en el desarrollo. Pero irónicamente no han sido por parte de las personas con más cantidad de tareas, sino de aquellas que solo se encargaban de una función concreta. Y esto conllevó a la falta de tiempo para testear el videojuego de cara a la entrega de la beta, entre otras cosas.
+
+Por ejemplo, no se tuvieron los comportamientos de algunos personajes hasta pasada la fecha de la beta o apenas horas antes de la entrega. Y es que incluso se tuvieron que delegar tareas a los miembros que ya estaban ocupados para poder tenerlas a tiempo, funcionales y con mayor calidad; lo suficiente como para cumplir las expectativas y la exigencia mínima.
+
+Tampoco se tenían los spritesheets del personaje principal a un día de la entrega. Y, cuando se obtuvieron, estaban muy incompletos y no cumplían con las expectativas y apenas tenían impacto en el juego. Es por ello, entre otras razones, por las que se planteó un rework de cara a la gold master.
+
+Por mi parte, trataré de aprender aún más para así poder aportar más en ámbitos en los que flaqueo, como la programación. Además, he de decir que programar el comportamiento de las Sombras me ha ayudado a ello, al igual que investigar sobre nuevas herramientas.
+
+Estoy muy orgullosa de ver cómo ha tomado forma una idea que empezó en papel. Ha sido todo un logro el mantener un esfuerzo diario, trabajando con constancia en el proyecto. Sin embargo, tengo en claro que para futuros proyectos intentaré no dejar de lado ni mi vida social, ni familiar, y trataré de no desequilibrar los horarios de sueño para no caer de nuevo en mareos. Elaborar el videojuego ha sido una tarea entretenida, divertida y gratificante, pero las fechas de entrega y la carga de trabajo se han tornado en una fuente de estrés y me han desvinculado de otras áreas de autocuidado.
+
+También no puedo evitar sentirme culpable por la sobrecarga de trabajo que ha experimentado mi compañero Carlos. Y eso que yo también he aportado todo lo que he podido. Pero la verdad es que han faltado compañeros que se centrasen en la parte de programación del proyecto y de la implementación en Unity.
+
+Carlos: Para poder sacar adelante el proyecto he trabajado sin parar durante prácticamente más de dos meses seguidos, apenas teniendo ocasionales descansos para comer y dormir. Soy consciente de que no se debería llegar a estas exigencias, aunque el proyecto lo requiera para salir adelante, y es algo que tendré mucho más en cuenta en el futuro. La ambición del proyecto y una falta de experiencia a la hora de programar y manejar Unity en el resto del equipo han sido los principales causantes de esta situación.
+
+A pesar de que en la beta todos teníamos una carga de trabajo más repartida, se ha mantenido el problema de que los assets no llegaban en un marco de tiempo adecuado o no eran adecuados de por sí (normalmente por apurar hasta el último momento), lo que ha llevado en ciertos casos a aún más sobrecarga de trabajo para poder corregirlos. Cabe destacar el ejemplo de los sprites del personaje principal: todavía no estaban terminados los assets a pocos días de la entrega de la beta. A vistas que de que no estarían terminados (y que la estética no tenía nada que ver con la idea establecida en la alfa), otros miembros se intentaron encargar de ellas a última hora para poder sacar algo adelante, a la vez que se avisó al creador original de dichas animaciones, que seguían sin estar terminadas. Es a causa de situaciones como esta que la comunicación en los últimos días de la beta ha sido muy caótica y poco coordinada, cayendo más de un integrante (yo incluido) en un pánico y confusión que dificultó la comunicación.
+
+Aunque la comunicación en la beta ha sido muchísimo más fluida, he sentido que ha faltado una reunión al comienzo para asentar en todos los integrantes los conceptos básicos que se cuadraron en la alfa. Debido a lo caótica que fue esta y lo ocupados que hemos estado todos en la beta, me ha parecido notar que durante cierta parte del desarrollo cada uno teníamos una idea de lo que era el juego en algunos aspectos y suponíamos que esa idea coincidía con la de los demás.
+
+#### Retroalimentación externa
+
+Las valoraciones por redes sociales han servido de ayuda, pues se aprecia que la gente haya ido apoyando el desarrollo del videojuego. No se han obtenido muchos comentarios, pero los pocos que han compartido los usuarios denotan un gran interés por el proyecto.
+
+Por otro lado, se han recibido opiniones por parte de familiares y amigos. Sin embargo, hay que mencionar que tan solo se les ha mostrado aspectos concretos del videojuego, para que puedan disfrutar de la versión definitiva sin conocer ya todo el contenido.
+
+Algunas opiniones han sido que el pixelart está muy bien logrado y la estética es preciosa. Y es que jugaron un pequeño fragmento del juego o vieron los posts en redes sociales.
+
+Aunque una persona mencionó que había pixelart que trataba de parecer 3D pero que era muy plano. Pero en cuanto vieron que se trataba de la estética del juego, revocaron su opinión y halagaron la estética del juego.
+
+También se ha mencionado la calidad de la banda sonora. Según las opiniones, es tan sobresaliente que perfectamente encajaría en cualquier entorno profesional. Y rebosa de genialidad.
+
+Cuando se enseñó el juego al familiar de un miembro del equipo y tuvo la oportunidad de jugar durante unos minutos, esta es la opinión que había desarrollado:
+
+“El concepto de que el personaje sea de luz luchando contra las criaturas de la noche me parece muy original. Los bosques lúgubres tienen una atmósfera muy lograda, y la sensación de que todo está a oscuras hasta que el personaje ilumina el camino hace que el juego se sienta tenso y emocionante. Es un reto, porque no sabes qué te va a salir de la oscuridad.
+
+Sin embargo, hubo momentos en los que me sentí algo perdida, no sabía muy bien por dónde continuar caminando. Quizás la jugabilidad podría mejorar si hubiera más indicaciones sobre hacia dónde debo ir o qué tengo que hacer para avanzar. A veces no estaba segura si estaba explorando o simplemente dando vueltas sin rumbo.
+
+En general, lo disfruté bastante, sobre todo la estética que tiene, pero me gustaría que quizás hubiese un poco más de variedad en los enemigos y los escenarios, porque a veces sentí que me estaba enfrentando siempre a lo mismo. Pero la idea está muy bien y, con algunos ajustes, podría ser un juego excelente”.
+
+Se han escogido a algunos individuos con muy poca experiencia en videojuegos para testear el tutorial y así poder iterar sobre él en base al comportamiento de los usuarios durante la prueba. Esto ha hecho que sea mucho más intuitivo, informativo y accesible para personas con bajo desempeño en el ámbito de los videojuegos.
+
+Por último, cabe destacar que ha sido muy útil el feedback de los profesores, que han valorado por separado cada uno de los aspectos del videojuego y dado consejos de mejora. Gracias a las rúbricas hemos podido encauzar mejor el proyecto y el aprecio que mostraron por la calidad del juego sirvió para levantar los ánimos en el equipo.
+
+### Visión grupal
+
+#### ¿Qué cosas han ido mal?
+
+Las tareas de desarrollo de cara a la versión beta han estado más repartidas, pero no lo suficiente. La falta de experiencia en programación y en el manejo de Unity de la mayoría de los integrantes ha causado una sobrecarga de trabajo en uno de los miembros del equipo.
+
+Además, el desarrollo se ha visto ralentizado por la entrega tardía de tareas de arte, como pueden ser los sprite sheets del protagonista y el comportamiento de cada uno de los personajes. E incluso los resultados obtenidos carecían de la calidad necesaria; por lo que, para paliarlo, se han ido relegando estas tareas a diferentes miembros hasta llegar al miembro que ya de por sí estaba ocupado con la programación.
+
+También ha habido otro miembro con una gran carga de trabajo, pues ha estado apoyando en todos los aspectos del juego. Durante el desarrollo de la beta no ha sido hasta la última semana que el resto de los integrantes han trabajado satisfactoriamente.
+
+En algunas ocasiones se percibía cierta inconsistencia en elementos del videojuego, como interfaces que no cuadraban con la temática y ambientación del juego, paletas de colores que resaltaban demasiado, diseños poco precisos y cohesionados... Ha sido de vital importancia mantener las reuniones periódicas para solventar los malentendidos.
+
+Otro error que se cometió fue descansar una semana tras la entrega de la versión alfa, pensando que la entrega de la versión beta estaba prevista para mediados de diciembre y no para noviembre. También se pensaba que la versión gold master se entregaría en enero. Sin embargo, pasada la semana nos percatamos de que las entregas eran mucho más próximas. Así que tuvimos que recuperar el tiempo perdido y ponernos manos a la obra si queríamos lanzar una versión beta en condiciones.
+
+#### Lecciones aprendidas
+
+Aquí se desarrollan las lecciones aprendidas tras la finalización de la fase beta del proyecto:
+
+Hemos realizado un proyecto quizás demasiado ambicioso para el poco plazo de tiempo del que se disponía, saturando a los integrantes con tareas. Es más, testear todas las funcionalidades del juego se ha vuelto complejo por la gran cantidad de contenido de la que se dispone.
+
+La realización de las tareas no debería apurarse hasta los últimos días, pues no solo puede haber dependencia entre ellas, sino que es preciso unificar y poner a prueba todas las incorporaciones y eso requiere tiempo. Además, se ha primar la constancia en proyectos tan grandes, pues gracias a ella se obtienen resultados satisfactorios y mayor estabilidad. Siempre existirá incertidumbre, pero esta se reduce considerablemente con trabajo diario y una buena planificación.
+
+Las reuniones periódicas han aportado mucho a la comunicación entre miembros y a fomentar el compromiso con el desarrollo del videojuego. Y otro factor importante es que todos los elementos queden guardados en el Teams, en un lugar de acceso común. Enseguida se notaba si había algún elemento que no se había añadido a las carpetas.
+
+El manejo limpio de Github garantiza que no haya problemas en la compartición del código. Y en líneas generales hemos conseguido que no emerjan muchos conflictos. Sin embargo, para futuros proyectos se recomienda a todos los miembros que tengan al día los cambios del proyecto en su rama del Github. Pues a última hora se ha detectado que se han sobrescrito y borrado algunos archivos.
+
+El mejor consejo que seguir para futuros proyectos es que todos los miembros del equipo se instruyan en: programación, manejo de Unity, animaciones tanto 2D como 3D, herramientas de edición de vídeo, técnicas de marketing, edición de audios, manejo de redes sociales y páginas web, elaboración de pixelart, edición de imágenes...
+
+Todo el conocimiento que se pueda obtener será bienvenido y de gran utilidad para futuros proyectos. Es más, se recomienda seguir en contacto con experiencias de desarrollo reales, ya sea mediante proyectos propios, participando en jams o ejerciendo prácticas en empresas.
+
+A pesar de los contratiempos, se consiguió cumplir con la mayor parte si no todos los objetivos en cuanto a contenido, lo que demuestra que una planificación bien construida al principio del proyecto es clave para que todo se desenvuelva de manera efectiva. Sin embargo, también quedó claro que la comunicación continua y abierta entre todos los miembros del equipo es fundamental para evitar descoordinaciones y malentendidos. Las decisiones del proyecto deben tomarse de manera colaborativa para garantizar que todos los aspectos del juego estén alineados con la visión común.
+
+Uno de los mayores aprendizajes fue la necesidad de un equipo con experiencia sólida en las herramientas utilizadas. En este caso, la falta de experiencia en Unity de todos los miembros menos uno retrasó en cierta forma el desarrollo, aunque es cierto que los demás miembros pudieron centrarse en aquellos aspectos que mejor conocían y dominaban. Esto subraya la importancia de contar con miembros con conocimientos técnicos adecuados, y también la necesidad de equilibrar la asignación de recursos entre las diversas áreas del juego. Un mayor conocimiento previo en el motor de juego habría permitido una integración más fluida y una optimización más eficiente, lo que podría haber mejorado la calidad general del proyecto, por lo que los miembros tienen planes a futuro de aprender esta herramienta a fondo.
+
+Los cambios unilaterales son un recordatorio claro de que los cambios significativos en el diseño deben ser discutidos y consensuados. La cohesión visual y la consistencia del proyecto son esenciales para la experiencia del jugador. Aunque las decisiones pueden estar motivadas por la mejora del producto, deben ser tomadas en conjunto para evitar efectos negativos en otras áreas del juego. Esto también resalta la importancia de tener procesos de revisión y retroalimentación continua a lo largo del desarrollo.
+
+En cuanto a la variedad en enemigos y escenarios, los comentarios sugieren que el juego podría beneficiarse de más diversidad en estos elementos. Si bien la atmósfera y la jugabilidad son aspectos positivos, la repetitividad puede afectar la experiencia a largo plazo. Esto nos enseña que, incluso cuando el concepto y la estética iniciales son muy fuertes, es importante seguir evaluando y ajustando la variedad de elementos que mantienen el interés y la emoción del jugador, evitando que la experiencia se vuelva monótona.
+
+Para terminar, el feedback de los jugadores y el proceso iterativo son fundamentales. Las pruebas constantes y la retroalimentación temprana, aunque a veces dolorosas, ofrecen lecciones valiosas que pueden mejorar significativamente el producto final. Estar abierto a los comentarios y saber integrar las sugerencias de manera eficaz es clave para no solo cumplir con las expectativas de los jugadores, sino también para refinar la experiencia de juego y balancear el gameplay para que el juego sea lo más satisfactorio posible.
 
 # MODELO DE NEGOCIO
 
@@ -1670,7 +2220,7 @@ El estudio, Velorum; los clientes, jugadores; proveedores, servidores; comunidad
 
 He aquí un esquema que detalla cuáles van a ser las interrelaciones entre cada uno de los elementos que se han incluido en la Caja de Herramientas:
 
-## Tal y como se aprecia en el esquema, el estudio, Velorum, se comunicará con cuatro entidades distintas: Clientes, Comunidad, Servidores y ONG.
+Tal y como se aprecia en el esquema, el estudio, Velorum, se comunicará con cuatro entidades distintas: Clientes, Comunidad, Servidores y ONG.
 
 En el caso de la relación con los clientes, ellos aportarán financiación al proyecto mediante micro transacciones a cambio de que les ofrezcamos cosméticos y elementos de personalización; aportarán un poco de dinero al visualizar los anuncios y mediante donaciones, pues un porcentaje será recaudado para el estudio; en orden de cantidad de efectivos.
 
@@ -1678,7 +2228,7 @@ Los servidores nos aportarán su servicio y soporte online para el scoreboard a 
 
 En cuanto a las ONGs, no aportarán ningún beneficio físico como tal al juego, pero su nombre puede ayudar a ensalzar el prestigio del videojuego y a que sea más conocido. Además, su colaboración se compagina a la perfección con el mensaje de abnegación del videojuego.
 
-Por último, decir que se planea realizar unas inversiones para pagar a influencers a cambio de que promocionen Candelight. Y, quizás, en un futuro, se ve recompensado con un pequeño beneficio económico de colaboraciones con el juego.
+Por último, hay que decir que se planea realizar unas inversiones para pagar a influencers a cambio de que promocionen Candelight. Y, quizás, en un futuro, se ve recompensado con un pequeño beneficio económico de colaboraciones con el juego.
 
 ## Lienzo o Canvas
 
@@ -1694,13 +2244,11 @@ Por último, decir que se planea realizar unas inversiones para pagar a influenc
 
 \- Desarrollo del videojuego: Es la actividad clave más importante. Es necesario cubrir todos los aspectos del juego, desde su diseño, narrativa, programación y apartado artístico. Requerirá el mayor esfuerzo de todas las tareas clave y es vital para que el producto salga adelante.
 
-\- De la página web: se accederá a ella a través del porfolio y recopilará información sobre cada miembro del equipo y un enlace a las redes sociales del estudio.
+\- Página web y portfolio: se accederá a ella a través del porfolio y recopilará información sobre cada miembro del equipo y un enlace a las redes sociales del estudio.
 
 \- Implementar y gestionar un scoreboard online: Las puntuaciones de los jugadores quedarán publicadas y podrán ser vistas por otros jugadores. De esta forma, se pretende fomentar el espíritu competitivo del juego.
 
-\- Relación a través de un foro: Se tiene pensado abrir un foro en el que las personas puedan escribir sus opiniones e impresiones sobre el videojuego. Allí también podrán compartir experiencias sin tener que limitarse a las formalidades que pueda conllevar el publicar una reseña en Itch.io.
-
-\- De las redes sociales: Se llevará al día la gestión de las redes sociales, donde se publicarán actualizaciones del avance del desarrollo del videojuego. De esta forma, se pretende crear un público base que vaya a jugar el juego en su versión definitiva.
+\- Manejo de las redes sociales: Se llevará al día la gestión de las redes sociales, donde se publicarán actualizaciones del avance del desarrollo del videojuego. De esta forma, se pretende crear un público base que vaya a jugar el juego en su versión definitiva.
 
 ### Recursos Clave
 
@@ -1778,13 +2326,11 @@ Se recaudará un porcentaje del 5% de las donaciones a una ONG con la que se dec
 
 # MONETIZACIÓN
 
-Se trata de un juego free-to-play con micro transacciones con skins; donaciones (a través de Paypal, tarjeta bancaria y Bizum); y publicidad a través de Google Adsense (vídeos publicitarios al morir, banner en el juego, anuncios en la página web).
+Se trata de un juego free-to-play con micro transacciones con skins; donaciones (a través de Paypal, tarjeta bancaria y Bizum); y publicidad a través de Google Adsense (vídeos publicitarios opcionales al morir para guardar el inventario, banner en el juego, anuncios en la página web).
 
 Las micro transacciones pueden ser utilizadas para ofrecer cambios visuales como skins, ofreciendo equipamiento con distintas ventajas y desventajas que cambien ligeramente cómo juega el jugador (evitar que los objetos de pago resulten una ventaja esencial para pasar el juego, pues no es un juego pay-to-win).
 
 Ejemplos: Vestimentas con ventajas y desventajas que potencian ciertos tipos de ataques, pero deshabilitan otros, permitir continuar la partida viendo un anuncio al ser derrotado, pero solo contemplando avances personales (no se registra la puntuación en el ranking), etc…
-
-La opción de revivir a cambio de ver un anuncio solo aparecerá una vez por partida.
 
 Ayudas/Donaciones, a ONGs relacionadas con la temática del juego, como Light Humanity o Energía Sin Fronteras.
 
@@ -1802,13 +2348,19 @@ Las redes sociales que se han utilizado son:
 
 **Instagram:** [https://www.instagram.com/velorum\_games/](https://www.instagram.com/velorum_games/)
 
+**Discord:** [https://discord.gg/ZW7X35Ye](https://discord.gg/ZW7X35Ye)
+
+También se puede acceder a esta colección de enlaces mediante el Linktree del proyecto:
+
+**Linktree:** [https://linktr.ee/velorumgames](https://linktr.ee/velorumgames)
+
 La imagen del icono empleado para la foto de perfil:
 
 ## Posts
 
 **Vídeo presentación del estudio:**
 
-[https://urjc.sharepoint.com/sites/gr\_2024.2175\_2175038\_AT-VELLORUM/\_layouts/15/stream.aspx?id=%2Fsites%2Fgr%5F2024%2E2175%5F2175038%5FAT%2DVELLORUM%2FDocumentos%20compartidos%2FVELORUM%2Fvelorum%20presentacion%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E8595f2fd%2Df58f%2D4332%2D9236%2D2cef368818d9](https://urjc.sharepoint.com/sites/gr_2024.2175_2175038_AT-VELLORUM/_layouts/15/stream.aspx?id=%2Fsites%2Fgr%5F2024%2E2175%5F2175038%5FAT%2DVELLORUM%2FDocumentos%20compartidos%2FVELORUM%2Fvelorum%20presentacion%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E8595f2fd%2Df58f%2D4332%2D9236%2D2cef368818d9)
+[**velorum presentacion.mp4**](https://urjc.sharepoint.com/:v:/s/gr_2024.2175_2175038_AT-VELLORUM/EViczdKpS9JPoXUnwoKzlpcBm_-nCxocPgWWw4UYodDZTQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=Sg7FaM)
 
 **Presentación del equipo y roles:**
 
@@ -1822,6 +2374,44 @@ La imagen del icono empleado para la foto de perfil:
 
 **\- Vídeo anuncio del videojuego:**
 
-[**https://urjc.sharepoint.com/sites/gr\_2024.2175\_2175038\_AT-VELLORUM/\_layouts/15/stream.aspx?id=%2Fsites%2Fgr%5F2024%2E2175%5F2175038%5FAT%2DVELLORUM%2FDocumentos%20compartidos%2FVELORUM%2FRedes%20sociales%2FCandelight%2Fanuncio%20candelight%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2Ec0e7d719%2Dfd7d%2D4e7d%2D9556%2D65c922c1b3b0**](https://urjc.sharepoint.com/sites/gr_2024.2175_2175038_AT-VELLORUM/_layouts/15/stream.aspx?id=%2Fsites%2Fgr%5F2024%2E2175%5F2175038%5FAT%2DVELLORUM%2FDocumentos%20compartidos%2FVELORUM%2FRedes%20sociales%2FCandelight%2Fanuncio%20candelight%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2Ec0e7d719%2Dfd7d%2D4e7d%2D9556%2D65c922c1b3b0)
+[**anuncio candelight.mp4**](https://urjc.sharepoint.com/:v:/s/gr_2024.2175_2175038_AT-VELLORUM/EXLJs0ykJdVJhVXbL1QgZREB46wrcm9PJ2eUlbJGiUyxsg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=Rh9S83)
 
 **\- Teaser novedades:**
+
+**\- Assets de Durnia:**
+
+**\- Assets de Temeria:**
+
+**\- Assets de Idria:**
+
+**\- Discord Oficial:**
+
+Se ha anunciado un canal de Discord oficial de Candelight, cuyo link se ha añadido al Linktree.
+
+He aquí roles que se han creado para establecer jerarquías en el servidor:
+
+Y también se han creado emoticonos personalizados, partiendo de items del juego:
+
+**\- Rostros de Héroes del Alba:**
+
+**\- Rostros de Temerios:**
+
+**\- Rostro de Idriano:**
+
+**\- Vídeo de Bioma de Durnia:**
+
+[durnia.mp4](https://urjc.sharepoint.com/:v:/s/gr_2024.2175_2175038_AT-VELLORUM/EW3-a7tGKVtPo0wtf2sK2zoB_1RYJnStSyKDn3XEyqR9Ow?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=L8ZAho)
+
+**\- Vídeo de Bioma de Temeria:**
+
+[Anuncio temeria.mp4](https://urjc.sharepoint.com/:v:/s/gr_2024.2175_2175038_AT-VELLORUM/ETpOApTz8QNDnHo_0k5gB4YBn1wDd1VOwdVrkjNQdO18fg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=kv3729)
+
+**\- El Núcleo:**
+
+**\- Items:**
+
+**\- Objetos 3D:**
+
+**\- Tráiler oficial de Candelight:**
+
+[trailer candelight.mp4](https://urjc.sharepoint.com/:v:/s/gr_2024.2175_2175038_AT-VELLORUM/EU1H6t_rS49MiJNQGcztpKMB2yNFfLU3Q4Nd-nDbriyZBA?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=tekQ6T)
