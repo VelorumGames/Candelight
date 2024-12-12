@@ -40,7 +40,7 @@ public class IntroCinema : MonoBehaviour
             _img.DOFade(1f, 0.01f);
 
             _audio.Play();
-            _audio.volume -= 0.5f;
+            _audio.volume -= 0.05f;
 
             _text.text = s;
             _text.DOFade(1f, 0.01f);

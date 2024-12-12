@@ -51,7 +51,7 @@ namespace Player
                     m_next = value;
                     if (UIManager.Instance != null && m_next != null) UIManager.Instance.NextNodeName = _nextNode.gameObject.name;
 
-                    Debug.Log("Nuevo nodo");
+                    //Debug.Log("Nuevo nodo");
                     if (_pathShowRotation != null) StopCoroutine(_pathShowRotation);
                     _pathShowRotation = StartCoroutine(RotatePathShower());
                 }
@@ -161,7 +161,7 @@ namespace Player
 
         private void Update()
         { 
-            if (_spellMode) _orArrow.transform.rotation = Quaternion.Euler(0f, -Mathf.Rad2Deg * Mathf.Atan2(Orientation.z, Orientation.x) + 90f, 0f);
+            if (_spellMode && GameSettings.OrientationHelp) _orArrow.transform.rotation = Quaternion.Euler(0f, -Mathf.Rad2Deg * Mathf.Atan2(Orientation.z, Orientation.x) + 90f, 0f);
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
@@ -257,7 +257,8 @@ namespace Player
 
         public void ShowOrientationArrow()
         {
-            _orArrow.gameObject.SetActive(true);
+            if (GameSettings.OrientationHelp) _orArrow.gameObject.SetActive(true);
+            else HideOrientationArrow();
         }
 
         public void HideOrientationArrow()
@@ -531,7 +532,7 @@ namespace Player
                 else if (OnElements != null) OnElements(null); //Si no encuentra elemento valido
             }
 
-            _UIMan.ManageAuxiliarRuneReset();
+            _UIMan?.ManageAuxiliarRuneReset();
         }
         public void OnSpellLaunch()
         {
@@ -560,11 +561,16 @@ namespace Player
                             Debug.Log("Hechizo encontrado!!: " + shapeSpell.Name);
                             if (!(shapeSpell is ExplosionRune || shapeSpell is BuffRune))
                             {
+                                Debug.Log("AAAAA");
                                 _canLastSpell = true;
                                 Invoke("ResetLastSpellTimer", _lastSpellDuration);
+                                Debug.Log("BBBBB");
                             }
+                            Debug.Log("CCCCCC");
                             shapeSpell.SetFastDamageFactor(1f);
+                            Debug.Log("DDDDDD");
                             ThrowSpell(shapeSpell);
+                            Debug.Log("EEEEEEE");
                         }
                         else if (OnSpell != null) OnSpell(null); //Si no encuentra hechizo valido
                     }
@@ -573,7 +579,7 @@ namespace Player
                 }
             }
 
-            _UIMan.ManageAuxiliarRuneReset();
+            _UIMan?.ManageAuxiliarRuneReset();
         }
 
         public void OnLastSpellLaunch(InputAction.CallbackContext _)
@@ -625,6 +631,8 @@ namespace Player
         {
             if (!_spellMode && !_isFirstPerson && _book && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene" && !_inCombat)
             {
+                _instructions.Clear();
+
                 if (_bookIsOpen)
                 {
                     _book.gameObject.SetActive(false);
@@ -632,6 +640,7 @@ namespace Player
                 }
                 else
                 {
+                    _UIMan.ShowUIMode(EUIMode.Book);
                     _book.gameObject.SetActive(true);
                     _bookIsOpen = true;
                 }
@@ -667,8 +676,8 @@ namespace Player
 
                 foreach (var node in _currentNode.ConnectedNodes)
                 {
-                    if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Inexplorado && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado) ||
-                        (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Explorado) )
+                    if ((node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State != ENodeState.Desconocido && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado) ||
+                        (node != _currentNode.gameObject && node.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Completado && _currentNode.GetComponent<NodeManager>().GetNodeData().State == ENodeState.Inexplorado) )
                     {
                         float dist = Vector3.Distance(_pathChooser.transform.position, node.transform.position);
                         if (dist < minDist)

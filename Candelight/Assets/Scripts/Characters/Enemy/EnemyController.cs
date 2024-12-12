@@ -21,11 +21,12 @@ namespace Enemy
         protected AudioSource Audio;
 
         public GameObject Fragment;
-        float _fragDropRate = 0.5f;
+        float _fragDropRate = 0.35f;
 
         bool _invicible;
         bool _canAttack = true;
         float _iFrameDuration = 0.5f;
+        bool _dying;
 
         public bool LuciernagaPosada;
         [Space(10)]
@@ -67,14 +68,15 @@ namespace Enemy
 
         public void SpawnFragments(AController _)
         {
-            FindObjectOfType<Inventory>().SpawnFragments(Random.Range(Info.MinFragments, Info.MaxFragments), _fragDropRate * _modifier.FragDropMod, transform);
+            Vector3 spawnPos = (Player.transform.position + transform.position) / 2f;
+            FindObjectOfType<Inventory>().SpawnFragments(Random.Range(Info.MinFragments, Info.MaxFragments), _fragDropRate * _modifier.FragDropMod, spawnPos);
         }
 
         void PlayDeathSound(AController _) => Audio.PlayOneShot(Death);
 
         public override void RecieveDamage(float damage)
         {
-            if (!_invicible)
+            if (!_invicible && !_dying)
             {
                 if (LuciernagaPosada)
                 {
@@ -94,7 +96,7 @@ namespace Enemy
 
         void FakeDeath(AController _)
         {
-            _invicible = true;
+            _dying = true;
             _canAttack = false;
         }
 

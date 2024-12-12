@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Visual;
 using TMPro;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace UI.Window
 {
@@ -23,6 +24,8 @@ namespace UI.Window
         [SerializeField] Slider _soundVolume;
         [SerializeField] Slider _musicVolume;
         [SerializeField] Toggle _autoSave;
+        [SerializeField] Toggle _orHelp;
+        [SerializeField] Toggle _camShake;
 
         private void Awake()
         {
@@ -36,6 +39,8 @@ namespace UI.Window
             _musicVolume.value = GameSettings.MusicVolume;
 
             _autoSave.isOn = GameSettings.AutoSave;
+            _orHelp.isOn = GameSettings.OrientationHelp;
+            _camShake.isOn = GameSettings.CameraNoise;
         }
 
         protected override void OnStart()
@@ -107,6 +112,16 @@ namespace UI.Window
             GameSettings.AutoSave = value;
         }
 
+        public void LoadOrientationHelp(bool value)
+        {
+            GameSettings.OrientationHelp = value;
+        }
+
+        public void LoadCamShake(bool value)
+        {
+            GameSettings.CameraNoise = value;
+        }
+
         public void ResetSettings()
         {
             if (_options != null)
@@ -128,7 +143,10 @@ namespace UI.Window
             _genVolume.value = GameSettings.GeneralVolume;
             _soundVolume.value = GameSettings.SoundVolume;
             _musicVolume.value = GameSettings.MusicVolume;
-        }
 
+            GameSettings.AutoSave = true;
+            GameSettings.OrientationHelp = true;
+            GameSettings.CameraNoise = true;
+        }
     }
 }

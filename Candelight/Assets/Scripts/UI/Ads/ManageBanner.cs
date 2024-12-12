@@ -36,7 +36,7 @@ namespace UI
         {
             if (_adSprites.Length > 0 && _adSprites.Length == _adUrls.Length)
             {
-                Application.OpenURL(_adUrls[_id]);
+                if (_adUrls[_id] != null) Application.OpenURL(_adUrls[_id]);
             }
         }
     }

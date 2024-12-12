@@ -114,7 +114,7 @@ namespace Comportamientos.Sombra
         public void Orbitar()
         {
 
-            approachDist = 0.009f * Time.deltaTime + 1f;
+            approachDist = 0.05f * Time.deltaTime + 1f;
             vel = _rotateVelocity;
 
             //Rotan alrededor del personaje

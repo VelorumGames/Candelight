@@ -35,5 +35,11 @@ public class SafeReset : MonoBehaviour
 
         Inventory inv = FindObjectOfType<Inventory>();
         if (inv) Destroy(inv.gameObject);
+
+        LuciernagaController[] luciernagas = FindObjectsOfType<LuciernagaController>();
+        foreach (var l in luciernagas)
+        {
+            if (l != null) Destroy(l.gameObject);
+        }
     }
 }

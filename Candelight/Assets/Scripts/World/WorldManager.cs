@@ -62,6 +62,7 @@ namespace World
         [SerializeField] AudioClip _worldMusic;
 
         UISoundManager _sound;
+        NodeInfoBox _box;
 
         //public bool Loaded;
 
@@ -72,6 +73,7 @@ namespace World
 
             _player = FindObjectOfType<PlayerController>();
             FindObjectOfType<InputManager>().LoadControls(EControlMap.World);
+            _box = FindObjectOfType<NodeInfoBox>(true);
 
             _durniaTakenNames = new bool[DurniaNodeNames.Length];
             _temeriaTakenNames = new bool[TemeriaNodeNames.Length];
@@ -105,7 +107,7 @@ namespace World
         private void Start()
         {
             
-            FindObjectOfType<UIManager>().FadeFromBlack(0.5f, 4f);
+            FindObjectOfType<UIManager>().FadeFromBlack(1.5f, 4f);
 
             FindObjectOfType<MusicManager>().PlayMusic(0, _worldMusic);
             FindObjectOfType<MusicManager>().ChangeVolumeFrom(0, 0f, 0.5f, 2f);
@@ -206,7 +208,8 @@ namespace World
 
             if (World.LoadedPreviousGame && SaveSystem.GameData.CurrentNode != -1)
             {
-                MovePlayerToNode(_nodes[SaveSystem.GameData.CurrentNode].transform);
+                //Debug.Log("Nodo inicial: " + SaveSystem.GameData.CurrentNode);
+                StartCoroutine(SafeMove(_nodes[SaveSystem.GameData.CurrentNode].transform));
             }
             else
             {
@@ -216,6 +219,12 @@ namespace World
             //else Loaded = true;
         }
 
+        IEnumerator SafeMove(Transform tr)
+        {
+            yield return new WaitForSeconds(1f);
+            MovePlayerToNode(tr);
+        }
+
         public void GenerateStart()
         {
             foreach (var node in _nodes)
@@ -223,7 +232,7 @@ namespace World
                 if (node.TryGetComponent<NodeManager>(out var nodeMan) && nodeMan.StartNodeCheck())
                 {
                     nodeMan.gameObject.name += " START";
-                    nodeMan.SetState(ENodeState.Explorado);
+                    nodeMan.SetState(ENodeState.Inexplorado);
                     CurrentNodeInfo.Node = nodeMan; //Marcamos este como nodo inicial
 
                     MovePlayerToNode(node.transform);
@@ -237,7 +246,7 @@ namespace World
             if (randNode.TryGetComponent<NodeManager>(out var nodeM) && nodeM.StartNodeCheck())
             {
                 nodeM.gameObject.name += " START";
-                nodeM.SetState(ENodeState.Explorado);
+                nodeM.SetState(ENodeState.Inexplorado);
                 CurrentNodeInfo.Node = nodeM; //Marcamos este como nodo inicial
 
                 MovePlayerToNode(randNode.transform);
@@ -246,7 +255,7 @@ namespace World
 
         void MovePlayerToNode(Transform node)
         {
-            //Debug.Log("Se mueve al jugador a: " + node.position);
+            Debug.Log($"Se mueve al jugador a: " + node.position);
             _player.transform.position = new Vector3(node.position.x, 2f, node.position.z);
         }
 
@@ -300,8 +309,8 @@ namespace World
         public void LoadNode()
         {
             _sound.PlayEnterNode();
-            FindObjectOfType<NodeInfoBox>().HideBox();
-            FindObjectOfType<UIManager>().FadeToBlack(1f, LoadNextScene);
+            _box?.HideBox();
+            FindObjectOfType<UIManager>()?.FadeToBlack(1f, LoadNextScene);
         }
 
         void LoadNextScene()

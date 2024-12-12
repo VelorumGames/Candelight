@@ -140,7 +140,7 @@ namespace Cameras
         /// <param name="time"></param>
         public void Shake(float amp, float frec, float time)
         {
-            if (_noise != null)
+            if (_noise != null && GameSettings.CameraNoise)
             {
                 StopAllCoroutines();
                 //Se guardan los parametros originales
@@ -182,7 +182,7 @@ namespace Cameras
         /// <param name="frec"></param>
         public void ConstantShake(float amp, float frec)
         {
-            if (_noise != null)
+            if (_noise != null && GameSettings.CameraNoise)
             {
                 StopAllCoroutines();
                 _noise.m_AmplitudeGain = amp;

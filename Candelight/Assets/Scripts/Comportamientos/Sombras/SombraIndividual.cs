@@ -89,9 +89,6 @@ namespace Comportamientos.Sombra
             
             Vector3 movimiento = new Vector3(transform.localPosition.x / approachD, transform.localPosition.y, transform.localPosition.z / approachD);
             transform.localPosition = movimiento;
-            
-
-
         }
 
 
@@ -126,7 +123,7 @@ namespace Comportamientos.Sombra
             // Si hace contacto con el jugador 
             if (other.TryGetComponent(out PlayerController _scPlayerController))
             {
-                _scPlayerController.RecieveDamage(Info.BaseDamage);
+                _scPlayerController.RecieveDamage(Info.BaseDamage * 2f);
                 gameObject.SetActive(false);
                 
             }
@@ -160,7 +157,7 @@ namespace Comportamientos.Sombra
                 _myDarkFireball.transform.position = transform.position;
 
                 _scProjectile = _myDarkFireball.GetComponent<Projectile>();
-                _scProjectile.Damage = 2f;
+                _scProjectile.Damage = Info.BaseDamage;
                 _projectileVelocity = 2f;
                 _rbMyDarkFireball = _myDarkFireball.GetComponent<Rigidbody>();
 

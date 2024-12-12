@@ -36,13 +36,20 @@ namespace Scoreboard
             _audio = GetComponent<AudioSource>();
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
             if (SaveSystem.ScoreboardIntro)
             {
                 if (_world.CompletedNodes > 0) _ui.FadeFromWhite(3f);
                 else _ui.FadeFromBlack(3f);
                 _audio.Play();
+            }
+
+            if (GameSettings.ScoreboardTutorial)
+            {
+                yield return new WaitForSeconds(1.5f);
+                _ui.ShowTutorial("Cada estrella del firmamento es otro mundo. Haz click en ellas para ver su progreso.");
+                GameSettings.ScoreboardTutorial = false;
             }
         }
 

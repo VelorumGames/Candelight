@@ -10091,6 +10091,7 @@ GameObject:
   - component: {fileID: 5338973568947996911}
   - component: {fileID: 3142261261960984107}
   - component: {fileID: 5946401237596039652}
+  - component: {fileID: 7910141616015997525}
   m_Layer: 5
   m_Name: Fullscreen Ad
   m_TagString: Untagged
@@ -10225,6 +10226,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7910141616015997525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445932776344250015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f43325c9eaf202442a8c3c9153a190d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _adSprites:
+  - {fileID: 21300000, guid: 625835469ec14594ca44210818d3da2a, type: 3}
+  - {fileID: 21300000, guid: bad4a19463768584bbd2bff12b1a9acb, type: 3}
+  _adUrls: []
 --- !u!1 &498159846485767881
 GameObject:
   m_ObjectHideFlags: 0
@@ -13886,7 +13903,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -66.1, y: 13.27}
+  m_AnchoredPosition: {x: -66.099976, y: 13.27002}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5547944586845923844
@@ -16433,7 +16450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _world: {fileID: 11400000, guid: b9acffba32dc1d74e87f6033fedb3d90, type: 2}
-  CurrentNodeInfo: {fileID: 0}
+  CurrentNodeInfo: {fileID: 11400000, guid: 590e6fd0067b28f4e9bc3585d233a483, type: 2}
   _ad: {fileID: 445932776344250015}
 --- !u!114 &4041934999932647214
 MonoBehaviour:
@@ -22808,6 +22825,7 @@ GameObject:
   - component: {fileID: 9067655998485197465}
   - component: {fileID: 7639843708598394853}
   - component: {fileID: 7912517081070132247}
+  - component: {fileID: 3389159121296044919}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -22957,6 +22975,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 780827e1409064542ae37e8c5544c57b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3389159121296044919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5652593590064744728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 972e5ea06059c444585284a48189b169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5745165784299377332
@@ -28794,6 +28824,7 @@ GameObject:
   - component: {fileID: 5309441190215434618}
   - component: {fileID: 6946713061461636278}
   - component: {fileID: 7007106044143417317}
+  - component: {fileID: 7751638540491755079}
   m_Layer: 0
   m_Name: PauseButton
   m_TagString: Untagged
@@ -28941,6 +28972,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fe812035151ccf42b7db113b1b5338f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7751638540491755079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6778368520059493918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed2a68543bcdd2d4f86393b2c65730f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: PauseButton
 --- !u!1 &6792748953442540933
 GameObject:
   m_ObjectHideFlags: 0
@@ -29179,6 +29223,7 @@ GameObject:
   - component: {fileID: 6715305220958884297}
   - component: {fileID: 4692204616558955346}
   - component: {fileID: 6225417889050454346}
+  - component: {fileID: 3225522904824084379}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -29303,6 +29348,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3225522904824084379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7046371876318522793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed2a68543bcdd2d4f86393b2c65730f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: PauseText
 --- !u!1 &7070000255755402569
 GameObject:
   m_ObjectHideFlags: 0
@@ -29772,7 +29830,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -7.55}
+  m_AnchoredPosition: {x: 0, y: -7.549988}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7527860021749921827
@@ -30430,6 +30488,7 @@ GameObject:
   - component: {fileID: 3463388541039914026}
   - component: {fileID: 5483231837348185874}
   - component: {fileID: 5844705001488597952}
+  - component: {fileID: 7919556079360974421}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -30577,6 +30636,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 780827e1409064542ae37e8c5544c57b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7919556079360974421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7705209641534541314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 972e5ea06059c444585284a48189b169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7800022527680370809
@@ -31920,7 +31991,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'REAVIVAR LA LLAMA
+  m_text: 'PRESERVAR ALMA
 
 '
   m_isRightToLeft: 0
@@ -31950,8 +32021,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13
-  m_fontSizeBase: 13
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -32654,7 +32725,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: -59.7
+  m_lineSpacing: -52.2
   m_lineSpacingMax: 0
   m_paragraphSpacing: 38.2
   m_charWidthMaxAdj: 0

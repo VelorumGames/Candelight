@@ -735,7 +735,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &503441891
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1140,7 +1140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &592281466
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1190,8 +1190,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4292333267
-  m_fontColor: {r: 0.8278952, g: 0.80831444, b: 0.84276724, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2549,7 +2549,7 @@ RectTransform:
   m_GameObject: {fileID: 1367526329}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.8321403, y: 27.552, z: 1}
+  m_LocalScale: {x: 2.23, y: 27.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 503441891}
@@ -2573,7 +2573,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f43325c9eaf202442a8c3c9153a190d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _adSprites: []
+  _adSprites:
+  - {fileID: 21300000, guid: 65ad12a12e3690c4a9cbdff8fd7a2b4a, type: 3}
+  - {fileID: 21300000, guid: 043fa37ec3d40f84f98522491c26797d, type: 3}
   _adUrls: []
 --- !u!114 &1367526332
 MonoBehaviour:

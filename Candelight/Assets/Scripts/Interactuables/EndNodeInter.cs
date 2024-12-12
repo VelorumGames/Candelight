@@ -10,6 +10,7 @@ using UI;
 using Player;
 using Items;
 using Music;
+using Controls;
 
 namespace Interactuables
 {
@@ -51,6 +52,8 @@ namespace Interactuables
 
         IEnumerator StartTransition()
         {
+            FindObjectOfType<InputManager>().CanThrowSpell = false;
+
             Fires.SetActive(true);
             FireParticles.Play();
 

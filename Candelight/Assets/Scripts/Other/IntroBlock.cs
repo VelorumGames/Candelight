@@ -34,7 +34,7 @@ public class IntroBlock : MonoBehaviour
             _block.transform.DOMoveY(1.25f, 0.5f).Play();
 
             _runes?.SetActive(true);
-            _runes?.transform.DOMoveY(1.5f, 4f).Play();
+            _runes?.transform.DOMoveY(2f, 4f).Play();
 
             StartCoroutine(BookHelp());
         }
@@ -50,8 +50,8 @@ public class IntroBlock : MonoBehaviour
                 {
                     if (GameSettings.HelpMessages)
                     {
-                        if (Application.isMobilePlatform) _ui.ShowTutorial("Pulsa el icono del libro para tus apuntes.\nMantén pulsado uno de los símbolos (abajo a la izquierda) e invoca las runas para memorizar una nueva magia.", 10f);
-                        else _ui.ShowTutorial("Pulsa B para abrir tus apuntes.\nMantén CLICK e invoca las runas para memorizar una nueva magia.", 10f);
+                        if (Application.isMobilePlatform) _ui.ShowTutorial("Pulsa el icono del libro para tus apuntes.\nMantén pulsado uno de los símbolos (abajo a la izquierda) e invoca las runas que ves frente a ti para memorizar una nueva magia.", 10f);
+                        else _ui.ShowTutorial("Pulsa B para abrir tus apuntes.\nMantén CLICK e invoca las runas que ves frente a ti para memorizar una nueva magia.", 10f);
                     }
                     yield return new WaitForSecondsRealtime(13f);
                 }
@@ -67,7 +67,7 @@ public class IntroBlock : MonoBehaviour
         {
             if (GameSettings.HelpMessages)
             {
-                if (Application.isMobilePlatform) _ui.ShowTutorial("Cierra tus apuntes pulsando B de nuevo.\nPara lanzar un hechizo, mantén el símbolo de forma e invoca sus runas.", 10f);
+                if (!Application.isMobilePlatform) _ui.ShowTutorial("Cierra tus apuntes pulsando B de nuevo.\nPara lanzar un hechizo, mantén el símbolo de forma e invoca sus runas.", 10f);
                 else _ui.ShowTutorial("Cierra tus apuntes pulsando el libro de nuevo.\nPara lanzar un hechizo, mantén CLK IZQ e invoca sus runas.", 10f);
             }
             yield return new WaitForSecondsRealtime(13f);
@@ -82,9 +82,9 @@ public class IntroBlock : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = null;
         foreach (var c in GetComponents<Collider>()) c.enabled = false;
 
-        _block.transform.DOMoveY(-2f, 1f).Play();
+        _block.transform.DOMoveY(-2f, 1f).Play().OnComplete(End);
 
-        _runes.transform.DOMoveY(-2f, 1f).Play().OnComplete(End);
+        if (_runes != null) _runes.transform.DOMoveY(-3f, 1f).Play();
     }
 
     void End()

@@ -78,6 +78,8 @@ namespace UI
 
         Tween _fade;
 
+        bool _dying;
+
         Stack<GameObject> _windows = new Stack<GameObject>();
 
         private void Awake()
@@ -125,7 +127,13 @@ namespace UI
                 _inv.OnFragmentsChange += ShowFragmentHalo;
             }
 
-            
+            World.OnPlayerDeath += DyingUI;
+        }
+
+        void DyingUI()
+        {
+            _dying = true;
+            ShowUIMode(EUIMode.Death);
         }
 
         private void Start()
@@ -133,34 +141,36 @@ namespace UI
             _spellHalo?.SetActive(false);
             _fragmentHalo?.SetActive(false);
 
+            if (_dying) ShowUIMode(EUIMode.Death);
+
             //for (int i = 0; i < 6; i++)FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(), EItemCategory.Rare);
             //FindObjectOfType<Inventory>()?.AddFragments(50);
         }
 
-        private void OnGUI()
-        {
-            GUI.Label(new Rect(10, 40, 200, 70), $"FPS: {CalculateFPS(1.0f / Time.deltaTime)/*}\nCandle (Nodes left): {_candle}\nCurrent Node: {ActualNodeName}\nNext Node: {NextNodeName*/}");
-            if (SceneManager.GetActiveScene().name == "LevelScene" || SceneManager.GetActiveScene().name == "CalmScene")
-            {
-                if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<MapManager>().EndLevel();
-            }
-            else if(SceneManager.GetActiveScene().name == "ChallengeScene")
-            {
-                if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<SimpleRoomManager>().EndLevel();
-            }
-            //if (SceneManager.GetActiveScene().name == "MenuScene")
-            //{
-            //    if (GUI.Button(new Rect(350, 40, 150, 20), "REMOVE DATA")) SaveSystem.RemovePreviousGameData();
-            //}
-            //if (GUI.Button(new Rect(500, 40, 150, 20), "CALM SCENE")) SceneManager.LoadScene("CalmScene");
-            if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM"))
-            {
-                FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(), EItemCategory.Rare);
-                FindObjectOfType<Inventory>().AddFragments(20);
-            }
-            ///if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
-            //GUI.Label(new Rect(10, 140, 200, 500), $"Current elements: {_elements}\nActive runes:\n{_chains}");
-        }
+        //private void OnGUI()
+        //{
+        //    GUI.Label(new Rect(10, 40, 200, 70), $"FPS: {CalculateFPS(1.0f / Time.deltaTime)/*}\nCandle (Nodes left): {_candle}\nCurrent Node: {ActualNodeName}\nNext Node: {NextNodeName*/}");
+        //    if (SceneManager.GetActiveScene().name == "LevelScene" || SceneManager.GetActiveScene().name == "CalmScene")
+        //    {
+        //        if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<MapManager>().EndLevel();
+        //    }
+        //    else if(SceneManager.GetActiveScene().name == "ChallengeScene")
+        //    {
+        //        if (GUI.Button(new Rect(200, 40, 150, 20), "FINISH LEVEL")) FindObjectOfType<SimpleRoomManager>().EndLevel();
+        //    }
+        //    //if (SceneManager.GetActiveScene().name == "MenuScene")
+        //    //{
+        //    //    if (GUI.Button(new Rect(350, 40, 150, 20), "REMOVE DATA")) SaveSystem.RemovePreviousGameData();
+        //    //}
+        //    //if (GUI.Button(new Rect(500, 40, 150, 20), "CALM SCENE")) SceneManager.LoadScene("CalmScene");
+        //    if (GUI.Button(new Rect(10, 100, 200, 20), "ADD ITEM"))
+        //    {
+        //        FindObjectOfType<Inventory>().AddItem(FindObjectOfType<Inventory>().GetRandomItem(), EItemCategory.Rare);
+        //        FindObjectOfType<Inventory>().AddFragments(20);
+        //    }
+        //    if (GUI.Button(new Rect(10, 120, 200, 20), "CREATE RUNES")) ARune.CreateAllRunes(FindObjectOfType<Mage>());
+        //    //GUI.Label(new Rect(10, 140, 200, 500), $"Current elements: {_elements}\nActive runes:\n{_chains}");
+        //}
 
         int CalculateFPS(float frameSpeed)
         {
@@ -241,21 +251,21 @@ namespace UI
             if (elements != null)
             {
                 StartCoroutine(_showInstr.ShowValidInstructions());
-                _showInstr.ShowElementsResult(elements);
+                _showInstr?.ShowElementsResult(elements);
             }
-            else _showInstr.ResetSprites();
+            else _showInstr?.ResetSprites();
         }
 
         public void ShowElements()
         {
-            if (_showInstr != null) _showInstr.ShowElements();
+            if (_showInstr != null) _showInstr?.ShowElements();
         }
 
         public void ManageAuxiliarRuneReset() => Invoke("AuxiliarResetRuneSprites", 0.5f);
 
         public void AuxiliarResetRuneSprites()
         {
-            if (_showInstr != null && !_input.IsInSpellMode()) _showInstr.ResetSprites();
+            if (_showInstr != null && !_input.IsInSpellMode()) _showInstr?.ResetSprites();
         }
 
         #endregion
@@ -498,7 +508,7 @@ namespace UI
 
         void ExitSpellModeFeedback()
         {
-            Time.timeScale = _prevTimeScale;
+            Time.timeScale = 1f;
 
             _spellHalo?.SetActive(false);
 
@@ -592,6 +602,11 @@ namespace UI
 
                     LocateModeElement("Book")?.Hide();
                     LocateModeElement("BookText")?.Hide();
+
+                    LocateModeElement("ElementSymbol")?.Hide();
+                    LocateModeElement("ElementText")?.Hide();
+                    LocateModeElement("ShapeSymbol")?.Hide();
+                    LocateModeElement("ShapeText")?.Hide();
                     break;
                 case EUIMode.Dialogue:
                     HideMinimapMode();
@@ -604,6 +619,10 @@ namespace UI
                 case EUIMode.Book:
                     LocateModeElement("Inventory")?.Hide();
                     LocateModeElement("InventoryText")?.Hide();
+                    break;
+                case EUIMode.Death:
+                    LocateModeElement("PauseButton")?.Hide();
+                    LocateModeElement("PauseText")?.Hide();
                     break;
                 default:
                     break;
@@ -734,7 +753,7 @@ namespace UI
                 _inv.OnFragmentsChange -= ShowFragmentHalo;
             }
 
-            
+            World.OnPlayerDeath -= DyingUI;
         }
     }
 
@@ -746,6 +765,7 @@ namespace UI
         Calm,
         Dialogue,
         Inventory,
-        Book
+        Book,
+        Death
     }
 }

@@ -30,7 +30,7 @@ public class IntroTutorial : MonoBehaviour
     public string _runeInstructions;
 
     float _spellTime;
-    float _maxSpellTime = 2f;
+    float _maxSpellTime = 1.5f;
     bool _spellModeTest;
 
     bool _instrTest;
@@ -83,8 +83,10 @@ public class IntroTutorial : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
-                if (Application.isMobilePlatform) _ui.FadeToWhite(7f, () =>
+                if (Application.isMobilePlatform || Upgrades.StartElement != EStartingElement.Fire) _ui.FadeToWhite(7f, () =>
                 {
+                    if (ARune.FindSpell(Upgrades.StartElement.ToString(), out var spell)) spell.Activate(true);
+
                     FindObjectOfType<UIManager>().ShowState(EGameState.Loading);
                     FindObjectOfType<IntroGravity>().ResetPlayer();
                     SceneManager.LoadScene("TutorialScene");

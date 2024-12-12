@@ -78,6 +78,17 @@ namespace Rest
             Destroy(FindObjectOfType<InputManager>().gameObject);
             Destroy(FindObjectOfType<Mage>().gameObject);
             Destroy(FindObjectOfType<Inventory>().gameObject);
+
+            foreach (var item in FindObjectsOfType<AItem>(true))
+            {
+                Destroy(item.gameObject);
+            }
+
+            LuciernagaController[] luciernagas = FindObjectsOfType<LuciernagaController>();
+            foreach(var l in luciernagas)
+            {
+                if (l != null) Destroy(l.gameObject);
+            }
         }
     }
 }

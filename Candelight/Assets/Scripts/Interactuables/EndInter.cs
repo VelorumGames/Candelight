@@ -1,4 +1,5 @@
 using Cameras;
+using Controls;
 using DG.Tweening;
 using Map;
 using Player;
@@ -7,11 +8,13 @@ using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using World;
 
 namespace Interactuables
 {
     public class EndInter : AInteractuables
     {
+        public WorldInfo World;
         public GameObject Fires;
         public ParticleSystem FireParticles;
 
@@ -20,6 +23,9 @@ namespace Interactuables
         public override void Interaction()
         {
             Debug.Log("Se pasa a la siguiente zona");
+
+            FindObjectOfType<InputManager>().CanThrowSpell = false;
+
             FindObjectOfType<PlayerController>().SetMove(false);
             Fires.SetActive(true);
             GetComponent<AudioSource>().Play();
@@ -32,6 +38,7 @@ namespace Interactuables
             if (SceneManager.GetActiveScene().name == "TutorialScene")
             {
                 GameSettings.Tutorial = false;
+                World.Candle = World.MAX_CANDLE;
 
                 FindObjectOfType<UIManager>().FadeToBlack(3f, () =>
                 {

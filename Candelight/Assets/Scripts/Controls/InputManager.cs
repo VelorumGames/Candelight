@@ -62,6 +62,7 @@ namespace Controls
         bool _isInSpellMode;
         bool _elementMode;
         bool _shapeMode;
+        public bool CanThrowSpell;
 
         public event System.Action OnStartElementMode;
         public event System.Action OnExitElementMode;
@@ -124,11 +125,13 @@ namespace Controls
         {
             _dialogue = FindObjectOfType<DialogueUI>();
             _ui = FindObjectOfType<UIManager>();
+
+            CanThrowSpell = true;
         }
 
         void OnSceneUnloaded(Scene scene)
         {
-
+            
         }
 
         void InitializeControls()
@@ -396,6 +399,13 @@ namespace Controls
                 Cursor.lockState = CursorLockMode.Locked;
             }
             else Debug.LogWarning("ERROR: No se han cargado bien los controles");
+
+            if (Application.isMobilePlatform)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+
             //Debug.Log("Mapa colocado: " + _currentMap);
             _currentMap.Enable();
             CurrentControls = _currentMap.name;
@@ -445,7 +455,7 @@ namespace Controls
 
         public void StartElementMode(InputAction.CallbackContext _)
         {
-            if (!_shapeMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
+            if (CanThrowSpell && !_shapeMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
                 if (OnStartElementMode != null) OnStartElementMode();
                 _elementMode = true;
@@ -456,7 +466,7 @@ namespace Controls
 
         public void StopElementMode(InputAction.CallbackContext _)
         {
-            if (!_shapeMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
+            if (CanThrowSpell && !_shapeMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
                 if (OnExitElementMode != null) OnExitElementMode();
                 _elementMode = false;
@@ -467,7 +477,7 @@ namespace Controls
 
         public void StartSpellMode(InputAction.CallbackContext _)
         {
-            if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
+            if (CanThrowSpell && !_elementMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
                 if (OnStartShapeMode != null) OnStartShapeMode();
 
@@ -479,7 +489,7 @@ namespace Controls
 
         public void StopSpellMode(InputAction.CallbackContext _)
         {
-            if (!_elementMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
+            if (CanThrowSpell && !_elementMode && SceneManager.GetActiveScene().name != "CalmScene" && SceneManager.GetActiveScene().name != "NodeEndScene")
             {
                 if (OnExitShapeMode != null) OnExitShapeMode();
                 _shapeMode = false;

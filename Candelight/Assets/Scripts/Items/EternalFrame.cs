@@ -78,6 +78,9 @@ namespace Items
             _itemImg.color = Color.white;
             _itemImg.sprite = itemSprite;
             _itemImg.SetNativeSize();
+
+            if (_invWin != null) _invWin.EternalFrameMode = Id;
+            _itemMarked = true;
         }
 
         void HideItem()

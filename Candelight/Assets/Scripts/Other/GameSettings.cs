@@ -16,6 +16,8 @@ public static class GameSettings
     public static float MusicVolume;
 
     public static bool AutoSave = true;
+    public static bool OrientationHelp = true;
+    public static bool CameraNoise = true;
 
     public static bool HelpMessages = true;
 
@@ -23,6 +25,7 @@ public static class GameSettings
     public static bool FrameTutorial = true;
     public static bool ItemTutorial = true;
     public static bool RemainingMagicTutorial = true;
+    public static bool ScoreboardTutorial = true;
 
     public static bool LoadedWorld = false;
     public static bool CanRevive = true;

@@ -54,13 +54,21 @@ namespace UI.Ads
         public void PostAd()
         {
             _ad.SetActive(false);
-
-            _ui.ShowWarning(() => StartCoroutine(LoadRest()), "Para poder continuar tu partida regresarás al menú principal.", "Ok");
+            
+            _ui.ShowWarning(ManageExit, "Para poder continuar tu partida regresarás al menú principal.", "Ok");
             /*
             GameSettings.CanRevive = false;
             FindObjectOfType<InputManager>().LoadControls(EControlMap.Level);*/
             FindObjectOfType<PlayerSounds>().PlayReviveSound();
             
+        }
+
+        void ManageExit()
+        {
+            GetComponent<RectTransform>().parent.gameObject.SetActive(true);
+            GetComponent<RectTransform>().parent.localScale = new Vector3();
+
+            StartCoroutine(LoadRest());
         }
 
         IEnumerator LoadRest()
@@ -108,6 +116,17 @@ namespace UI.Ads
             Destroy(FindObjectOfType<InputManager>().gameObject);
             Destroy(FindObjectOfType<Mage>().gameObject);
             Destroy(FindObjectOfType<Inventory>().gameObject);
+
+            foreach (var item in FindObjectsOfType<AItem>(true))
+            {
+                Destroy(item.gameObject);
+            }
+
+            LuciernagaController[] luciernagas = FindObjectsOfType<LuciernagaController>();
+            foreach (var l in luciernagas)
+            {
+                if (l != null) Destroy(l.gameObject);
+            }
         }
     }
 }

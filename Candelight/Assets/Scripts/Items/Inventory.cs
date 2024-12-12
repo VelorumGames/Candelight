@@ -81,16 +81,49 @@ namespace Items
                 _window = _uiMan.InventoryUI.GetComponent<InventoryWindow>();
             }
 
+            AItem[] allItems = FindObjectsOfType<AItem>();
+
             if (UnactiveItems.Count == 0 && ActiveItems.Count == 0)
             {
-                AItem[] allItems = FindObjectsOfType<AItem>();
-
-                //Debug.Log($"Se han encontrado {allItems.Length} items");
-
+                Debug.Log($"Se han encontrado {allItems.Length} items");
+                
                 foreach (var item in allItems)
                 {
                     if (item.IsActive()) ActiveItems.Add(item.gameObject);
-                    else UnactiveItems.Add(item.gameObject);
+                    else if (!MarkItems.Contains(item.gameObject)) UnactiveItems.Add(item.gameObject);
+                    else
+                    {
+                        //Buscamos un frame libre para colocar el item
+                        foreach (var frame in FindObjectsOfType<EternalFrame>(true))
+                        {
+                            if (frame.IsUnlocked())
+                            {
+                                MarkItems.Remove(item.gameObject);
+                                MarkItem(item.gameObject, frame.Id);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (MarkItems.Count > 0)
+            {
+                foreach (var item in allItems)
+                {
+                    //Buscamos un frame libre para colocar el item
+                    if (MarkItems.Contains(item.gameObject))
+                    {
+                        foreach (var frame in FindObjectsOfType<EternalFrame>(true))
+                        {
+                            if (frame.IsUnlocked())
+                            {
+                                MarkItems.Remove(item.gameObject);
+                                MarkItem(item.gameObject, frame.Id);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -104,6 +137,7 @@ namespace Items
         {
             ActiveItems.Clear();
             UnactiveItems.Clear();
+            //MarkItems.Clear();
         }
 
         public void AddFragments(int numFragments)
@@ -127,6 +161,19 @@ namespace Items
                 {
                     GameObject fragment = Instantiate(Fragment);
                     fragment.transform.position = location.position + new Vector3(Random.Range(-0.5f, 5f), 0f, Random.Range(-0.5f, 0.5f));
+                }
+            }
+        }
+
+        public void SpawnFragments(int num, float probability, Vector3 location)
+        {
+            //Debug.Log($"{location.gameObject.name} suelta {num} fragmentos");
+            for (int i = 0; i < num; i++)
+            {
+                if (Random.value <= probability)
+                {
+                    GameObject fragment = Instantiate(Fragment);
+                    fragment.transform.position = location + new Vector3(Random.Range(-0.5f, 5f), 0f, Random.Range(-0.5f, 0.5f));
                 }
             }
         }
@@ -182,7 +229,7 @@ namespace Items
 
             itemButton.GetComponent<RectTransform>().localPosition = new Vector3(9999f, 9999f, 9999f); //Lo sacamos fuera de la vista
 
-            RelocateItems();
+            if (_window.gameObject.activeInHierarchy) RelocateItems();
         }
 
         public void MarkItem(GameObject itemButton, int frameId)
@@ -196,19 +243,21 @@ namespace Items
             MarkItems.Add(itemButton);
             _window.ShowItemInFrame(itemButton.GetComponent<AItem>(), frameId);
 
-            GetComponent<RectTransform>().localPosition = new Vector3(9999f, 9999f, 9999f); //Lo sacamos fuera de la vista
+            itemButton.GetComponent<RectTransform>().localPosition = new Vector3(9999f, 9999f, 9999f); //Lo sacamos fuera de la vista
 
-            RelocateItems();
+            if (_window.gameObject.activeInHierarchy) RelocateItems();
         }
 
         public void ResetMarkItem(GameObject itemButton)
         {
+            Debug.Log("INTENTO RESETEO MARCO");
             if (MarkItems.Remove(itemButton))
             {
+                Debug.Log("RESETEO MARCO");
                 UnactiveItems.Add(itemButton);
-            }
 
-            RelocateItems();
+                if (_window.gameObject.activeInHierarchy) RelocateItems();
+            }
         }
 
         public void ActivateItem(AItem item)
@@ -217,7 +266,7 @@ namespace Items
 
             UnactiveItems.Remove(item.gameObject);
             ActiveItems.Add(item.gameObject);
-            RelocateItems();
+            if (_window.gameObject.activeInHierarchy) RelocateItems();
         }
 
         public void DeactivateItem(AItem item)
@@ -226,18 +275,18 @@ namespace Items
 
             ActiveItems.Remove(item.gameObject);
             UnactiveItems.Add(item.gameObject);
-            RelocateItems();
+            if (_window.gameObject.activeInHierarchy) RelocateItems();
         }
 
         public bool RemoveItem(string name)
         {
             if (FindItem(name, out AItem item))
             {
-
                 _uiMan.ShowRemoveItemNotification(item);
 
                 if (ActiveItems.Remove(item.gameObject))
                 {
+                    Debug.Log("Desactivo: " + item.gameObject.name);
                     item.SetActivation();
                 }
                 UnactiveItems.Remove(item.gameObject);
@@ -246,6 +295,20 @@ namespace Items
                 return true;
             }
             return false;
+        }
+
+        public void SafeRemoveItem(GameObject item)
+        {
+            //_uiMan.ShowRemoveItemNotification(item.GetComponent<AItem>());
+
+            if (item.GetComponent<AItem>().IsActive())
+            {
+                Debug.Log("Desactivo: " + item.name);
+                item.GetComponent<AItem>().SetActivation();
+            }
+            //UnactiveItems.Remove(item);
+
+            Destroy(item);
         }
 
         public void ResetInventory()
@@ -288,13 +351,39 @@ namespace Items
                 item.GetComponent<RectTransform>().SetParent(null);
                 DontDestroyOnLoad(item.gameObject);
             }
+            foreach (var item in MarkItems)
+            {
+                item.GetComponent<RectTransform>().SetParent(null);
+                DontDestroyOnLoad(item.gameObject);
+            }
         }
 
         public void LoseItemsOnNodeExit()
         {
             //El jugador perdera el progreso del inventario al salirse del nodo 
-            foreach (var item in ActiveItems) if (item.GetComponent<AItem>().IsNew) Destroy(item.gameObject);
-            foreach (var item in UnactiveItems) if (item.GetComponent<AItem>().IsNew) Destroy(item.gameObject);
+            for (int i = 0; i < ActiveItems.Count; i++)
+            {
+                if (ActiveItems[i].GetComponent<AItem>().IsNew)
+                {
+                    SafeRemoveItem(ActiveItems[i]);
+                    //ActiveItems[i] = null;
+                }
+            }
+            for (int i = 0; i < UnactiveItems.Count; i++)
+            {
+                if (UnactiveItems[i].GetComponent<AItem>().IsNew)
+                {
+                    SafeRemoveItem(UnactiveItems[i]);
+                    //UnactiveItems[i] = null;
+                }
+            }
+            //foreach (var item in MarkItems)
+            //{
+            //    if (item.GetComponent<AItem>().IsNew)
+            //    {
+            //        Destroy(item.gameObject);
+            //    }
+            //}
 
             ActiveItems.Clear();
             UnactiveItems.Clear();
@@ -403,6 +492,8 @@ namespace Items
                     GameObject item = Instantiate(SearchForItem(id));
                     ActiveItems.Add(item);
                     item.GetComponent<AItem>().SetActivation();
+
+                    
                 }
             }
 
@@ -426,6 +517,8 @@ namespace Items
             }
 
             _totalNumFragments = fragments;
+
+            UnloadItems();
         }
 
         GameObject SearchForItem(int id)

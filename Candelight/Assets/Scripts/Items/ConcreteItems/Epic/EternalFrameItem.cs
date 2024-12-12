@@ -7,33 +7,41 @@ namespace Items
 {
     public class EternalFrameItem : AItem
     {
-        EternalFrame _frame;
+        public EternalFrame Frame;
+        public int Id;
+        bool _active;
 
         void OnSceneChanged(Scene scene, LoadSceneMode mode)
         {
-            EternalFrame[] frames = FindObjectsOfType<EternalFrame>();
-
-            foreach(var f in frames)
+            if (_active)
             {
-                if (!f.IsUnlocked())
+                EternalFrame[] frames = FindObjectsOfType<EternalFrame>();
+
+                foreach (var f in frames)
                 {
-                    _frame = f;
-                    _frame.UnlockFrame();
-                    break;
+                    if (!f.IsUnlocked())
+                    {
+                        Id = f.Id;
+                        Frame = f;
+                        f.UnlockFrame();
+                        break;
+                    }
                 }
             }
         }
 
         protected override void ApplyProperty()
         {
+            _active = true;
+
             EternalFrame[] frames = FindObjectsOfType<EternalFrame>();
 
             foreach (var f in frames)
             {
                 if (!f.IsUnlocked())
                 {
-                    _frame = f;
-                    _frame.UnlockFrame();
+                    Frame = f;
+                    Frame.UnlockFrame();
                     break;
                 }
             }
@@ -43,7 +51,10 @@ namespace Items
 
         protected override void ResetProperty()
         {
-            if (_frame) _frame.LockFrame();
+            _active = false;
+
+            Debug.Log("UUUUUUUUUUUUUUU: " + Frame);
+            if (Frame) Frame.LockFrame();
 
             SceneManager.sceneLoaded -= OnSceneChanged;
         }

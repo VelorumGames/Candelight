@@ -19,8 +19,8 @@ namespace World
     }
     public enum ENodeState
     {
+        Desconocido,
         Inexplorado,
-        Explorado,
         Completado
     }
     public enum EEventSolution
@@ -256,7 +256,7 @@ namespace World
             foreach (var node in ConnectedNodes)
             {
                 nodeMan = node.GetComponent<NodeManager>();
-                if (gameObject != node.gameObject && nodeMan.GetNodeData().State != ENodeState.Completado) nodeMan.SetState(ENodeState.Explorado);
+                if (gameObject != node.gameObject && nodeMan.GetNodeData().State != ENodeState.Completado) nodeMan.SetState(ENodeState.Inexplorado);
             }
         }
 

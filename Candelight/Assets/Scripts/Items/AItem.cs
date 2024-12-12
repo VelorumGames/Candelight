@@ -37,13 +37,9 @@ namespace Items
             DontDestroyOnLoad(this);
 
             _sound = FindObjectOfType<UISoundManager>();
-
-            _inv = FindObjectOfType<Inventory>();
-        }
-
-        private void Start()
-        {
             _img = GetComponent<Image>();
+            _inv = FindObjectOfType<Inventory>();
+
             GetComponentInChildren<TextMeshProUGUI>().text = Data.Name;
         }
 
@@ -64,7 +60,7 @@ namespace Items
         public void SetActivation()  // Funcion preparada para llamarse con un boton/clic dependiendo de la interfaz
         {
             if (!_inv) _inv = FindObjectOfType<Inventory>();
-            if (!_invWin) _invWin = FindObjectOfType<InventoryWindow>();
+            if (!_invWin) _invWin = FindObjectOfType<InventoryWindow>(true);
 
             if (IsActivated) //Se desactiva si estaba activado
             {
@@ -121,7 +117,7 @@ namespace Items
                 GameSettings.ItemTutorial = false;
             }
 
-            _sound.PlayHoverItem();
+            _sound?.PlayHoverItem();
         }
 
         public void OnPointerExit(PointerEventData _)

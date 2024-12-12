@@ -100,9 +100,12 @@ public class InferiIA : EnemyController
         //comprobar si está cerca el jugador.
         if (CloseToTargetCheck() && puedeAtacar)
         {
+            //CanMove = false;
             Audio.PlayOneShot(Attack);
             _anim.ChangeToAttack();
             OnAttack();
+            yield return new WaitForSeconds(1f);
+            //CanMove = true;
         }
 
         auxiliar = true;

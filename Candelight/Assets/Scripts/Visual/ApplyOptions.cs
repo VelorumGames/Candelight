@@ -30,12 +30,12 @@ namespace Visual
 
         private void Start()
         {
-            if (Application.isMobilePlatform) //Si es movil, quitar el post procesado
+            if (Application.isMobilePlatform && _postVolume != null) //Si es movil, quitar el post procesado
             {
                 _postVolume.enabled = false;
             }
 
-            if (_postVolume.sharedProfile.TryGet(out ColorAdjustments color))
+            if (_postVolume != null && _postVolume.sharedProfile.TryGet(out ColorAdjustments color))
             {
                 _oBright = color.postExposure.GetValue<float>();
                 _oContr = color.contrast.GetValue<float>();
@@ -56,7 +56,7 @@ namespace Visual
 
         public void ApplySettings()
         {
-            if (_postVolume.sharedProfile.TryGet(out ColorAdjustments color))
+            if (_postVolume != null && _postVolume.sharedProfile.TryGet(out ColorAdjustments color))
             {
                 color.postExposure.Override(_oBright + GameSettings.Brightness);
                 color.contrast.Override(_oContr + GameSettings.Contrast);
@@ -70,7 +70,7 @@ namespace Visual
 
         public void ResetSettings()
         {
-            if (_postVolume.sharedProfile.TryGet(out ColorAdjustments color))
+            if (_postVolume != null && _postVolume.sharedProfile.TryGet(out ColorAdjustments color))
             {
                 color.postExposure.Override(_oBright);
                 color.contrast.Override(_oContr);

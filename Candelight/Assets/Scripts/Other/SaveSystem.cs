@@ -12,7 +12,7 @@ public static class SaveSystem
     public static ScoreData ScoreboardData;
     public static SaveData GameData;
 
-    public static string PlayerName = "Carlos4";
+    public static string PlayerName;
 
     public static float StarRange = 10f;
 

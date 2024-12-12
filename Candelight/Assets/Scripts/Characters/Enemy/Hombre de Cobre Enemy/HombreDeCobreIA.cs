@@ -167,6 +167,7 @@ public class HombreDeCobreIA : EnemyController
 
         Vector3 dir = transform.position - Player.transform.position;
         _proyectiles[id].GetComponent<Rigidbody>().velocity = 3.5f * -dir.normalized;
+        _proyectiles[id].GetComponent<Projectile>().Damage = Info.BaseDamage * 0.3f;
 
         _proyectiles[id].SetActive(true);
         StartCoroutine(ResetProjectile(_proyectiles[id]));

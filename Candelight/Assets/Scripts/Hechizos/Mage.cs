@@ -177,8 +177,8 @@ namespace Hechizos
 
         IEnumerator RemainingMagicTutorial()
         {
-            yield return new WaitForSeconds(4f);
-            FindObjectOfType<UIManager>().ShowTutorial("Algunos hechizos dejarán un resquicio de magia que puedes aprovechar.\n Haz CLICK para invocarlo de nuevo rápidamente.", 10f);
+            yield return new WaitForSeconds(6f);
+            FindObjectOfType<UIManager>().ShowTutorial("Algunos hechizos dejarán un resquicio de magia que puedes aprovechar.\n Tras invocar un hechizo, haz CLICK de nuevo para invocarlo rápidamente.", 10f);
         }
 
         IEnumerator DelayedProjectile(float time)
